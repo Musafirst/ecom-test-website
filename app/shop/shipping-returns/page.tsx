@@ -1,0 +1,34 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Shipping & Returns',
+  description: 'Shipping and returns information for Jamm Trade shop orders.',
+}
+
+export default function ShippingReturnsPage() {
+  return (
+    <section className="bg-white px-3 py-10 text-jamm-dark sm:px-4 lg:py-16">
+      <div className="mx-auto max-w-[900px] rounded-[24px] bg-[#f6f6f6] px-6 py-12 sm:px-10">
+        <p className="mb-3 font-sans text-sm text-jamm-muted">Shop policy</p>
+        <h1 className="mb-6 font-sans text-4xl font-medium tracking-[-0.03em] sm:text-6xl">
+          Shipping & Returns
+        </h1>
+        <div className="space-y-5 font-sans text-base leading-relaxed text-jamm-dark/65">
+          <p>
+            Shipping and return details will be finalized as Jamm Trade prepares checkout and fulfillment.
+          </p>
+          <p>
+            For order questions or product availability, contact us directly.
+          </p>
+        </div>
+        <Link
+          href="mailto:contact@jammtrade.com"
+          className="mt-8 inline-flex rounded-full bg-jamm-dark px-5 py-3 font-sans text-sm font-medium text-white transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
+        >
+          Contact
+        </Link>
+      </div>
+    </section>
+  )
+}
