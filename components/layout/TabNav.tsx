@@ -36,7 +36,7 @@ export function TabNav() {
           </div>
         )}
 
-        <div className="mx-auto flex h-auto w-full max-w-[1560px] items-center justify-between overflow-visible rounded-b-[22px] bg-[#FAF7F2] px-3 sm:px-6 md:h-[133px]">
+        <div className="mx-auto flex h-auto w-full max-w-[1560px] items-start justify-between overflow-visible rounded-b-[22px] bg-[#FAF7F2] px-0 pt-2 sm:px-6 md:h-[133px] md:items-center md:pt-0">
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
@@ -68,7 +68,7 @@ export function TabNav() {
             })}
           </nav>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 md:pt-0">
             {isShop && (
               <>
                 <Link

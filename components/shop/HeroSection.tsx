@@ -13,7 +13,7 @@ export function HeroSection() {
   return (
     <section className="bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
       <motion.div
-        className="mx-auto flex max-w-[1560px] flex-col gap-3 overflow-hidden rounded-[24px] bg-transparent lg:relative lg:block lg:min-h-[620px] lg:bg-[#101112] lg:rounded-[28px]"
+        className="mx-auto flex max-w-[1560px] flex-col gap-3 rounded-[24px] bg-transparent lg:relative lg:block lg:min-h-[620px] lg:overflow-hidden lg:bg-[#101112] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}

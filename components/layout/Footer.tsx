@@ -12,8 +12,8 @@ export function Footer() {
   return (
     <footer className="bg-[#FAF7F2] px-3 pb-4 sm:px-4">
       <div className="mx-auto max-w-[1560px] rounded-[22px] border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-16">
-        <div className="flex w-full flex-col items-center justify-between gap-8 overflow-hidden md:flex-row">
-          <Link href="/shop" className="flex flex-shrink-0 items-center overflow-hidden">
+        <div className="flex w-full flex-col items-center justify-between gap-8 md:flex-row">
+          <Link href="/shop" className="flex flex-shrink-0 items-center">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
               alt="Jamm Trade"
