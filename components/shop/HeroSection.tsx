@@ -10,7 +10,12 @@ const swipeConfidenceThreshold = 80
 export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobileHero, setIsMobileHero] = useState(false)
+  const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
   const activeSlide = heroSlides[activeIndex]
+
+  const resetAutoSlideTimer = () => {
+    setAutoSlideResetKey((current) => current + 1)
+  }
 
   const showPreviousSlide = () => {
     setActiveIndex((current) => (current - 1 + heroSlides.length) % heroSlides.length)
@@ -26,11 +31,13 @@ export function HeroSection() {
 
     if (swipeDistance < -swipeConfidenceThreshold || swipeVelocity < -500) {
       showNextSlide()
+      resetAutoSlideTimer()
       return
     }
 
     if (swipeDistance > swipeConfidenceThreshold || swipeVelocity > 500) {
       showPreviousSlide()
+      resetAutoSlideTimer()
     }
   }
 
@@ -50,7 +57,7 @@ export function HeroSection() {
     }, 6000)
 
     return () => window.clearInterval(timer)
-  }, [])
+  }, [autoSlideResetKey])
 
   return (
     <section className="overflow-x-hidden bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
@@ -115,7 +122,10 @@ export function HeroSection() {
                 key={slide.id}
                 type="button"
                 aria-label={`Show ${slide.category} hero slide`}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => {
+                  setActiveIndex(index)
+                  resetAutoSlideTimer()
+                }}
                 className={`h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
                   index === activeIndex ? 'w-8 bg-jamm-gold lg:w-7' : 'w-3 bg-white/55 lg:w-2.5 lg:bg-white/45'
                 }`}
