@@ -19,7 +19,7 @@ export function Footer() {
               alt="Jamm Trade"
               width={1536}
               height={1024}
-              className="h-20 w-auto flex-shrink-0 object-contain md:h-[170px] lg:h-[195px]"
+              className="h-[128px] w-auto flex-shrink-0 object-contain md:h-[170px] lg:h-[195px]"
             />
           </Link>
 
