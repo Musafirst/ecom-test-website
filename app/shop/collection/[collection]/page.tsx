@@ -49,7 +49,7 @@ export default function CollectionPage({ params }: CollectionPageProps) {
       <div className="mx-auto max-w-[1560px] py-10 lg:py-16">
         <div className="mb-12 max-w-3xl">
           <SectionLabel>Collection</SectionLabel>
-          <h1 className="mt-3 font-sans text-5xl font-medium tracking-[-0.03em] text-jamm-dark sm:text-7xl">
+          <h1 className="mt-3 font-sans text-3xl font-medium tracking-[-0.03em] text-jamm-dark sm:text-5xl lg:text-7xl">
             {collection.name}
           </h1>
           <p className="mt-5 font-sans text-lg leading-relaxed text-jamm-muted">

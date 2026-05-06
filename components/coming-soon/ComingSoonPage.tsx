@@ -18,7 +18,7 @@ export function ComingSoonPage({ headline, subtext }: ComingSoonPageProps) {
       >
         <div className="w-full max-w-3xl text-center">
           <motion.h1
-            className="mx-auto mb-4 max-w-3xl font-sans text-5xl font-medium leading-tight tracking-[-0.04em] text-jamm-dark sm:text-7xl"
+            className="mx-auto mb-4 max-w-3xl font-sans text-3xl font-medium leading-tight tracking-[-0.04em] text-jamm-dark sm:text-5xl lg:text-7xl"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}

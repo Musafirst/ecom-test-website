@@ -51,7 +51,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       <div className="mx-auto grid max-w-[1560px] grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="flex flex-col justify-center">
           <SectionLabel>Coming Soon</SectionLabel>
-          <h1 className="mt-3 font-sans text-5xl font-medium leading-tight tracking-[-0.03em] text-jamm-dark sm:text-7xl">
+          <h1 className="mt-3 font-sans text-3xl font-medium leading-tight tracking-[-0.03em] text-jamm-dark sm:text-5xl lg:text-7xl">
             {category.name}
           </h1>
           <p className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-jamm-dark/60">

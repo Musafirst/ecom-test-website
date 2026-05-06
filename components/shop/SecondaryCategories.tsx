@@ -57,7 +57,7 @@ export function SecondaryCategories() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={cat.href} className="group block">
-                <div className="relative min-h-[460px] overflow-hidden rounded-[20px] bg-[#EDE8DC]">
+                <div className="relative min-h-[320px] overflow-hidden rounded-[20px] bg-[#EDE8DC] sm:min-h-[380px] lg:min-h-[460px]">
                   <img
                     src={cat.image}
                     alt={cat.name}

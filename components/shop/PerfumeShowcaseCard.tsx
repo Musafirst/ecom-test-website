@@ -7,7 +7,7 @@ import { PlaceholderImage } from '@/components/ui/PlaceholderImage'
 export function PerfumeShowcaseCard() {
   return (
     <motion.div
-      className="relative w-72 xl:w-80"
+      className="relative w-full sm:w-72 xl:w-80"
       animate={{ y: [0, -10, 0] }}
       transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
     >

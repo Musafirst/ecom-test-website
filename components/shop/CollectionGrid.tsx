@@ -65,7 +65,7 @@ export function CollectionGrid() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={col.href} className="group block">
-                <div className="relative min-h-[420px] overflow-hidden rounded-[20px] bg-[#EDE8DC]">
+                <div className="relative min-h-[280px] overflow-hidden rounded-[20px] bg-[#EDE8DC] sm:min-h-[360px] lg:min-h-[420px]">
                   <img
                     src={col.image}
                     alt={`${col.name} perfume collection`}

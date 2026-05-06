@@ -64,7 +64,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             </span>
           </div>
 
-          <h1 className="mb-5 font-sans text-5xl font-medium leading-tight tracking-[-0.03em] text-jamm-dark sm:text-7xl">
+          <h1 className="mb-5 font-sans text-3xl font-medium leading-tight tracking-[-0.03em] text-jamm-dark sm:text-5xl lg:text-7xl">
             {product.title}
           </h1>
 

@@ -40,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
             className="transition-transform duration-700 group-hover:scale-[1.035]"
           />
 
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-gradient-to-t from-black/50 via-black/10 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-gradient-to-t from-black/50 via-black/10 to-transparent p-4 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
             <span className="rounded-full border border-jamm-gold/70 bg-jamm-dark/70 px-4 py-2 font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-jamm-gold backdrop-blur-sm">
               View Product
             </span>
