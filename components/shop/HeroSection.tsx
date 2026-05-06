@@ -1,79 +1,96 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-
-const heroImage =
-  'https://images.pexels.com/photos/30618765/pexels-photo-30618765.jpeg?auto=compress&cs=tinysrgb&w=1800'
-
-const hotspotClass =
-  'absolute flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-jamm-dark shadow-lg ring-1 ring-black/10 backdrop-blur-sm'
+import { AnimatePresence, motion } from 'framer-motion'
+import { heroSlides } from '@/lib/heroSlides'
 
 export function HeroSection() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isMobileHero, setIsMobileHero] = useState(false)
+  const activeSlide = heroSlides[activeIndex]
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 1023px)')
+    const syncHeroMode = () => setIsMobileHero(mediaQuery.matches)
+
+    syncHeroMode()
+    mediaQuery.addEventListener('change', syncHeroMode)
+
+    return () => mediaQuery.removeEventListener('change', syncHeroMode)
+  }, [])
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % heroSlides.length)
+    }, 6000)
+
+    return () => window.clearInterval(timer)
+  }, [])
+
   return (
-    <section className="bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
+    <section className="overflow-x-hidden bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
       <motion.div
-        className="mx-auto flex max-w-[1560px] flex-col gap-3 rounded-[24px] bg-transparent lg:relative lg:block lg:min-h-[620px] lg:overflow-hidden lg:bg-[#101112] lg:rounded-[28px]"
+        className="relative mx-auto h-[560px] max-w-[1560px] overflow-hidden rounded-[24px] bg-[#101112] sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       >
-        <img
-          src={heroImage}
-          alt="Luxurious oud perfume bottle with rose petals"
-          className="relative h-[360px] w-full rounded-[24px] object-cover lg:absolute lg:inset-0 lg:h-full lg:rounded-none"
-          fetchPriority="high"
-        />
-        <div className="hidden lg:absolute lg:inset-0 lg:block lg:bg-gradient-to-r lg:from-black/45 lg:via-black/10 lg:to-transparent" />
+        <div className="absolute inset-0 h-full overflow-hidden bg-[#101112]">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={activeSlide.id}
+              src={activeSlide.image}
+              alt={activeSlide.title}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              initial={isMobileHero ? { opacity: 0, scale: 1.03, y: 12 } : { opacity: 0, scale: 1.04, x: 24 }}
+              animate={isMobileHero ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1, x: 0 }}
+              exit={isMobileHero ? { opacity: 0, scale: 1.01, y: -8 } : { opacity: 0, scale: 1.01, x: -12 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              fetchPriority={activeIndex === 0 ? 'high' : undefined}
+            />
+          </AnimatePresence>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/68 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-black/45 lg:via-black/10 lg:to-transparent" />
 
-        <motion.button
-          type="button"
-          aria-label="Oud concentration detail"
-          className={`${hotspotClass} left-[54%] top-[32%] hidden lg:flex`}
-          animate={{ scale: [1, 1.08, 1] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          +
-        </motion.button>
-        <motion.button
-          type="button"
-          aria-label="Bottle detail"
-          className={`${hotspotClass} right-[28%] top-[48%] hidden lg:flex`}
-          animate={{ scale: [1, 1.08, 1] }}
-          transition={{ duration: 2.4, delay: 0.5, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          +
-        </motion.button>
-
-        <div className="flex flex-col justify-between gap-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:gap-6 lg:p-8 lg:flex-row lg:items-end">
-          <motion.div
-            className="w-full rounded-[14px] bg-white p-6 text-jamm-dark shadow-sm lg:max-w-[430px] lg:p-9 lg:shadow-2xl"
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="mb-4 font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-jamm-muted">
-              Jamm Trade fragrances
-            </p>
-            <h1 className="mb-4 font-sans text-[32px] font-medium leading-tight tracking-[-0.02em] text-jamm-dark sm:text-[42px]">
-              From essentials to enterprise.
-            </h1>
-            <p className="mb-7 font-sans text-base leading-relaxed text-jamm-dark/60">
-              Curated fragrances, fashion, and everyday goods selected with intention.
-            </p>
-            <Link
-              href="#perfumes"
-              className="inline-flex border-b border-jamm-dark pb-1 font-sans text-sm font-medium text-jamm-dark transition-colors duration-200 hover:text-jamm-gold"
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 p-4 sm:p-5 md:p-6 lg:gap-6 lg:p-8 lg:flex-row lg:items-end lg:justify-between">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSlide.id}
+              className="w-[90%] max-w-[440px] rounded-[14px] border border-white/20 bg-black/38 p-5 text-jamm-cream shadow-sm backdrop-blur-md sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/34 lg:p-9 lg:shadow-2xl"
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-              Shop Perfumes
-            </Link>
-          </motion.div>
+              <p className="mb-4 font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-jamm-gold">
+                {activeSlide.category}
+              </p>
+              <h1 className="mb-4 font-sans text-[32px] font-medium leading-tight tracking-[-0.02em] text-jamm-cream sm:text-[36px] md:text-[40px] lg:text-[42px]">
+                {activeSlide.title}
+              </h1>
+              <p className="mb-6 font-sans text-sm leading-relaxed text-jamm-cream/78 sm:text-[15px] md:text-base lg:mb-7">
+                {activeSlide.subtitle}
+              </p>
+              <Link
+                href={activeSlide.ctaHref}
+                className="inline-flex min-h-11 items-center border-b border-jamm-gold pb-1 font-sans text-base font-medium text-jamm-cream transition-colors duration-200 hover:text-jamm-gold lg:text-sm"
+              >
+                {activeSlide.ctaLabel}
+              </Link>
+            </motion.div>
+          </AnimatePresence>
 
-          <div className="hidden items-center justify-center gap-2 lg:flex lg:pb-3">
-            {[0, 1, 2].map((dot) => (
-              <span
-                key={dot}
-                className={`h-2.5 w-2.5 rounded-full ${dot === 0 ? 'bg-white' : 'bg-white/45'}`}
+          <div className="flex items-center justify-center gap-2 py-1 lg:pb-3">
+            {heroSlides.map((slide, index) => (
+              <button
+                key={slide.id}
+                type="button"
+                aria-label={`Show ${slide.category} hero slide`}
+                onClick={() => setActiveIndex(index)}
+                className={`h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
+                  index === activeIndex ? 'w-8 bg-jamm-gold lg:w-7' : 'w-3 bg-white/55 lg:w-2.5 lg:bg-white/45'
+                }`}
               />
             ))}
           </div>
