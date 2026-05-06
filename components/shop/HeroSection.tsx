@@ -13,7 +13,7 @@ export function HeroSection() {
   return (
     <section className="bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
       <motion.div
-        className="relative mx-auto min-h-[620px] max-w-[1560px] overflow-hidden rounded-[24px] bg-[#101112] sm:rounded-[28px]"
+        className="mx-auto flex max-w-[1560px] flex-col gap-3 overflow-hidden rounded-[24px] bg-transparent lg:relative lg:block lg:min-h-[620px] lg:bg-[#101112] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
@@ -21,15 +21,15 @@ export function HeroSection() {
         <img
           src={heroImage}
           alt="Luxurious oud perfume bottle with rose petals"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="relative h-[360px] w-full rounded-[24px] object-cover lg:absolute lg:inset-0 lg:h-full lg:rounded-none"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/10 to-transparent" />
+        <div className="hidden lg:absolute lg:inset-0 lg:block lg:bg-gradient-to-r lg:from-black/45 lg:via-black/10 lg:to-transparent" />
 
         <motion.button
           type="button"
           aria-label="Oud concentration detail"
-          className={`${hotspotClass} left-[54%] top-[32%]`}
+          className={`${hotspotClass} left-[54%] top-[32%] hidden lg:flex`}
           animate={{ scale: [1, 1.08, 1] }}
           transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
         >
@@ -38,16 +38,16 @@ export function HeroSection() {
         <motion.button
           type="button"
           aria-label="Bottle detail"
-          className={`${hotspotClass} right-[28%] top-[48%] hidden sm:flex`}
+          className={`${hotspotClass} right-[28%] top-[48%] hidden lg:flex`}
           animate={{ scale: [1, 1.08, 1] }}
           transition={{ duration: 2.4, delay: 0.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           +
         </motion.button>
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-between gap-6 p-5 sm:p-8 lg:flex-row lg:items-end">
+        <div className="flex flex-col justify-between gap-4 lg:absolute lg:inset-x-0 lg:bottom-0 lg:gap-6 lg:p-8 lg:flex-row lg:items-end">
           <motion.div
-            className="max-w-[430px] rounded-[14px] bg-white p-7 text-jamm-dark shadow-2xl sm:p-9"
+            className="w-full rounded-[14px] bg-white p-6 text-jamm-dark shadow-sm lg:max-w-[430px] lg:p-9 lg:shadow-2xl"
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
@@ -55,7 +55,7 @@ export function HeroSection() {
             <p className="mb-4 font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-jamm-muted">
               Jamm Trade fragrances
             </p>
-            <h1 className="mb-4 font-sans text-[34px] font-medium leading-tight tracking-[-0.02em] text-jamm-dark sm:text-[42px]">
+            <h1 className="mb-4 font-sans text-[32px] font-medium leading-tight tracking-[-0.02em] text-jamm-dark sm:text-[42px]">
               From essentials to enterprise.
             </h1>
             <p className="mb-7 font-sans text-base leading-relaxed text-jamm-dark/60">
@@ -69,7 +69,7 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          <div className="flex items-center justify-center gap-2 lg:pb-3">
+          <div className="hidden items-center justify-center gap-2 lg:flex lg:pb-3">
             {[0, 1, 2].map((dot) => (
               <span
                 key={dot}

@@ -14,7 +14,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <motion.article
-      className="group relative"
+      className="group relative w-full"
       variants={{
         hidden: { opacity: 0, y: 22 },
         visible: { opacity: 1, y: 0 },
