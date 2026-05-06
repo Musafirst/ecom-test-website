@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import type { MouseEvent as ReactMouseEvent } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { heroSlides } from '@/lib/heroSlides'
@@ -11,6 +12,7 @@ export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobileHero, setIsMobileHero] = useState(false)
   const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
+  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 })
   const activeSlide = heroSlides[activeIndex]
 
   const resetAutoSlideTimer = () => {
@@ -39,6 +41,20 @@ export function HeroSection() {
       showPreviousSlide()
       resetAutoSlideTimer()
     }
+  }
+
+  const handleMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (isMobileHero) return
+
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5
+
+    setParallaxOffset({ x: x * 18, y: y * 12 })
+  }
+
+  const handleMouseLeave = () => {
+    setParallaxOffset({ x: 0, y: 0 })
   }
 
   useEffect(() => {
@@ -70,20 +86,28 @@ export function HeroSection() {
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.08}
         onDragEnd={handleDragEnd}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
       >
         <div className="absolute inset-0 h-full overflow-hidden bg-[#101112]">
           <AnimatePresence mode="wait">
-            <motion.img
+            <motion.div
               key={activeSlide.id}
-              src={activeSlide.image}
-              alt={activeSlide.title}
-              className="absolute inset-0 h-full w-full object-cover object-center"
-              initial={isMobileHero ? { opacity: 0, scale: 1.03, y: 12 } : { opacity: 0, scale: 1.04, x: 24 }}
-              animate={isMobileHero ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1, x: 0 }}
-              exit={isMobileHero ? { opacity: 0, scale: 1.01, y: -8 } : { opacity: 0, scale: 1.01, x: -12 }}
+              className="absolute -inset-3 lg:-inset-5"
+              style={isMobileHero ? undefined : { x: parallaxOffset.x, y: parallaxOffset.y }}
+              initial={isMobileHero ? { opacity: 0, scale: 1.03, y: 12 } : { opacity: 0, scale: 1.04 }}
+              animate={isMobileHero ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1 }}
+              exit={isMobileHero ? { opacity: 0, scale: 1.01, y: -8 } : { opacity: 0, scale: 1.01 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
-              fetchPriority={activeIndex === 0 ? 'high' : undefined}
-            />
+              whileHover={isMobileHero ? undefined : { scale: 1.025 }}
+            >
+              <img
+                src={activeSlide.image}
+                alt={activeSlide.title}
+                className="h-full w-full object-cover object-center"
+                fetchPriority={activeIndex === 0 ? 'high' : undefined}
+              />
+            </motion.div>
           </AnimatePresence>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/68 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-black/45 lg:via-black/10 lg:to-transparent" />

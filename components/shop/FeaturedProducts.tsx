@@ -16,7 +16,7 @@ export function FeaturedProducts() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
           <div>
-            <p className="mb-2 font-sans text-sm text-jamm-gold">Perfume cases</p>
+            <p className="mb-2 font-sans text-sm text-jamm-gold">Fragrance collection</p>
             <h2 className="font-sans text-3xl font-medium tracking-[-0.02em] text-jamm-dark sm:text-4xl">
               Featured Products
             </h2>
