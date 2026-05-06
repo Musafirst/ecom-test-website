@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { BorderBeam } from '@/components/ui/border-beam'
 
 const categories = [
   {
@@ -49,7 +50,7 @@ export function SecondaryCategories() {
             visible: { transition: { staggerChildren: 0.1 } },
           }}
         >
-          {categories.map((cat) => (
+          {categories.map((cat, index) => (
             <motion.div
               key={cat.id}
               id={cat.id}
@@ -58,7 +59,8 @@ export function SecondaryCategories() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={cat.href} className="group block">
-                <div className="relative min-h-[320px] overflow-hidden rounded-[20px] bg-[#EDE8DC] sm:min-h-[380px] lg:min-h-[460px]">
+                <div className="relative min-h-[320px] overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#EDE8DC] sm:min-h-[380px] lg:min-h-[460px]">
+                  <BorderBeam size={420} duration={13} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 3} />
                   <img
                     src={cat.image}
                     alt={cat.name}

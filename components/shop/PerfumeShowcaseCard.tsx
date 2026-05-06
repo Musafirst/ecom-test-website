@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { BorderBeam } from '@/components/ui/border-beam'
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage'
 
 export function PerfumeShowcaseCard() {
@@ -12,17 +13,18 @@ export function PerfumeShowcaseCard() {
       transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
     >
       <motion.div
-        className="absolute -bottom-3 -right-3 w-full h-full border border-jamm-gold/20"
+        className="absolute -bottom-3 -right-3 h-full w-full border border-jamm-gold/35"
         initial={{ opacity: 0, x: 10, y: 10 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       />
 
       <motion.div
-        className="relative bg-[#161310] border border-jamm-gold/25 shadow-2xl overflow-hidden"
+        className="relative overflow-hidden border border-jamm-gold/35 bg-[#161310] shadow-2xl"
         whileHover={{ scale: 1.025 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
+        <BorderBeam size={300} duration={11} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
         <div className="relative">
           <PlaceholderImage
             variant="perfume"

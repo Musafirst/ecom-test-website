@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { BorderBeam } from '@/components/ui/border-beam'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { categoryDetails } from '@/lib/products'
 
@@ -77,7 +78,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[24px] bg-[#f4f4f2]">
+        <div className="relative overflow-hidden rounded-[24px] border border-jamm-gold/35 bg-[#f4f4f2]">
+          <BorderBeam size={520} duration={13} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
           <img src={image} alt={category.name} className="h-full w-full object-cover" />
         </div>
       </div>

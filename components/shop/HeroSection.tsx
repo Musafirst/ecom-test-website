@@ -5,6 +5,7 @@ import type { MouseEvent as ReactMouseEvent } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { heroSlides } from '@/lib/heroSlides'
+import { BorderBeam } from '@/components/ui/border-beam'
 
 const swipeConfidenceThreshold = 80
 
@@ -78,7 +79,7 @@ export function HeroSection() {
   return (
     <section className="overflow-x-hidden bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
       <motion.div
-        className="relative mx-auto h-[560px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[24px] bg-[#101112] active:cursor-grabbing sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
+        className="relative mx-auto h-[560px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[24px] border border-jamm-gold/35 bg-[#101112] active:cursor-grabbing sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
@@ -89,6 +90,7 @@ export function HeroSection() {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
+        <BorderBeam size={520} duration={13} borderWidth={3} colorFrom="#C4973A" colorTo="#F8E7A6" />
         <div className="absolute inset-0 h-full overflow-hidden bg-[#101112]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -116,7 +118,7 @@ export function HeroSection() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.id}
-              className="w-[90%] max-w-[440px] rounded-[14px] border border-white/16 bg-black/26 p-5 text-jamm-cream shadow-sm backdrop-blur-md sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/24 lg:p-9 lg:shadow-2xl"
+              className="relative w-[90%] max-w-[440px] rounded-[14px] border border-white/16 bg-black/26 p-5 text-jamm-cream shadow-sm backdrop-blur-md sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/24 lg:p-9 lg:shadow-2xl overflow-hidden"
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
@@ -137,6 +139,7 @@ export function HeroSection() {
               >
                 {activeSlide.ctaLabel}
               </Link>
+              <BorderBeam size={240} duration={9} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
             </motion.div>
           </AnimatePresence>
 

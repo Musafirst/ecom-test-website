@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { BorderBeam } from '@/components/ui/border-beam'
 
 const collections = [
   {
@@ -57,7 +58,7 @@ export function CollectionGrid() {
             visible: { transition: { staggerChildren: 0.1 } },
           }}
         >
-          {collections.map((col) => (
+          {collections.map((col, index) => (
             <motion.div
               key={col.id}
               variants={{ hidden: { opacity: 0, y: 26 }, visible: { opacity: 1, y: 0 } }}
@@ -65,7 +66,8 @@ export function CollectionGrid() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={col.href} className="group block">
-                <div className="relative min-h-[280px] overflow-hidden rounded-[20px] bg-[#EDE8DC] sm:min-h-[360px] lg:min-h-[420px]">
+                <div className="relative min-h-[280px] overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#EDE8DC] sm:min-h-[360px] lg:min-h-[420px]">
+                  <BorderBeam size={360} duration={12} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 2} />
                   <img
                     src={col.image}
                     alt={`${col.name} perfume collection`}

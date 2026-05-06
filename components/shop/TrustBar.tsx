@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { BorderBeam } from '@/components/ui/border-beam'
 
 const trustItems = [
   ['Authentic Products', 'Every item sourced and verified.'],
@@ -13,7 +14,7 @@ export function TrustBar() {
   return (
     <section className="bg-[#FAF7F2] px-3 py-12 sm:px-4 lg:pb-20">
       <motion.div
-        className="mx-auto grid max-w-[1560px] grid-cols-1 overflow-hidden rounded-[20px] border border-jamm-gold/25 bg-[#EDE8DC] sm:grid-cols-2 lg:grid-cols-4"
+        className="relative mx-auto grid max-w-[1560px] grid-cols-1 overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#EDE8DC] sm:grid-cols-2 lg:grid-cols-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-80px' }}
@@ -22,6 +23,7 @@ export function TrustBar() {
           visible: { transition: { staggerChildren: 0.08 } },
         }}
       >
+        <BorderBeam size={420} duration={12} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={4} />
         {trustItems.map(([label, detail]) => (
           <motion.div
             key={label}

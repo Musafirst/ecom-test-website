@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ProductBadge } from '@/components/product/ProductBadge'
 import { PriceDisplay } from '@/components/product/PriceDisplay'
+import { BorderBeam } from '@/components/ui/border-beam'
 import { ProductPhoto } from '@/components/ui/ProductPhoto'
 import type { JammProduct } from '@/types/product'
 
@@ -26,7 +27,8 @@ export function ProductCard({ product }: ProductCardProps) {
         href={`/shop/product/${product.handle}`}
         className="block outline-none focus-visible:ring-2 focus-visible:ring-jamm-gold focus-visible:ring-offset-4 focus-visible:ring-offset-jamm-cream"
       >
-        <div className="relative overflow-hidden rounded-[18px] bg-[#EDE8DC]">
+        <div className="relative overflow-hidden rounded-[18px] border border-jamm-gold/30 bg-[#EDE8DC]">
+          <BorderBeam size={260} duration={11} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={product.id.length % 5} />
           {product.badge && (
             <div className="absolute right-4 top-4 z-10">
               <ProductBadge type={product.badge} />

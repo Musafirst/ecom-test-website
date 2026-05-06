@@ -28,11 +28,15 @@ const config: Config = {
       },
       animation: {
         marquee: 'marquee 28s linear infinite',
+        'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
       },
       keyframes: {
         marquee: {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(-50%)' },
+        },
+        'border-beam': {
+          '100%': { 'offset-distance': '100%' },
         },
       },
     },
