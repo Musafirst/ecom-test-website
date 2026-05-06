@@ -36,7 +36,7 @@ export function TabNav() {
           </div>
         )}
 
-        <div className="mx-auto flex h-[82px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[22px] bg-[#FAF7F2] px-2 sm:h-[92px] sm:px-6 md:h-[133px] md:overflow-visible">
+        <div className="mx-auto flex h-[118px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[22px] bg-[#FAF7F2] px-2 sm:h-[138px] sm:px-6 md:h-[133px] md:overflow-visible">
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
@@ -140,7 +140,7 @@ export function TabNav() {
                   alt="Jamm Trade"
                   width={1536}
                   height={1024}
-                  className="h-[72px] w-auto flex-shrink-0 object-contain"
+                  className="h-[108px] w-auto flex-shrink-0 object-contain"
                   priority
                 />
               </Link>
