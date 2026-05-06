@@ -43,7 +43,7 @@ export function TabNav() {
               alt="Jamm Trade"
               width={1536}
               height={1024}
-              className="h-[156px] w-auto flex-shrink-0 object-contain sm:h-[187px] md:h-[280px] lg:h-[340px] xl:h-[389px]"
+              className="h-[218px] w-auto flex-shrink-0 object-contain sm:h-[262px] md:h-[280px] lg:h-[340px] xl:h-[389px]"
               priority
             />
           </Link>
