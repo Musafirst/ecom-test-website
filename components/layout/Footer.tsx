@@ -11,8 +11,8 @@ const footerLinks = [
 export function Footer() {
   return (
     <footer className="bg-[#FAF7F2] px-3 pb-4 sm:px-4">
-      <div className="mx-auto max-w-[1560px] rounded-[22px] border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-16">
-        <div className="flex w-full flex-col items-center justify-between gap-8 md:flex-row">
+      <div className="mx-auto max-w-[1560px] rounded-[22px] border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-10 md:py-16">
+        <div className="flex w-full flex-col items-center justify-between gap-6 md:flex-row md:gap-8">
           <Link href="/shop" className="flex flex-shrink-0 items-center">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
@@ -23,7 +23,7 @@ export function Footer() {
             />
           </Link>
 
-          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+          <nav className="flex flex-col items-center justify-center gap-3 md:flex-row md:flex-wrap md:gap-x-6 md:gap-y-3">
             {footerLinks.map((link) => (
               <Link
                 key={link.label}

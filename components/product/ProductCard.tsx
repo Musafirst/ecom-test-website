@@ -41,14 +41,14 @@ export function ProductCard({ product }: ProductCardProps) {
           />
 
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-gradient-to-t from-black/50 via-black/10 to-transparent p-4 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
-            <span className="rounded-full border border-jamm-gold/70 bg-jamm-dark/70 px-4 py-2 font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-jamm-gold backdrop-blur-sm">
+            <span className="rounded-full border border-jamm-gold/70 bg-jamm-dark/80 px-5 py-3 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-jamm-gold backdrop-blur-sm sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.18em]">
               View Product
             </span>
           </div>
         </div>
 
-        <div className="mt-3 flex items-center justify-between px-1">
-          <p className="font-sans text-sm font-medium leading-tight text-jamm-dark">{product.title}</p>
+        <div className="mt-3 flex items-center justify-between gap-4 px-1">
+          <p className="font-sans text-base font-medium leading-tight text-jamm-dark sm:text-sm">{product.title}</p>
           <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} onLight />
         </div>
       </Link>

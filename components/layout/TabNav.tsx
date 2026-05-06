@@ -27,23 +27,23 @@ export function TabNav() {
           <div className="overflow-hidden rounded-xl bg-jamm-dark py-2 text-center font-sans text-[11px] font-medium text-jamm-cream">
             <div className="flex whitespace-nowrap animate-marquee">
               <span className="px-8">
-                Save 20% on your first order&nbsp;&nbsp;·&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;·&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;·&nbsp;&nbsp;
+                Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
               </span>
               <span className="px-8" aria-hidden>
-                Save 20% on your first order&nbsp;&nbsp;·&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;·&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;·&nbsp;&nbsp;
+                Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
               </span>
             </div>
           </div>
         )}
 
-        <div className="mx-auto flex h-auto w-full max-w-[1560px] items-start justify-between overflow-visible rounded-b-[22px] bg-[#FAF7F2] px-0 pt-2 sm:px-6 md:h-[133px] md:items-center md:pt-0">
+        <div className="mx-auto flex h-24 w-full max-w-[1560px] items-center justify-between overflow-visible rounded-b-[22px] bg-[#FAF7F2] px-0 sm:px-6 md:h-[133px]">
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
               alt="Jamm Trade"
               width={1536}
               height={1024}
-              className="h-[167px] w-auto flex-shrink-0 object-contain sm:h-[201px] md:h-[280px] lg:h-[340px] xl:h-[389px]"
+              className="h-20 w-auto flex-shrink-0 object-contain sm:h-24 md:h-[280px] lg:h-[340px] xl:h-[389px]"
               priority
             />
           </Link>
@@ -68,7 +68,7 @@ export function TabNav() {
             })}
           </nav>
 
-          <div className="flex items-center gap-1 md:pt-0">
+          <div className="flex flex-shrink-0 items-center gap-1 md:pt-0">
             {isShop && (
               <>
                 <Link
@@ -87,6 +87,17 @@ export function TabNav() {
                   className="hidden h-10 items-center justify-center rounded-full px-3 font-sans text-sm text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:flex"
                 >
                   Cart (0)
+                </Link>
+                <Link
+                  href="mailto:contact@jammtrade.com"
+                  aria-label="Cart"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
+                    <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="9" cy="20" r="1" />
+                    <circle cx="17" cy="20" r="1" />
+                  </svg>
                 </Link>
               </>
             )}

@@ -40,7 +40,7 @@ export function SecondaryCategories() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+          className="grid grid-cols-1 gap-4 lg:grid-cols-2"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
