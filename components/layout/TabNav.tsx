@@ -36,14 +36,14 @@ export function TabNav() {
           </div>
         )}
 
-        <div className="mx-auto flex h-24 w-full max-w-[1560px] items-center justify-between overflow-visible rounded-b-[22px] bg-[#FAF7F2] px-0 sm:px-6 md:h-[133px]">
+        <div className="mx-auto flex h-[82px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[22px] bg-[#FAF7F2] px-2 sm:h-[92px] sm:px-6 md:h-[133px] md:overflow-visible">
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
               alt="Jamm Trade"
               width={1536}
               height={1024}
-              className="h-20 w-auto flex-shrink-0 object-contain sm:h-24 md:h-[280px] lg:h-[340px] xl:h-[389px]"
+              className="h-[72px] w-auto flex-shrink-0 object-contain sm:h-[86px] md:h-[280px] lg:h-[340px] xl:h-[389px]"
               priority
             />
           </Link>
@@ -68,13 +68,13 @@ export function TabNav() {
             })}
           </nav>
 
-          <div className="flex flex-shrink-0 items-center gap-1 md:pt-0">
+          <div className="flex flex-shrink-0 items-center gap-0.5 md:gap-1 md:pt-0">
             {isShop && (
               <>
                 <Link
                   href="/shop#perfumes"
                   aria-label="Search products"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark"
+                  className="flex h-9 w-9 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:h-10 md:w-10"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
                     <circle cx="11" cy="11" r="6" />
@@ -91,7 +91,7 @@ export function TabNav() {
                 <Link
                   href="mailto:contact@jammtrade.com"
                   aria-label="Cart"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
+                  className="flex h-9 w-9 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
                     <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" strokeLinecap="round" strokeLinejoin="round" />
@@ -114,7 +114,7 @@ export function TabNav() {
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden>
                 <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
@@ -140,7 +140,7 @@ export function TabNav() {
                   alt="Jamm Trade"
                   width={1536}
                   height={1024}
-                  className="h-20 w-auto flex-shrink-0 object-contain"
+                  className="h-[72px] w-auto flex-shrink-0 object-contain"
                   priority
                 />
               </Link>
