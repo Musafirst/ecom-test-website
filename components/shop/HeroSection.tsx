@@ -92,7 +92,7 @@ export function HeroSection() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.id}
-              className="w-[90%] max-w-[440px] rounded-[14px] border border-white/20 bg-black/38 p-5 text-jamm-cream shadow-sm backdrop-blur-md sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/34 lg:p-9 lg:shadow-2xl"
+              className="w-[90%] max-w-[440px] rounded-[14px] border border-white/16 bg-black/26 p-5 text-jamm-cream shadow-sm backdrop-blur-md sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/24 lg:p-9 lg:shadow-2xl"
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
