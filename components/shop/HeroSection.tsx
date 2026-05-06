@@ -2,13 +2,37 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
 import { heroSlides } from '@/lib/heroSlides'
+
+const swipeConfidenceThreshold = 80
 
 export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobileHero, setIsMobileHero] = useState(false)
   const activeSlide = heroSlides[activeIndex]
+
+  const showPreviousSlide = () => {
+    setActiveIndex((current) => (current - 1 + heroSlides.length) % heroSlides.length)
+  }
+
+  const showNextSlide = () => {
+    setActiveIndex((current) => (current + 1) % heroSlides.length)
+  }
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipeDistance = info.offset.x
+    const swipeVelocity = info.velocity.x
+
+    if (swipeDistance < -swipeConfidenceThreshold || swipeVelocity < -500) {
+      showNextSlide()
+      return
+    }
+
+    if (swipeDistance > swipeConfidenceThreshold || swipeVelocity > 500) {
+      showPreviousSlide()
+    }
+  }
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 1023px)')
@@ -31,10 +55,14 @@ export function HeroSection() {
   return (
     <section className="overflow-x-hidden bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
       <motion.div
-        className="relative mx-auto h-[560px] max-w-[1560px] overflow-hidden rounded-[24px] bg-[#101112] sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
+        className="relative mx-auto h-[560px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[24px] bg-[#101112] active:cursor-grabbing sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.08}
+        onDragEnd={handleDragEnd}
       >
         <div className="absolute inset-0 h-full overflow-hidden bg-[#101112]">
           <AnimatePresence mode="wait">
