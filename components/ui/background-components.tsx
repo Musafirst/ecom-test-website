@@ -10,25 +10,16 @@ interface BackgroundComponentsProps {
 
 export const Component = ({ children, className }: BackgroundComponentsProps) => {
   return (
-    <div className={cn('relative min-h-screen w-full overflow-hidden bg-[#fafafa] text-gray-900', className)}>
+    <div className={cn('relative min-h-screen w-full overflow-hidden bg-[#FAF7F2] text-gray-900', className)}>
       <div
-        className="absolute inset-0 z-0 pointer-events-none"
+        className="pointer-events-none absolute inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(circle at center, #FFF991 0%, transparent 70%)
+            repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+            repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+            repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+            repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px)
           `,
-          opacity: 0.6,
-          mixBlendMode: 'multiply',
-        }}
-      />
-      <div
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px),
-            repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 0, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 20px)
-          `,
-          backgroundSize: '40px 40px',
         }}
       />
       <div className="relative z-10 min-h-screen">{children}</div>
