@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { TabNav } from '@/components/layout/TabNav'
 import { Footer } from '@/components/layout/Footer'
+import BackgroundComponents from '@/components/ui/background-components'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -34,9 +35,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body>
-        <TabNav />
-        <main>{children}</main>
-        <Footer />
+        <BackgroundComponents>
+          <TabNav />
+          <main>{children}</main>
+          <Footer />
+        </BackgroundComponents>
       </body>
     </html>
   )

@@ -6,7 +6,7 @@ import { featuredProducts } from '@/lib/products'
 
 export function FeaturedProducts() {
   return (
-    <section id="perfumes" className="bg-[#FAF7F2] px-3 py-12 sm:px-4 lg:py-16">
+    <section id="perfumes" className="bg-transparent px-3 py-12 sm:px-4 lg:py-16">
       <div className="mx-auto max-w-[1560px]">
         <motion.div
           className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"

@@ -12,7 +12,7 @@ const trustItems = [
 
 export function TrustBar() {
   return (
-    <section className="bg-[#FAF7F2] px-3 py-12 sm:px-4 lg:pb-20">
+    <section className="bg-transparent px-3 py-12 sm:px-4 lg:pb-20">
       <motion.div
         className="relative mx-auto grid max-w-[1560px] grid-cols-1 overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#EDE8DC] sm:grid-cols-2 lg:grid-cols-4"
         initial="hidden"

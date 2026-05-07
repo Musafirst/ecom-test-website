@@ -40,7 +40,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <section className="bg-white px-3 py-8 text-jamm-dark sm:px-4">
+    <section className="bg-transparent px-3 py-8 text-jamm-dark sm:px-4">
       <div className="mx-auto grid min-h-[calc(100vh-120px)] max-w-[1560px] grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="relative overflow-hidden rounded-[24px] border border-jamm-gold/35 bg-[#f4f4f2]">
           <BorderBeam size={520} duration={13} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />

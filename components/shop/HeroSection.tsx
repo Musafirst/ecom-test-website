@@ -77,7 +77,7 @@ export function HeroSection() {
   }, [autoSlideResetKey])
 
   return (
-    <section className="overflow-x-hidden bg-[#FAF7F2] px-3 pb-14 sm:px-4 lg:pb-20">
+    <section className="overflow-x-hidden bg-transparent px-3 pb-14 sm:px-4 lg:pb-20">
       <motion.div
         className="relative mx-auto h-[560px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[24px] border border-jamm-gold/35 bg-[#101112] active:cursor-grabbing sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}

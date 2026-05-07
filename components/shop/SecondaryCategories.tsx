@@ -25,7 +25,7 @@ const categories = [
 
 export function SecondaryCategories() {
   return (
-    <section className="bg-[#FAF7F2] px-3 py-12 sm:px-4 lg:py-16">
+    <section className="bg-transparent px-3 py-12 sm:px-4 lg:py-16">
       <div className="mx-auto max-w-[1560px]">
         <motion.div
           className="mb-6"

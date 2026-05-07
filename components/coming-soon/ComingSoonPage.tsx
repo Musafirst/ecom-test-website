@@ -9,7 +9,7 @@ interface ComingSoonPageProps {
 
 export function ComingSoonPage({ headline, subtext }: ComingSoonPageProps) {
   return (
-    <section className="bg-white px-3 py-10 sm:px-4 lg:py-16">
+    <section className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
       <motion.div
         className="mx-auto flex min-h-[calc(100vh-190px)] max-w-[1560px] items-center justify-center overflow-hidden rounded-[28px] bg-[#f6f6f6] px-6 py-16"
         initial={{ opacity: 0, y: 14 }}

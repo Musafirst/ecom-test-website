@@ -33,7 +33,7 @@ const collections = [
 
 export function CollectionGrid() {
   return (
-    <section id="collections" className="bg-[#FAF7F2] px-3 py-12 sm:px-4 lg:py-16">
+    <section id="collections" className="bg-transparent px-3 py-12 sm:px-4 lg:py-16">
       <div className="mx-auto max-w-[1560px]">
         <motion.div
           className="mb-6"

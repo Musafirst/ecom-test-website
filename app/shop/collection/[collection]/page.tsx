@@ -45,7 +45,7 @@ export default function CollectionPage({ params }: CollectionPageProps) {
   const products = collectionProducts[params.collection]
 
   return (
-    <section className="min-h-[calc(100vh-120px)] bg-white px-3 py-8 text-jamm-dark sm:px-4">
+    <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-8 text-jamm-dark sm:px-4">
       <div className="mx-auto max-w-[1560px] py-10 lg:py-16">
         <div className="mb-12 max-w-3xl">
           <SectionLabel>Collection</SectionLabel>

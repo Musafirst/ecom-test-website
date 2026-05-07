@@ -11,7 +11,7 @@ const footerLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#FAF7F2] px-3 pb-4 sm:px-4">
+    <footer className="bg-transparent px-3 pb-4 sm:px-4">
       <div className="relative mx-auto max-w-[1560px] overflow-hidden rounded-[22px] border border-jamm-gold/35 bg-[#EDE8DC] px-6 py-10 md:py-16">
         <BorderBeam size={480} duration={14} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={2} />
         <div className="flex w-full flex-col items-center justify-between gap-6 md:flex-row md:gap-8">

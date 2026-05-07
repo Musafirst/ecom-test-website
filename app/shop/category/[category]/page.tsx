@@ -48,7 +48,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       : 'https://images.pexels.com/photos/33481395/pexels-photo-33481395.jpeg?auto=compress&cs=tinysrgb&w=1200'
 
   return (
-    <section className="min-h-[calc(100vh-120px)] bg-white px-3 py-8 text-jamm-dark sm:px-4">
+    <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-8 text-jamm-dark sm:px-4">
       <div className="mx-auto grid max-w-[1560px] grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="flex flex-col justify-center">
           <SectionLabel>Coming Soon</SectionLabel>

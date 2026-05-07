@@ -22,7 +22,7 @@ export function TabNav() {
 
   return (
     <>
-      <header className="relative z-50 bg-[#FAF7F2] px-3 pt-3 sm:px-4">
+      <header className="relative z-50 bg-transparent px-3 pt-3 sm:px-4">
         {isShop && (
           <div className="overflow-hidden rounded-xl bg-jamm-dark py-2 text-center font-sans text-[11px] font-medium text-jamm-cream">
             <div className="flex whitespace-nowrap animate-marquee">
@@ -36,7 +36,7 @@ export function TabNav() {
           </div>
         )}
 
-        <div className="mx-auto flex h-[118px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[22px] bg-[#FAF7F2] px-2 sm:h-[138px] sm:px-6 md:h-[133px] md:overflow-visible">
+        <div className="mx-auto flex h-[118px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[22px] bg-[#FAF7F2]/75 px-2 backdrop-blur-sm sm:h-[138px] sm:px-6 md:h-[133px] md:overflow-visible">
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.png"
@@ -127,7 +127,7 @@ export function TabNav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[100] flex flex-col bg-[#FAF7F2]"
+            className="fixed inset-0 z-[100] flex flex-col bg-[#FAF7F2]/95 backdrop-blur-sm"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
