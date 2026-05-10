@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -17,14 +17,43 @@ export function TabNav() {
   const pathname = usePathname()
   const isShop = pathname.startsWith('/shop') || pathname === '/'
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [cartCount, setCartCount] = useState(0)
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 48)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    function syncCart() {
+      try {
+        const stored = window.localStorage.getItem('jamm-trade-cart')
+        const items = stored ? (JSON.parse(stored) as { handle: string; quantity: number }[]) : []
+        setCartCount(items.reduce((sum, item) => sum + item.quantity, 0))
+      } catch {
+        setCartCount(0)
+      }
+    }
+    syncCart()
+    window.addEventListener('cart-updated', syncCart)
+    window.addEventListener('storage', syncCart)
+    return () => {
+      window.removeEventListener('cart-updated', syncCart)
+      window.removeEventListener('storage', syncCart)
+    }
+  }, [])
 
   const visibleTabs = tabs.filter((tab) => isShop || !tab.shopOnly)
 
   return (
     <>
-      <header className="relative z-50 bg-transparent px-3 pt-3 sm:px-4">
+      <header className="sticky top-0 z-50 bg-[#FAF7F2]/86 px-3 pt-3 backdrop-blur-md sm:px-4">
         {isShop && (
-          <div className="overflow-hidden rounded-xl bg-jamm-dark py-2 text-center font-sans text-[11px] font-medium text-jamm-cream">
+          <div className="overflow-hidden rounded-lg bg-jamm-dark py-1.5 text-center font-sans text-[10px] font-medium text-jamm-cream sm:rounded-xl sm:py-2 sm:text-[11px]">
             <div className="flex whitespace-nowrap animate-marquee">
               <span className="px-8">
                 Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
@@ -36,15 +65,16 @@ export function TabNav() {
           </div>
         )}
 
-        <div className="mx-auto flex h-[118px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[22px] bg-[#FAF7F2]/75 px-2 backdrop-blur-sm sm:h-[138px] sm:px-6 md:h-[133px] md:overflow-visible">
+        <div className={`mx-auto flex h-[78px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[18px] px-2 backdrop-blur-sm transition-all duration-300 sm:h-[104px] sm:rounded-b-[22px] sm:px-5 md:h-[112px] md:overflow-visible lg:h-[120px] ${scrolled ? 'bg-[#FAF7F2]/95 shadow-[0_10px_30px_rgba(12,11,9,0.06)]' : 'bg-[#FAF7F2]/78'}`}>
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
-              src="/brand_assets/logos/jamm-trade-exact-transparent.png"
+              src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
               alt="Jamm Trade"
               width={1536}
               height={1024}
-              className="h-[119px] w-auto flex-shrink-0 object-contain sm:h-[142px] md:h-[280px] lg:h-[340px] xl:h-[389px]"
+              className="h-[92px] w-auto flex-shrink-0 object-contain sm:h-[126px] md:h-[190px] lg:h-[224px] xl:h-[252px]"
               priority
+              loading="eager"
             />
           </Link>
 
@@ -55,7 +85,7 @@ export function TabNav() {
                 <Link
                   key={tab.href}
                   href={tab.href}
-                  className={`rounded-full px-4 py-2 font-sans text-sm transition-colors duration-200 ${
+                  className={`rounded-full px-4 py-2 font-sans text-sm font-medium transition-colors duration-200 ${
                     isActive
                       ? 'bg-jamm-gold/15 text-jamm-dark'
                       : 'text-jamm-dark/55 hover:bg-jamm-dark/6 hover:text-jamm-dark'
@@ -74,7 +104,7 @@ export function TabNav() {
                 <Link
                   href="/shop#perfumes"
                   aria-label="Search products"
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:h-10 md:w-10"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
                     <circle cx="11" cy="11" r="6" />
@@ -82,22 +112,32 @@ export function TabNav() {
                   </svg>
                 </Link>
                 <Link
-                  href="mailto:contact@jammtrade.com"
-                  aria-label="Cart"
-                  className="hidden h-10 items-center justify-center rounded-full px-3 font-sans text-sm text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:flex"
+                  href="/shop/checkout"
+                  aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
+                  className="relative hidden h-10 items-center justify-center rounded-full px-3 font-sans text-sm text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:flex"
                 >
-                  Cart (0)
+                  Cart
+                  {cartCount > 0 && (
+                    <span className="ml-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-jamm-gold px-1 font-sans text-[9px] font-bold text-jamm-dark">
+                      {cartCount > 9 ? '9+' : cartCount}
+                    </span>
+                  )}
                 </Link>
                 <Link
-                  href="mailto:contact@jammtrade.com"
-                  aria-label="Cart"
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
+                  href="/shop/checkout"
+                  aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
+                  className="relative flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
                     <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" strokeLinecap="round" strokeLinejoin="round" />
                     <circle cx="9" cy="20" r="1" />
                     <circle cx="17" cy="20" r="1" />
                   </svg>
+                  {cartCount > 0 && (
+                    <span className="absolute right-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-jamm-gold px-1 font-sans text-[9px] font-bold leading-none text-jamm-dark">
+                      {cartCount > 9 ? '9+' : cartCount}
+                    </span>
+                  )}
                 </Link>
               </>
             )}
@@ -114,7 +154,7 @@ export function TabNav() {
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden>
                 <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
@@ -133,15 +173,16 @@ export function TabNav() {
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex w-full items-center justify-between overflow-visible border-b border-jamm-dark/10 px-5 py-4">
+            <div className="flex w-full items-center justify-between overflow-visible border-b border-jamm-dark/10 px-5 py-3">
               <Link href="/shop" onClick={() => setMobileOpen(false)} className="flex flex-shrink-0 items-center overflow-visible">
                 <Image
-                  src="/brand_assets/logos/jamm-trade-exact-transparent.png"
+                  src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
                   alt="Jamm Trade"
                   width={1536}
                   height={1024}
-                  className="h-[108px] w-auto flex-shrink-0 object-contain"
+                  className="h-[88px] w-auto flex-shrink-0 object-contain"
                   priority
+                  loading="eager"
                 />
               </Link>
               <button

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { HeroSection } from '@/components/shop/HeroSection'
+import { ShopShortcuts } from '@/components/shop/ShopShortcuts'
 import { FeaturedProducts } from '@/components/shop/FeaturedProducts'
 import { CollectionGrid } from '@/components/shop/CollectionGrid'
 import { SecondaryCategories } from '@/components/shop/SecondaryCategories'
@@ -14,6 +15,7 @@ export default function ShopPage() {
   return (
     <>
       <HeroSection />
+      <ShopShortcuts />
       <FeaturedProducts />
       <CollectionGrid />
       <SecondaryCategories />

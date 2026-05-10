@@ -77,9 +77,9 @@ export function HeroSection() {
   }, [autoSlideResetKey])
 
   return (
-    <section className="overflow-x-hidden bg-transparent px-3 pb-14 sm:px-4 lg:pb-20">
+    <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
       <motion.div
-        className="relative mx-auto h-[560px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[24px] border border-jamm-gold/35 bg-[#101112] active:cursor-grabbing sm:h-[600px] md:h-[620px] lg:min-h-[620px] lg:rounded-[28px]"
+        className="relative mx-auto h-[480px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:h-[560px] sm:rounded-[24px] md:h-[600px] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
@@ -112,30 +112,30 @@ export function HeroSection() {
             </motion.div>
           </AnimatePresence>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/68 via-black/10 to-transparent lg:bg-gradient-to-r lg:from-black/45 lg:via-black/10 lg:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/22 to-transparent lg:bg-gradient-to-r lg:from-black/52 lg:via-black/12 lg:to-transparent" />
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 p-4 sm:p-5 md:p-6 lg:gap-6 lg:p-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-5 md:p-6 lg:flex-row lg:items-end lg:justify-between lg:gap-6 lg:p-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.id}
-              className="relative w-[90%] max-w-[440px] rounded-[14px] border border-white/16 bg-black/26 p-5 text-jamm-cream shadow-sm backdrop-blur-md sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/24 lg:p-9 lg:shadow-2xl overflow-hidden"
+              className="relative w-full max-w-[440px] overflow-hidden rounded-[14px] border border-white/16 bg-black/38 p-4 text-jamm-cream shadow-sm backdrop-blur-md sm:w-[90%] sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="mb-4 font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-jamm-gold">
+              <p className="mb-3 font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold sm:mb-4 sm:text-[11px]">
                 {activeSlide.category}
               </p>
-              <h1 className="mb-4 font-sans text-[32px] font-medium leading-tight tracking-[-0.02em] text-jamm-cream sm:text-[36px] md:text-[40px] lg:text-[42px]">
+              <h1 className="mb-3 font-sans text-[28px] font-semibold leading-tight text-jamm-cream sm:mb-4 sm:text-[36px] md:text-[40px] lg:text-[42px]">
                 {activeSlide.title}
               </h1>
-              <p className="mb-6 font-sans text-sm leading-relaxed text-jamm-cream/78 sm:text-[15px] md:text-base lg:mb-7">
+              <p className="mb-5 font-sans text-sm leading-relaxed text-jamm-cream/86 sm:text-[15px] md:text-base lg:mb-7">
                 {activeSlide.subtitle}
               </p>
               <Link
                 href={activeSlide.ctaHref}
-                className="inline-flex min-h-11 items-center border-b border-jamm-gold pb-1 font-sans text-base font-medium text-jamm-cream transition-colors duration-200 hover:text-jamm-gold lg:text-sm"
+                className="inline-flex min-h-11 items-center rounded-md bg-jamm-gold px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream lg:bg-transparent lg:px-0 lg:text-sm lg:normal-case lg:tracking-normal lg:text-jamm-cream lg:border-b lg:border-jamm-gold lg:rounded-none lg:hover:bg-transparent lg:hover:text-jamm-gold"
               >
                 {activeSlide.ctaLabel}
               </Link>

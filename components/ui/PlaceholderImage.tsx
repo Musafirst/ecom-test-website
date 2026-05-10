@@ -4,7 +4,7 @@ export type PlaceholderTheme = 'cream' | 'dark'
 function PerfumeBottleSVG({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   const cls = size === 'lg' ? 'w-28 h-44' : size === 'sm' ? 'w-10 h-16' : 'w-16 h-24'
   return (
-    <svg viewBox="0 0 120 210" fill="none" xmlns="http://www.w3.org/2000/svg" className={cls}>
+    <svg viewBox="0 0 120 210" fill="none" xmlns="http://www.w3.org/2000/svg" className={cls} aria-hidden="true">
       {/* Cap */}
       <rect x="42" y="26" width="36" height="20" rx="5" fill="rgba(196,151,58,0.22)" stroke="rgba(196,151,58,0.55)" strokeWidth="1.3" />
       {/* Spray nozzle */}
@@ -31,7 +31,7 @@ function PerfumeBottleSVG({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 
 function HoodieSVG() {
   return (
-    <svg viewBox="0 0 140 130" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-20">
+    <svg viewBox="0 0 140 130" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-20" aria-hidden="true">
       {/* Left sleeve */}
       <path d="M26 56 L4 90 L22 97 L36 62" fill="rgba(196,151,58,0.1)" stroke="rgba(196,151,58,0.48)" strokeWidth="1.3" strokeLinejoin="round" />
       {/* Right sleeve */}
@@ -53,7 +53,7 @@ function HoodieSVG() {
 
 function HeadphonesSVG() {
   return (
-    <svg viewBox="0 0 140 110" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-16">
+    <svg viewBox="0 0 140 110" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-16" aria-hidden="true">
       {/* Headband */}
       <path d="M22 68 Q22 16 70 16 Q118 16 118 68" stroke="rgba(196,151,58,0.52)" strokeWidth="2.2" fill="none" strokeLinecap="round" />
       {/* Left cup */}
@@ -70,7 +70,7 @@ function HeadphonesSVG() {
 
 function GenericSVG() {
   return (
-    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12">
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" aria-hidden="true">
       <rect x="10" y="10" width="60" height="60" rx="6" stroke="rgba(196,151,58,0.35)" strokeWidth="1.2" fill="rgba(196,151,58,0.06)" />
       <circle cx="40" cy="40" r="12" stroke="rgba(196,151,58,0.35)" strokeWidth="1" fill="rgba(196,151,58,0.08)" />
       <circle cx="40" cy="40" r="4" fill="rgba(196,151,58,0.4)" />
