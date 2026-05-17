@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/ui/border-beam'
 
@@ -17,6 +18,7 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
       count: counts.oud,
       href: '/shop/collection/oud',
       image: '/images/collections/featured-oud.png',
+      imageClassName: 'object-contain object-center p-4 sm:p-6',
     },
     {
       id: 'amber',
@@ -25,6 +27,7 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
       count: counts.amber,
       href: '/shop/collection/amber',
       image: '/images/collections/featured-amber.png',
+      imageClassName: 'object-contain object-center p-4 sm:p-6',
     },
     {
       id: 'daily',
@@ -33,6 +36,7 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
       count: counts.daily,
       href: '/shop/collection/daily',
       image: '/images/collections/featured-daily.png',
+      imageClassName: 'object-contain object-center p-4 sm:p-6',
     },
   ]
 
@@ -72,33 +76,35 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
             <motion.div
               key={col.id}
               variants={{ hidden: { opacity: 0, y: 26 }, visible: { opacity: 1, y: 0 } }}
-              whileHover={{ y: -7 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Link href={col.href} className="group block">
-                <div className="relative min-h-[280px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition duration-300 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[380px] sm:rounded-[20px] lg:min-h-[440px]">
+              <Link href={col.href} className="group block transition-transform duration-150 active:scale-[0.98]">
+                <div className="relative min-h-[380px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition-[border-color,box-shadow] duration-200 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[380px] sm:rounded-[20px] lg:min-h-[440px]">
                   <BorderBeam size={360} duration={12} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 2} />
-                  <img
+                  <Image
                     src={col.image}
                     alt={`${col.name} perfume collection`}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    quality={78}
+                    className={`${col.imageClassName} transition-transform duration-500 ease-out group-hover:scale-[1.025]`}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
-                  <div className="absolute left-0 top-0 rounded-br-[16px] bg-jamm-gold px-4 py-2 font-sans text-xs font-semibold text-jamm-dark sm:px-5 sm:text-sm">
+                  <div className="absolute inset-0 z-10 bg-[linear-gradient(to_top,rgba(0,0,0,0.82)_0%,rgba(0,0,0,0.56)_45%,rgba(0,0,0,0.18)_100%)]" />
+                  <div className="absolute left-0 top-0 z-20 rounded-br-[16px] bg-jamm-gold px-4 py-2 font-sans text-xs font-semibold text-jamm-dark sm:px-5 sm:text-sm">
                     {col.name}
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                  <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-7 lg:p-8">
                     <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
                       {col.count}
                     </p>
-                    <h3 className="mb-2 font-sans text-2xl font-semibold text-white sm:text-3xl">
+                    <h3 className="mb-2 font-sans text-2xl font-semibold text-jamm-cream [text-shadow:0_3px_20px_rgba(0,0,0,0.72)] sm:text-3xl">
                       {col.name}
                     </h3>
-                    <p className="mb-5 max-w-sm font-sans text-sm font-medium leading-relaxed text-white/86">
+                    <p className="mb-5 max-w-sm font-sans text-sm font-semibold leading-relaxed text-jamm-cream [text-shadow:0_2px_14px_rgba(0,0,0,0.72)]">
                       {col.copy}
                     </p>
-                    <span className="inline-flex rounded-full border border-jamm-gold/60 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-gold transition-colors duration-200 group-hover:bg-jamm-gold group-hover:text-jamm-dark">
+                    <span className="inline-flex rounded-full border border-jamm-gold/60 bg-jamm-dark/26 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-cream backdrop-blur-sm transition-[background-color,color] duration-150 group-hover:bg-jamm-cream group-hover:text-jamm-dark">
                       Explore
                     </span>
                   </div>

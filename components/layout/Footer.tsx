@@ -51,11 +51,15 @@ export function Footer() {
               Stay in the loop
             </p>
             <div className="flex gap-2">
+              <label htmlFor="footer-newsletter-email" className="sr-only">
+                Email address
+              </label>
               <input
+                id="footer-newsletter-email"
                 type="email"
                 placeholder="your@email.com"
-                className="h-10 min-w-0 flex-1 rounded-md border border-jamm-gold/30 bg-white/55 px-3 font-sans text-sm text-jamm-dark placeholder-jamm-dark/32 outline-none transition-colors focus:border-jamm-gold/60 md:w-44"
-                readOnly
+                className="h-10 min-w-0 flex-1 rounded-md border border-jamm-gold/30 bg-white/55 px-3 font-sans text-sm text-jamm-dark placeholder-jamm-dark/32 outline-none transition-colors focus:border-jamm-gold/60 disabled:cursor-not-allowed disabled:opacity-60 md:w-44"
+                disabled
               />
               <a
                 href="mailto:contact@jammtrade.com"

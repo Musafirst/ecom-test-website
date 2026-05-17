@@ -14,17 +14,42 @@ const cormorant = Cormorant_Garamond({
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
+  weight: ['300', '400', '500', '600'],
   variable: '--font-dm-sans',
   display: 'swap',
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://jammtrade.com')
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Jamm Trade',
     template: '%s | Jamm Trade',
   },
   description: 'Rare fragrances. Curated for those who know the difference.',
+  openGraph: {
+    type: 'website',
+    siteName: 'Jamm Trade',
+    title: 'Jamm Trade',
+    description: 'Rare fragrances. Curated for those who know the difference.',
+    url: '/',
+    images: [
+      {
+        url: '/images/hero-main-commerce.webp',
+        width: 1600,
+        height: 1067,
+        alt: 'Jamm Trade curated fragrance and essentials edit',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Jamm Trade',
+    description: 'Rare fragrances. Curated for those who know the difference.',
+    images: ['/images/hero-main-commerce.webp'],
+  },
   icons: {
     icon: [
       { url: '/brand_assets/icons/jammtrade-icon-32.png', sizes: '32x32', type: 'image/png' },

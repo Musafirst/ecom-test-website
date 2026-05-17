@@ -3,40 +3,44 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ProductPhoto } from '@/components/ui/ProductPhoto'
+import { checkoutUrlStorageKey, type CartItem, readCart, syncShopifyCart, writeCart } from '@/lib/cart'
 import type { JammProduct } from '@/types/product'
 
 interface CheckoutCartProps {
   products: JammProduct[]
 }
 
-interface CartItem {
-  handle: string
-  quantity: number
-  variantId?: string
-}
-
-const cartStorageKey = 'jamm-trade-cart'
-
-function readCart(): CartItem[] {
-  try {
-    const storedCart = window.localStorage.getItem(cartStorageKey)
-    return storedCart ? JSON.parse(storedCart) as CartItem[] : []
-  } catch {
-    return []
-  }
-}
-
-function writeCart(cart: CartItem[]) {
-  window.localStorage.setItem(cartStorageKey, JSON.stringify(cart))
-  window.dispatchEvent(new Event('cart-updated'))
-}
-
 export function CheckoutCart({ products }: CheckoutCartProps) {
   const [cart, setCart] = useState<CartItem[]>([])
+  const [syncing, setSyncing] = useState(false)
+  const [cartError, setCartError] = useState<string | null>(null)
 
   useEffect(() => {
     setCart(readCart())
   }, [])
+
+  useEffect(() => {
+    if (cart.length === 0) return
+
+    let ignore = false
+    async function syncVisibleCart() {
+      try {
+        setSyncing(true)
+        setCartError(null)
+        const checkoutUrl = await syncShopifyCart(cart)
+        if (!ignore) setShopifyCheckoutUrl(checkoutUrl)
+      } catch {
+        if (!ignore) setCartError('Shopify checkout could not be synced. Please try again before checkout.')
+      } finally {
+        if (!ignore) setSyncing(false)
+      }
+    }
+
+    void syncVisibleCart()
+    return () => {
+      ignore = true
+    }
+  }, [cart])
 
   const lineItems = useMemo(() => {
     return cart
@@ -52,13 +56,13 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
   // Email checkout is only a fallback for demo/local data. When Shopify cart
   // creation succeeds, ProductPurchasePanel stores the real checkout URL.
   const orderSummary = lineItems
-    .map((item) => `${item.quantity} x ${item.product.title} - $${(item.product.price * item.quantity).toFixed(2)}`)
+    .map((item) => `${item.quantity} x ${encodeURIComponent(item.product.title)} - $${(item.product.price * item.quantity).toFixed(2)}`)
     .join('%0D%0A')
   const checkoutHref = `mailto:contact@jammtrade.com?subject=Jamm%20Trade%20checkout&body=${orderSummary}%0D%0A%0D%0ASubtotal:%20$${subtotal.toFixed(2)}`
   const [shopifyCheckoutUrl, setShopifyCheckoutUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    setShopifyCheckoutUrl(window.localStorage.getItem('jamm-trade-checkout-url'))
+    setShopifyCheckoutUrl(window.localStorage.getItem(checkoutUrlStorageKey))
   }, [cart])
 
   function updateQuantity(handle: string, quantity: number) {
@@ -68,6 +72,11 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
 
     setCart(nextCart)
     writeCart(nextCart)
+    setCartError(null)
+
+    if (nextCart.length === 0) {
+      window.localStorage.removeItem(checkoutUrlStorageKey)
+    }
   }
 
   if (lineItems.length === 0) {
@@ -126,7 +135,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
                 <button
                   type="button"
                   onClick={() => updateQuantity(product.handle, 0)}
-                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-jamm-dark/30 transition-colors hover:bg-red-50 hover:text-red-400"
+                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-jamm-dark/30 transition-[background-color,color,transform] duration-150 active:scale-[0.9] hover:bg-red-50 hover:text-red-400"
                   aria-label={`Remove ${product.title} from cart`}
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5" aria-hidden>
@@ -138,7 +147,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
                 <button
                   type="button"
                   onClick={() => updateQuantity(product.handle, quantity - 1)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-black/15 font-sans text-sm text-jamm-dark transition-colors hover:border-jamm-gold hover:text-jamm-gold"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-black/15 font-sans text-sm text-jamm-dark transition-[border-color,color,transform] duration-150 active:scale-[0.92] hover:border-jamm-gold hover:text-jamm-gold"
                   aria-label={`Decrease ${product.title} quantity`}
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-3 w-3" aria-hidden>
@@ -149,7 +158,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
                 <button
                   type="button"
                   onClick={() => updateQuantity(product.handle, quantity + 1)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-black/15 font-sans text-sm text-jamm-dark transition-colors hover:border-jamm-gold hover:text-jamm-gold"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-black/15 font-sans text-sm text-jamm-dark transition-[border-color,color,transform] duration-150 active:scale-[0.92] hover:border-jamm-gold hover:text-jamm-gold"
                   aria-label={`Increase ${product.title} quantity`}
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-3 w-3" aria-hidden>
@@ -181,10 +190,15 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
         </p>
         <a
           href={shopifyCheckoutUrl ?? checkoutHref}
-          className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.18)] transition-colors duration-300 hover:bg-jamm-gold hover:text-jamm-dark"
+          className={`mt-5 inline-flex w-full items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.18)] transition-[background-color,color] duration-200 hover:bg-jamm-gold hover:text-jamm-dark ${syncing ? 'pointer-events-none opacity-70' : ''}`}
         >
-          Proceed to Checkout
+          {syncing ? 'Syncing Cart' : 'Proceed to Checkout'}
         </a>
+        {cartError && (
+          <p className="mt-3 font-sans text-xs font-medium text-red-700" role="alert">
+            {cartError}
+          </p>
+        )}
         <p className="mt-4 font-sans text-[11px] leading-relaxed text-jamm-dark/38">
           {shopifyCheckoutUrl ? 'You will be redirected to secure Shopify checkout.' : 'Shopify checkout appears here once the Storefront API is connected.'}
         </p>

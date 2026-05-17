@@ -53,8 +53,14 @@ export function TabNav() {
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setMobileOpen(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+
     return () => {
       document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
     }
   }, [mobileOpen])
 
@@ -76,7 +82,7 @@ export function TabNav() {
           </div>
         )}
 
-        <div className={`mx-auto flex h-[78px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[18px] px-2 backdrop-blur-sm transition-all duration-300 sm:h-[104px] sm:rounded-b-[22px] sm:px-5 md:h-[112px] md:overflow-visible lg:h-[120px] ${scrolled ? 'bg-[#FAF7F2]/95 shadow-[0_10px_30px_rgba(12,11,9,0.06)]' : 'bg-[#FAF7F2]/78'}`}>
+        <div className={`mx-auto flex h-[78px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[18px] px-2 backdrop-blur-sm transition-[background-color,backdrop-filter,box-shadow] duration-200 sm:h-[104px] sm:rounded-b-[22px] sm:px-5 md:h-[112px] md:overflow-visible lg:h-[120px] ${scrolled ? 'bg-[#FAF7F2]/95 shadow-[0_10px_30px_rgba(12,11,9,0.06)]' : 'bg-[#FAF7F2]/78'}`}>
           <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
@@ -96,6 +102,7 @@ export function TabNav() {
                 <Link
                   key={tab.href}
                   href={tab.href}
+                  aria-current={isActive ? 'page' : undefined}
                   className={`rounded-full px-4 py-2 font-sans text-sm font-medium transition-colors duration-200 ${
                     isActive
                       ? 'bg-jamm-gold/15 text-jamm-dark'
@@ -178,11 +185,14 @@ export function TabNav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-              className="fixed inset-0 z-[100] flex max-h-[100dvh] flex-col overflow-y-auto bg-[#FAF7F2]/95 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            className="fixed inset-0 z-[100] flex max-h-[100dvh] flex-col overflow-y-auto bg-[#FAF7F2]/95 backdrop-blur-sm"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, x: '100%', transition: { duration: 0.22, ease: [0.32, 0.72, 0, 1] } }}
+            transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
           >
             <div className="flex w-full items-center justify-between overflow-visible border-b border-jamm-dark/10 px-5 py-3">
               <Link href="/shop" onClick={() => setMobileOpen(false)} className="flex flex-shrink-0 items-center overflow-visible">
@@ -212,13 +222,14 @@ export function TabNav() {
               {visibleTabs.map((tab, i) => (
                 <motion.div
                   key={tab.href}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Link
                     href={tab.href}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={pathname === tab.href ? 'page' : undefined}
                     className="flex items-center justify-between rounded-[14px] px-4 py-4 font-sans text-lg font-medium text-jamm-dark transition-colors duration-200 hover:bg-jamm-dark/6"
                   >
                     {tab.label}

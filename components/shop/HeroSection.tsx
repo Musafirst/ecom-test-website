@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { AnimatePresence, motion, type PanInfo } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion, useSpring, type PanInfo } from 'framer-motion'
 import { heroSlides } from '@/lib/heroSlides'
 import { BorderBeam } from '@/components/ui/border-beam'
 
@@ -13,7 +14,9 @@ export function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobileHero, setIsMobileHero] = useState(false)
   const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
-  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 })
+  const springX = useSpring(0, { stiffness: 80, damping: 20 })
+  const springY = useSpring(0, { stiffness: 80, damping: 20 })
+  const prefersReducedMotion = useReducedMotion()
   const activeSlide = heroSlides[activeIndex]
 
   const resetAutoSlideTimer = () => {
@@ -45,17 +48,19 @@ export function HeroSection() {
   }
 
   const handleMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (isMobileHero) return
+    if (isMobileHero || prefersReducedMotion) return
 
     const bounds = event.currentTarget.getBoundingClientRect()
     const x = (event.clientX - bounds.left) / bounds.width - 0.5
     const y = (event.clientY - bounds.top) / bounds.height - 0.5
 
-    setParallaxOffset({ x: x * 18, y: y * 12 })
+    springX.set(x * 18)
+    springY.set(y * 12)
   }
 
   const handleMouseLeave = () => {
-    setParallaxOffset({ x: 0, y: 0 })
+    springX.set(0)
+    springY.set(0)
   }
 
   useEffect(() => {
@@ -69,21 +74,23 @@ export function HeroSection() {
   }, [])
 
   useEffect(() => {
+    if (prefersReducedMotion) return
+
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % heroSlides.length)
     }, 6000)
 
     return () => window.clearInterval(timer)
-  }, [autoSlideResetKey])
+  }, [autoSlideResetKey, prefersReducedMotion])
 
   return (
     <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
       <motion.div
-        className="relative mx-auto h-[480px] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:h-[560px] sm:rounded-[24px] md:h-[600px] lg:min-h-[620px] lg:rounded-[28px]"
+        className="relative mx-auto h-[min(480px,88svh)] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:h-[min(560px,88svh)] sm:rounded-[24px] md:h-[min(600px,88svh)] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-        drag="x"
+        drag={prefersReducedMotion ? false : 'x'}
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.08}
         onDragEnd={handleDragEnd}
@@ -96,23 +103,27 @@ export function HeroSection() {
             <motion.div
               key={activeSlide.id}
               className="absolute -inset-3 lg:-inset-5"
-              style={isMobileHero ? undefined : { x: parallaxOffset.x, y: parallaxOffset.y }}
+              style={isMobileHero ? undefined : { x: springX, y: springY }}
               initial={isMobileHero ? { opacity: 0, scale: 1.03, y: 12 } : { opacity: 0, scale: 1.04 }}
               animate={isMobileHero ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1 }}
               exit={isMobileHero ? { opacity: 0, scale: 1.01, y: -8 } : { opacity: 0, scale: 1.01 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
               whileHover={isMobileHero ? undefined : { scale: 1.025 }}
             >
-              <img
+              <Image
                 src={activeSlide.image}
                 alt={activeSlide.title}
-                className="h-full w-full object-cover object-center"
-                fetchPriority={activeIndex === 0 ? 'high' : undefined}
+                fill
+                sizes="100vw"
+                quality={82}
+                priority={activeIndex === 0}
+                className="object-cover object-center"
+                style={{ objectPosition: activeSlide.imagePosition ?? 'center center' }}
               />
             </motion.div>
           </AnimatePresence>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/22 to-transparent lg:bg-gradient-to-r lg:from-black/52 lg:via-black/12 lg:to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.42)_45%,rgba(0,0,0,0.08)_100%)] lg:bg-[linear-gradient(70deg,rgba(0,0,0,0.68)_0%,rgba(0,0,0,0.34)_42%,rgba(0,0,0,0.08)_100%)]" />
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-5 md:p-6 lg:flex-row lg:items-end lg:justify-between lg:gap-6 lg:p-8">
           <AnimatePresence mode="wait">
@@ -135,7 +146,7 @@ export function HeroSection() {
               </p>
               <Link
                 href={activeSlide.ctaHref}
-                className="inline-flex min-h-11 items-center rounded-md bg-jamm-gold px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream lg:bg-transparent lg:px-0 lg:text-sm lg:normal-case lg:tracking-normal lg:text-jamm-cream lg:border-b lg:border-jamm-gold lg:rounded-none lg:hover:bg-transparent lg:hover:text-jamm-gold"
+                className="inline-flex min-h-11 items-center rounded-md bg-jamm-gold px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream"
               >
                 {activeSlide.ctaLabel}
               </Link>
@@ -143,22 +154,28 @@ export function HeroSection() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex items-center justify-center gap-2 py-1 lg:pb-3">
+          <div className="flex items-center justify-center gap-0.5 py-1 lg:pb-3">
             {heroSlides.map((slide, index) => (
               <button
                 key={slide.id}
                 type="button"
-                aria-label={`Show ${slide.category} hero slide`}
+                aria-label={`Show ${slide.title}`}
+                aria-current={index === activeIndex ? true : undefined}
                 onClick={() => {
                   setActiveIndex(index)
                   resetAutoSlideTimer()
                 }}
-                className={`h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
+                className="p-2"
+              >
+                <span className={`block h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
                   index === activeIndex ? 'w-8 bg-jamm-gold lg:w-7' : 'w-3 bg-white/55 lg:w-2.5 lg:bg-white/45'
-                }`}
-              />
+                }`} />
+              </button>
             ))}
           </div>
+          <span className="sr-only" aria-live="polite" aria-atomic="true">
+            {activeSlide.title}
+          </span>
         </div>
       </motion.div>
     </section>

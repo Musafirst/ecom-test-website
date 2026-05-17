@@ -7,13 +7,21 @@
   --color-cream: #F4EFE4;
   --color-gold: #C4973A;
   --color-muted: #7A7060;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 html {
   background-color: #FAF7F2;
   color: #0C0B09;
-  scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -55,4 +63,22 @@ a {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(196, 151, 58, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .animate-marquee,
+  .animate-border-beam,
+  [class*="animate-border-beam"] {
+    animation: none !important;
+  }
 }

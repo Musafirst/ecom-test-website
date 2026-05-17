@@ -14,6 +14,9 @@ interface ProductPageProps {
   }>
 }
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://jammtrade.com')
+
 function uniqueImages(images: string[]) {
   return images.filter((image, index) => Boolean(image) && images.indexOf(image) === index)
 }
@@ -41,6 +44,29 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   return {
     title: product.title,
     description: product.description,
+    alternates: {
+      canonical: `/shop/product/${product.handle}`,
+    },
+    openGraph: {
+      type: 'website',
+      title: `${product.title} | Jamm Trade`,
+      description: product.description,
+      url: `${siteUrl}/shop/product/${product.handle}`,
+      images: [
+        {
+          url: product.image,
+          width: 1200,
+          height: 1200,
+          alt: product.imageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.title} | Jamm Trade`,
+      description: product.description,
+      images: [product.image],
+    },
   }
 }
 
@@ -65,6 +91,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const perfumeImageClassName = 'object-contain p-6 mix-blend-multiply contrast-[1.04] drop-shadow-[0_28px_34px_rgba(12,11,9,0.26)] sm:p-8'
   const imageClassName = isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : 'object-cover'
   const galleryImages = getProductGalleryImages(product)
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.description,
+    image: galleryImages,
+    brand: {
+      '@type': 'Brand',
+      name: product.brand || 'Jamm Trade',
+    },
+    sku: product.id,
+    offers: {
+      '@type': 'Offer',
+      url: `${siteUrl}/shop/product/${product.handle}`,
+      priceCurrency: product.currencyCode ?? 'USD',
+      price: product.price.toFixed(2),
+      availability: product.availableForSale === false
+        ? 'https://schema.org/OutOfStock'
+        : 'https://schema.org/InStock',
+    },
+  }
 
   // These are display-only fallbacks for legacy/demo products. Live Shopify
   // content still controls title, description, price, images, and inventory.
@@ -82,12 +129,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
       : []
   const details = product.details ?? (scentDetails.length > 0 ? scentDetails : electronicsDetails.length > 0 ? electronicsDetails : product.tags.map((tag) => tag.replace(/-/g, ' ')))
   const included = product.included ?? [
-    product.category === 'perfume' ? 'Factory bottle' : 'Product unit',
+    product.category === 'perfume' ? 'Full-size bottle' : 'Product unit',
     product.category === 'perfume' ? 'Retail packaging' : 'Retail packaging',
   ]
 
   return (
     <section className="relative overflow-hidden bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="pointer-events-none absolute -right-28 -top-28 h-80 w-80 rounded-full bg-jamm-gold/10 blur-3xl" />
       <div className="mx-auto max-w-[1560px]">
         <Link
@@ -116,20 +167,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </span>
             </div>
 
-            <h1 className="max-w-xl break-words font-sans text-[26px] font-semibold leading-tight text-jamm-dark sm:text-4xl lg:text-5xl">
+            <h1 className="max-w-xl break-words font-serif text-[32px] font-light leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
               {product.title}
             </h1>
 
-            <div className="mt-4 flex items-center gap-3 font-sans text-sm text-jamm-muted">
-              <span className="flex items-center gap-0.5" aria-label="5 star rating">
-                {[0, 1, 2, 3, 4].map((star) => (
-                  <svg key={star} viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5 text-jamm-gold drop-shadow-[0_1px_4px_rgba(196,151,58,0.35)]" aria-hidden>
-                    <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4l-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z" />
-                  </svg>
-                ))}
-              </span>
-              <span>3,345 reviews</span>
-            </div>
 
             <div className="mt-6 rounded-md border border-jamm-gold/20 bg-white/55 px-4 py-3 sm:mt-7">
               <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} onLight />
