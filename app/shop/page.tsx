@@ -5,20 +5,33 @@ import { FeaturedProducts } from '@/components/shop/FeaturedProducts'
 import { CollectionGrid } from '@/components/shop/CollectionGrid'
 import { SecondaryCategories } from '@/components/shop/SecondaryCategories'
 import { TrustBar } from '@/components/shop/TrustBar'
+import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts } from '@/lib/products'
 
 export const metadata: Metadata = {
   title: 'Shop',
   description: 'Rare fragrances, clothing, and electronics. Curated for those who know the difference.',
 }
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const [featuredProducts, collectionDetails, electronicsProducts] = await Promise.all([
+    getFeaturedProducts(),
+    getCollectionDetails(),
+    getElectronicsProducts(),
+  ])
+
   return (
     <>
       <HeroSection />
       <ShopShortcuts />
-      <FeaturedProducts />
-      <CollectionGrid />
-      <SecondaryCategories />
+      <FeaturedProducts products={featuredProducts} />
+      <CollectionGrid
+        counts={{
+          oud: collectionDetails.oud.count,
+          amber: collectionDetails.amber.count,
+          daily: collectionDetails.daily.count,
+        }}
+      />
+      <SecondaryCategories electronicsProducts={electronicsProducts} />
       <TrustBar />
     </>
   )

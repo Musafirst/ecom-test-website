@@ -3,36 +3,39 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/ui/border-beam'
-import { collectionDetails } from '@/lib/products'
 
-const collections = [
-  {
-    id: 'oud',
-    name: 'Oud',
-    copy: 'Resinous, dark, and long lasting.',
-    count: collectionDetails.oud.count,
-    href: '/shop/collection/oud',
-    image: '/images/collections/featured-oud.png',
-  },
-  {
-    id: 'amber',
-    name: 'Amber',
-    copy: 'Warm vanilla, soft spice, skin-close depth.',
-    count: collectionDetails.amber.count,
-    href: '/shop/collection/amber',
-    image: '/images/collections/featured-amber.png',
-  },
-  {
-    id: 'daily',
-    name: 'Daily',
-    copy: 'Clean signatures for repeat wear.',
-    count: collectionDetails.daily.count,
-    href: '/shop/collection/daily',
-    image: '/images/collections/featured-daily.png',
-  },
-]
+interface CollectionGridProps {
+  counts: Record<'oud' | 'amber' | 'daily', string>
+}
 
-export function CollectionGrid() {
+export function CollectionGrid({ counts }: CollectionGridProps) {
+  const collections = [
+    {
+      id: 'oud',
+      name: 'Oud',
+      copy: 'Resinous, dark, and long lasting.',
+      count: counts.oud,
+      href: '/shop/collection/oud',
+      image: '/images/collections/featured-oud.png',
+    },
+    {
+      id: 'amber',
+      name: 'Amber',
+      copy: 'Warm vanilla, soft spice, skin-close depth.',
+      count: counts.amber,
+      href: '/shop/collection/amber',
+      image: '/images/collections/featured-amber.png',
+    },
+    {
+      id: 'daily',
+      name: 'Daily',
+      copy: 'Clean signatures for repeat wear.',
+      count: counts.daily,
+      href: '/shop/collection/daily',
+      image: '/images/collections/featured-daily.png',
+    },
+  ]
+
   return (
     <section id="collections" className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
       <div className="mx-auto max-w-[1560px]">

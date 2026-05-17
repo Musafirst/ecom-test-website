@@ -2,9 +2,13 @@
 
 import { motion } from 'framer-motion'
 import { ProductCard } from '@/components/product/ProductCard'
-import { featuredProducts } from '@/lib/products'
+import type { JammProduct } from '@/types/product'
 
-export function FeaturedProducts() {
+interface FeaturedProductsProps {
+  products: JammProduct[]
+}
+
+export function FeaturedProducts({ products }: FeaturedProductsProps) {
   return (
     <section id="perfumes" className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
       <div className="mx-auto max-w-[1560px]">
@@ -45,7 +49,7 @@ export function FeaturedProducts() {
             visible: { transition: { staggerChildren: 0.09 } },
           }}
         >
-          {featuredProducts.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </motion.div>

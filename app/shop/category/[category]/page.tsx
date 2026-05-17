@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { ProductCard } from '@/components/product/ProductCard'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { categoryDetails, electronicsProducts } from '@/lib/products'
+import { categoryDetails, getElectronicsProducts } from '@/lib/products'
 
 interface CategoryPageProps {
   params: Promise<{
@@ -50,6 +50,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const category = categoryDetails[categoryParam]
 
   if (categoryParam === 'electronics') {
+    const electronicsProducts = await getElectronicsProducts()
+
     return (
       <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">
         <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">

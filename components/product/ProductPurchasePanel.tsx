@@ -12,6 +12,7 @@ interface ProductPurchasePanelProps {
 interface CartItem {
   handle: string
   quantity: number
+  variantId?: string
 }
 
 const cartStorageKey = 'jamm-trade-cart'
@@ -32,19 +33,45 @@ function writeCart(cart: CartItem[]) {
 
 export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
   const [added, setAdded] = useState(false)
+  const [adding, setAdding] = useState(false)
   const [saved, setSaved] = useState(false)
   const [qty, setQty] = useState(1)
 
-  function addToCart() {
-    const cart = readCart()
-    const existingItem = cart.find((item) => item.handle === product.handle)
-    if (existingItem) {
-      existingItem.quantity += qty
-    } else {
-      cart.push({ handle: product.handle, quantity: qty })
+  async function addToCart() {
+    if (adding || product.availableForSale === false) return
+
+    setAdding(true)
+    try {
+      const cart = readCart()
+      const existingItem = cart.find((item) => item.handle === product.handle)
+      if (existingItem) {
+        existingItem.quantity += qty
+        existingItem.variantId = product.variantId
+      } else {
+        cart.push({ handle: product.handle, quantity: qty, variantId: product.variantId })
+      }
+      writeCart(cart)
+
+      // Shopify is the real checkout source. localStorage keeps the cart page
+      // responsive and preserves fallback/demo behavior if Shopify is unavailable.
+      if (product.variantId) {
+        const response = await fetch('/api/shopify/cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ variantId: product.variantId, quantity: qty }),
+        })
+        const data = await response.json().catch(() => null)
+
+        if (data?.cart?.checkoutUrl) {
+          window.localStorage.setItem('jamm-trade-checkout-url', data.cart.checkoutUrl)
+        }
+      }
+    } catch {
+      // Keep the UI from getting stuck if localStorage or Shopify is unavailable.
+    } finally {
+      setAdding(false)
     }
-    writeCart(cart)
-    window.dispatchEvent(new Event('cart-updated'))
+
     setAdded(true)
     setTimeout(() => setAdded(false), 3000)
   }
@@ -84,10 +111,11 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
         <motion.button
           type="button"
           onClick={addToCart}
+          disabled={adding || product.availableForSale === false}
           whileTap={{ scale: 0.97 }}
           className={`inline-flex min-h-14 flex-1 items-center justify-center rounded-md px-5 py-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] shadow-[0_16px_36px_rgba(196,151,58,0.16)] transition duration-300 hover:-translate-y-0.5 sm:px-8 ${
             added ? 'bg-jamm-gold text-jamm-dark' : 'bg-jamm-gold/28 text-jamm-dark hover:bg-jamm-gold'
-          }`}
+          } disabled:cursor-not-allowed disabled:opacity-55`}
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
@@ -97,7 +125,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
               exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.16 }}
             >
-              {added ? 'Added to Cart' : 'Add to Cart'}
+              {product.availableForSale === false ? 'Out of Stock' : added ? 'Added to Cart' : adding ? 'Adding' : 'Add to Cart'}
             </motion.span>
           </AnimatePresence>
         </motion.button>

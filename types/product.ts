@@ -1,16 +1,21 @@
-export type ProductCollection = 'oud' | 'amber' | 'daily'
+export type ProductCollection = 'oud' | 'amber' | 'daily' | 'electronics' | 'audio' | 'smartwatches'
 export type ProductCategory = 'perfume' | 'electronics' | 'clothing'
 export type ProductSubcategory = 'fragrance' | 'headphones-audio' | 'smartwatches' | 'apparel'
 export type ProductBadgeType = 'new' | 'bestseller'
 
-// Structured to map directly to Shopify Storefront API product fields.
-// Replace static data in data/products.ts with Storefront API calls when connecting Shopify.
+// Stable product shape used by all product UI.
+// Shopify products are mapped into this shape in lib/shopify.ts, while
+// data/products.ts remains the local demo/fallback catalog.
 export interface JammProduct {
   id: string
   handle: string
   title: string
   price: number
   compareAtPrice?: number
+  currencyCode?: string
+  variantId?: string
+  availableForSale?: boolean
+  quantityAvailable?: number | null
   collection?: ProductCollection
   category: ProductCategory
   categoryLabel: string

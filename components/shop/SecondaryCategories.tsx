@@ -3,31 +3,34 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/ui/border-beam'
-import { electronicsProducts } from '@/lib/products'
+import type { JammProduct } from '@/types/product'
 
-const featuredElectronicsProduct =
-  electronicsProducts.find((product) => product.handle === 'sony-wh-1000xm5') ?? electronicsProducts[0]!
+interface SecondaryCategoriesProps {
+  electronicsProducts: JammProduct[]
+}
 
-const categories = [
-  {
-    id: 'clothing',
-    name: 'Clothing',
-    copy: 'Wear the mark.',
-    sub: 'Hoodies, tees, and essentials with the Jamm Trade lotus mark.',
-    href: '/shop/category/clothing',
-    image: '/product-images/jamm-hoodie.png',
-  },
-  {
-    id: 'electronics',
-    name: 'Electronics',
-    copy: 'Precision essentials.',
-    sub: 'Premium audio and everyday electronics selected for quality and focus.',
-    href: '/shop/category/electronics',
-    image: featuredElectronicsProduct.image,
-  },
-]
+export function SecondaryCategories({ electronicsProducts }: SecondaryCategoriesProps) {
+  const featuredElectronicsProduct =
+    electronicsProducts.find((product) => product.handle === 'sony-wh-1000xm5') ?? electronicsProducts[0]
+  const categories = [
+    {
+      id: 'clothing',
+      name: 'Clothing',
+      copy: 'Wear the mark.',
+      sub: 'Hoodies, tees, and essentials with the Jamm Trade lotus mark.',
+      href: '/shop/category/clothing',
+      image: '/product-images/jamm-hoodie.png',
+    },
+    {
+      id: 'electronics',
+      name: 'Electronics',
+      copy: 'Precision essentials.',
+      sub: 'Premium audio and everyday electronics selected for quality and focus.',
+      href: '/shop/category/electronics',
+      image: featuredElectronicsProduct?.image ?? '/product-images/placeholders/audio.webp',
+    },
+  ]
 
-export function SecondaryCategories() {
   return (
     <section className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
       <div className="mx-auto max-w-[1560px]">

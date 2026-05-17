@@ -2,14 +2,16 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CheckoutCart } from '@/components/shop/CheckoutCart'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { allProducts } from '@/lib/products'
+import { getAllProducts } from '@/lib/products'
 
 export const metadata: Metadata = {
   title: 'Checkout',
   description: 'Review your Jamm Trade cart and prepare your order.',
 }
 
-export default function CheckoutPage() {
+export default async function CheckoutPage() {
+  const products = await getAllProducts()
+
   return (
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-8 text-jamm-dark sm:px-4">
       <div className="mx-auto max-w-[1560px] py-10 lg:py-16">
@@ -31,7 +33,7 @@ export default function CheckoutPage() {
           </Link>
         </div>
 
-        <CheckoutCart products={allProducts} />
+        <CheckoutCart products={products} />
       </div>
     </section>
   )

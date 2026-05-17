@@ -12,6 +12,7 @@ interface CheckoutCartProps {
 interface CartItem {
   handle: string
   quantity: number
+  variantId?: string
 }
 
 const cartStorageKey = 'jamm-trade-cart'
@@ -47,10 +48,18 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
   }, [cart, products])
 
   const subtotal = lineItems.reduce((total, item) => total + item.product.price * item.quantity, 0)
+
+  // Email checkout is only a fallback for demo/local data. When Shopify cart
+  // creation succeeds, ProductPurchasePanel stores the real checkout URL.
   const orderSummary = lineItems
     .map((item) => `${item.quantity} x ${item.product.title} - $${(item.product.price * item.quantity).toFixed(2)}`)
     .join('%0D%0A')
   const checkoutHref = `mailto:contact@jammtrade.com?subject=Jamm%20Trade%20checkout&body=${orderSummary}%0D%0A%0D%0ASubtotal:%20$${subtotal.toFixed(2)}`
+  const [shopifyCheckoutUrl, setShopifyCheckoutUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    setShopifyCheckoutUrl(window.localStorage.getItem('jamm-trade-checkout-url'))
+  }, [cart])
 
   function updateQuantity(handle: string, quantity: number) {
     const nextCart = quantity < 1
@@ -158,7 +167,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
         <div className="mt-5 space-y-3 border-y border-black/10 py-5">
           {lineItems.map(({ product, quantity }) => (
             <div key={product.handle} className="flex items-start justify-between gap-4 font-sans text-sm text-jamm-muted">
-              <span className="leading-snug">{quantity} × {product.title}</span>
+              <span className="leading-snug">{quantity} x {product.title}</span>
               <span className="flex-shrink-0 font-medium text-jamm-dark">${(product.price * quantity).toFixed(2)}</span>
             </div>
           ))}
@@ -171,13 +180,13 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
           Tax &amp; shipping calculated at checkout.
         </p>
         <a
-          href={checkoutHref}
+          href={shopifyCheckoutUrl ?? checkoutHref}
           className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.18)] transition-colors duration-300 hover:bg-jamm-gold hover:text-jamm-dark"
         >
           Proceed to Checkout
         </a>
         <p className="mt-4 font-sans text-[11px] leading-relaxed text-jamm-dark/38">
-          Shopify checkout replaces this flow once the Storefront API is connected.
+          {shopifyCheckoutUrl ? 'You will be redirected to secure Shopify checkout.' : 'Shopify checkout appears here once the Storefront API is connected.'}
         </p>
       </aside>
     </div>

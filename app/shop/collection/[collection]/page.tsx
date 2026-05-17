@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { CollectionProductGrid } from '@/components/product/CollectionProductGrid'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { collectionDetails, collectionProducts } from '@/lib/products'
+import { collectionDetails, getCollectionDetails, getCollectionProducts, isSupportedCollectionHandle } from '@/lib/products'
 
 interface CollectionPageProps {
   params: Promise<{
@@ -11,14 +11,14 @@ interface CollectionPageProps {
   }>
 }
 
-type CollectionKey = keyof typeof collectionProducts
+type CollectionKey = keyof typeof collectionDetails
 
 function isCollectionKey(value: string): value is CollectionKey {
-  return value in collectionProducts
+  return value in collectionDetails || isSupportedCollectionHandle(value)
 }
 
 export function generateStaticParams() {
-  return Object.keys(collectionProducts).map((collection) => ({ collection }))
+  return Object.keys(collectionDetails).map((collection) => ({ collection }))
 }
 
 export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
@@ -30,7 +30,8 @@ export async function generateMetadata({ params }: CollectionPageProps): Promise
     }
   }
 
-  const collection = collectionDetails[collectionParam]
+  const dynamicCollectionDetails = await getCollectionDetails()
+  const collection = dynamicCollectionDetails[collectionParam]
 
   return {
     title: `${collection.name} Collection`,
@@ -45,8 +46,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     notFound()
   }
 
-  const collection = collectionDetails[collectionParam]
-  const products = collectionProducts[collectionParam]
+  const dynamicCollectionDetails = await getCollectionDetails()
+  const collection = dynamicCollectionDetails[collectionParam]
+  const products = await getCollectionProducts(collectionParam)
 
   return (
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">

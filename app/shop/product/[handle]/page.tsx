@@ -5,7 +5,8 @@ import { ProductBadge } from '@/components/product/ProductBadge'
 import { ProductDetailGallery } from '@/components/product/ProductDetailGallery'
 import { ProductPurchasePanel } from '@/components/product/ProductPurchasePanel'
 import { PriceDisplay } from '@/components/product/PriceDisplay'
-import { allProducts, getProductByHandle } from '@/lib/products'
+import { getAllProducts, getProductByHandle } from '@/lib/products'
+import type { JammProduct } from '@/types/product'
 
 interface ProductPageProps {
   params: Promise<{
@@ -17,7 +18,9 @@ function uniqueImages(images: string[]) {
   return images.filter((image, index) => Boolean(image) && images.indexOf(image) === index)
 }
 
-function getProductGalleryImages(product: NonNullable<ReturnType<typeof getProductByHandle>>) {
+// Shopify usually supplies the gallery. The extra branches preserve the older
+// local-demo experience when a fallback product has fewer uploaded images.
+function getProductGalleryImages(product: JammProduct) {
   if (product.galleryImages && product.galleryImages.length >= 5) {
     return uniqueImages(product.galleryImages).slice(0, 5)
   }
@@ -81,13 +84,15 @@ function getProductGalleryImages(product: NonNullable<ReturnType<typeof getProdu
   ]).slice(0, 5)
 }
 
-export function generateStaticParams() {
-  return allProducts.map((product) => ({ handle: product.handle }))
+export async function generateStaticParams() {
+  const products = await getAllProducts()
+
+  return products.map((product) => ({ handle: product.handle }))
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { handle } = await params
-  const product = getProductByHandle(handle)
+  const product = await getProductByHandle(handle)
 
   if (!product) {
     return {
@@ -103,7 +108,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params
-  const product = getProductByHandle(handle)
+  const product = await getProductByHandle(handle)
 
   if (!product) {
     notFound()
@@ -122,6 +127,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const perfumeImageClassName = 'object-contain p-6 mix-blend-multiply contrast-[1.04] drop-shadow-[0_28px_34px_rgba(12,11,9,0.26)] sm:p-8'
   const imageClassName = isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : 'object-cover'
   const galleryImages = getProductGalleryImages(product)
+
+  // These are display-only fallbacks for legacy/demo products. Live Shopify
+  // content still controls title, description, price, images, and inventory.
   const scentDetails = product.collection === 'oud'
     ? ['oud woods', 'amber warmth', 'evening wear', 'strong presence']
     : product.collection === 'amber'
@@ -188,6 +196,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="mt-6 rounded-md border border-jamm-gold/20 bg-white/55 px-4 py-3 sm:mt-7">
               <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} onLight />
             </div>
+
+            <p className="mt-3 font-sans text-xs font-medium uppercase tracking-[0.16em] text-jamm-muted">
+              {product.availableForSale === false
+                ? 'Out of stock'
+                : typeof product.quantityAvailable === 'number'
+                  ? product.quantityAvailable > 0
+                    ? `${product.quantityAvailable} available`
+                    : 'In stock'
+                  : 'In stock'}
+            </p>
 
             <div className="mt-6 border-t border-jamm-gold/15 pt-5 sm:mt-8 sm:pt-6">
               <p className="mb-3 font-sans text-sm font-semibold text-jamm-dark">
