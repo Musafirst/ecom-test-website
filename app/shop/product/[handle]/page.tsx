@@ -18,70 +18,8 @@ function uniqueImages(images: string[]) {
   return images.filter((image, index) => Boolean(image) && images.indexOf(image) === index)
 }
 
-// Shopify usually supplies the gallery. The extra branches preserve the older
-// local-demo experience when a fallback product has fewer uploaded images.
 function getProductGalleryImages(product: JammProduct) {
-  if (product.galleryImages && product.galleryImages.length >= 5) {
-    return uniqueImages(product.galleryImages).slice(0, 5)
-  }
-
-  if (product.collection === 'oud') {
-    return uniqueImages([
-      product.image,
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.79940.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.68283.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.25807.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.88825.jpg',
-    ]).slice(0, 5)
-  }
-
-  if (product.collection === 'amber') {
-    return uniqueImages([
-      product.image,
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.75805.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.51816.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.65414.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.72821.jpg',
-    ]).slice(0, 5)
-  }
-
-  if (product.collection === 'daily') {
-    return uniqueImages([
-      product.image,
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.78611.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.70465.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.66011.jpg',
-      'https://fimgs.net/mdimg/perfume-thumbs/375x500.34696.jpg',
-    ]).slice(0, 5)
-  }
-
-  if (product.subcategory === 'smartwatches') {
-    return uniqueImages([
-      product.image,
-      '/product-images/electronics/samsung-galaxy-watch7.webp',
-      '/product-images/electronics/samsung-galaxy-watch8.webp',
-      '/images/hero-electronics.jpg',
-      '/product-images/placeholders/smartwatch.webp',
-    ]).slice(0, 5)
-  }
-
-  if (product.category === 'electronics') {
-    return uniqueImages([
-      product.image,
-      '/product-images/electronics/sony-wh-1000xm5.webp',
-      '/product-images/electronics/jbl-tune-770nc.webp',
-      '/product-images/electronics/samsung-galaxy-buds3-pro.webp',
-      '/product-images/placeholders/audio.webp',
-    ]).slice(0, 5)
-  }
-
-  return uniqueImages([
-    product.image,
-    '/product-images/jamm-hoodie.webp',
-    '/product-images/jamm-hoodie.png',
-    '/images/hero-clothing.jpg',
-    '/images/hero-clothing.webp',
-  ]).slice(0, 5)
+  return uniqueImages([product.image, ...(product.galleryImages ?? [])]).slice(0, 5)
 }
 
 export async function generateStaticParams() {
