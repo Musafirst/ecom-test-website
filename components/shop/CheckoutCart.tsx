@@ -100,7 +100,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
         {lineItems.map(({ product, quantity }) => (
           <article
             key={product.handle}
-            className="grid grid-cols-[100px_1fr] gap-4 rounded-[20px] border border-jamm-gold/25 bg-[#EDE8DC] p-4 sm:grid-cols-[132px_1fr]"
+            className="grid grid-cols-[88px_minmax(0,1fr)] gap-3 rounded-[18px] border border-jamm-gold/25 bg-[#EDE8DC] p-3 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-4 sm:rounded-[20px] sm:p-4"
           >
             <ProductPhoto
               src={product.image}
@@ -117,7 +117,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
                   </p>
                   <Link
                     href={`/shop/product/${product.handle}`}
-                    className="font-sans text-base font-medium leading-tight text-jamm-dark transition-colors duration-200 hover:text-jamm-gold sm:text-lg"
+                    className="line-clamp-2 break-words font-sans text-sm font-medium leading-tight text-jamm-dark transition-colors duration-200 hover:text-jamm-gold sm:text-lg"
                   >
                     {product.title}
                   </Link>

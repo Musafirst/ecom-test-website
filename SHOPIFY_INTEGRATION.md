@@ -43,7 +43,7 @@ If either value is missing, product grids and product pages fall back to `data/p
 
 - Build logs show `401 Unauthorized`: confirm `SHOPIFY_STOREFRONT_ACCESS_TOKEN` is a Storefront API token for this exact shop, not an Admin API token, and that the Storefront API sales channel/app is enabled.
 - Product missing from a collection: check the Shopify collection handle/title, product type, and tags. Mapping rules live in `getProductCollection`, `getCategory`, and `getSubcategory` in `lib/shopify.ts`.
-- Product page says out of stock: check selected variant availability and inventory settings in Shopify.
+- Product page says out of stock: check selected variant availability in Shopify. Exact stock counts require the `unauthenticated_read_product_inventory` Storefront API scope; this app only uses `availableForSale` by default.
 - Add to cart works locally but not in Shopify: confirm the product has variants and the mapped `variantId` is present.
 - Checkout button opens email instead of Shopify: the Shopify cart API call failed or env vars are missing.
 - Images fail in production: add the Shopify image hostname to `next.config.mjs` remote image patterns if it is not already allowed.

@@ -178,7 +178,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </span>
             </div>
 
-            <h1 className="max-w-xl font-sans text-[28px] font-semibold leading-tight text-jamm-dark sm:text-4xl lg:text-5xl">
+            <h1 className="max-w-xl break-words font-sans text-[26px] font-semibold leading-tight text-jamm-dark sm:text-4xl lg:text-5xl">
               {product.title}
             </h1>
 

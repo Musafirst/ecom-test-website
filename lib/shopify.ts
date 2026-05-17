@@ -43,7 +43,6 @@ type ShopifyProduct = {
       id: string
       title: string
       availableForSale: boolean
-      quantityAvailable: number | null
       price: ShopifyMoney
       compareAtPrice: ShopifyMoney | null
     }>[]
@@ -219,7 +218,7 @@ function mapShopifyProduct(product: ShopifyProduct): JammProduct {
     currencyCode: selectedVariant?.price.currencyCode ?? product.priceRange.minVariantPrice.currencyCode,
     variantId: selectedVariant?.id,
     availableForSale: selectedVariant?.availableForSale ?? product.availableForSale,
-    quantityAvailable: selectedVariant?.quantityAvailable ?? null,
+    quantityAvailable: null,
     collection,
     category,
     categoryLabel: getCategoryLabel(category, collection, subcategory),

@@ -45,7 +45,6 @@ const productFields = /* GraphQL */ `
           id
           title
           availableForSale
-          quantityAvailable
           price {
             amount
             currencyCode

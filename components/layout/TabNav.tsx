@@ -47,6 +47,17 @@ export function TabNav() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!mobileOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [mobileOpen])
+
   const visibleTabs = tabs.filter((tab) => isShop || !tab.shopOnly)
 
   return (
@@ -167,7 +178,7 @@ export function TabNav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[100] flex flex-col bg-[#FAF7F2]/95 backdrop-blur-sm"
+              className="fixed inset-0 z-[100] flex max-h-[100dvh] flex-col overflow-y-auto bg-[#FAF7F2]/95 backdrop-blur-sm"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
