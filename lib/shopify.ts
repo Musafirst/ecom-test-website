@@ -148,7 +148,11 @@ function getProductCollection(product: ShopifyProduct): ProductCollection | unde
   const tags = product.tags.map(normalizeHandle)
   const candidates = [...handles, ...titles, ...tags, normalizeHandle(product.productType)]
 
-  return collectionHandles.find((handle) => candidates.includes(handle))
+  // Shopify collection handles often have a suffix (e.g. "oud-collection" for our "oud" key).
+  // Match if a candidate equals the key or starts/ends with it as a hyphen-separated segment.
+  return collectionHandles.find((handle) =>
+    candidates.some((c) => c === handle || c.startsWith(`${handle}-`) || c.endsWith(`-${handle}`)),
+  )
 }
 
 function getCategory(product: ShopifyProduct, collection?: ProductCollection): ProductCategory {
@@ -262,10 +266,17 @@ export async function getShopifyCollections(): Promise<ShopifyCollection[]> {
 
 export async function getShopifyCollectionProducts(handle: string, first = 60): Promise<JammProduct[]> {
   const normalizedHandle = normalizeHandle(handle)
-  const data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, {
+  // Try the app-internal handle first, then the common Shopify "<handle>-collection" pattern.
+  let data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, {
     handle: normalizedHandle,
     first,
   })
+  if (!data?.collection) {
+    data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, {
+      handle: `${normalizedHandle}-collection`,
+      first,
+    })
+  }
   const products = data?.collection?.products?.edges.map(({ node }) => mapShopifyProduct(node)) ?? []
 
   if (products.length > 0) return products
