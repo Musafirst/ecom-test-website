@@ -1,6 +1,8 @@
 import { allProducts as fallbackProducts } from '@/data/products'
+import { cache } from 'react'
 import {
   cartCreateMutation,
+  cartCreateFromLinesMutation,
   cartLinesAddMutation,
   collectionByHandleQuery,
   collectionsQuery,
@@ -67,6 +69,7 @@ export type ShopifyCollection = {
 const collectionHandles = ['oud', 'amber', 'daily', 'electronics', 'audio', 'smartwatches'] as const
 const collectionHandleSet = new Set<string>(collectionHandles)
 const loggedShopifyErrors = new Set<string>()
+const allowDemoFallback = process.env.NODE_ENV !== 'production'
 
 function logShopifyErrorOnce(key: string, message: string, details?: unknown) {
   if (loggedShopifyErrors.has(key)) return
@@ -243,27 +246,27 @@ function fallbackByCollection(handle: string) {
 
 // Shopify-first helpers with local fallback. This keeps the site usable before
 // env vars are configured and protects previews from temporary Shopify errors.
-export async function getShopifyProducts(first = 60): Promise<JammProduct[]> {
+export const getShopifyProducts = cache(async (first = 60): Promise<JammProduct[]> => {
   const data = await shopifyFetch<{ products: { edges: Edge<ShopifyProduct>[] } }>(productsQuery, { first })
   const products = data?.products.edges.map(({ node }) => mapShopifyProduct(node)) ?? []
 
-  return products.length > 0 ? products : fallbackProducts
-}
+  return products.length > 0 ? products : allowDemoFallback ? fallbackProducts : []
+})
 
-export async function getShopifyProductByHandle(handle: string): Promise<JammProduct | undefined> {
+export const getShopifyProductByHandle = cache(async (handle: string): Promise<JammProduct | undefined> => {
   const data = await shopifyFetch<{ product: ShopifyProduct | null }>(productByHandleQuery, { handle })
   const product = data?.product ? mapShopifyProduct(data.product) : undefined
 
-  return product ?? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle)
-}
+  return product ?? (allowDemoFallback ? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle) : undefined)
+})
 
-export async function getShopifyCollections(): Promise<ShopifyCollection[]> {
+export const getShopifyCollections = cache(async (): Promise<ShopifyCollection[]> => {
   const data = await shopifyFetch<{ collections: { edges: Edge<ShopifyCollection>[] } }>(collectionsQuery)
 
   return data?.collections.edges.map(({ node }) => node) ?? []
-}
+})
 
-export async function getShopifyCollectionProducts(handle: string, first = 60): Promise<JammProduct[]> {
+export const getShopifyCollectionProducts = cache(async (handle: string, first = 60): Promise<JammProduct[]> => {
   const normalizedHandle = normalizeHandle(handle)
   // Try the app-internal handle first, then the common Shopify "<handle>-collection" pattern.
   let data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, {
@@ -288,10 +291,12 @@ export async function getShopifyCollectionProducts(handle: string, first = 60): 
     return product.collection === normalizedHandle
   })
 
-  return filteredProducts.length > 0 ? filteredProducts : fallbackByCollection(normalizedHandle)
-}
+  if (data?.collection) return filteredProducts
 
-export async function getCollectionCounts() {
+  return filteredProducts.length > 0 ? filteredProducts : allowDemoFallback ? fallbackByCollection(normalizedHandle) : []
+})
+
+export const getCollectionCounts = cache(async () => {
   const products = await getShopifyProducts()
 
   return Object.fromEntries(
@@ -305,21 +310,25 @@ export async function getCollectionCounts() {
       }).length,
     ]),
   ) as Record<(typeof collectionHandles)[number], number>
-}
+})
 
 export function isSupportedCollectionHandle(handle: string) {
   return collectionHandleSet.has(normalizeHandle(handle))
 }
 
 export async function createShopifyCart(variantId: string, quantity: number) {
+  return createShopifyCartFromLines([{ variantId, quantity }])
+}
+
+export async function createShopifyCartFromLines(lines: { variantId: string; quantity: number }[]) {
   return shopifyFetch<{
     cartCreate: {
       cart: { id: string; checkoutUrl: string; totalQuantity: number } | null
       userErrors: { field: string[] | null; message: string }[]
     }
-  }>(cartCreateMutation, {
+  }>(lines.length === 1 ? cartCreateMutation : cartCreateFromLinesMutation, {
     input: {
-      lines: [{ merchandiseId: variantId, quantity }],
+      lines: lines.map((line) => ({ merchandiseId: line.variantId, quantity: line.quantity })),
     },
   })
 }

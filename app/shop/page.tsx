@@ -8,7 +8,7 @@ import { TrustBar } from '@/components/shop/TrustBar'
 import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts } from '@/lib/products'
 
 export const metadata: Metadata = {
-  title: 'Shop',
+  title: 'Luxury Fragrances, Electronics & Essentials',
   description: 'Rare fragrances, clothing, and electronics. Curated for those who know the difference.',
 }
 

@@ -49,6 +49,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   const dynamicCollectionDetails = await getCollectionDetails()
   const collection = dynamicCollectionDetails[collectionParam]
   const products = await getCollectionProducts(collectionParam)
+  const emptyMessage = collectionParam === 'daily'
+    ? 'Daily fragrances coming soon.'
+    : `${collection.name} products coming soon.`
 
   return (
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">
@@ -66,7 +69,18 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
           </p>
         </div>
 
-        <CollectionProductGrid products={products} />
+        {products.length > 0 ? (
+          <CollectionProductGrid products={products} />
+        ) : (
+          <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
+            <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">
+              {emptyMessage}
+            </p>
+            <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
+              This collection will update automatically once products are assigned in Shopify.
+            </p>
+          </div>
+        )}
 
         <Link
           href="/shop#collections"

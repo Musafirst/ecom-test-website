@@ -7,7 +7,7 @@ import { BorderBeam } from '@/components/ui/border-beam'
 
 const showcaseProduct = {
   title: 'Lattafa Oud for Glory',
-  href: '/shop/product/lattafa-oud-for-glory',
+  href: '/product/lattafa-oud-for-glory',
   image: 'https://www.lattafaindia.com/cdn/shop/files/01_3a1ef9ac-0b1d-4876-a18e-99a5e7da2425.png?v=1768815486&width=913',
   imageAlt: 'Lattafa Oud for Glory perfume bottle',
 }

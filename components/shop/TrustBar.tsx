@@ -14,8 +14,8 @@ const trustItems = [
     ),
   },
   {
-    label: 'Ships Worldwide',
-    detail: 'Fast delivery, every country.',
+    label: 'Reliable Shipping',
+    detail: 'Clear delivery options at checkout.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 text-jamm-gold" aria-hidden="true">
         <circle cx="12" cy="12" r="9" />

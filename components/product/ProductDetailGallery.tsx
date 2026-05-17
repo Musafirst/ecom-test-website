@@ -84,7 +84,7 @@ export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio 
               aspectRatio={aspectRatio}
               imageClassName={imageClassName}
               sizes="(min-width: 1024px) 48vw, 100vw"
-              quality={95}
+              quality={84}
             />
           </motion.div>
         </AnimatePresence>

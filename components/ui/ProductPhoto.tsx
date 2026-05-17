@@ -8,6 +8,7 @@ interface ProductPhotoProps {
   aspectRatio?: string
   sizes?: string
   quality?: number
+  priority?: boolean
 }
 
 export function ProductPhoto({
@@ -17,7 +18,8 @@ export function ProductPhoto({
   imageClassName = 'object-cover',
   aspectRatio = '4/5',
   sizes = '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw',
-  quality = 90,
+  quality = 84,
+  priority = false,
 }: ProductPhotoProps) {
   return (
     <div
@@ -34,8 +36,9 @@ export function ProductPhoto({
         fill
         sizes={sizes}
         quality={quality}
+        priority={priority}
         className={`relative z-10 ${imageClassName}`}
-        loading="lazy"
+        loading={priority ? undefined : 'lazy'}
       />
     </div>
   )

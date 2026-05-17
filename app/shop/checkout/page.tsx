@@ -7,6 +7,10 @@ import { getAllProducts } from '@/lib/products'
 export const metadata: Metadata = {
   title: 'Checkout',
   description: 'Review your Jamm Trade cart and prepare your order.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default async function CheckoutPage() {

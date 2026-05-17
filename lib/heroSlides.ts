@@ -4,6 +4,7 @@ export interface HeroSlide {
   title: string
   subtitle: string
   image: string
+  imagePosition?: string
   ctaLabel: string
   ctaHref: string
 }
@@ -14,7 +15,8 @@ export const heroSlides: HeroSlide[] = [
     category: 'Jamm Trade',
     title: 'From essentials to enterprise.',
     subtitle: 'Curated fragrances, fashion, and everyday goods selected with intention.',
-    image: '/images/hero-main-commerce.jpg',
+    image: '/images/hero-main-commerce.webp',
+    imagePosition: 'center center',
     ctaLabel: 'Explore Products',
     ctaHref: '/shop',
   },
@@ -23,7 +25,8 @@ export const heroSlides: HeroSlide[] = [
     category: 'Fragrances',
     title: 'Signature scents, selected with care.',
     subtitle: 'Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.',
-    image: '/images/hero-perfumes.jpg',
+    image: '/images/hero-perfumes.webp',
+    imagePosition: 'center center',
     ctaLabel: 'Shop Perfumes',
     ctaHref: '/shop#perfumes',
   },
@@ -32,7 +35,8 @@ export const heroSlides: HeroSlide[] = [
     category: 'Electronics',
     title: 'Everyday tech, refined.',
     subtitle: 'Useful electronics and accessories selected for quality, simplicity, and daily use.',
-    image: '/images/hero-electronics.jpg',
+    image: '/images/hero-electronics.webp',
+    imagePosition: 'center 42%',
     ctaLabel: 'Shop Electronics',
     ctaHref: '/shop#electronics',
   },
@@ -41,7 +45,8 @@ export const heroSlides: HeroSlide[] = [
     category: 'Clothing',
     title: 'Wear the mark.',
     subtitle: 'Minimal clothing pieces built around comfort, identity, and quiet detail.',
-    image: '/images/hero-clothing.jpg',
+    image: '/images/hero-clothing.webp',
+    imagePosition: 'center 34%',
     ctaLabel: 'Shop Clothing',
     ctaHref: '/shop#clothing',
   },

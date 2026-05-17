@@ -68,11 +68,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
-            {electronicsProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {electronicsProducts.length > 0 ? (
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
+              {electronicsProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">
+                Electronics coming soon.
+              </p>
+              <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
+                This category will update automatically once products are assigned in Shopify.
+              </p>
+            </div>
+          )}
 
           <Link
             href="/shop"
@@ -129,7 +140,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             alt={category.name}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
-            quality={90}
+            quality={82}
             className="object-cover"
             loading="lazy"
           />

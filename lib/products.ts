@@ -55,7 +55,7 @@ export async function getElectronicsProducts() {
   const products = await getShopifyProducts()
   const electronicsProducts = products.filter((product) => product.category === 'electronics')
 
-  return electronicsProducts.length > 0
+  return electronicsProducts.length > 0 || process.env.NODE_ENV === 'production'
     ? electronicsProducts
     : fallbackProducts.filter((product) => product.category === 'electronics')
 }

@@ -178,3 +178,19 @@ export const cartLinesAddMutation = /* GraphQL */ `
     }
   }
 `
+
+export const cartCreateFromLinesMutation = /* GraphQL */ `
+  mutation CartCreateFromLines($input: CartInput!) {
+    cartCreate(input: $input) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
