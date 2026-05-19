@@ -4,9 +4,11 @@ import { BorderBeam } from '@/components/ui/border-beam'
 
 const footerLinks = [
   { label: 'Shop', href: '/shop' },
-  { label: 'Contact', href: 'mailto:contact@jammtrade.com' },
-  { label: 'Shipping & Returns', href: '/shop/shipping-returns' },
+  { label: 'Contact', href: '/shop/contact' },
+  { label: 'Refund Policy', href: '/shop/refund-policy' },
+  { label: 'Shipping Policy', href: '/shop/shipping-policy' },
   { label: 'Privacy Policy', href: '/shop/privacy-policy' },
+  { label: 'Terms of Service', href: '/shop/terms-of-service' },
 ]
 
 export function Footer() {

@@ -63,9 +63,41 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: 'Jamm Trade',
+        url: siteUrl,
+        logo: `${siteUrl}/brand_assets/icons/jammtrade-favicon-512.png`,
+        contactPoint: {
+          '@type': 'ContactPoint',
+          contactType: 'customer support',
+          email: 'contact@jammtrade.com',
+          availableLanguage: 'en',
+        },
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        name: 'Jamm Trade',
+        url: siteUrl,
+        publisher: {
+          '@id': `${siteUrl}/#organization`,
+        },
+      },
+    ],
+  }
+
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         <BackgroundComponents>
           <TabNav />
           <main>{children}</main>

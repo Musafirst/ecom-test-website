@@ -4,40 +4,50 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { categoryDetails, collectionDetails } from '@/lib/products'
 
-const shortcuts = [
-  {
-    label: 'Perfumes',
-    detail: 'Featured picks',
-    href: '#perfumes',
-  },
-  {
-    label: 'Oud',
-    detail: collectionDetails.oud.count,
-    href: '/shop/collection/oud',
-  },
-  {
-    label: 'Amber',
-    detail: collectionDetails.amber.count,
-    href: '/shop/collection/amber',
-  },
-  {
-    label: 'Daily',
-    detail: collectionDetails.daily.count,
-    href: '/shop/collection/daily',
-  },
-  {
-    label: 'Electronics',
-    detail: categoryDetails.electronics.name,
-    href: '/shop/category/electronics',
-  },
-  {
-    label: 'Clothing',
-    detail: 'Coming soon',
-    href: '/shop/category/clothing',
-  },
-]
+interface ShopShortcutsProps {
+  collectionCounts?: Record<'oud' | 'amber' | 'daily', string>
+}
 
-export function ShopShortcuts() {
+export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
+  const counts = collectionCounts ?? {
+    oud: collectionDetails.oud.count,
+    amber: collectionDetails.amber.count,
+    daily: collectionDetails.daily.count,
+  }
+
+  const shortcuts = [
+    {
+      label: 'Perfumes',
+      detail: 'Featured picks',
+      href: '#perfumes',
+    },
+    {
+      label: 'Oud',
+      detail: counts.oud,
+      href: '/shop/collection/oud',
+    },
+    {
+      label: 'Amber',
+      detail: counts.amber,
+      href: '/shop/collection/amber',
+    },
+    {
+      label: 'Daily',
+      detail: counts.daily,
+      href: '/shop/collection/daily',
+    },
+    {
+      label: 'Electronics',
+      detail: categoryDetails.electronics.name,
+      href: '/shop/category/electronics',
+    },
+    {
+      label: 'Clothing',
+      detail: 'Coming soon',
+      href: '/shop/category/clothing',
+    },
+  ]
+
   return (
     <section className="bg-transparent px-3 pb-4 sm:px-4 lg:pb-6">
       <motion.div

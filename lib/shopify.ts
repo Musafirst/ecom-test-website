@@ -297,19 +297,11 @@ export const getShopifyCollectionProducts = cache(async (handle: string, first =
 })
 
 export const getCollectionCounts = cache(async () => {
-  const products = await getShopifyProducts()
+  const counts = await Promise.all(
+    collectionHandles.map(async (handle) => [handle, (await getShopifyCollectionProducts(handle)).length] as const),
+  )
 
-  return Object.fromEntries(
-    collectionHandles.map((handle) => [
-      handle,
-      products.filter((product) => {
-        if (handle === 'audio') return product.subcategory === 'headphones-audio'
-        if (handle === 'smartwatches') return product.subcategory === 'smartwatches'
-        if (handle === 'electronics') return product.category === 'electronics'
-        return product.collection === handle
-      }).length,
-    ]),
-  ) as Record<(typeof collectionHandles)[number], number>
+  return Object.fromEntries(counts) as Record<(typeof collectionHandles)[number], number>
 })
 
 export function isSupportedCollectionHandle(handle: string) {

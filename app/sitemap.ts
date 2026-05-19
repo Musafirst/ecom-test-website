@@ -15,8 +15,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/shop/category/electronics',
     '/shop/category/audio',
     '/shop/category/smartwatches',
+    '/shop/contact',
+    '/shop/refund-policy',
+    '/shop/shipping-policy',
     '/shop/shipping-returns',
     '/shop/privacy-policy',
+    '/shop/terms-of-service',
   ]
 
   return [

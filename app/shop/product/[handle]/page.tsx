@@ -21,6 +21,19 @@ function uniqueImages(images: string[]) {
   return images.filter((image, index) => Boolean(image) && images.indexOf(image) === index)
 }
 
+function cleanProductTitle(title: string) {
+  return title.replace(/\s+/g, ' ').replace(/\s+\|\s+Jamm Trade$/i, '').trim()
+}
+
+function cleanProductDescription(product: JammProduct) {
+  const fallback = `${cleanProductTitle(product.title)} from Jamm Trade. Premium ${product.categoryLabel.toLowerCase()} selection with secure checkout.`
+  return (product.description ?? fallback).replace(/\s+/g, ' ').trim()
+}
+
+function absoluteUrl(url: string) {
+  return url.startsWith('http') ? url : `${siteUrl}${url.startsWith('/') ? url : `/${url}`}`
+}
+
 function getProductGalleryImages(product: JammProduct) {
   return uniqueImages([product.image, ...(product.galleryImages ?? [])]).slice(0, 5)
 }
@@ -41,20 +54,23 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     }
   }
 
+  const title = cleanProductTitle(product.title)
+  const description = cleanProductDescription(product)
+
   return {
-    title: product.title,
-    description: product.description,
+    title,
+    description,
     alternates: {
       canonical: `/shop/product/${product.handle}`,
     },
     openGraph: {
       type: 'website',
-      title: `${product.title} | Jamm Trade`,
-      description: product.description,
+      title: `${title} | Jamm Trade`,
+      description,
       url: `${siteUrl}/shop/product/${product.handle}`,
       images: [
         {
-          url: product.image,
+          url: absoluteUrl(product.image),
           width: 1200,
           height: 1200,
           alt: product.imageAlt,
@@ -63,9 +79,9 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${product.title} | Jamm Trade`,
-      description: product.description,
-      images: [product.image],
+      title: `${title} | Jamm Trade`,
+      description,
+      images: [absoluteUrl(product.image)],
     },
   }
 }
@@ -91,26 +107,65 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const perfumeImageClassName = 'object-contain p-6 mix-blend-multiply contrast-[1.04] drop-shadow-[0_28px_34px_rgba(12,11,9,0.26)] sm:p-8'
   const imageClassName = isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : 'object-cover'
   const galleryImages = getProductGalleryImages(product)
+  const productTitle = cleanProductTitle(product.title)
+  const productDescription = cleanProductDescription(product)
+  const productUrl = `${siteUrl}/shop/product/${product.handle}`
   const productSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.title,
-    description: product.description,
-    image: galleryImages,
-    brand: {
-      '@type': 'Brand',
-      name: product.brand || 'Jamm Trade',
-    },
-    sku: product.id,
-    offers: {
-      '@type': 'Offer',
-      url: `${siteUrl}/shop/product/${product.handle}`,
-      priceCurrency: product.currencyCode ?? 'USD',
-      price: product.price.toFixed(2),
-      availability: product.availableForSale === false
-        ? 'https://schema.org/OutOfStock'
-        : 'https://schema.org/InStock',
-    },
+    '@graph': [
+      {
+        '@type': 'Product',
+        '@id': `${productUrl}#product`,
+        name: productTitle,
+        description: productDescription,
+        image: galleryImages.map(absoluteUrl),
+        brand: {
+          '@type': 'Brand',
+          name: product.brand || 'Jamm Trade',
+        },
+        sku: product.id,
+        category: product.categoryLabel,
+        offers: {
+          '@type': 'Offer',
+          url: productUrl,
+          priceCurrency: product.currencyCode ?? 'USD',
+          price: product.price.toFixed(2),
+          availability: product.availableForSale === false
+            ? 'https://schema.org/OutOfStock'
+            : 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: {
+            '@type': 'Organization',
+            name: 'Jamm Trade',
+            url: siteUrl,
+          },
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${productUrl}#breadcrumbs`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Shop',
+            item: `${siteUrl}/shop`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: product.categoryLabel,
+            item: `${siteUrl}${backHref}`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: productTitle,
+            item: productUrl,
+          },
+        ],
+      },
+    ],
   }
 
   // These are display-only fallbacks for legacy/demo products. Live Shopify
@@ -168,7 +223,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             <h1 className="max-w-xl break-words font-serif text-[32px] font-light leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
-              {product.title}
+              {productTitle}
             </h1>
 
 
@@ -217,7 +272,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div>
             <h2 className="mb-4 font-sans text-xl font-semibold text-jamm-dark">Description</h2>
             <p className="max-w-3xl font-sans text-sm leading-relaxed text-jamm-dark/72 sm:text-base">
-              {product.description}
+              {productDescription}
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">

@@ -22,7 +22,13 @@ export default async function ShopPage() {
   return (
     <>
       <HeroSection />
-      <ShopShortcuts />
+      <ShopShortcuts
+        collectionCounts={{
+          oud: collectionDetails.oud.count,
+          amber: collectionDetails.amber.count,
+          daily: collectionDetails.daily.count,
+        }}
+      />
       <FeaturedProducts products={featuredProducts} />
       <CollectionGrid
         counts={{

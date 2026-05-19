@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { addShopifyItem, mergeCartItem, readCart, writeCart } from '@/lib/cart'
+import { addShopifyItem, checkoutUrlStorageKey, mergeCartItem, readCart, writeCart } from '@/lib/cart'
 import type { JammProduct } from '@/types/product'
 
 interface ProductPurchasePanelProps {
@@ -44,9 +44,11 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
     const didAdd = await addToCart()
     if (!didAdd) return
 
-    const checkoutUrl = window.localStorage.getItem('jamm-trade-checkout-url')
+    const checkoutUrl = window.localStorage.getItem(checkoutUrlStorageKey)
     if (checkoutUrl) {
       window.location.href = checkoutUrl
+    } else {
+      window.location.href = '/shop/checkout'
     }
   }
 

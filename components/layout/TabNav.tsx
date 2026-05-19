@@ -13,9 +13,12 @@ const tabs = [
   { label: 'Jamm Cargo', href: '/jamm-cargo', soon: true },
 ]
 
+const liveSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://jammtrade.com'
+
 export function TabNav() {
   const pathname = usePathname()
   const isShop = pathname.startsWith('/shop') || pathname === '/'
+  const logoHref = pathname.startsWith('/shop/checkout') ? liveSiteUrl : '/shop'
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [cartCount, setCartCount] = useState(0)
@@ -83,7 +86,7 @@ export function TabNav() {
         )}
 
         <div className={`mx-auto flex h-[78px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[18px] px-2 backdrop-blur-sm transition-[background-color,backdrop-filter,box-shadow] duration-200 sm:h-[104px] sm:rounded-b-[22px] sm:px-5 md:h-[112px] md:overflow-visible lg:h-[120px] ${scrolled ? 'bg-[#FAF7F2]/95 shadow-[0_10px_30px_rgba(12,11,9,0.06)]' : 'bg-[#FAF7F2]/78'}`}>
-          <Link href="/shop" className="flex flex-shrink-0 items-center overflow-visible">
+          <Link href={logoHref} className="flex flex-shrink-0 items-center overflow-visible">
             <Image
               src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
               alt="Jamm Trade"
@@ -195,7 +198,7 @@ export function TabNav() {
             transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
           >
             <div className="flex w-full items-center justify-between overflow-visible border-b border-jamm-dark/10 px-5 py-3">
-              <Link href="/shop" onClick={() => setMobileOpen(false)} className="flex flex-shrink-0 items-center overflow-visible">
+              <Link href={logoHref} onClick={() => setMobileOpen(false)} className="flex flex-shrink-0 items-center overflow-visible">
                 <Image
                   src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
                   alt="Jamm Trade"

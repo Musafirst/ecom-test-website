@@ -26,7 +26,7 @@ export default async function CheckoutPage() {
               Your Cart
             </h1>
             <p className="mt-5 max-w-2xl font-sans text-lg leading-relaxed text-jamm-muted">
-              Review your selected products before sending the order request.
+              Review your selected products before secure Shopify checkout.
             </p>
           </div>
           <Link

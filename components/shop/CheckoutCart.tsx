@@ -53,12 +53,6 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
 
   const subtotal = lineItems.reduce((total, item) => total + item.product.price * item.quantity, 0)
 
-  // Email checkout is only a fallback for demo/local data. When Shopify cart
-  // creation succeeds, ProductPurchasePanel stores the real checkout URL.
-  const orderSummary = lineItems
-    .map((item) => `${item.quantity} x ${encodeURIComponent(item.product.title)} - $${(item.product.price * item.quantity).toFixed(2)}`)
-    .join('%0D%0A')
-  const checkoutHref = `mailto:contact@jammtrade.com?subject=Jamm%20Trade%20checkout&body=${orderSummary}%0D%0A%0D%0ASubtotal:%20$${subtotal.toFixed(2)}`
   const [shopifyCheckoutUrl, setShopifyCheckoutUrl] = useState<string | null>(null)
 
   useEffect(() => {
@@ -188,19 +182,29 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
         <p className="mt-3 font-sans text-xs text-jamm-muted">
           Tax &amp; shipping calculated at checkout.
         </p>
-        <a
-          href={shopifyCheckoutUrl ?? checkoutHref}
-          className={`mt-5 inline-flex w-full items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.18)] transition-[background-color,color] duration-200 hover:bg-jamm-gold hover:text-jamm-dark ${syncing ? 'pointer-events-none opacity-70' : ''}`}
-        >
-          {syncing ? 'Syncing Cart' : 'Proceed to Checkout'}
-        </a>
+        {shopifyCheckoutUrl ? (
+          <a
+            href={shopifyCheckoutUrl}
+            className={`mt-5 inline-flex w-full items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.18)] transition-[background-color,color] duration-200 hover:bg-jamm-gold hover:text-jamm-dark ${syncing ? 'pointer-events-none opacity-70' : ''}`}
+          >
+            {syncing ? 'Syncing Cart' : 'Proceed to Checkout'}
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            className="mt-5 inline-flex w-full cursor-not-allowed items-center justify-center rounded-full bg-jamm-dark/55 px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.12)]"
+          >
+            {syncing ? 'Syncing Cart' : 'Preparing Secure Checkout'}
+          </button>
+        )}
         {cartError && (
           <p className="mt-3 font-sans text-xs font-medium text-red-700" role="alert">
             {cartError}
           </p>
         )}
         <p className="mt-4 font-sans text-[11px] leading-relaxed text-jamm-dark/38">
-          {shopifyCheckoutUrl ? 'You will be redirected to secure Shopify checkout.' : 'Shopify checkout appears here once the Storefront API is connected.'}
+          {shopifyCheckoutUrl ? 'You will be redirected to secure Shopify checkout.' : 'Secure checkout appears after the cart syncs with Shopify.'}
         </p>
       </aside>
     </div>
