@@ -1,29 +1,88 @@
 {% assign is_coming_soon = false %}
 {% assign is_electronics = false %}
-{% if collection.handle == 'clothing' %}
+{% assign is_perfumes = false %}
+{% assign is_electronics_sub = false %}
+{% assign is_perfumes_sub = false %}
+
+{% if collection.handle == 'clothing' or collection.handle == 'clothing-collection' %}
   {% assign is_coming_soon = true %}
-{% endif %}
-{% if collection.handle == 'electronics' or collection.handle == 'electronics-collection' %}
+{% elsif collection.handle == 'electronics' or collection.handle == 'electronics-collection' %}
   {% assign is_electronics = true %}
+{% elsif collection.handle == 'perfumes' or collection.handle == 'perfumes-collection' %}
+  {% assign is_perfumes = true %}
+{% elsif collection.handle == 'audio' or collection.handle == 'audio-collection' or collection.handle == 'smartwatches' or collection.handle == 'smartwatches-collection' %}
+  {% assign is_electronics_sub = true %}
+{% elsif collection.handle == 'oud' or collection.handle == 'oud-collection' or collection.handle == 'amber' or collection.handle == 'amber-collection' or collection.handle == 'daily' or collection.handle == 'daily-collection' %}
+  {% assign is_perfumes_sub = true %}
 {% endif %}
 
-{% if is_electronics %}
+{% if is_perfumes %}
 
   <section class="collection-page">
     <div class="container">
 
       <div class="collection-page__header">
         <div class="collection-page__meta">
-          <p class="section-eyebrow">Secondary Category</p>
-          <h1 class="collection-page__title">Electronics</h1>
-          <p class="collection-page__desc">Headphones, audio, and smartwatches selected as a secondary Jamm Trade category.</p>
-          <p class="collection-page__detail">Electronics are prepared in product data for future Shopify upload, with perfumes remaining the main focus.</p>
+          <p class="section-eyebrow">Category</p>
+          <h1 class="collection-page__title">Perfumes</h1>
+          <p class="collection-page__desc">Rare fragrances curated across three scent families — oud, amber, and daily wear.</p>
         </div>
       </div>
 
       <div class="section-rule"></div>
 
+      <div class="category-grid category-grid--3 subcollection-nav">
+        <a href="/collections/oud-collection" class="category-card subcollection-card">
+          <div class="category-card__inner">
+            <img src="{{ 'featured-oud.png' | asset_url }}" alt="Oud" class="category-card__img" loading="lazy">
+            <div class="category-card__overlay"></div>
+            <div class="category-card__badge">Oud</div>
+            <div class="category-card__body">
+              {% assign oud_col = collections['oud-collection'] %}
+              {% if oud_col.products_count > 0 %}
+                <p class="category-card__eyebrow">{{ oud_col.products_count }} fragrance{{ oud_col.products_count | plural: '', 's' }}</p>
+              {% endif %}
+              <h2 class="category-card__name">Oud</h2>
+              <p class="category-card__copy">Deep, resinous fragrances built around oud, woods, and smoke.</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/collections/amber-collection" class="category-card subcollection-card">
+          <div class="category-card__inner">
+            <img src="{{ 'featured-amber.png' | asset_url }}" alt="Amber" class="category-card__img" loading="lazy">
+            <div class="category-card__overlay"></div>
+            <div class="category-card__badge">Amber</div>
+            <div class="category-card__body">
+              {% assign amber_col = collections['amber-collection'] %}
+              {% if amber_col.products_count > 0 %}
+                <p class="category-card__eyebrow">{{ amber_col.products_count }} fragrance{{ amber_col.products_count | plural: '', 's' }}</p>
+              {% endif %}
+              <h2 class="category-card__name">Amber</h2>
+              <p class="category-card__copy">Warm amber blends with sweet spice, musk, and vanilla.</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/collections/daily-collection" class="category-card subcollection-card">
+          <div class="category-card__inner">
+            <img src="{{ 'featured-daily.png' | asset_url }}" alt="Daily" class="category-card__img" loading="lazy">
+            <div class="category-card__overlay"></div>
+            <div class="category-card__badge">Daily</div>
+            <div class="category-card__body">
+              {% assign daily_col = collections['daily-collection'] %}
+              {% if daily_col.products_count > 0 %}
+                <p class="category-card__eyebrow">{{ daily_col.products_count }} fragrance{{ daily_col.products_count | plural: '', 's' }}</p>
+              {% endif %}
+              <h2 class="category-card__name">Daily</h2>
+              <p class="category-card__copy">Clean, balanced fragrances for everyday wear.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
       {% if collection.products_count > 0 %}
+        <p class="subcollection-all-label">All Fragrances</p>
         {% paginate collection.products by 24 %}
           <div class="product-grid product-grid--3">
             {% for product in collection.products %}
@@ -34,11 +93,89 @@
             <div class="pagination">{{ paginate | default_pagination }}</div>
           {% endif %}
         {% endpaginate %}
-      {% else %}
-        <div class="collection-empty">
-          <p class="collection-empty__title">Electronics coming soon.</p>
-          <p class="collection-empty__text">This category will update automatically once products are assigned in Shopify.</p>
+      {% endif %}
+
+      <a href="{{ routes.root_url }}" class="collection-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M19 12H5" stroke-linecap="round"/>
+        </svg>
+        Back to shop
+      </a>
+
+    </div>
+  </section>
+
+{% elsif is_electronics %}
+
+  <section class="collection-page">
+    <div class="container">
+
+      <div class="collection-page__header">
+        <div class="collection-page__meta">
+          <p class="section-eyebrow">Category</p>
+          <h1 class="collection-page__title">Electronics</h1>
+          <p class="collection-page__desc">Premium audio, smartwatches, and everyday electronics selected for quality and focus.</p>
         </div>
+      </div>
+
+      <div class="section-rule"></div>
+
+      <div class="category-grid subcollection-nav">
+        <a href="/collections/smartwatches-collection" class="category-card subcollection-card">
+          <div class="category-card__inner">
+            {% assign sw_col = collections['smartwatches-collection'] %}
+            {% assign sw_product = sw_col.products.first %}
+            {% if sw_product.featured_image %}
+              <img src="{{ sw_product.featured_image | img_url: '600x600' }}" alt="Smartwatches" class="category-card__img" loading="lazy">
+            {% else %}
+              <img src="{{ 'sony-wh-1000xm5.webp' | asset_url }}" alt="Smartwatches" class="category-card__img" loading="lazy">
+            {% endif %}
+            <div class="category-card__overlay"></div>
+            <div class="category-card__badge">Smartwatches</div>
+            <div class="category-card__body">
+              {% if sw_col.products_count > 0 %}
+                <p class="category-card__eyebrow">{{ sw_col.products_count }} product{{ sw_col.products_count | plural: '', 's' }}</p>
+              {% endif %}
+              <h2 class="category-card__name">Smartwatches</h2>
+              <p class="category-card__copy">Wearable tech for daily tracking and utility.</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/collections/audio-collection" class="category-card subcollection-card">
+          <div class="category-card__inner">
+            {% assign audio_col = collections['audio-collection'] %}
+            {% assign audio_product = audio_col.products.first %}
+            {% if audio_product.featured_image %}
+              <img src="{{ audio_product.featured_image | img_url: '600x600' }}" alt="Audio" class="category-card__img" loading="lazy">
+            {% else %}
+              <img src="{{ 'sony-wh-1000xm5.webp' | asset_url }}" alt="Audio" class="category-card__img" loading="lazy">
+            {% endif %}
+            <div class="category-card__overlay"></div>
+            <div class="category-card__badge">Audio</div>
+            <div class="category-card__body">
+              {% if audio_col.products_count > 0 %}
+                <p class="category-card__eyebrow">{{ audio_col.products_count }} product{{ audio_col.products_count | plural: '', 's' }}</p>
+              {% endif %}
+              <h2 class="category-card__name">Audio</h2>
+              <p class="category-card__copy">Headphones and earbuds for everyday listening.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      {% if collection.products_count > 0 %}
+        <p class="subcollection-all-label">All Electronics</p>
+        {% paginate collection.products by 24 %}
+          <div class="product-grid product-grid--3">
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+          </div>
+          {% if paginate.pages > 1 %}
+            <div class="pagination">{{ paginate | default_pagination }}</div>
+          {% endif %}
+        {% endpaginate %}
       {% endif %}
 
       <a href="{{ routes.root_url }}" class="collection-back">
@@ -102,6 +239,96 @@
     </div>
   </div>
 
+{% elsif is_electronics_sub %}
+
+  <div class="collection-page">
+    <div class="container">
+
+      <div class="collection-page__header">
+        <div class="collection-page__meta">
+          <p class="section-eyebrow">Electronics</p>
+          <h1 class="collection-page__title">{{ collection.title }}</h1>
+          {% if collection.description != blank %}
+            <div class="collection-page__desc">{{ collection.description }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="section-rule"></div>
+
+      {% if collection.products_count > 0 %}
+        {% paginate collection.products by 24 %}
+          <div class="product-grid product-grid--4">
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+          </div>
+          {% if paginate.pages > 1 %}
+            <div class="pagination">{{ paginate | default_pagination }}</div>
+          {% endif %}
+        {% endpaginate %}
+      {% else %}
+        <div class="collection-empty">
+          <p class="collection-empty__title">{{ collection.title }} coming soon.</p>
+          <p class="collection-empty__text">This collection will update automatically once products are assigned in Shopify.</p>
+        </div>
+      {% endif %}
+
+      <a href="/collections/electronics-collection" class="collection-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M19 12H5" stroke-linecap="round"/>
+        </svg>
+        Back to Electronics
+      </a>
+
+    </div>
+  </div>
+
+{% elsif is_perfumes_sub %}
+
+  <div class="collection-page">
+    <div class="container">
+
+      <div class="collection-page__header">
+        <div class="collection-page__meta">
+          <p class="section-eyebrow">Perfumes</p>
+          <h1 class="collection-page__title">{{ collection.title }}</h1>
+          {% if collection.description != blank %}
+            <div class="collection-page__desc">{{ collection.description }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="section-rule"></div>
+
+      {% if collection.products_count > 0 %}
+        {% paginate collection.products by 24 %}
+          <div class="product-grid product-grid--4">
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+          </div>
+          {% if paginate.pages > 1 %}
+            <div class="pagination">{{ paginate | default_pagination }}</div>
+          {% endif %}
+        {% endpaginate %}
+      {% else %}
+        <div class="collection-empty">
+          <p class="collection-empty__title">{{ collection.title }} fragrances coming soon.</p>
+          <p class="collection-empty__text">This collection will update automatically once products are assigned in Shopify.</p>
+        </div>
+      {% endif %}
+
+      <a href="/collections/perfumes-collection" class="collection-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M19 12H5" stroke-linecap="round"/>
+        </svg>
+        Back to Perfumes
+      </a>
+
+    </div>
+  </div>
+
 {% else %}
 
   <div class="collection-page">
@@ -135,11 +362,8 @@
             {% render 'product-card', product: product %}
           {% endfor %}
         </div>
-
         {% if paginate.pages > 1 %}
-          <div class="pagination">
-            {{ paginate | default_pagination }}
-          </div>
+          <div class="pagination">{{ paginate | default_pagination }}</div>
         {% endif %}
       {% endpaginate %}
 

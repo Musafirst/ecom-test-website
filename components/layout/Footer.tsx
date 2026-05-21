@@ -5,9 +5,9 @@ import { BorderBeam } from '@/components/ui/border-beam'
 const footerLinks = [
   { label: 'Shop', href: '/shop' },
   { label: 'Contact', href: '/shop/contact' },
-  { label: 'Refund Policy', href: '/shop/refund-policy' },
-  { label: 'Shipping Policy', href: '/shop/shipping-policy' },
+  { label: 'Shipping & Returns', href: '/shop/shipping-policy' },
   { label: 'Privacy Policy', href: '/shop/privacy-policy' },
+  { label: 'Refund Policy', href: '/shop/refund-policy' },
   { label: 'Terms of Service', href: '/shop/terms-of-service' },
 ]
 

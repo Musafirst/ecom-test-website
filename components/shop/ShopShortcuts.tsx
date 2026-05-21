@@ -18,8 +18,8 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
   const shortcuts = [
     {
       label: 'Perfumes',
-      detail: 'Featured picks',
-      href: '#perfumes',
+      detail: 'Oud · Amber · Daily',
+      href: '/shop/category/perfumes',
     },
     {
       label: 'Oud',

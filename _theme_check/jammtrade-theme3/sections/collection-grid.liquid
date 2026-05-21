@@ -11,7 +11,8 @@
     <div class="collection-grid">
       {% for block in section.blocks %}
         {% if block.type == 'collection_card' %}
-        {% assign card_url = block.settings.collection.url %}
+        {% assign card_url = block.settings.url_override %}
+        {% if card_url == blank %}{% assign card_url = block.settings.collection.url %}{% endif %}
         {% if card_url == blank %}{% assign card_url = '/collections/' | append: block.settings.name | handleize %}{% endif %}
         <a href="{{ card_url }}" class="collection-card" {{ block.shopify_attributes }}>
           <div class="collection-card__inner">
@@ -52,6 +53,7 @@
       "name": "Collection Card",
       "settings": [
         { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "url_override", "label": "URL override (use when handle has suffix)" },
         { "type": "text", "id": "name", "label": "Collection name", "default": "Oud" },
         { "type": "text", "id": "copy", "label": "Description", "default": "Resinous, dark, and long lasting." },
         { "type": "text", "id": "count_override", "label": "Count label (if no collection)", "default": "5 fragrances" },

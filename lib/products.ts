@@ -50,6 +50,16 @@ export async function getFeaturedProducts() {
   return (fragranceProducts.length > 0 ? fragranceProducts : products).slice(0, 4)
 }
 
+// Perfume category — all fragrance products across oud, amber, and daily.
+export async function getPerfumeProducts() {
+  const products = await getShopifyProducts()
+  const perfumeProducts = products.filter((product) => product.category === 'perfume')
+
+  return perfumeProducts.length > 0 || process.env.NODE_ENV === 'production'
+    ? perfumeProducts
+    : fallbackProducts.filter((product) => product.category === 'perfume')
+}
+
 // Secondary electronics category uses Shopify when matching products exist.
 export async function getElectronicsProducts() {
   const products = await getShopifyProducts()

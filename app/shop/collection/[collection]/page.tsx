@@ -57,7 +57,13 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">
       <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">
         <div className="mb-8 max-w-3xl rounded-lg border border-jamm-gold/15 bg-white/28 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mb-12 sm:p-0 sm:shadow-none sm:border-0 sm:bg-transparent">
-          <SectionLabel>Collection</SectionLabel>
+          <SectionLabel>
+            {collectionParam === 'smartwatches' || collectionParam === 'audio'
+              ? 'Electronics'
+              : collectionParam === 'oud' || collectionParam === 'amber' || collectionParam === 'daily'
+                ? 'Perfumes'
+                : 'Collection'}
+          </SectionLabel>
           <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
             {collection.name}
           </h1>
@@ -83,11 +89,21 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         )}
 
         <Link
-          href="/shop#collections"
+          href={
+            collectionParam === 'smartwatches' || collectionParam === 'audio'
+              ? '/shop/category/electronics'
+              : collectionParam === 'oud' || collectionParam === 'amber' || collectionParam === 'daily'
+                ? '/shop/category/perfumes'
+                : '/shop#collections'
+          }
           className="mt-10 inline-flex items-center gap-3 font-sans text-[10px] uppercase tracking-[0.22em] text-jamm-gold transition-colors duration-200 hover:text-jamm-gold-muted"
         >
           <span className="h-px w-6 bg-current" />
-          Back to collections
+          {collectionParam === 'smartwatches' || collectionParam === 'audio'
+            ? 'Back to Electronics'
+            : collectionParam === 'oud' || collectionParam === 'amber' || collectionParam === 'daily'
+              ? 'Back to Perfumes'
+              : 'Back to collections'}
         </Link>
       </div>
     </section>

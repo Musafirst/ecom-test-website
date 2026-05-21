@@ -22,6 +22,11 @@ export const collectionDetails = {
 } as const
 
 export const categoryDetails = {
+  perfumes: {
+    name: 'Perfumes',
+    intro: 'Rare fragrances curated across three scent families — oud, amber, and daily wear.',
+    detail: 'Browse by collection to find your signature.',
+  },
   clothing: {
     name: 'Clothing',
     intro: 'Jamm Trade apparel with the lotus mark across everyday essentials.',

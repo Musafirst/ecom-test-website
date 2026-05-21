@@ -11,7 +11,7 @@
             "title": "From essentials to enterprise.",
             "subtitle": "Curated fragrances, fashion, and everyday goods selected with intention.",
             "cta_label": "Explore Products",
-            "cta_url": "#perfumes"
+            "cta_url": "/collections/perfumes-collection"
           }
         },
         "slide-2": {
@@ -22,7 +22,7 @@
             "title": "Signature scents, selected with care.",
             "subtitle": "Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.",
             "cta_label": "Shop Perfumes",
-            "cta_url": "#perfumes"
+            "cta_url": "/collections/perfumes-collection"
           }
         },
         "slide-3": {
@@ -33,7 +33,7 @@
             "title": "Everyday tech, refined.",
             "subtitle": "Useful electronics and accessories selected for quality, simplicity, and daily use.",
             "cta_label": "Shop Electronics",
-            "cta_url": "/collections/electronics"
+            "cta_url": "/collections/electronics-collection"
           }
         },
         "slide-4": {
@@ -64,9 +64,9 @@
         "sc-1": {
           "type": "shortcut",
           "settings": {
-            "detail": "Featured picks",
+            "detail": "Oud · Amber · Daily",
             "label": "Perfumes",
-            "url": "#perfumes"
+            "url": "/collections/perfumes-collection"
           }
         },
         "sc-2": {
@@ -74,7 +74,7 @@
           "settings": {
             "detail": "5 fragrances",
             "label": "Oud",
-            "url": "/collections/oud"
+            "url": "/collections/oud-collection"
           }
         },
         "sc-3": {
@@ -82,7 +82,7 @@
           "settings": {
             "detail": "8 fragrances",
             "label": "Amber",
-            "url": "/collections/amber"
+            "url": "/collections/amber-collection"
           }
         },
         "sc-4": {
@@ -90,7 +90,7 @@
           "settings": {
             "detail": "Daily",
             "label": "Daily",
-            "url": "/collections/daily"
+            "url": "/collections/daily-collection"
           }
         },
         "sc-5": {
@@ -98,7 +98,7 @@
           "settings": {
             "detail": "Electronics",
             "label": "Electronics",
-            "url": "/collections/electronics"
+            "url": "/collections/electronics-collection"
           }
         },
         "sc-6": {
@@ -135,7 +135,8 @@
             "asset_image": "featured-oud.png",
             "name": "Oud",
             "copy": "Resinous, dark, and long lasting.",
-            "count_override": "5 fragrances"
+            "count_override": "5 fragrances",
+            "url_override": "/collections/oud-collection"
           }
         },
         "col-2": {
@@ -144,7 +145,8 @@
             "asset_image": "featured-amber.png",
             "name": "Amber",
             "copy": "Warm vanilla, soft spice, skin-close depth.",
-            "count_override": "8 fragrances"
+            "count_override": "8 fragrances",
+            "url_override": "/collections/amber-collection"
           }
         },
         "col-3": {
@@ -153,7 +155,8 @@
             "asset_image": "featured-daily.png",
             "name": "Daily",
             "copy": "Clean signatures for repeat wear.",
-            "count_override": "Daily fragrances"
+            "count_override": "Daily fragrances",
+            "url_override": "/collections/daily-collection"
           }
         }
       },
@@ -184,7 +187,7 @@
             "name": "Electronics",
             "eyebrow": "Precision essentials.",
             "copy": "Premium audio and everyday electronics selected for quality and focus.",
-            "url": "/collections/electronics"
+            "url": "/collections/electronics-collection"
           }
         }
       },
