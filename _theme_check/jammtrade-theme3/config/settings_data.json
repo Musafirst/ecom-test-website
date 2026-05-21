@@ -1,0 +1,11 @@
+{
+  "current": {
+    "color_dark": "#0C0B09",
+    "color_cream": "#F4EFE4",
+    "color_gold": "#C4973A",
+    "color_bg": "#FAF7F2",
+    "color_card": "#EDE8DC",
+    "font_heading": "Cormorant Garamond"
+  },
+  "presets": {}
+}

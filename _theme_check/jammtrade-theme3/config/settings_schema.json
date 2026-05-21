@@ -1,0 +1,86 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Jamm Trade",
+    "theme_version": "1.0.0",
+    "theme_author": "Jamm Trade",
+    "theme_documentation_url": "https://jammtrade.com",
+    "theme_support_url": "https://jammtrade.com/pages/contact"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Dark (primary text)",
+        "default": "#0C0B09"
+      },
+      {
+        "type": "color",
+        "id": "color_cream",
+        "label": "Cream",
+        "default": "#F4EFE4"
+      },
+      {
+        "type": "color",
+        "id": "color_gold",
+        "label": "Gold (accent)",
+        "default": "#C4973A"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#FAF7F2"
+      },
+      {
+        "type": "color",
+        "id": "color_card",
+        "label": "Card background",
+        "default": "#EDE8DC"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "font_heading",
+        "label": "Display font",
+        "options": [
+          { "value": "Cormorant Garamond", "label": "Cormorant Garamond" },
+          { "value": "Playfair Display", "label": "Playfair Display" },
+          { "value": "DM Sans", "label": "DM Sans (sans)" }
+        ],
+        "default": "Cormorant Garamond"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "tiktok",
+        "label": "TikTok URL"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  }
+]

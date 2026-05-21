@@ -1,0 +1,42 @@
+<section class="featured-products-section" id="perfumes">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__left">
+        <p class="section-eyebrow">Fragrance collection</p>
+        <h2 class="section-title">Featured Products</h2>
+      </div>
+      <a href="{{ section.settings.collection.url | default: '/collections/all' }}" class="section-header__link">
+        View all products
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="section-rule"></div>
+    <div class="product-grid product-grid--4">
+      {% assign featured_col = section.settings.collection %}
+      {% if featured_col != blank %}
+        {% for product in featured_col.products limit: section.settings.products_count %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      {% else %}
+        {% for product in collections.all.products limit: section.settings.products_count %}
+          {% render 'product-card', product: product %}
+        {% else %}
+          <div class="empty-state"><p>Add products to your store to see them here.</p></div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection to feature" },
+    { "type": "range", "id": "products_count", "label": "Number of products", "min": 2, "max": 12, "step": 1, "default": 4 }
+  ],
+  "presets": [
+    { "name": "Featured Products" }
+  ]
+}
+{% endschema %}

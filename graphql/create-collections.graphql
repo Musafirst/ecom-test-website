@@ -1,0 +1,37 @@
+mutation CreateCollections {
+  oudCollection: collectionCreate(input: {
+    title: "Oud"
+    handle: "oud"
+    descriptionHtml: "<p>Resinous, dark, and long lasting.</p>"
+  }) {
+    collection { id title handle }
+    userErrors { field message }
+  }
+
+  amberCollection: collectionCreate(input: {
+    title: "Amber"
+    handle: "amber"
+    descriptionHtml: "<p>Warm vanilla, soft spice, skin-close depth.</p>"
+  }) {
+    collection { id title handle }
+    userErrors { field message }
+  }
+
+  dailyCollection: collectionCreate(input: {
+    title: "Daily"
+    handle: "daily"
+    descriptionHtml: "<p>Clean signatures for repeat wear.</p>"
+  }) {
+    collection { id title handle }
+    userErrors { field message }
+  }
+
+  clothingCollection: collectionCreate(input: {
+    title: "Clothing"
+    handle: "clothing"
+    descriptionHtml: "<p>Hoodies, tees, and essentials with the Jamm Trade lotus mark.</p>"
+  }) {
+    collection { id title handle }
+    userErrors { field message }
+  }
+}

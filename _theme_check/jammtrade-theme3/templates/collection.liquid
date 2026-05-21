@@ -1,0 +1,156 @@
+{% assign is_coming_soon = false %}
+{% assign is_electronics = false %}
+{% if collection.handle == 'clothing' %}
+  {% assign is_coming_soon = true %}
+{% endif %}
+{% if collection.handle == 'electronics' or collection.handle == 'electronics-collection' %}
+  {% assign is_electronics = true %}
+{% endif %}
+
+{% if is_electronics %}
+
+  <section class="collection-page">
+    <div class="container">
+
+      <div class="collection-page__header">
+        <div class="collection-page__meta">
+          <p class="section-eyebrow">Secondary Category</p>
+          <h1 class="collection-page__title">Electronics</h1>
+          <p class="collection-page__desc">Headphones, audio, and smartwatches selected as a secondary Jamm Trade category.</p>
+          <p class="collection-page__detail">Electronics are prepared in product data for future Shopify upload, with perfumes remaining the main focus.</p>
+        </div>
+      </div>
+
+      <div class="section-rule"></div>
+
+      {% if collection.products_count > 0 %}
+        {% paginate collection.products by 24 %}
+          <div class="product-grid product-grid--3">
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+          </div>
+          {% if paginate.pages > 1 %}
+            <div class="pagination">{{ paginate | default_pagination }}</div>
+          {% endif %}
+        {% endpaginate %}
+      {% else %}
+        <div class="collection-empty">
+          <p class="collection-empty__title">Electronics coming soon.</p>
+          <p class="collection-empty__text">This category will update automatically once products are assigned in Shopify.</p>
+        </div>
+      {% endif %}
+
+      <a href="{{ routes.root_url }}" class="collection-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M19 12H5" stroke-linecap="round"/>
+        </svg>
+        Back to shop
+      </a>
+
+    </div>
+  </section>
+
+{% elsif is_coming_soon %}
+
+  <div class="category-coming-page">
+    <div class="container">
+      <div class="category-coming-grid">
+        <div class="category-coming-content">
+          <p class="coming-soon__eyebrow">Coming Soon</p>
+          <h1 class="category-coming__headline">Clothing</h1>
+          <p class="category-coming__subtext">Hoodies, tees, and essentials with the Jamm Trade lotus mark.</p>
+          <p class="category-coming__detail">Minimal clothing pieces built around comfort, identity, and quiet detail.</p>
+
+          {% form 'customer', id: 'ClothingWaitlistForm' %}
+            <input type="hidden" name="contact[tags]" value="coming-soon-waitlist,clothing">
+            <div class="coming-soon__form">
+              <label for="ClothingEmail" class="visually-hidden">Email address</label>
+              <input
+                id="ClothingEmail"
+                type="email"
+                name="contact[email]"
+                placeholder="Enter your email"
+                class="coming-soon__input"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="coming-soon__btn">Notify Me</button>
+            </div>
+            {% if form.posted_successfully? %}
+              <p class="coming-soon__success">You're on the list. We'll let you know when it's ready.</p>
+            {% endif %}
+          {% endform %}
+
+          <a href="{{ routes.root_url }}" class="coming-soon__back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to shop
+          </a>
+        </div>
+
+        <div class="category-coming-media">
+          <img
+            src="{{ 'jamm-hoodie.png' | asset_url }}"
+            alt="Clothing"
+            class="category-coming__img"
+            loading="eager"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+
+  <div class="collection-page">
+    <div class="container">
+
+      <div class="collection-page__header">
+        {% if collection.image %}
+          <img
+            src="{{ collection.image | img_url: '2000x600', crop: 'center' }}"
+            alt="{{ collection.title | escape }}"
+            class="collection-page__banner"
+            loading="eager"
+          >
+        {% endif %}
+
+        <div class="collection-page__meta">
+          <p class="section-eyebrow">Collection</p>
+          <h1 class="collection-page__title">{{ collection.title }}</h1>
+          {% if collection.description != blank %}
+            <div class="collection-page__desc">{{ collection.description }}</div>
+          {% endif %}
+          <p class="collection-page__count">{{ collection.products_count }} product{{ collection.products_count | plural: '', 's' }}</p>
+        </div>
+      </div>
+
+      <div class="section-rule"></div>
+
+      {% paginate collection.products by 24 %}
+        <div class="product-grid product-grid--4">
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div class="pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+
+      <a href="{{ routes.root_url }}" class="collection-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M19 12H5" stroke-linecap="round"/>
+        </svg>
+        Back to shop
+      </a>
+
+    </div>
+  </div>
+
+{% endif %}

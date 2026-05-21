@@ -1,0 +1,154 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+
+      <!-- Brand column -->
+      <div class="footer-brand">
+        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+          {% if section.settings.logo != blank %}
+            <img
+              src="{{ section.settings.logo | img_url: '600x' }}"
+              alt="{{ shop.name }}"
+              class="footer-logo"
+              loading="lazy"
+            >
+          {% else %}
+            <img
+              src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}"
+              alt="{{ shop.name }}"
+              class="footer-logo"
+              loading="lazy"
+            >
+          {% endif %}
+        </a>
+        <p class="footer-tagline">
+          {{ section.settings.tagline | default: 'Rare fragrances and curated essentials for those who know the difference.' }}
+        </p>
+      </div>
+
+      <!-- Links column -->
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="{{ routes.root_url }}" class="footer-nav__link">Shop</a>
+        <a href="/pages/contact" class="footer-nav__link">Contact</a>
+        <a href="/pages/shipping-returns" class="footer-nav__link">Shipping &amp; Returns</a>
+        <a href="/pages/privacy-policy" class="footer-nav__link">Privacy Policy</a>
+        <a href="/pages/refund-policy" class="footer-nav__link">Refund Policy</a>
+        <a href="/pages/terms-of-service" class="footer-nav__link">Terms of Service</a>
+        {% for block in section.blocks %}
+          {% if block.type == 'link' %}
+            <a href="{{ block.settings.url }}" class="footer-nav__link" {{ block.shopify_attributes }}>
+              {{ block.settings.label }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <!-- Newsletter column -->
+      <div class="footer-newsletter">
+        <p class="footer-newsletter__label">Stay in the loop</p>
+        {% form 'customer', id: 'FooterNewsletterForm' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="footer-newsletter__row">
+            <label for="FooterEmail" class="visually-hidden">Email address</label>
+            <input
+              id="FooterEmail"
+              type="email"
+              name="contact[email]"
+              placeholder="your@email.com"
+              class="footer-newsletter__input"
+              autocomplete="email"
+              required
+            >
+            <button type="submit" class="footer-newsletter__btn">Subscribe</button>
+          </div>
+          {% if form.posted_successfully? %}
+            <p class="footer-newsletter__success">Thanks for subscribing!</p>
+          {% endif %}
+        {% endform %}
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} Jamm Trade. All rights reserved.</p>
+      <div class="footer-social">
+        {% if section.settings.instagram_url != blank %}
+          <a href="{{ section.settings.instagram_url }}" aria-label="Jamm Trade on Instagram" class="footer-social__link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round"/>
+            </svg>
+          </a>
+        {% else %}
+          <a href="#" aria-label="Jamm Trade on Instagram" class="footer-social__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round"/>
+            </svg>
+          </a>
+        {% endif %}
+        {% if section.settings.tiktok_url != blank %}
+          <a href="{{ section.settings.tiktok_url }}" aria-label="Jamm Trade on TikTok" class="footer-social__link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+            </svg>
+          </a>
+        {% else %}
+          <a href="#" aria-label="Jamm Trade on TikTok" class="footer-social__link">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Rare fragrances and curated essentials for those who know the difference."
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact email",
+      "default": "contact@jammtrade.com"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Custom link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "url", "id": "url", "label": "URL" }
+      ]
+    }
+  ]
+}
+{% endschema %}

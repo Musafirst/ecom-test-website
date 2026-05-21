@@ -1,0 +1,38 @@
+<div class="coming-soon-page">
+  <div class="container">
+    <div class="coming-soon-inner">
+      <div class="coming-soon-content">
+        <p class="coming-soon__eyebrow">Coming Soon</p>
+        <h1 class="coming-soon__headline">Jamm Cargo - America, Europe, Asia, Africa.</h1>
+        <p class="coming-soon__subtext">Get updates when shipping services across America, Europe, Asia, and Africa become available.</p>
+
+        {% form 'customer', id: 'JammCargoWaitlistForm' %}
+          <input type="hidden" name="contact[tags]" value="coming-soon-waitlist,jamm-cargo">
+          <div class="coming-soon__form">
+            <label for="JammCargoEmail" class="visually-hidden">Email address</label>
+            <input
+              id="JammCargoEmail"
+              type="email"
+              name="contact[email]"
+              placeholder="Enter your email"
+              class="coming-soon__input"
+              autocomplete="email"
+              required
+            >
+            <button type="submit" class="coming-soon__btn">Notify Me</button>
+          </div>
+          {% if form.posted_successfully? %}
+            <p class="coming-soon__success">You're on the list. We'll let you know when it's ready.</p>
+          {% endif %}
+        {% endform %}
+
+        <a href="{{ routes.root_url }}" class="coming-soon__back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to shop
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

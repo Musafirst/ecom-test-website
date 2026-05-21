@@ -1,0 +1,51 @@
+<section class="shortcuts-section">
+  <div class="container">
+    <div class="shortcuts-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'shortcut' %}
+        <a href="{{ block.settings.url | default: '#' }}" class="shortcut-card" {{ block.shopify_attributes }}>
+          <span class="shortcut-card__detail">{{ block.settings.detail }}</span>
+          <span class="shortcut-card__label">
+            {{ block.settings.label }}
+            <span class="shortcut-card__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </span>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop Shortcuts",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "shortcut",
+      "name": "Shortcut",
+      "settings": [
+        { "type": "text", "id": "detail", "label": "Detail / eyebrow" },
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "url", "id": "url", "label": "Link URL" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Shop Shortcuts",
+      "blocks": [
+        { "type": "shortcut", "settings": { "detail": "Featured picks", "label": "Perfumes" } },
+        { "type": "shortcut", "settings": { "detail": "5 fragrances", "label": "Oud" } },
+        { "type": "shortcut", "settings": { "detail": "8 fragrances", "label": "Amber" } },
+        { "type": "shortcut", "settings": { "detail": "Daily", "label": "Daily" } },
+        { "type": "shortcut", "settings": { "detail": "Electronics", "label": "Electronics" } },
+        { "type": "shortcut", "settings": { "detail": "Coming soon", "label": "Clothing" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

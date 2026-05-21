@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FAF7F2">
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
+    {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:type" content="website">
+  {% if page_image %}
+    <meta property="og:image" content="https:{{ page_image | img_url: '1200x630' }}">
+  {% else %}
+    <meta property="og:image" content="{{ 'hero-main-commerce.webp' | asset_url }}">
+  {% endif %}
+
+  {{ content_for_header }}
+
+  <!-- Google Fonts: Cormorant Garamond + DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    // Cart count sync
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartCount();
+    });
+    function updateCartCount() {
+      fetch('/cart.js')
+        .then(r => r.json())
+        .then(cart => {
+          var els = document.querySelectorAll('[data-cart-count]');
+          els.forEach(function(el) {
+            el.textContent = cart.item_count;
+            el.style.display = cart.item_count > 0 ? 'flex' : 'none';
+          });
+        });
+    }
+  </script>
+</head>
+
+<body>
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="MainContent">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

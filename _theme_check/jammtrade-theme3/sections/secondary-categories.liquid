@@ -1,0 +1,68 @@
+<section class="secondary-categories-section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Also available</p>
+      <div class="section-header__row">
+        <h2 class="section-title">Beyond fragrance</h2>
+        <p class="section-subtitle">A small selection of essentials that fits the same curated standard.</p>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <div class="category-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'category_card' %}
+        <a href="{{ block.settings.url | default: '#' }}" class="category-card" {{ block.shopify_attributes }}>
+          <div class="category-card__inner">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.name | escape }}" class="category-card__img" loading="lazy">
+            {% elsif block.settings.asset_image != blank %}
+              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.name | escape }}" class="category-card__img" loading="lazy">
+            {% else %}
+              <div class="category-card__img category-card__img--placeholder"></div>
+            {% endif %}
+            <div class="category-card__overlay"></div>
+            <div class="category-card__badge">{{ block.settings.name }}</div>
+            <div class="category-card__body">
+              <p class="category-card__eyebrow">{{ block.settings.eyebrow }}</p>
+              <h3 class="category-card__name">{{ block.settings.name }}</h3>
+              <p class="category-card__copy">{{ block.settings.copy }}</p>
+              <span class="category-card__cta">Shop {{ block.settings.name }}</span>
+            </div>
+          </div>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Secondary Categories",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "category_card",
+      "name": "Category Card",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Category name", "default": "Clothing" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Wear the mark." },
+        { "type": "textarea", "id": "copy", "label": "Description", "default": "Hoodies, tees, and essentials with the Jamm Trade lotus mark." },
+        { "type": "url", "id": "url", "label": "Link URL" },
+        { "type": "image_picker", "id": "image", "label": "Card image" },
+        { "type": "text", "id": "asset_image", "label": "Fallback theme asset filename" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Secondary Categories",
+      "blocks": [
+        { "type": "category_card", "settings": { "asset_image": "jamm-hoodie.png", "name": "Clothing", "eyebrow": "Wear the mark.", "copy": "Hoodies, tees, and essentials with the Jamm Trade lotus mark." } },
+        { "type": "category_card", "settings": { "asset_image": "sony-wh-1000xm5.webp", "name": "Electronics", "eyebrow": "Precision essentials.", "copy": "Premium audio and everyday electronics selected for quality and focus." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

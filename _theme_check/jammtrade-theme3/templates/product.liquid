@@ -1,0 +1,147 @@
+<div class="product-page">
+  <div class="container">
+    <div class="product-page__grid">
+
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="product-gallery__main" id="ProductGalleryMain">
+          {% if product.images.size > 0 %}
+            {% for image in product.images %}
+              <img
+                src="{{ image | img_url: '1000x1000', crop: 'center' }}"
+                alt="{{ image.alt | default: product.title | escape }}"
+                class="product-gallery__img{% if forloop.first %} is-active{% endif %}"
+                data-gallery-img="{{ forloop.index0 }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            {% endfor %}
+          {% else %}
+            <div class="product-gallery__placeholder">
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if product.images.size > 1 %}
+          <div class="product-gallery__thumbs">
+            {% for image in product.images %}
+              <button
+                type="button"
+                class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                data-thumb="{{ forloop.index0 }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img
+                  src="{{ image | img_url: '200x200', crop: 'center' }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                >
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Purchase panel -->
+      <div class="product-purchase">
+
+        {% if product.vendor != blank %}
+          <p class="product-purchase__vendor">{{ product.vendor }}</p>
+        {% endif %}
+
+        <h1 class="product-purchase__title">{{ product.title }}</h1>
+
+        <div class="product-purchase__price">
+          {% if product.compare_at_price > product.price %}
+            <span class="price--compare">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+          <span class="price--current">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="price--badge">Sale</span>
+          {% endif %}
+        </div>
+
+        {% if product.description != blank %}
+          <div class="product-purchase__desc">{{ product.description }}</div>
+        {% endif %}
+
+        <div class="product-purchase__rule"></div>
+
+        {% form 'product', product, id: 'ProductForm' %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+          {% if product.variants.size > 1 %}
+            <div class="product-variants">
+              {% for option in product.options_with_values %}
+                <div class="variant-option">
+                  <label class="variant-option__label">{{ option.name }}</label>
+                  <div class="variant-option__values">
+                    {% for value in option.values %}
+                      <button
+                        type="button"
+                        class="variant-btn{% if option.selected_value == value %} is-selected{% endif %}"
+                        data-option="{{ option.name }}"
+                        data-value="{{ value | escape }}"
+                      >
+                        {{ value }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="product-purchase__actions">
+            <div class="qty-selector">
+              <button type="button" class="qty-btn" data-qty="-1" aria-label="Decrease quantity">−</button>
+              <input type="number" name="quantity" value="1" min="1" class="qty-input" aria-label="Quantity">
+              <button type="button" class="qty-btn" data-qty="1" aria-label="Increase quantity">+</button>
+            </div>
+
+            <button
+              type="submit"
+              name="add"
+              class="btn btn--primary btn--full"
+              {% unless product.available %}disabled{% endunless %}
+            >
+              {% if product.available %}
+                Add to Cart
+              {% else %}
+                Sold Out
+              {% endif %}
+            </button>
+          </div>
+        {% endform %}
+
+        <!-- Trust mini bar -->
+        <div class="product-trust">
+          <span>✓ Authentic &amp; verified</span>
+          <span>✓ Secure checkout</span>
+          <span>✓ Reliable shipping</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Related products -->
+    {% if product.collections.first.products_count > 1 %}
+      <div class="related-products">
+        <div class="section-header">
+          <p class="section-eyebrow">More like this</p>
+          <h2 class="section-title">You might also like</h2>
+        </div>
+        <div class="section-rule"></div>
+        <div class="product-grid product-grid--4">
+          {% assign current_product = product %}
+          {% for related in product.collections.first.products limit: 4 %}
+            {% unless related.id == current_product.id %}
+              {% render 'product-card', product: related %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>

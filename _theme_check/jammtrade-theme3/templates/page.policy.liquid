@@ -1,0 +1,22 @@
+<section class="policy-page">
+  <div class="container">
+    <div class="policy-card">
+      <p class="policy-card__eyebrow">Shop policy</p>
+      <h1 class="policy-card__title">{{ page.title }}</h1>
+
+      {% if page.metafields.custom.intro != blank %}
+        <p class="policy-card__intro">{{ page.metafields.custom.intro }}</p>
+      {% endif %}
+
+      <p class="policy-card__updated">Last updated: {{ page.updated_at | date: '%B %d, %Y' }}</p>
+
+      <div class="policy-card__divider"></div>
+
+      <div class="policy-card__content rte">
+        {{ page.content }}
+      </div>
+
+      <a href="/pages/contact" class="btn btn--primary" style="margin-top:32px;display:inline-flex;">Contact Jamm Trade</a>
+    </div>
+  </div>
+</section>

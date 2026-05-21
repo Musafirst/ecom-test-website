@@ -1,0 +1,30 @@
+{% if section.settings.show_announcement %}
+<div class="announcement-bar" aria-label="Announcement">
+  <div class="announcement-marquee">
+    <span class="announcement-track" aria-hidden="false">
+      {{ section.settings.text | default: 'Save 20% on your first order &nbsp;&nbsp;-&nbsp;&nbsp; New fragrance arrivals weekly &nbsp;&nbsp;-&nbsp;&nbsp; Curated perfume essentials &nbsp;&nbsp;-&nbsp;&nbsp;' }}
+      {{ section.settings.text | default: 'Save 20% on your first order &nbsp;&nbsp;-&nbsp;&nbsp; New fragrance arrivals weekly &nbsp;&nbsp;-&nbsp;&nbsp; Curated perfume essentials &nbsp;&nbsp;-&nbsp;&nbsp;' }}
+    </span>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement text",
+      "default": "Save 20% on your first order  -  New fragrance arrivals weekly  -  Curated perfume essentials  -"
+    }
+  ]
+}
+{% endschema %}

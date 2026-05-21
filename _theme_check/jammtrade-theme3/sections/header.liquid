@@ -1,0 +1,185 @@
+<header class="site-header" id="SiteHeader" role="banner">
+  <div class="header-inner">
+
+    <!-- Logo -->
+    <a href="{{ routes.root_url }}" class="header-logo" aria-label="{{ shop.name }}">
+      {% if section.settings.logo != blank %}
+        <img
+          src="{{ section.settings.logo | img_url: '800x' }}"
+          alt="{{ shop.name }}"
+          class="header-logo__img"
+          width="400"
+          height="267"
+          loading="eager"
+        >
+      {% else %}
+        <img
+          src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}"
+          alt="{{ shop.name }}"
+          class="header-logo__img"
+          width="400"
+          height="267"
+          loading="eager"
+        >
+      {% endif %}
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="header-nav" aria-label="Main navigation">
+      <a href="{{ routes.root_url }}" class="header-nav__link{% if request.path == '/' %} is-active{% endif %}">Shop</a>
+      <a href="{{ routes.root_url }}#collections" class="header-nav__link">Collections</a>
+      <a href="/pages/jamm-fleet" class="header-nav__link">
+        Jamm Fleet <span class="nav-badge">Soon</span>
+      </a>
+      <a href="/pages/jamm-cargo" class="header-nav__link">
+        Jamm Cargo <span class="nav-badge">Soon</span>
+      </a>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <!-- Search -->
+      <button type="button" id="SearchToggle" class="header-icon-btn" aria-label="Search" aria-expanded="false" aria-controls="SearchDrawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="11" cy="11" r="6"/>
+          <path d="m16 16 4 4"/>
+        </svg>
+      </button>
+
+      <!-- Cart (desktop) -->
+      <a href="{{ routes.cart_url }}" class="header-cart-btn" aria-label="Cart">
+        Cart
+        <span class="cart-badge" data-cart-count style="display:none;">0</span>
+      </a>
+
+      <!-- Cart (mobile) -->
+      <a href="{{ routes.cart_url }}" class="header-icon-btn header-cart-icon" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="20" r="1"/>
+          <circle cx="17" cy="20" r="1"/>
+        </svg>
+        <span class="cart-badge cart-badge--icon" data-cart-count style="display:none;">0</span>
+      </a>
+
+      <!-- Hamburger -->
+      <button
+        type="button"
+        class="header-icon-btn header-menu-btn"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="MobileMenu"
+        id="MobileMenuToggle"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<div
+  id="MobileMenu"
+  class="mobile-menu"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+  hidden
+>
+  <div class="mobile-menu__header">
+    <a href="{{ routes.root_url }}" class="mobile-menu__logo" aria-label="{{ shop.name }}">
+      {% if section.settings.logo != blank %}
+        <img src="{{ section.settings.logo | img_url: '600x' }}" alt="{{ shop.name }}" class="header-logo__img">
+      {% else %}
+        <img src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}" alt="{{ shop.name }}" class="header-logo__img">
+      {% endif %}
+    </a>
+    <button
+      type="button"
+      class="header-icon-btn"
+      aria-label="Close menu"
+      id="MobileMenuClose"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+    <a href="{{ routes.root_url }}" class="mobile-menu__link">Shop</a>
+    <a href="{{ routes.root_url }}#collections" class="mobile-menu__link">Collections</a>
+    <a href="/pages/jamm-fleet" class="mobile-menu__link">
+      Jamm Fleet
+      <span class="mobile-menu__badge">Soon</span>
+    </a>
+    <a href="/pages/jamm-cargo" class="mobile-menu__link">
+      Jamm Cargo
+      <span class="mobile-menu__badge">Soon</span>
+    </a>
+  </nav>
+
+  <div class="mobile-menu__footer">
+    <a href="mailto:contact@jammtrade.com" class="mobile-menu__email">contact@jammtrade.com</a>
+  </div>
+</div>
+
+<!-- Mobile menu overlay -->
+<div id="MobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
+
+<!-- Search Drawer -->
+<div id="SearchDrawer" class="search-drawer" role="dialog" aria-modal="true" aria-label="Search products">
+  <div class="search-drawer__inner container">
+    <form action="{{ routes.search_url }}" method="get" class="search-drawer__form" role="search">
+      <input type="hidden" name="type" value="product">
+      <label for="SearchInput" class="visually-hidden">Search products</label>
+      <input
+        id="SearchInput"
+        type="search"
+        name="q"
+        placeholder="Search products…"
+        class="search-drawer__input"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button type="submit" class="header-icon-btn" aria-label="Submit search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="11" cy="11" r="6"/>
+          <path d="m16 16 4 4"/>
+        </svg>
+      </button>
+      <button type="button" id="SearchClose" class="header-icon-btn" aria-label="Close search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </form>
+    <ul id="SearchResults" class="search-drawer__results" aria-live="polite" aria-label="Search results"></ul>
+  </div>
+</div>
+<div id="SearchOverlay" class="search-overlay" hidden></div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width (px)",
+      "min": 80,
+      "max": 320,
+      "step": 8,
+      "default": 200,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

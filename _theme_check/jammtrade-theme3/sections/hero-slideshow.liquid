@@ -1,0 +1,74 @@
+<div class="hero-section">
+  <div class="hero-slider" id="HeroSlider" data-speed="{{ section.settings.autoplay_speed | times: 1000 }}">
+
+    {% for block in section.blocks %}
+      {% if block.type == 'slide' %}
+      <div class="hero-slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          <img src="{{ block.settings.image | img_url: '2000x' }}" srcset="{{ block.settings.image | img_url: '800x' }} 800w, {{ block.settings.image | img_url: '1400x' }} 1400w, {{ block.settings.image | img_url: '2000x' }} 2000w" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
+        {% elsif block.settings.asset_image != blank %}
+          <img src="{{ block.settings.asset_image | asset_url }}" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
+        {% else %}
+          <div class="hero-slide__bg hero-slide__bg--placeholder"></div>
+        {% endif %}
+        <div class="hero-slide__overlay"></div>
+        <div class="hero-slide__content">
+          <div class="hero-card">
+            {% if block.settings.category != blank %}<p class="hero-card__eyebrow">{{ block.settings.category }}</p>{% endif %}
+            <h2 class="hero-card__title">{{ block.settings.title | default: shop.name }}</h2>
+            <p class="hero-card__subtitle">{{ block.settings.subtitle }}</p>
+            {% if block.settings.cta_label != blank and block.settings.cta_url != blank %}
+              <a href="{{ block.settings.cta_url }}" class="hero-card__cta">{{ block.settings.cta_label }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    {% if section.blocks.size > 1 %}
+    <div class="hero-dots">
+      {% for block in section.blocks %}
+        {% if block.type == 'slide' %}<button type="button" class="hero-dot{% if forloop.first %} is-active{% endif %}" data-dot="{{ forloop.index0 }}" aria-label="Slide {{ forloop.index }}"></button>{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Slideshow",
+  "settings": [
+    { "type": "range", "id": "autoplay_speed", "label": "Autoplay speed (seconds)", "min": 3, "max": 10, "step": 1, "default": 6 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        { "type": "text", "id": "asset_image", "label": "Fallback theme asset filename" },
+        { "type": "text", "id": "category", "label": "Eyebrow label", "default": "Jamm Trade" },
+        { "type": "text", "id": "title", "label": "Heading", "default": "From essentials to enterprise." },
+        { "type": "textarea", "id": "subtitle", "label": "Subheading", "default": "Curated fragrances, fashion, and everyday goods selected with intention." },
+        { "type": "text", "id": "cta_label", "label": "Button label", "default": "Explore Products" },
+        { "type": "url", "id": "cta_url", "label": "Button URL" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Hero Slideshow",
+      "blocks": [
+        { "type": "slide", "settings": { "asset_image": "hero-main-commerce.webp", "category": "Jamm Trade", "title": "From essentials to enterprise.", "subtitle": "Curated fragrances, fashion, and everyday goods selected with intention.", "cta_label": "Explore Products" } },
+        { "type": "slide", "settings": { "asset_image": "hero-perfumes.webp", "category": "Fragrances", "title": "Signature scents, selected with care.", "subtitle": "Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.", "cta_label": "Shop Perfumes" } },
+        { "type": "slide", "settings": { "asset_image": "hero-electronics.webp", "category": "Electronics", "title": "Everyday tech, refined.", "subtitle": "Useful electronics and accessories selected for quality, simplicity, and daily use.", "cta_label": "Shop Electronics" } },
+        { "type": "slide", "settings": { "asset_image": "hero-clothing.webp", "category": "Clothing", "title": "Wear the mark.", "subtitle": "Minimal clothing pieces built around comfort, identity, and quiet detail.", "cta_label": "Shop Clothing" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
