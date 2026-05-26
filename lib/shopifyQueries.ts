@@ -194,3 +194,14 @@ export const cartCreateFromLinesMutation = /* GraphQL */ `
     }
   }
 `
+
+export const shopPoliciesQuery = /* GraphQL */ `
+  query ShopPolicies {
+    shop {
+      privacyPolicy { title body url }
+      refundPolicy { title body url }
+      shippingPolicy { title body url }
+      termsOfService { title body url }
+    }
+  }
+`

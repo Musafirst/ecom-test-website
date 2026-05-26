@@ -8,6 +8,7 @@ import {
   collectionsQuery,
   productByHandleQuery,
   productsQuery,
+  shopPoliciesQuery,
 } from '@/lib/shopifyQueries'
 import type { JammProduct, ProductCategory, ProductCollection, ProductSubcategory } from '@/types/product'
 
@@ -324,6 +325,24 @@ export async function createShopifyCartFromLines(lines: { variantId: string; qua
     },
   })
 }
+
+export type ShopPolicy = {
+  title: string
+  body: string
+  url: string
+}
+
+export type ShopPolicies = {
+  privacyPolicy: ShopPolicy | null
+  refundPolicy: ShopPolicy | null
+  shippingPolicy: ShopPolicy | null
+  termsOfService: ShopPolicy | null
+}
+
+export const getShopifyPolicies = cache(async (): Promise<ShopPolicies | null> => {
+  const data = await shopifyFetch<{ shop: ShopPolicies }>(shopPoliciesQuery)
+  return data?.shop ?? null
+})
 
 export async function addShopifyCartLines(cartId: string, variantId: string, quantity: number) {
   return shopifyFetch<{

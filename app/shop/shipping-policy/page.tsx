@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { PolicyPage } from '@/components/legal/PolicyPage'
+import { getShopifyPolicies } from '@/lib/shopify'
 
 export const metadata: Metadata = {
   title: 'Shipping Policy',
@@ -9,36 +10,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ShippingPolicyPage() {
+export default async function ShippingPolicyPage() {
+  const policies = await getShopifyPolicies()
+  const policy = policies?.shippingPolicy
+
   return (
     <PolicyPage
       title="Shipping Policy"
-      intro="Jamm Trade ships eligible orders with tracked delivery and careful packaging for fragrances, electronics, and curated essentials."
+      html={policy?.body}
+      intro="Jamm Trade ships eligible orders with tracked delivery. Processing takes 1–3 business days."
       sections={[
         {
-          heading: 'Processing Time',
-          body: [
-            'Orders are typically processed within 1 to 3 business days after payment is confirmed, excluding weekends and holidays.',
-          ],
-        },
-        {
-          heading: 'Shipping Rates and Delivery',
-          body: [
-            'Shipping rates, available methods, estimated delivery dates, taxes, and duties are calculated at secure Shopify checkout before payment is completed.',
-            'Delivery estimates are provided by the carrier and may vary due to address accuracy, weather, carrier volume, or customs processing.',
-          ],
-        },
-        {
-          heading: 'Tracking',
-          body: [
-            'When tracking is available, customers receive shipment details by email after the order has been fulfilled.',
-          ],
-        },
-        {
-          heading: 'Address Accuracy',
-          body: [
-            'Customers are responsible for entering a complete and accurate shipping address. Contact Jamm Trade quickly if an address needs correction before fulfillment.',
-          ],
+          heading: 'Delivery',
+          body: ['United States 3–7 business days. International 7–21 business days. Shipping rates calculated at checkout.'],
         },
       ]}
     />

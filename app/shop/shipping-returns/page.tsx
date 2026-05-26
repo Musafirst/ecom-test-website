@@ -18,13 +18,14 @@ export default function ShippingReturnsPage() {
         {
           heading: 'Shipping',
           body: [
-            'Orders are typically processed within 1 to 3 business days after payment confirmation. Shipping rates and delivery estimates are confirmed during secure Shopify checkout.',
+            'Orders are typically processed within 1–3 business days after payment confirmation. Shipping rates and delivery estimates are confirmed during secure Shopify checkout.',
+            'Estimated delivery: United States 3–7 business days, international 7–21 business days.',
           ],
         },
         {
           heading: 'Returns',
           body: [
-            'Eligible return requests must be made within 14 days of delivery. Items must be unused, unopened, and in original retail packaging unless the item arrived damaged or incorrect.',
+            'Eligible return requests must be made within 14 days of delivery. Items must be unused, with original tags and packaging, unless the item arrived damaged or incorrect.',
           ],
         },
         {
