@@ -36,15 +36,32 @@ export function WelcomePopup() {
     setVisible(false)
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError('Please enter a valid email address.')
       return
     }
     setError('')
-    localStorage.setItem(STORAGE_KEY, '1')
-    setClaimed(true)
+
+    try {
+      const res  = await fetch('/api/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email }),
+      })
+      const data = await res.json() as { code?: string; error?: string; alreadyClaimed?: boolean }
+
+      if (!res.ok) {
+        setError(data.error ?? 'Something went wrong. Please try again.')
+        return
+      }
+
+      localStorage.setItem(STORAGE_KEY, '1')
+      setClaimed(true)
+    } catch {
+      setError('Network error. Please try again.')
+    }
   }
 
   function handleCopy() {
