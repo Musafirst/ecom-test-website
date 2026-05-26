@@ -246,7 +246,14 @@ export function TabNav() {
               ))}
             </nav>
 
-            <div className="mt-auto border-t border-jamm-dark/10 px-5 py-5">
+            <div className="mt-auto border-t border-jamm-dark/10 px-5 py-5 flex flex-col gap-2">
+              <Link
+                href="/shop/about"
+                onClick={() => setMobileOpen(false)}
+                className="font-sans text-sm text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
+              >
+                About Jamm Trade
+              </Link>
               <Link
                 href="mailto:contact@jammtrade.com"
                 onClick={() => setMobileOpen(false)}

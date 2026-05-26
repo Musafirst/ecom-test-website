@@ -4,6 +4,7 @@ import { BorderBeam } from '@/components/ui/border-beam'
 
 const footerLinks = [
   { label: 'Shop', href: '/shop' },
+  { label: 'About', href: '/shop/about' },
   { label: 'Contact', href: '/shop/contact' },
   { label: 'Shipping & Returns', href: '/shop/shipping-policy' },
   { label: 'Privacy Policy', href: '/shop/privacy-policy' },
