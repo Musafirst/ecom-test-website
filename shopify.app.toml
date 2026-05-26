@@ -1,0 +1,15 @@
+name = "Jamm Trade Admin"
+client_id = "b63704e1c1dc653a6f024f499086b46c"
+application_url = "https://jammtrade.com"
+embedded = false
+
+[access_scopes]
+scopes = "write_legal,read_legal"
+
+[auth]
+redirect_urls = [
+  "https://jammtrade.com/api/auth/shopify/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
