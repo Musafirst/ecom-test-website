@@ -23,7 +23,7 @@ export default async function PrivacyPolicyPage() {
       sections={[
         {
           heading: 'Contact',
-          body: ['For privacy questions, contact us at contact@jammtrade.com or at 100 Branford Road, Darby, PA, 19023, US.'],
+          body: ['For privacy questions, contact us at contact@jammtrade.com.'],
         },
       ]}
     />

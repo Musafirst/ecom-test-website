@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'About Jamm Trade',
-  description: 'Jamm Trade is a US-based curated store offering authentic fragrances, electronics, and essentials. Based in Darby, PA.',
+  description: 'Jamm Trade is a US-based curated store offering authentic fragrances, electronics, and essentials.',
   alternates: {
     canonical: '/shop/about',
   },
@@ -53,7 +53,7 @@ const values = [
 
 const businessInfo = [
   { label: 'Business name', value: 'Jamm Trade' },
-  { label: 'Address', value: '100 Branford Road, Darby, PA, 19023, US' },
+  { label: 'Location', value: 'United States' },
   { label: 'Email', value: 'contact@jammtrade.com', href: 'mailto:contact@jammtrade.com' },
   { label: 'Support hours', value: 'Monday – Friday, 10:00 AM – 6:00 PM ET' },
   { label: 'Checkout', value: 'Secure Shopify checkout' },
