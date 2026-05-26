@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const CLIENT_ID     = 'b63704e1c1dc653a6f024f499086b46c'
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET ?? ''
-const STORE         = 'shop.jammtrade.com'
+const STORE         = 'jamm-trade.myshopify.com'
 
 const PRIVACY_POLICY = `<p>Jamm Trade respects customer privacy. This policy explains how information is used to operate the storefront, process orders, and support customers.</p>
 <h2>Information We Collect</h2>
@@ -94,6 +94,7 @@ async function updatePolicies(token: string) {
 }
 
 export async function GET(req: NextRequest) {
+  try {
   const { searchParams } = new URL(req.url)
   const code  = searchParams.get('code')
   const error = searchParams.get('error')
@@ -142,6 +143,11 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
       <h2>❌ Policy update failed</h2><pre>${err}</pre>
+    </body></html>`, { headers: { 'Content-Type': 'text/html' } })
+  }
+  } catch (err) {
+    return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
+      <h2>❌ Unexpected error</h2><pre>${String(err)}</pre>
     </body></html>`, { headers: { 'Content-Type': 'text/html' } })
   }
 }
