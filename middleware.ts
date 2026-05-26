@@ -1,99 +1,84 @@
 /**
- * Next.js Edge Middleware — runs before every request.
+ * Request guard for the public storefront.
  *
  * Responsibilities:
- *  1. Security headers on all responses (clickjacking, MIME sniffing, HSTS…)
- *  2. CORS — API routes only accept browser requests from jammtrade.com
- *  3. Block requests with no User-Agent (bots / scanners)
+ * 1. Apply security headers before the page or API route runs.
+ * 2. Allow browser API calls only from the configured storefront origins.
+ * 3. Keep Shopify webhooks server-to-server only.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { allowedStorefrontOrigins, siteUrl } from '@/lib/site'
 
-const IS_PROD    = process.env.NODE_ENV === 'production'
-const SITE_ORIGIN = 'https://jammtrade.com'
-
-// Routes that must only be called server-to-server (no browser Origin allowed)
+const IS_PROD = process.env.NODE_ENV === 'production'
 const WEBHOOK_PATHS = ['/api/webhooks/']
+
+function isWebhookPath(pathname: string) {
+  return WEBHOOK_PATHS.some((path) => pathname.startsWith(path))
+}
+
+function corsOriginFor(origin: string | null) {
+  return origin && allowedStorefrontOrigins.has(origin) ? origin : siteUrl
+}
+
+function applySecurityHeaders(response: NextResponse) {
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('Content-Security-Policy', "frame-ancestors 'none'")
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-DNS-Prefetch-Control', 'off')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(self)')
+
+  if (IS_PROD) {
+    response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
+  }
+}
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
-  const origin       = req.headers.get('origin')
-  const userAgent    = req.headers.get('user-agent') ?? ''
+  const origin = req.headers.get('origin')
+  const userAgent = req.headers.get('user-agent') ?? ''
 
-  // ── 1. Block empty User-Agent (automated scanners) ───────────────────────
-  if (!userAgent && !pathname.startsWith('/api/webhooks/')) {
+  if (!userAgent && !isWebhookPath(pathname)) {
     return new NextResponse('Forbidden', { status: 403 })
   }
 
-  // ── 2. CORS enforcement on API routes ────────────────────────────────────
   if (pathname.startsWith('/api/')) {
+    const isWebhook = isWebhookPath(pathname)
 
-    // Webhook routes: must NOT come from a browser (no Origin header expected)
-    const isWebhook = WEBHOOK_PATHS.some((p) => pathname.startsWith(p))
+    // Shopify webhooks are server-to-server requests and should not have an Origin.
     if (isWebhook && origin) {
-      // Shopify sends server-to-server — no Origin header; reject any browser call
       return new NextResponse('Forbidden', { status: 403 })
     }
 
-    // Non-webhook API: block cross-origin browser requests from unknown origins
-    if (!isWebhook && origin && origin !== SITE_ORIGIN) {
+    if (!isWebhook && origin && !allowedStorefrontOrigins.has(origin)) {
       return new NextResponse('Forbidden', { status: 403 })
     }
 
-    // Handle CORS preflight
     if (req.method === 'OPTIONS') {
       return new NextResponse(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin':  SITE_ORIGIN,
+          'Access-Control-Allow-Origin': corsOriginFor(origin),
           'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Max-Age':       '86400',
+          'Access-Control-Max-Age': '86400',
         },
       })
     }
   }
 
-  // ── 3. Build response with security headers ───────────────────────────────
-  const res = NextResponse.next()
+  const response = NextResponse.next()
+  applySecurityHeaders(response)
 
-  // Prevent clickjacking
-  res.headers.set('X-Frame-Options', 'DENY')
-  res.headers.set('Content-Security-Policy', "frame-ancestors 'none'")
-
-  // Prevent MIME-type sniffing
-  res.headers.set('X-Content-Type-Options', 'nosniff')
-
-  // Disable DNS prefetching (privacy)
-  res.headers.set('X-DNS-Prefetch-Control', 'off')
-
-  // Limit referrer info sent to third parties
-  res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-
-  // Restrict browser feature access
-  res.headers.set(
-    'Permissions-Policy',
-    'camera=(), microphone=(), geolocation=(), payment=(self)',
-  )
-
-  // Force HTTPS for 2 years (production only)
-  if (IS_PROD) {
-    res.headers.set(
-      'Strict-Transport-Security',
-      'max-age=63072000; includeSubDomains; preload',
-    )
+  if (pathname.startsWith('/api/') && origin && allowedStorefrontOrigins.has(origin)) {
+    response.headers.set('Access-Control-Allow-Origin', origin)
   }
 
-  // Set CORS header for same-origin API responses
-  if (pathname.startsWith('/api/') && origin === SITE_ORIGIN) {
-    res.headers.set('Access-Control-Allow-Origin', SITE_ORIGIN)
-  }
-
-  return res
+  return response
 }
 
 export const config = {
-  // Run on every route except Next.js internals and static assets
   matcher: [
     '/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|woff2?|ttf|eot)).*)',
   ],

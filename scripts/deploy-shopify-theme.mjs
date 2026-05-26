@@ -1,11 +1,20 @@
 /**
- * Uploads and publishes the Jamm Trade Shopify theme via Admin API.
+ * Uploads the Jamm Trade Shopify theme via Admin API.
+ *
+ * Shopify is intended to stay backend-only for Jamm Trade. The Vercel/Next.js
+ * app is the public storefront; Shopify should provide products, cart, orders,
+ * policies, and secure checkout. This script therefore uploads themes as
+ * unpublished by default and only publishes when explicitly allowed.
  *
  * Setup:
  *   1. Shopify Admin → Settings → Apps → Develop apps → Create app
  *   2. Admin API scopes: write_themes, read_themes
  *   3. Install app and copy the Admin API access token
  *   4. Run: SHOPIFY_ADMIN_TOKEN=<token> node scripts/deploy-shopify-theme.mjs
+ *
+ * Optional:
+ *   Set PUBLISH_SHOPIFY_THEME=true only if you intentionally want Shopify to
+ *   become the public storefront for its attached sales channel/domain.
  */
 
 import { readFileSync } from 'fs'
@@ -17,6 +26,7 @@ const ROOT = resolve(__dirname, '..')
 
 const STORE  = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com'
 const TOKEN  = process.env.SHOPIFY_ADMIN_TOKEN
+const SHOULD_PUBLISH = process.env.PUBLISH_SHOPIFY_THEME === 'true'
 
 if (!TOKEN) {
   console.error('Error: set SHOPIFY_ADMIN_TOKEN=<token> before running.')
@@ -76,11 +86,17 @@ if (!ready) {
 }
 console.log('\n✅ Theme processed.')
 
-// ── 4. Publish ─────────────────────────────────────────────────────────────
-console.log('🚀 Publishing theme...')
+// ── 4. Publish only when explicitly requested ──────────────────────────────
+if (!SHOULD_PUBLISH) {
+  console.log('Theme upload complete. It remains unpublished so Vercel/Next.js stays the public storefront.')
+  console.log('To publish intentionally, rerun with PUBLISH_SHOPIFY_THEME=true.')
+  process.exit(0)
+}
+
+console.log('Publishing theme because PUBLISH_SHOPIFY_THEME=true...')
 await api(`/themes/${theme.id}.json`, {
   method: 'PUT',
   body: JSON.stringify({ theme: { id: theme.id, role: 'main' } }),
 })
-console.log('🎉 Theme published! Your Shopify store is now live with the latest changes.')
+console.log('Theme published.')
 console.log(`   https://${STORE}`)

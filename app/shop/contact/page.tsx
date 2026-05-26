@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -29,8 +30,8 @@ export default function ContactPage() {
           <div className="space-y-6 font-sans text-sm leading-relaxed text-jamm-dark/68">
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Email</h2>
-              <Link href="mailto:contact@jammtrade.com" className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
-                contact@jammtrade.com
+              <Link href={`mailto:${site.supportEmail}`} className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
+                {site.supportEmail}
               </Link>
             </div>
             <div>

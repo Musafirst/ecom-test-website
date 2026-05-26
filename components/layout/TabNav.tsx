@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { site } from '@/lib/site'
 
 const tabs = [
   { label: 'Shop', href: '/shop', soon: false },
@@ -13,7 +14,7 @@ const tabs = [
   { label: 'Jamm Cargo', href: '/jamm-cargo', soon: true },
 ]
 
-const liveSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://jammtrade.com'
+const liveSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.defaultUrl
 
 export function TabNav() {
   const pathname = usePathname()
@@ -164,7 +165,7 @@ export function TabNav() {
             )}
             {!isShop && (
               <Link
-                href="mailto:contact@jammtrade.com"
+                href={`mailto:${site.supportEmail}`}
                 className="hidden rounded-full border border-jamm-gold/40 px-4 py-2 font-sans text-sm text-jamm-dark/70 transition-colors duration-200 hover:border-jamm-gold hover:text-jamm-dark sm:inline-flex"
               >
                 Contact
@@ -255,11 +256,11 @@ export function TabNav() {
                 About Jamm Trade
               </Link>
               <Link
-                href="mailto:contact@jammtrade.com"
+                href={`mailto:${site.supportEmail}`}
                 onClick={() => setMobileOpen(false)}
                 className="font-sans text-sm text-jamm-dark/40 transition-colors duration-200 hover:text-jamm-gold"
               >
-                contact@jammtrade.com
+                {site.supportEmail}
               </Link>
             </div>
           </motion.div>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'About Jamm Trade',
@@ -21,7 +22,7 @@ const values = [
   },
   {
     heading: 'Curated with Intention',
-    body: 'We select each product carefully — rare fragrances, reliable electronics, and everyday essentials chosen for quality and value.',
+    body: 'We select each product carefully: rare fragrances, reliable electronics, and everyday essentials chosen for quality and value.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 text-jamm-gold" aria-hidden="true">
         <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
@@ -41,7 +42,7 @@ const values = [
   },
   {
     heading: 'US-Based & Shipping Worldwide',
-    body: 'We ship from the United States with tracked delivery. Domestic orders arrive in 3–7 business days; international in 7–21.',
+    body: 'We ship from the United States with tracked delivery. Domestic orders arrive in 3-7 business days; international in 7-21.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 text-jamm-gold" aria-hidden="true">
         <circle cx="12" cy="12" r="9" />
@@ -54,8 +55,8 @@ const values = [
 const businessInfo = [
   { label: 'Business name', value: 'Jamm Trade' },
   { label: 'Location', value: 'United States' },
-  { label: 'Email', value: 'contact@jammtrade.com', href: 'mailto:contact@jammtrade.com' },
-  { label: 'Support hours', value: 'Monday – Friday, 10:00 AM – 6:00 PM ET' },
+  { label: 'Email', value: site.supportEmail, href: `mailto:${site.supportEmail}` },
+  { label: 'Support hours', value: 'Monday-Friday, 10:00 AM-6:00 PM ET' },
   { label: 'Checkout', value: 'Secure Shopify checkout' },
 ]
 
@@ -119,7 +120,7 @@ export default function AboutPage() {
             {[
               {
                 category: 'Fragrances',
-                description: 'Rare and everyday perfumes spanning Oud, Amber, and Daily collections — sourced for authenticity and character.',
+                description: 'Rare and everyday perfumes spanning Oud, Amber, and Daily collections, sourced for authenticity and character.',
               },
               {
                 category: 'Electronics',

@@ -50,7 +50,7 @@ export async function getFeaturedProducts() {
   return (fragranceProducts.length > 0 ? fragranceProducts : products).slice(0, 4)
 }
 
-// Perfume category — all fragrance products across oud, amber, and daily.
+// Perfume category: all fragrance products across oud, amber, and daily.
 export async function getPerfumeProducts() {
   const products = await getShopifyProducts()
   const perfumeProducts = products.filter((product) => product.category === 'perfume')

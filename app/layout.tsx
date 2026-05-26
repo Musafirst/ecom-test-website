@@ -5,6 +5,7 @@ import { TabNav } from '@/components/layout/TabNav'
 import { Footer } from '@/components/layout/Footer'
 import BackgroundComponents from '@/components/ui/background-components'
 import { WelcomePopup } from '@/components/ui/WelcomePopup'
+import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -20,21 +21,18 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://jammtrade.com')
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Jamm Trade',
-    template: '%s | Jamm Trade',
+    default: site.name,
+    template: `%s | ${site.name}`,
   },
-  description: 'Rare fragrances. Curated for those who know the difference.',
+  description: site.description,
   openGraph: {
     type: 'website',
-    siteName: 'Jamm Trade',
-    title: 'Jamm Trade',
-    description: 'Rare fragrances. Curated for those who know the difference.',
+    siteName: site.name,
+    title: site.name,
+    description: site.description,
     url: '/',
     images: [
       {
@@ -47,8 +45,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jamm Trade',
-    description: 'Rare fragrances. Curated for those who know the difference.',
+    title: site.name,
+    description: site.description,
     images: ['/images/hero-main-commerce.webp'],
   },
   icons: {
@@ -70,20 +68,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {
         '@type': 'Organization',
         '@id': `${siteUrl}/#organization`,
-        name: 'Jamm Trade',
+        name: site.name,
         url: siteUrl,
-        logo: `${siteUrl}/brand_assets/icons/jammtrade-favicon-512.png`,
+        logo: absoluteSiteUrl('/brand_assets/icons/jammtrade-favicon-512.png'),
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
-          email: 'contact@jammtrade.com',
+          email: site.supportEmail,
           availableLanguage: 'en',
         },
       },
       {
         '@type': 'WebSite',
         '@id': `${siteUrl}/#website`,
-        name: 'Jamm Trade',
+        name: site.name,
         url: siteUrl,
         publisher: {
           '@id': `${siteUrl}/#organization`,

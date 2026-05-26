@@ -1,6 +1,11 @@
-# Shopify Integration Guide
+# Shopify Backend Commerce Guide
 
-This storefront is Shopify-first, with local demo data as a fallback.
+The public storefront is the Vercel/Next.js app in this repository. Shopify is
+used as the backend commerce system for product data, inventory availability,
+legal policies, cart creation, orders, and secure checkout.
+
+Customers should browse product and collection pages on the Next.js site. They
+only leave the site when the app sends them to the Shopify-hosted checkout URL.
 
 ## Environment
 
@@ -39,13 +44,30 @@ If either value is missing, product grids and product pages fall back to `data/p
 4. The returned Shopify `checkoutUrl` is stored in `localStorage`.
 5. `CheckoutCart` sends the customer to Shopify checkout when that URL exists.
 
+## Public Storefront Rules
+
+- Keep `NEXT_PUBLIC_SITE_URL` set to the Vercel/Next.js production domain, such
+  as `https://jammtrade.com` or `https://www.jammtrade.com`.
+- Keep `SHOPIFY_STORE_DOMAIN` set to the Shopify backend domain, usually the
+  permanent `*.myshopify.com` domain. Do not use it as the canonical website URL.
+- Do not point the primary public domain away from Vercel unless you want
+  Shopify to become the visible website.
+- Do not publish a Shopify theme as a replacement storefront. The helper script
+  `scripts/deploy-shopify-theme.mjs` now uploads themes as unpublished by
+  default; publishing requires `PUBLISH_SHOPIFY_THEME=true`.
+- Use Shopify Admin for backend commerce changes: products, variants, stock,
+  shipping rates, taxes, payments, policies, and orders.
+- Use this repo for public website changes: layout, navigation, SEO, product
+  pages, collections, cart UI, and legal page presentation.
+
 ## Common Bug Checks
 
 - Build logs show `401 Unauthorized`: confirm `SHOPIFY_STOREFRONT_ACCESS_TOKEN` is a Storefront API token for this exact shop, not an Admin API token, and that the Storefront API sales channel/app is enabled.
 - Product missing from a collection: check the Shopify collection handle/title, product type, and tags. Mapping rules live in `getProductCollection`, `getCategory`, and `getSubcategory` in `lib/shopify.ts`.
 - Product page says out of stock: check selected variant availability in Shopify. Exact stock counts require the `unauthenticated_read_product_inventory` Storefront API scope; this app only uses `availableForSale` by default.
 - Add to cart works locally but not in Shopify: confirm the product has variants and the mapped `variantId` is present.
-- Checkout button opens email instead of Shopify: the Shopify cart API call failed or env vars are missing.
+- Checkout button does not open Shopify: the Shopify cart API call failed, env
+  vars are missing, or the request origin is not included in `middleware.ts`.
 - Images fail in production: add the Shopify image hostname to `next.config.mjs` remote image patterns if it is not already allowed.
 
 ## Verification

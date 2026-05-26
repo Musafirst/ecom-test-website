@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { site } from '@/lib/site'
 
 const footerLinks = [
   { label: 'Shop', href: '/shop' },
@@ -65,7 +66,7 @@ export function Footer() {
                 disabled
               />
               <a
-                href="mailto:contact@jammtrade.com"
+                href={`mailto:${site.supportEmail}`}
                 className="flex h-10 items-center whitespace-nowrap rounded-md bg-jamm-dark px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
               >
                 Subscribe
@@ -77,7 +78,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex items-center justify-between border-t border-jamm-gold/18 px-5 py-4 sm:px-8">
           <p className="font-sans text-xs text-jamm-dark/38">
-            &copy; {new Date().getFullYear()} Jamm Trade. All rights reserved.
+            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-3.5">
             <a

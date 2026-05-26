@@ -6,6 +6,7 @@ import { ProductDetailGallery } from '@/components/product/ProductDetailGallery'
 import { ProductPurchasePanel } from '@/components/product/ProductPurchasePanel'
 import { PriceDisplay } from '@/components/product/PriceDisplay'
 import { getAllProducts, getProductByHandle } from '@/lib/products'
+import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
 import type { JammProduct } from '@/types/product'
 
 interface ProductPageProps {
@@ -13,9 +14,6 @@ interface ProductPageProps {
     handle: string
   }>
 }
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://jammtrade.com')
 
 function uniqueImages(images: string[]) {
   return images.filter((image, index) => Boolean(image) && images.indexOf(image) === index)
@@ -26,12 +24,8 @@ function cleanProductTitle(title: string) {
 }
 
 function cleanProductDescription(product: JammProduct) {
-  const fallback = `${cleanProductTitle(product.title)} from Jamm Trade. Premium ${product.categoryLabel.toLowerCase()} selection with secure checkout.`
+  const fallback = `${cleanProductTitle(product.title)} from ${site.name}. Premium ${product.categoryLabel.toLowerCase()} selection with secure checkout.`
   return (product.description ?? fallback).replace(/\s+/g, ' ').trim()
-}
-
-function absoluteUrl(url: string) {
-  return url.startsWith('http') ? url : `${siteUrl}${url.startsWith('/') ? url : `/${url}`}`
 }
 
 function getProductGalleryImages(product: JammProduct) {
@@ -65,12 +59,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     },
     openGraph: {
       type: 'website',
-      title: `${title} | Jamm Trade`,
+      title: `${title} | ${site.name}`,
       description,
       url: `${siteUrl}/shop/product/${product.handle}`,
       images: [
         {
-          url: absoluteUrl(product.image),
+          url: absoluteSiteUrl(product.image),
           width: 1200,
           height: 1200,
           alt: product.imageAlt,
@@ -79,9 +73,9 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | Jamm Trade`,
+      title: `${title} | ${site.name}`,
       description,
-      images: [absoluteUrl(product.image)],
+      images: [absoluteSiteUrl(product.image)],
     },
   }
 }
@@ -118,10 +112,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         '@id': `${productUrl}#product`,
         name: productTitle,
         description: productDescription,
-        image: galleryImages.map(absoluteUrl),
+        image: galleryImages.map(absoluteSiteUrl),
         brand: {
           '@type': 'Brand',
-          name: product.brand || 'Jamm Trade',
+          name: product.brand || site.name,
         },
         sku: product.id,
         category: product.categoryLabel,
@@ -136,7 +130,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           itemCondition: 'https://schema.org/NewCondition',
           seller: {
             '@type': 'Organization',
-            name: 'Jamm Trade',
+            name: site.name,
             url: siteUrl,
           },
         },
