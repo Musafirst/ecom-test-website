@@ -58,7 +58,7 @@ const TERMS_OF_SERVICE = `<p>These terms govern use of the Jamm Trade storefront
 <p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>`
 
 async function updatePolicies(token: string) {
-  const res = await fetch(`https://${STORE}/admin/api/2024-01/graphql.json`, {
+  const res = await fetch(`https://${STORE}/admin/api/2023-04/graphql.json`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
