@@ -125,7 +125,7 @@ const TERMS_OF_SERVICE = `<p>These Terms of Service ("Terms") govern your use of
 <p>For questions about these Terms, contact Jamm Trade LLC at: contact@jammtrade.com. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
 
 type AdminImage   = { id: number; alt: string | null }
-type AdminVariant = { id: number; title: string; option1: string }
+type AdminVariant = { id: number; title: string; option1: string; price: string; compareAtPrice: string | null }
 type AdminProduct = { id: number; title: string; vendor: string; images: AdminImage[]; variants: AdminVariant[] }
 
 async function adminFetch(path: string, token: string, method = 'GET', body?: unknown) {
@@ -143,7 +143,7 @@ const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
 async function fixProducts(token: string): Promise<string[]> {
   const { products }: { products: AdminProduct[] } = await adminFetch(
-    '/products.json?limit=250&fields=id,title,vendor,images,variants',
+    '/products.json?limit=250&fields=id,title,vendor,images,variants&variants[]=id&variants[]=title&variants[]=option1&variants[]=price&variants[]=compare_at_price',
     token,
   )
 
@@ -185,7 +185,7 @@ async function fixProducts(token: string): Promise<string[]> {
       log.push(`Title fixed: "Wireless Earbuds" → "${fixed}"`)
     }
 
-    // ── 4. Rename "Case of 1" variant to customer-friendly "1 Bottle" ────────
+    // ── 4. Fix variant title "Case of 1" → "1 Bottle", "Title" → "Default Title"
     for (const variant of product.variants ?? []) {
       if (variant.title === 'Case of 1') {
         await delay(550)
@@ -193,6 +193,44 @@ async function fixProducts(token: string): Promise<string[]> {
           variant: { id: variant.id, option1: '1 Bottle' },
         })
         log.push(`Variant fixed on "${product.title}": "Case of 1" → "1 Bottle"`)
+      }
+      if (variant.title === 'Title') {
+        await delay(550)
+        await adminFetch(`/variants/${variant.id}.json`, token, 'PUT', {
+          variant: { id: variant.id, option1: 'Default Title' },
+        })
+        log.push(`Variant fixed on "${product.title}": "Title" → "Default Title"`)
+      }
+    }
+
+    // ── 5. Sync image alt text to match the current product title ────────────
+    // Catches cases where the title was fixed but the image alt text still has
+    // the old value (e.g. Aura 360 typo was fixed in the title but not images).
+    for (const img of product.images ?? []) {
+      if (img.alt && img.alt !== product.title && !/wholesale/i.test(img.alt)) {
+        // Only fix if the alt text looks like a stale product-name string
+        // (contains the product's handle keywords), not a curated descriptive alt.
+        const titleWords = product.title.toLowerCase().split(/\s+/).filter(w => w.length > 4)
+        const altLower   = img.alt.toLowerCase()
+        const overlap    = titleWords.filter(w => altLower.includes(w)).length
+        if (overlap >= 3) {
+          await delay(550)
+          await adminFetch(`/products/${product.id}/images/${img.id}.json`, token, 'PUT', {
+            image: { id: img.id, alt: product.title },
+          })
+          log.push(`Alt text synced for "${product.title}"`)
+        }
+      }
+    }
+
+    // ── 6. Remove compareAtPrice when it is ≤ the actual price (data error) ──
+    for (const variant of product.variants ?? []) {
+      if (variant.compareAtPrice !== null && parseFloat(variant.compareAtPrice) <= parseFloat(variant.price)) {
+        await delay(550)
+        await adminFetch(`/variants/${variant.id}.json`, token, 'PUT', {
+          variant: { id: variant.id, compare_at_price: null },
+        })
+        log.push(`Removed invalid compareAtPrice on "${product.title}"`)
       }
     }
   }
