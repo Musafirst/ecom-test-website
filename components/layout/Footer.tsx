@@ -3,13 +3,21 @@ import Link from 'next/link'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { site } from '@/lib/site'
 
-const footerLinks = [
+const shopLinks = [
   { label: 'Shop', href: '/shop' },
   { label: 'About', href: '/shop/about' },
   { label: 'Contact', href: '/shop/contact' },
-  { label: 'Shipping & Returns', href: '/shop/shipping-policy' },
-  { label: 'Privacy Policy', href: '/shop/privacy-policy' },
+]
+
+const serviceLinks = [
+  { label: 'Jamm Cargo', href: '/jamm-cargo' },
+  { label: 'Jamm Fleet', href: '/jamm-fleet' },
+]
+
+const legalLinks = [
+  { label: 'Shipping Policy', href: '/shop/shipping-policy' },
   { label: 'Refund Policy', href: '/shop/refund-policy' },
+  { label: 'Privacy Policy', href: '/shop/privacy-policy' },
   { label: 'Terms of Service', href: '/shop/terms-of-service' },
 ]
 
@@ -19,7 +27,7 @@ export function Footer() {
       <div className="relative mx-auto max-w-[1560px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_50px_rgba(12,11,9,0.07)] sm:rounded-[22px]">
         <BorderBeam size={480} duration={14} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={2} />
 
-        <div className="grid grid-cols-1 gap-8 px-5 py-8 sm:px-8 md:grid-cols-[auto_1fr_auto] md:items-start md:gap-10 md:py-12 lg:py-14">
+        <div className="grid grid-cols-1 gap-8 px-5 py-8 sm:px-8 md:grid-cols-[auto_1fr_1fr_1fr] md:items-start md:gap-8 md:py-12 lg:py-14">
           {/* Brand */}
           <div className="flex flex-col">
             <Link href="/shop" className="inline-flex flex-shrink-0 items-center">
@@ -36,9 +44,10 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Links */}
-          <nav className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2.5 md:justify-center md:pt-3">
-            {footerLinks.map((link) => (
+          {/* Shop links */}
+          <nav aria-label="Shop navigation" className="flex flex-col gap-2 md:pt-1">
+            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Shop</p>
+            {shopLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
@@ -49,36 +58,46 @@ export function Footer() {
             ))}
           </nav>
 
-          {/* Newsletter */}
-          <div className="md:pt-3">
-            <p className="mb-3 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">
-              Stay in the loop
-            </p>
-            <div className="flex gap-2">
-              <label htmlFor="footer-newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="footer-newsletter-email"
-                type="email"
-                placeholder="your@email.com"
-                className="h-10 min-w-0 flex-1 rounded-md border border-jamm-gold/30 bg-white/55 px-3 font-sans text-sm text-jamm-dark placeholder-jamm-dark/32 outline-none transition-colors focus:border-jamm-gold/60 disabled:cursor-not-allowed disabled:opacity-60 md:w-44"
-                disabled
-              />
-              <a
-                href={`mailto:${site.supportEmail}`}
-                className="flex h-10 items-center whitespace-nowrap rounded-md bg-jamm-dark px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
+          {/* Services links */}
+          <nav aria-label="Services navigation" className="flex flex-col gap-2 md:pt-1">
+            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Services</p>
+            {serviceLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
               >
-                Subscribe
-              </a>
-            </div>
-          </div>
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Legal links */}
+          <nav aria-label="Legal navigation" className="flex flex-col gap-2 md:pt-1">
+            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Policies</p>
+            {legalLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Retailer disclaimer */}
+        <div className="border-t border-jamm-gold/15 px-5 py-4 sm:px-8">
+          <p className="max-w-3xl font-sans text-[11px] leading-relaxed text-jamm-dark/42">
+            Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.
+          </p>
         </div>
 
         {/* Bottom bar */}
         <div className="flex items-center justify-between border-t border-jamm-gold/18 px-5 py-4 sm:px-8">
           <p className="font-sans text-xs text-jamm-dark/38">
-            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {site.name} LLC. All rights reserved.
           </p>
           <div className="flex items-center gap-3.5">
             <a

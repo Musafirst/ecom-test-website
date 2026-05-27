@@ -292,7 +292,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-10">
       <div className="mx-auto grid max-w-[1560px] grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
         <div className="flex flex-col justify-center">
-          <SectionLabel>Coming Soon</SectionLabel>
+          <SectionLabel>Category</SectionLabel>
           <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
             {category.name}
           </h1>
@@ -302,13 +302,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-jamm-muted">
             {category.detail}
           </p>
+          <p className="mt-4 max-w-xl font-sans text-xs leading-relaxed text-jamm-dark/45">
+            Products in this category are fulfilled via print-on-demand. New items are added regularly. Contact us if you have a specific request.
+          </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="mailto:contact@jammtrade.com"
               className="inline-flex items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-jamm-gold hover:text-jamm-dark"
             >
-              Get Notified
+              Contact for Requests
             </Link>
             <Link
               href="/shop"

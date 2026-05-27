@@ -29,12 +29,12 @@ export const categoryDetails = {
   },
   clothing: {
     name: 'Clothing',
-    intro: 'Jamm Trade apparel with the lotus mark across everyday essentials.',
-    detail: 'Clothing stays planned for a later release.',
+    intro: 'Jamm Trade branded apparel with the lotus mark across everyday essentials.',
+    detail: 'Hoodies, tees, and essentials printed on demand. Each piece carries the Jamm Trade identity.',
   },
   electronics: {
     name: 'Electronics',
-    intro: 'Headphones, audio, and smartwatches selected as a secondary Jamm Trade category.',
-    detail: 'Electronics are prepared in product data for future Shopify upload, with perfumes remaining the main focus.',
+    intro: 'Headphones, audio accessories, and smartwatches selected for quality and everyday use.',
+    detail: 'A curated secondary category featuring trusted audio and wearable brands.',
   },
 } as const

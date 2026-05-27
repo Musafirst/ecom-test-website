@@ -4,7 +4,7 @@ import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'About Jamm Trade',
-  description: 'Jamm Trade is a US-based curated store offering authentic fragrances, electronics, and essentials.',
+  description: 'Jamm Trade LLC is a US-based independent retailer offering authentic fragrances, electronics, and apparel. Learn about our business, values, and contact information.',
   alternates: {
     canonical: '/shop/about',
   },
@@ -22,7 +22,7 @@ const values = [
   },
   {
     heading: 'Curated with Intention',
-    body: 'We select each product carefully: rare fragrances, reliable electronics, and everyday essentials chosen for quality and value.',
+    body: 'We select each product carefully: rare fragrances, reliable electronics, and everyday apparel chosen for quality and value.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 text-jamm-gold" aria-hidden="true">
         <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
@@ -42,7 +42,7 @@ const values = [
   },
   {
     heading: 'US-Based & Shipping Worldwide',
-    body: 'We ship from the United States with tracked delivery. Domestic orders arrive in 3-7 business days; international in 7-21.',
+    body: 'We ship from the United States with tracked delivery. Domestic orders arrive in 3–7 business days; international in 7–21.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5 text-jamm-gold" aria-hidden="true">
         <circle cx="12" cy="12" r="9" />
@@ -53,10 +53,10 @@ const values = [
 ]
 
 const businessInfo = [
-  { label: 'Business name', value: 'Jamm Trade' },
+  { label: 'Business name', value: 'Jamm Trade LLC' },
   { label: 'Location', value: 'United States' },
   { label: 'Email', value: site.supportEmail, href: `mailto:${site.supportEmail}` },
-  { label: 'Support hours', value: 'Monday-Friday, 10:00 AM-6:00 PM ET' },
+  { label: 'Support hours', value: 'Monday–Friday, 10:00 AM–6:00 PM ET' },
   { label: 'Checkout', value: 'Secure Shopify checkout' },
 ]
 
@@ -75,7 +75,7 @@ export default function AboutPage() {
               Jamm Trade
             </h1>
             <p className="mt-4 font-sans text-sm leading-relaxed text-jamm-dark/68 sm:text-base">
-              Jamm Trade is a US-based curated store offering authentic fragrances, consumer electronics, and everyday essentials. We source products with care and ship directly to customers across the United States and internationally.
+              Jamm Trade LLC is a US-based independent retailer offering authentic fragrances, consumer electronics, and apparel. We source products with care and ship directly to customers across the United States and internationally.
             </p>
             <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-dark/68 sm:text-base">
               Every order is processed through secure Shopify checkout. Our policies are transparent, our products are authentic, and our team is reachable for any questions or concerns.
@@ -108,32 +108,92 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Independent retailer disclaimer */}
+        <div className="flex gap-4 rounded-lg border border-jamm-gold/25 bg-[#EDE8DC] p-5 shadow-[0_10px_30px_rgba(12,11,9,0.04)] sm:p-6">
+          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-jamm-gold/30 bg-white/55">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4 text-jamm-gold" aria-hidden>
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4M12 16h.01" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="font-sans text-sm font-semibold text-jamm-dark">Independent Retailer</h3>
+            <p className="mt-1 font-sans text-xs leading-relaxed text-jamm-dark/60">
+              Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks are the property of their respective owners.
+            </p>
+          </div>
+        </div>
+
         {/* What we sell */}
         <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-10">
           <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
             What we sell
           </p>
           <h2 className="font-serif text-2xl font-light text-jamm-dark sm:text-3xl">
-            Fragrances, Electronics & Essentials
+            Fragrances, Electronics & Apparel
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {[
               {
                 category: 'Fragrances',
                 description: 'Rare and everyday perfumes spanning Oud, Amber, and Daily collections, sourced for authenticity and character.',
+                href: '/shop',
               },
               {
                 category: 'Electronics',
                 description: 'Headphones, earbuds, smartwatches, and audio accessories from trusted brands.',
+                href: '/shop/category/electronics',
               },
               {
-                category: 'Essentials',
-                description: 'Curated everyday items chosen for quality, utility, and value.',
+                category: 'Apparel',
+                description: 'Jamm Trade branded clothing — hoodies, tees, and essentials printed on demand. Each piece carries the Jamm Trade lotus mark.',
+                href: '/shop/category/clothing',
               },
-            ].map(({ category, description }) => (
-              <div key={category} className="rounded-md border border-jamm-gold/15 bg-[#EDE8DC] p-5">
-                <h3 className="font-sans text-sm font-semibold text-jamm-dark">{category}</h3>
+            ].map(({ category, description, href }) => (
+              <Link
+                key={category}
+                href={href}
+                className="group rounded-md border border-jamm-gold/15 bg-[#EDE8DC] p-5 transition-colors duration-200 hover:border-jamm-gold/40"
+              >
+                <h3 className="font-sans text-sm font-semibold text-jamm-dark group-hover:text-jamm-gold transition-colors duration-200">{category}</h3>
                 <p className="mt-2 font-sans text-xs leading-relaxed text-jamm-dark/60">{description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Services */}
+        <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-10">
+          <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
+            Our services
+          </p>
+          <h2 className="font-serif text-2xl font-light text-jamm-dark sm:text-3xl">
+            Beyond the shop
+          </h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {[
+              {
+                name: 'Jamm Cargo',
+                description: 'Quote-based shipping service for sending products from the US to Africa, Europe, and Asia. Submit a request and we will contact you with a quote.',
+                href: '/jamm-cargo',
+                cta: 'Request a quote',
+              },
+              {
+                name: 'Jamm Fleet',
+                description: 'Vehicle rental for gig workers (Uber, DoorDash, Grubhub, Lyft) and personal use. Currently serving Pennsylvania, New Jersey, Delaware, and Maryland.',
+                href: '/jamm-fleet',
+                cta: 'Submit an inquiry',
+              },
+            ].map(({ name, description, href, cta }) => (
+              <div key={name} className="rounded-md border border-jamm-gold/15 bg-[#EDE8DC] p-5">
+                <h3 className="font-sans text-sm font-semibold text-jamm-dark">{name}</h3>
+                <p className="mt-2 font-sans text-xs leading-relaxed text-jamm-dark/60">{description}</p>
+                <Link
+                  href={href}
+                  className="mt-3 inline-flex font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-jamm-gold transition-colors duration-200 hover:text-jamm-dark"
+                >
+                  {cta} →
+                </Link>
               </div>
             ))}
           </div>

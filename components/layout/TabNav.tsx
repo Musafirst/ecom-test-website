@@ -10,8 +10,8 @@ import { site } from '@/lib/site'
 const tabs = [
   { label: 'Shop', href: '/shop', soon: false },
   { label: 'Collections', href: '/shop#collections', soon: false, shopOnly: true },
-  { label: 'Jamm Fleet', href: '/jamm-fleet', soon: true },
-  { label: 'Jamm Cargo', href: '/jamm-cargo', soon: true },
+  { label: 'Jamm Fleet', href: '/jamm-fleet', soon: false },
+  { label: 'Jamm Cargo', href: '/jamm-cargo', soon: false },
 ]
 
 const liveSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.defaultUrl

@@ -199,6 +199,16 @@ function toPrice(value?: ShopifyMoney | null) {
   return value ? Number.parseFloat(value.amount) : undefined
 }
 
+// Shopify product images often have supplier-sourced alt texts that contain
+// "Wholesale" prefixes (e.g. "Oudlash - Wholesale Perfume/Eau de Toilette - …").
+// Those strings would appear in rendered HTML alt attributes and trigger GMC
+// Misrepresentation flags, so we replace them with the product title instead.
+function sanitizeAltText(altText: string | null, productTitle: string): string {
+  if (!altText) return productTitle
+  if (/wholesale/i.test(altText)) return productTitle
+  return altText
+}
+
 // Convert Shopify's product/variant/image shape into the stable app contract.
 // UI components should receive JammProduct and not raw Shopify objects.
 function mapShopifyProduct(product: ShopifyProduct): JammProduct {
@@ -231,7 +241,7 @@ function mapShopifyProduct(product: ShopifyProduct): JammProduct {
     description: product.description,
     brand: product.vendor,
     image: featuredImage?.url ?? '/product-images/placeholders/perfume.webp',
-    imageAlt: featuredImage?.altText ?? product.title,
+    imageAlt: sanitizeAltText(featuredImage?.altText ?? null, product.title),
     galleryImages: galleryImages.length > 0 ? galleryImages : featuredImage ? [featuredImage.url] : undefined,
   }
 }
