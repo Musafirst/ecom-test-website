@@ -249,17 +249,17 @@ export async function GET(req: NextRequest) {
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
         <h2>❌ OAuth error: ${error}</h2>
         <p>${searchParams.get('error_description') ?? ''}</p>
-      </body></html>`, { headers: { 'Content-Type': 'text/html' } })
+      </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
     if (!code) {
       return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>❌ No code received.</h2></body></html>',
-        { headers: { 'Content-Type': 'text/html' } })
+        { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
     if (!CLIENT_SECRET) {
       return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>❌ SHOPIFY_CLIENT_SECRET env var not set.</h2></body></html>',
-        { headers: { 'Content-Type': 'text/html' } })
+        { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
     const tokenRes = await fetch(`https://${STORE}/admin/oauth/access_token`, {
@@ -272,7 +272,7 @@ export async function GET(req: NextRequest) {
     if (!tokenData.access_token) {
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
         <h2>❌ Token exchange failed</h2><pre>${JSON.stringify(tokenData, null, 2)}</pre>
-      </body></html>`, { headers: { 'Content-Type': 'text/html' } })
+      </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
     try {
@@ -281,13 +281,13 @@ export async function GET(req: NextRequest) {
         fixProducts(tokenData.access_token),
       ])
       const policyList = updatedPolicies.map(p =>
-        `<li>✓ <strong>${p.title}</strong> — <a href="${p.url}">${p.url}</a></li>`
+        `<li>&#10003;<strong>${p.title}</strong> — <a href="${p.url}">${p.url}</a></li>`
       ).join('')
       const fixList = productFixes.length
-        ? productFixes.map(f => `<li>✓ ${f}</li>`).join('')
+        ? productFixes.map(f => `<li>&#10003;${f}</li>`).join('')
         : '<li>No product changes needed.</li>'
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px;max-width:760px">
-        <h2>✅ Shopify store updated!</h2>
+        <h2>Shopify store updated!</h2>
 
         <h3>Product fixes</h3>
         <ul>${fixList}</ul>
@@ -304,15 +304,15 @@ export async function GET(req: NextRequest) {
         </div>
 
         <p style="margin-top:20px"><a href="/shop">Back to shop</a></p>
-      </body></html>`, { headers: { 'Content-Type': 'text/html' } })
+      </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     } catch (err) {
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
         <h2>❌ Update failed</h2><pre>${err}</pre>
-      </body></html>`, { headers: { 'Content-Type': 'text/html' } })
+      </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
   } catch (err) {
     return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
       <h2>❌ Unexpected error</h2><pre>${String(err)}</pre>
-    </body></html>`, { headers: { 'Content-Type': 'text/html' } })
+    </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
   }
 }
