@@ -3,6 +3,7 @@ export const site = {
   defaultUrl: 'https://jammtrade.com',
   apexUrl: 'https://jammtrade.com',
   wwwUrl: 'https://www.jammtrade.com',
+  shopUrl: 'https://shop.jammtrade.com',
   supportEmail: 'contact@jammtrade.com',
   description: 'Rare fragrances. Curated for those who know the difference.',
 }
@@ -29,6 +30,7 @@ export const allowedStorefrontOrigins = new Set(
     siteUrl,
     site.apexUrl,
     site.wwwUrl,
+    site.shopUrl,
     normalizeOrigin(process.env.VERCEL_URL),
   ].filter((value): value is string => Boolean(value)),
 )

@@ -165,7 +165,7 @@ export function TabNav() {
             )}
             {!isShop && (
               <Link
-                href={`mailto:${site.supportEmail}`}
+                href="/shop/contact"
                 className="hidden rounded-full border border-jamm-gold/40 px-4 py-2 font-sans text-sm text-jamm-dark/70 transition-colors duration-200 hover:border-jamm-gold hover:text-jamm-dark sm:inline-flex"
               >
                 Contact
@@ -256,11 +256,11 @@ export function TabNav() {
                 About Jamm Trade
               </Link>
               <Link
-                href={`mailto:${site.supportEmail}`}
+                href="/shop/contact"
                 onClick={() => setMobileOpen(false)}
                 className="font-sans text-sm text-jamm-dark/40 transition-colors duration-200 hover:text-jamm-gold"
               >
-                {site.supportEmail}
+                Contact
               </Link>
             </div>
           </motion.div>
