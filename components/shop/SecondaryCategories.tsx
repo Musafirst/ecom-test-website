@@ -75,7 +75,7 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={cat.href} className="group block">
-                <div className="relative min-h-[380px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition duration-300 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[380px] sm:rounded-[20px] lg:min-h-[460px]">
+                <div className="relative min-h-[260px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition duration-300 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[320px] sm:rounded-[20px] lg:min-h-[460px]">
                   <BorderBeam size={420} duration={13} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 3} />
                   <Image
                     src={cat.image}

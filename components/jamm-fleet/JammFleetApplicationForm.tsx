@@ -22,10 +22,10 @@ interface FormData {
 }
 
 const inputClass =
-  'h-11 w-full rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 font-sans text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'h-11 w-full rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 font-sans text-base text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
 
 const textareaClass =
-  'w-full resize-none rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 py-2.5 font-sans text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'w-full resize-none rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 py-2.5 font-sans text-base text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
 
 const labelClass =
   'block font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark/60 mb-1.5'
@@ -239,7 +239,7 @@ export function JammFleetApplicationForm() {
                 value={platform}
                 checked={form.platform_interest.includes(platform)}
                 onChange={handleChange}
-                className="h-3.5 w-3.5 flex-shrink-0 cursor-pointer accent-jamm-gold"
+                className="h-5 w-5 flex-shrink-0 cursor-pointer accent-jamm-gold"
               />
               <span className="font-sans text-xs font-medium text-jamm-dark">{platform}</span>
             </label>
@@ -314,7 +314,7 @@ export function JammFleetApplicationForm() {
             checked={form.consent_accepted}
             onChange={handleChange}
             required
-            className="mt-0.5 h-4 w-4 flex-shrink-0 cursor-pointer accent-jamm-gold"
+            className="mt-0.5 h-5 w-5 flex-shrink-0 cursor-pointer accent-jamm-gold"
           />
           <span className="font-sans text-xs leading-relaxed text-jamm-dark/60">
             By submitting this form, you agree to be contacted by Jamm Trade regarding your vehicle rental inquiry. Your information will not be shared with third parties outside of the rental process. View our{' '}

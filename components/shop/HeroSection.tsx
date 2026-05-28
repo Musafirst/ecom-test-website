@@ -165,7 +165,7 @@ export function HeroSection() {
                   setActiveIndex(index)
                   resetAutoSlideTimer()
                 }}
-                className="p-2"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center"
               >
                 <span className={`block h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
                   index === activeIndex ? 'w-8 bg-jamm-gold lg:w-7' : 'w-3 bg-white/55 lg:w-2.5 lg:bg-white/45'

@@ -60,7 +60,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
           <button
             type="button"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="flex h-10 w-10 items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark"
+            className="flex h-11 w-11 items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark"
             aria-label="Decrease quantity"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-3.5 w-3.5" aria-hidden>
@@ -73,7 +73,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
           <button
             type="button"
             onClick={() => setQty((q) => Math.min(10, q + 1))}
-            className="flex h-10 w-10 items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark"
+            className="flex h-11 w-11 items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark"
             aria-label="Increase quantity"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-3.5 w-3.5" aria-hidden>

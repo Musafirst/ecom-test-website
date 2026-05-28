@@ -66,7 +66,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <div className="mt-2.5 flex min-h-[78px] flex-col justify-between gap-2 px-0.5 sm:mt-3 sm:min-h-0 sm:flex-row sm:items-start sm:gap-4 sm:px-1">
           <div className="min-w-0">
-            <p className="mb-1 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-jamm-muted">
+            <p className="mb-1 font-sans text-xs font-medium uppercase tracking-[0.16em] text-jamm-muted">
               {product.categoryLabel}
             </p>
             <p className="line-clamp-2 break-words font-sans text-sm font-semibold leading-tight text-jamm-dark sm:text-sm md:text-base lg:text-sm">{product.title}</p>
@@ -95,7 +95,7 @@ export function ProductCard({ product }: ProductCardProps) {
               setAdding(false)
             }
           }}
-          className="mt-2 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-jamm-gold/35 bg-jamm-dark px-3 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-jamm-cream shadow-[0_12px_28px_rgba(12,11,9,0.08)] transition-[transform,background-color,color,opacity] duration-150 active:scale-[0.98] hover:bg-jamm-gold hover:text-jamm-dark disabled:cursor-not-allowed disabled:opacity-55 sm:min-h-11 sm:text-[11px]"
+          className="mt-2 inline-flex min-h-[44px] w-full items-center justify-center rounded-md border border-jamm-gold/35 bg-jamm-dark px-3 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-cream shadow-[0_12px_28px_rgba(12,11,9,0.08)] transition-[transform,background-color,color,opacity] duration-150 active:scale-[0.98] hover:bg-jamm-gold hover:text-jamm-dark disabled:cursor-not-allowed disabled:opacity-55"
         >
           {product.availableForSale === false ? 'Out of Stock' : added ? 'Added' : adding ? 'Adding' : 'Add to Cart'}
         </motion.button>
