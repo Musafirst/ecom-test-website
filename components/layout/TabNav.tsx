@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -10,8 +10,11 @@ import { site } from '@/lib/site'
 const tabs = [
   { label: 'Shop', href: '/shop', soon: false },
   { label: 'Collections', href: '/shop#collections', soon: false, shopOnly: true },
-  { label: 'Jamm Fleet', href: '/jamm-fleet', soon: false },
-  { label: 'Jamm Cargo', href: '/jamm-cargo', soon: false },
+]
+
+const serviceLinks = [
+  { label: 'Jamm Fleet', href: '/jamm-fleet', description: 'Vehicle rental inquiries' },
+  { label: 'Jamm Cargo', href: '/jamm-cargo', description: 'Shipping quote requests' },
 ]
 
 const liveSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.defaultUrl
@@ -21,8 +24,11 @@ export function TabNav() {
   const isShop = pathname.startsWith('/shop') || pathname === '/'
   const logoHref = pathname.startsWith('/shop/checkout') ? liveSiteUrl : '/shop'
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [cartCount, setCartCount] = useState(0)
+  const servicesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function onScroll() {
@@ -67,6 +73,25 @@ export function TabNav() {
       document.removeEventListener('keydown', onKeyDown)
     }
   }, [mobileOpen])
+
+  useEffect(() => {
+    function onPointerDown(e: PointerEvent) {
+      if (!servicesRef.current?.contains(e.target as Node)) {
+        setServicesOpen(false)
+      }
+    }
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setServicesOpen(false)
+    }
+
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [])
 
   const visibleTabs = tabs.filter((tab) => isShop || !tab.shopOnly)
 
@@ -121,6 +146,59 @@ export function TabNav() {
           </nav>
 
           <div className="flex flex-shrink-0 items-center gap-0.5 md:gap-1 md:pt-0">
+            <div
+              ref={servicesRef}
+              className="group relative hidden md:block"
+              onMouseEnter={() => setServicesOpen(true)}
+              onMouseLeave={() => setServicesOpen(false)}
+            >
+              <button
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={servicesOpen}
+                onClick={() => setServicesOpen((open) => !open)}
+                className="inline-flex h-10 items-center gap-2 rounded-full px-3.5 font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jamm-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF7F2]"
+              >
+                Services
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  className={`h-3.5 w-3.5 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
+                  aria-hidden
+                >
+                  <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              <AnimatePresence>
+                {servicesOpen && (
+                  <motion.div
+                    role="menu"
+                    aria-label="Jamm services"
+                    className="absolute right-0 top-[calc(100%+10px)] w-64 overflow-hidden rounded-lg border border-jamm-gold/25 bg-[#FAF7F2] p-2 shadow-[0_18px_45px_rgba(12,11,9,0.12)]"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4, transition: { duration: 0.14 } }}
+                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {serviceLinks.map((service) => (
+                      <Link
+                        key={service.href}
+                        href={service.href}
+                        role="menuitem"
+                        onClick={() => setServicesOpen(false)}
+                        className="block rounded-md px-3 py-3 transition-colors duration-200 hover:bg-jamm-gold/10 focus-visible:bg-jamm-gold/10 focus-visible:outline-none"
+                      >
+                        <span className="block font-sans text-sm font-semibold text-jamm-dark">{service.label}</span>
+                        <span className="mt-0.5 block font-sans text-xs leading-relaxed text-jamm-dark/52">{service.description}</span>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             {isShop && (
               <>
                 <Link
@@ -245,6 +323,56 @@ export function TabNav() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: visibleTabs.length * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-[14px] border border-jamm-gold/18 bg-[#EDE8DC]/55"
+              >
+                <button
+                  type="button"
+                  aria-expanded={mobileServicesOpen}
+                  className="flex w-full items-center justify-between rounded-[14px] px-4 py-4 font-sans text-lg font-medium text-jamm-dark transition-colors duration-200 hover:bg-jamm-dark/6"
+                  onClick={() => setMobileServicesOpen((open) => !open)}
+                >
+                  Services
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    className={`h-4 w-4 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`}
+                    aria-hidden
+                  >
+                    <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <AnimatePresence initial={false}>
+                  {mobileServicesOpen && (
+                    <motion.div
+                      className="grid overflow-hidden"
+                      initial={{ gridTemplateRows: '0fr', opacity: 0 }}
+                      animate={{ gridTemplateRows: '1fr', opacity: 1 }}
+                      exit={{ gridTemplateRows: '0fr', opacity: 0 }}
+                      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <div className="min-h-0 px-2 pb-2">
+                        {serviceLinks.map((service) => (
+                          <Link
+                            key={service.href}
+                            href={service.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="block rounded-md px-3 py-3 font-sans transition-colors duration-200 hover:bg-jamm-gold/10"
+                          >
+                            <span className="block text-base font-semibold text-jamm-dark">{service.label}</span>
+                            <span className="mt-0.5 block text-xs leading-relaxed text-jamm-dark/52">{service.description}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             </nav>
 
             <div className="mt-auto border-t border-jamm-dark/10 px-5 py-5 flex flex-col gap-2">

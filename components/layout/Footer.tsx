@@ -42,6 +42,12 @@ export function Footer() {
             <p className="mt-2 max-w-[200px] font-sans text-xs leading-relaxed text-jamm-dark/48">
               Rare fragrances and curated essentials for those who know the difference.
             </p>
+            <div className="mt-4 space-y-1 font-sans text-xs leading-relaxed text-jamm-dark/52">
+              <p className="font-semibold text-jamm-dark/62">Jamm Trade LLC</p>
+              <a href={`mailto:${site.supportEmail}`} className="transition-colors hover:text-jamm-gold">
+                {site.supportEmail}
+              </a>
+            </div>
           </div>
 
           {/* Shop links */}
@@ -99,28 +105,6 @@ export function Footer() {
           <p className="font-sans text-xs text-jamm-dark/38">
             &copy; {new Date().getFullYear()} {site.name} LLC. All rights reserved.
           </p>
-          <div className="flex items-center gap-3.5">
-            <a
-              href="#"
-              aria-label="Jamm Trade on Instagram"
-              className="text-jamm-dark/38 transition-colors duration-200 hover:text-jamm-gold"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4" aria-hidden>
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeLinecap="round" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              aria-label="Jamm Trade on TikTok"
-              className="text-jamm-dark/38 transition-colors duration-200 hover:text-jamm-gold"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-[15px] w-[15px]" aria-hidden>
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" />
-              </svg>
-            </a>
-          </div>
         </div>
       </div>
     </footer>
