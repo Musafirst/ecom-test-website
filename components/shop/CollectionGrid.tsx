@@ -79,7 +79,7 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={col.href} className="group block transition-transform duration-150 active:scale-[0.98]">
-                <div className="relative min-h-[260px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition-[border-color,box-shadow] duration-200 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[320px] sm:rounded-[20px] lg:min-h-[440px]">
+                <div className="relative min-h-[260px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition-[border-color,box-shadow] duration-200 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[320px] sm:rounded-[20px] lg:min-h-[440px] xl:min-h-[520px]">
                   <BorderBeam size={360} duration={12} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 2} />
                   <Image
                     src={col.image}

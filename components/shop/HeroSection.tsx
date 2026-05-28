@@ -86,7 +86,7 @@ export function HeroSection() {
   return (
     <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
       <motion.div
-        className="relative mx-auto h-[min(480px,88svh)] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:h-[min(560px,88svh)] sm:rounded-[24px] md:h-[min(600px,88svh)] lg:min-h-[620px] lg:rounded-[28px]"
+        className="relative mx-auto h-[min(480px,88svh)] max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:h-[min(560px,88svh)] sm:rounded-[24px] md:h-[min(600px,88svh)] lg:h-auto lg:max-h-[820px] lg:min-h-[620px] lg:rounded-[28px]"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
@@ -154,7 +154,7 @@ export function HeroSection() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex items-center justify-center gap-0.5 py-1 lg:pb-3">
+          <div className="flex min-w-[120px] items-center justify-center gap-0.5 py-1 lg:justify-end lg:pb-3">
             {heroSlides.map((slide, index) => (
               <button
                 key={slide.id}

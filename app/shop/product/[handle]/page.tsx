@@ -208,7 +208,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             imageClassName={imageClassName}
           />
 
-          <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-5 shadow-[0_18px_50px_rgba(12,11,9,0.06)] backdrop-blur-sm sm:p-8 lg:sticky lg:top-8">
+          <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-5 shadow-[0_18px_50px_rgba(12,11,9,0.06)] backdrop-blur-sm sm:p-8 lg:sticky lg:top-[136px]">
             <div className="mb-4 flex flex-wrap items-center gap-3">
               {product.badge && <ProductBadge type={product.badge} />}
               <span className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-jamm-muted">
@@ -255,7 +255,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <Link
               href="/shop#perfumes"
-              className="mt-4 inline-flex font-sans text-sm font-medium text-jamm-muted underline underline-offset-4 transition-colors duration-200 hover:text-jamm-gold"
+              className="mt-4 inline-flex font-sans text-sm font-medium text-jamm-muted underline underline-offset-4 transition-colors duration-200 hover:text-jamm-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jamm-gold focus-visible:ring-offset-2"
             >
               Back to Shop
             </Link>

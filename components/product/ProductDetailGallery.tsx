@@ -41,7 +41,7 @@ export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio 
   const activeImage = galleryImages[activeIndex]
 
   return (
-    <div className="grid gap-3 sm:grid-cols-[86px_1fr] sm:gap-4">
+    <div className="grid gap-3 sm:grid-cols-[86px_1fr] sm:gap-4 lg:grid-cols-[104px_1fr]">
       <div className="order-2 flex snap-x gap-2.5 overflow-x-auto pb-1 sm:order-1 sm:flex-col sm:gap-3 sm:overflow-visible sm:pb-0">
         {galleryImages.slice(0, 5).map((image, index) => (
           <button

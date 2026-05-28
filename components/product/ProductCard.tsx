@@ -69,7 +69,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <p className="mb-1 font-sans text-xs font-medium uppercase tracking-[0.16em] text-jamm-muted">
               {product.categoryLabel}
             </p>
-            <p className="line-clamp-2 break-words font-sans text-sm font-semibold leading-tight text-jamm-dark sm:text-sm md:text-base lg:text-sm">{product.title}</p>
+            <p className="line-clamp-2 break-words font-sans text-sm font-semibold leading-tight text-jamm-dark md:text-base">{product.title}</p>
           </div>
           <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} onLight />
         </div>

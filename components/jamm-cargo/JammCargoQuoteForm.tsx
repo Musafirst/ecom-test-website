@@ -19,10 +19,10 @@ interface FormData {
 }
 
 const inputClass =
-  'h-11 w-full rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 font-sans text-base text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'h-11 w-full rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
 
 const textareaClass =
-  'w-full resize-none rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 py-2.5 font-sans text-base text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'w-full resize-none rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 py-2.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
 
 const labelClass =
   'block font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark/60 mb-1.5'

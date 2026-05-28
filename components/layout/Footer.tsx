@@ -27,7 +27,7 @@ export function Footer() {
       <div className="relative mx-auto max-w-[1560px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_50px_rgba(12,11,9,0.07)] sm:rounded-[22px]">
         <BorderBeam size={480} duration={14} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={2} />
 
-        <div className="grid grid-cols-1 gap-8 px-5 py-8 sm:px-8 md:grid-cols-[auto_1fr_1fr_1fr] md:items-start md:gap-8 md:py-12 lg:py-14">
+        <div className="grid grid-cols-1 gap-8 px-5 py-8 sm:px-8 md:grid-cols-[260px_1fr_1fr_1fr] md:items-start md:gap-8 md:py-12 lg:py-14">
           {/* Brand */}
           <div className="flex flex-col">
             <Link href="/shop" className="inline-flex flex-shrink-0 items-center">

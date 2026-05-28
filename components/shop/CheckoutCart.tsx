@@ -165,7 +165,7 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
         ))}
       </div>
 
-      <aside className="h-fit rounded-[24px] border border-jamm-gold/30 bg-[#EDE8DC] p-6">
+      <aside className="h-fit rounded-[24px] border border-jamm-gold/30 bg-[#EDE8DC] p-6 lg:p-8">
         <h2 className="font-sans text-xl font-semibold tracking-[-0.02em] text-jamm-dark">Order Summary</h2>
         <div className="mt-5 space-y-3 border-y border-black/10 py-5">
           {lineItems.map(({ product, quantity }) => (

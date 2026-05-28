@@ -93,7 +93,7 @@ export function TabNav() {
               alt="Jamm Trade"
               width={1536}
               height={1024}
-              className="h-[92px] w-auto flex-shrink-0 object-contain sm:h-[126px] md:h-[190px] lg:h-[224px] xl:h-[252px]"
+              className="h-[72px] w-auto flex-shrink-0 object-contain sm:h-[88px] md:h-[96px] lg:h-[108px] xl:h-[120px]"
               priority
               loading="eager"
             />
@@ -101,7 +101,7 @@ export function TabNav() {
 
           <nav className="hidden items-center gap-1 md:flex">
             {visibleTabs.map((tab) => {
-              const isActive = pathname === tab.href
+              const isActive = pathname === tab.href || (tab.href === '/shop#collections' && pathname === '/shop')
               return (
                 <Link
                   key={tab.href}
