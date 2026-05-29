@@ -279,17 +279,20 @@ export const getShopifyCollections = cache(async (): Promise<ShopifyCollection[]
 
 export const getShopifyCollectionProducts = cache(async (handle: string, first = 60): Promise<JammProduct[]> => {
   const normalizedHandle = normalizeHandle(handle)
-  // Try the app-internal handle first, then the common Shopify "<handle>-collection" pattern.
-  let data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, {
-    handle: normalizedHandle,
-    first,
-  })
-  if (!data?.collection) {
-    data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, {
-      handle: `${normalizedHandle}-collection`,
-      first,
-    })
+
+  // Try multiple Shopify collection handle variants.
+  const candidateHandles = [
+    normalizedHandle,
+    `${normalizedHandle}-collection`,
+    ...(normalizedHandle === 'clothing' ? ['apparel', 'jamm-clothing'] : []),
+  ]
+
+  let data: { collection: ShopifyCollection | null } | null = null
+  for (const h of candidateHandles) {
+    data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, { handle: h, first })
+    if (data?.collection) break
   }
+
   const products = data?.collection?.products?.edges.map(({ node }) => mapShopifyProduct(node)) ?? []
 
   if (products.length > 0) return products
@@ -299,7 +302,7 @@ export const getShopifyCollectionProducts = cache(async (handle: string, first =
     if (normalizedHandle === 'audio') return product.subcategory === 'headphones-audio'
     if (normalizedHandle === 'smartwatches') return product.subcategory === 'smartwatches'
     if (normalizedHandle === 'electronics') return product.category === 'electronics'
-    if (normalizedHandle === 'clothing') return product.category === 'clothing'
+    if (normalizedHandle === 'clothing') return product.category === 'clothing' || product.collection === 'clothing'
     return product.collection === normalizedHandle
   })
 
