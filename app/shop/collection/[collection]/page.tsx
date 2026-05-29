@@ -17,6 +17,8 @@ function isCollectionKey(value: string): value is CollectionKey {
   return value in collectionDetails || isSupportedCollectionHandle(value)
 }
 
+export const revalidate = 60
+
 export function generateStaticParams() {
   return Object.keys(collectionDetails).map((collection) => ({ collection }))
 }

@@ -315,6 +315,13 @@ export const getShopifyCollectionProducts = cache(async (handle: string, first =
 
   if (data?.collection) return filteredProducts
 
+  // For clothing, also try fetching known product handles directly as a guaranteed fallback.
+  if (normalizedHandle === 'clothing' && filteredProducts.length === 0) {
+    const knownHandles = ['jamm-trade-heritage-hoodie']
+    const direct = (await Promise.all(knownHandles.map(h => getShopifyProductByHandle(h)))).filter(Boolean) as JammProduct[]
+    if (direct.length > 0) return direct
+  }
+
   return filteredProducts.length > 0 ? filteredProducts : allowDemoFallback ? fallbackByCollection(normalizedHandle) : []
 })
 
