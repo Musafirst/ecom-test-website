@@ -90,7 +90,7 @@ export async function getCollectionDetails() {
 
   return Object.fromEntries(
     Object.entries(collectionDetails).map(([handle, details]) => {
-  const count = counts[handle as keyof typeof counts]
+      const count = counts[handle as keyof typeof counts]
       const suffix = handle === 'oud' || handle === 'amber' || handle === 'daily' ? 'fragrances' : 'products'
 
       return [

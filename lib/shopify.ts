@@ -67,7 +67,7 @@ export type ShopifyCollection = {
   products?: { edges: Edge<ShopifyProduct>[] }
 }
 
-const collectionHandles = ['oud', 'amber', 'daily', 'electronics', 'audio', 'smartwatches'] as const
+const collectionHandles = ['oud', 'amber', 'daily', 'electronics', 'audio', 'smartwatches', 'clothing'] as const
 const collectionHandleSet = new Set<string>(collectionHandles)
 const loggedShopifyErrors = new Set<string>()
 const allowDemoFallback = process.env.NODE_ENV !== 'production'
