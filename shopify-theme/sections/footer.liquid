@@ -1,0 +1,111 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-shell">
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+            {% if section.settings.logo != blank %}
+              <img
+                src="{{ section.settings.logo | img_url: '600x' }}"
+                alt="{{ shop.name }}"
+                class="footer-logo"
+                width="360"
+                height="240"
+                loading="lazy"
+              >
+            {% else %}
+              <img
+                src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}"
+                alt="{{ shop.name }}"
+                class="footer-logo"
+                width="360"
+                height="240"
+                loading="lazy"
+              >
+            {% endif %}
+          </a>
+          <p class="footer-tagline">
+            Rare fragrances and curated essentials for those who know the difference.
+          </p>
+          <div class="footer-contact">
+            <p class="footer-contact__business">Jamm Trade LLC</p>
+            <a href="mailto:contact@jammtrade.com" class="footer-contact__link">contact@jammtrade.com</a>
+          </div>
+        </div>
+
+        <nav class="footer-link-group" aria-label="Shop navigation">
+          <p class="footer-link-group__title">Shop</p>
+          <a href="{{ routes.root_url }}" class="footer-nav__link">Shop</a>
+          <a href="/pages/contact" class="footer-nav__link">Contact</a>
+        </nav>
+
+        <nav class="footer-link-group" aria-label="Services navigation">
+          <p class="footer-link-group__title">Services</p>
+          <a href="/pages/jamm-cargo" class="footer-nav__link">Jamm Cargo</a>
+          <a href="/pages/jamm-fleet" class="footer-nav__link">Jamm Fleet</a>
+        </nav>
+
+        <nav class="footer-link-group" aria-label="Legal navigation">
+          <p class="footer-link-group__title">Policies</p>
+          <a href="/pages/shipping-policy" class="footer-nav__link">Shipping Policy</a>
+          <a href="/pages/refund-policy" class="footer-nav__link">Refund Policy</a>
+          <a href="/pages/privacy-policy" class="footer-nav__link">Privacy Policy</a>
+          <a href="/pages/terms-of-service" class="footer-nav__link">Terms of Service</a>
+        </nav>
+      </div>
+
+      <div class="footer-disclaimer">
+        <p>
+          Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.
+        </p>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} Jamm Trade LLC. All rights reserved.</p>
+        <div class="footer-social">
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" aria-label="Jamm Trade on Instagram" class="footer-social__link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round"/>
+              </svg>
+            </a>
+          {% endif %}
+
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" aria-label="Jamm Trade on TikTok" class="footer-social__link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    }
+  ]
+}
+{% endschema %}

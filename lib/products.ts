@@ -30,6 +30,12 @@ export const collectionDetails = {
     note: 'Smartwatch products are powered by Shopify when the collection is available.',
     count: `${fallbackProducts.filter((product) => product.subcategory === 'smartwatches').length} products`,
   },
+  clothing: {
+    name: 'Clothing',
+    intro: 'Jamm Trade apparel with the lotus mark across everyday essentials.',
+    note: 'Clothing products are powered by Shopify when the collection is available.',
+    count: '0 products',
+  },
 } as const
 
 export const categoryDetails = fallbackCategoryDetails
@@ -84,7 +90,7 @@ export async function getCollectionDetails() {
 
   return Object.fromEntries(
     Object.entries(collectionDetails).map(([handle, details]) => {
-      const count = counts[handle as keyof typeof counts]
+  const count = counts[handle as keyof typeof counts]
       const suffix = handle === 'oud' || handle === 'amber' || handle === 'daily' ? 'fragrances' : 'products'
 
       return [

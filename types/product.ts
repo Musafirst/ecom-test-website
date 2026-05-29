@@ -1,4 +1,4 @@
-export type ProductCollection = 'oud' | 'amber' | 'daily' | 'electronics' | 'audio' | 'smartwatches'
+export type ProductCollection = 'oud' | 'amber' | 'daily' | 'electronics' | 'audio' | 'smartwatches' | 'clothing'
 export type ProductCategory = 'perfume' | 'electronics' | 'clothing'
 export type ProductSubcategory = 'fragrance' | 'headphones-audio' | 'smartwatches' | 'apparel'
 export type ProductBadgeType = 'new' | 'bestseller'

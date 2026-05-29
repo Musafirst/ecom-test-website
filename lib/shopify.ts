@@ -299,6 +299,7 @@ export const getShopifyCollectionProducts = cache(async (handle: string, first =
     if (normalizedHandle === 'audio') return product.subcategory === 'headphones-audio'
     if (normalizedHandle === 'smartwatches') return product.subcategory === 'smartwatches'
     if (normalizedHandle === 'electronics') return product.category === 'electronics'
+    if (normalizedHandle === 'clothing') return product.category === 'clothing'
     return product.collection === normalizedHandle
   })
 

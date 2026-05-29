@@ -1,0 +1,179 @@
+<section class="service-page">
+  <div class="container service-page__inner">
+    <div class="service-hero-grid">
+      <div class="service-card">
+        <p class="section-eyebrow">Jamm Fleet</p>
+        <h1 class="service-title">Vehicle Rental for Gig Workers &amp; Personal Use</h1>
+        <p class="service-copy">
+          Jamm Fleet provides vehicle rental for individuals who want to drive for Uber, DoorDash, Grubhub, Lyft, or for personal use. We currently have a limited number of vehicles available in the Pennsylvania and tri-state area.
+        </p>
+        <p class="service-copy service-copy--muted">
+          Vehicle availability is limited. Submit an inquiry below and we will contact you to discuss availability, pricing, requirements, and next steps.
+        </p>
+        <div class="service-actions">
+          <a href="#inquiry-form" class="btn btn--primary">Submit Inquiry</a>
+          <a href="/pages/contact" class="btn btn--ghost">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="service-card service-card--alt">
+        <p class="section-eyebrow">How it works</p>
+        <ol class="service-steps">
+          <li>
+            <span>1</span>
+            <div>
+              <h3>Submit your inquiry</h3>
+              <p>Fill in the form with your details, preferred platform, and rental timeline.</p>
+            </div>
+          </li>
+          <li>
+            <span>2</span>
+            <div>
+              <h3>We review availability</h3>
+              <p>Our team reviews your inquiry and contacts you to discuss vehicle availability, pricing, and requirements.</p>
+            </div>
+          </li>
+          <li>
+            <span>3</span>
+            <div>
+              <h3>Get on the road</h3>
+              <p>If everything works out, we finalize the arrangement and get you set up.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="service-feature-grid">
+      <div class="service-card">
+        <p class="section-eyebrow">Service Area</p>
+        <h2 class="service-section-title">PA, NJ, DE &amp; MD</h2>
+        <div class="service-pill-grid">
+          <span><strong>PA</strong> Pennsylvania</span>
+          <span><strong>NJ</strong> New Jersey</span>
+          <span><strong>DE</strong> Delaware</span>
+          <span><strong>MD</strong> Maryland</span>
+        </div>
+        <p class="service-note">Located near the PA/NJ/DE/MD region? We may be able to accommodate nearby states. Include your city in the inquiry.</p>
+      </div>
+
+      <div class="service-card">
+        <p class="section-eyebrow">Supported Platforms</p>
+        <h2 class="service-section-title">Drive with any gig platform</h2>
+        <div class="service-chip-row">
+          <span>Uber</span>
+          <span>DoorDash</span>
+          <span>Grubhub</span>
+          <span>Lyft</span>
+          <span>Personal Use</span>
+        </div>
+        <p class="service-note">Vehicle requirements vary by platform. We will review requirements together during the inquiry process.</p>
+      </div>
+    </div>
+
+    <div id="inquiry-form" class="service-card">
+      <p class="section-eyebrow">Rental Inquiry</p>
+      <h2 class="service-section-title">Submit a vehicle rental inquiry</h2>
+      <p class="service-copy service-copy--muted">
+        Fields marked <span class="text-gold">*</span> are required. Vehicle availability is limited and assigned on a first-come, first-confirmed basis.
+      </p>
+
+      <form id="JammFleetInquiryForm" class="service-form" data-jamm-api-form data-jamm-api-endpoint="https://www.jammtrade.com/api/jamm-fleet">
+
+        <div class="service-form__field">
+          <label for="FleetName">Full Name <span>*</span></label>
+          <input id="FleetName" type="text" name="full_name" autocomplete="name" required>
+        </div>
+
+        <div class="service-form__grid">
+          <div class="service-form__field">
+            <label for="FleetEmail">Email Address <span>*</span></label>
+            <input id="FleetEmail" type="email" name="email" autocomplete="email" required>
+          </div>
+          <div class="service-form__field">
+            <label for="FleetPhone">Phone Number <span>*</span></label>
+            <input id="FleetPhone" type="tel" name="phone" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="service-form__grid">
+          <div class="service-form__field">
+            <label for="FleetState">State <span>*</span></label>
+            <select id="FleetState" name="state" required>
+              <option value="">Select state...</option>
+              <option>Pennsylvania (PA)</option>
+              <option>New Jersey (NJ)</option>
+              <option>Delaware (DE)</option>
+              <option>Maryland (MD)</option>
+              <option>Other nearby state</option>
+            </select>
+          </div>
+          <div class="service-form__field">
+            <label for="FleetCity">City <span>*</span></label>
+            <input id="FleetCity" type="text" name="city" required>
+          </div>
+        </div>
+
+        <div class="service-form__field">
+          <label for="FleetLicense">Driver License Status <span>*</span></label>
+          <select id="FleetLicense" name="license_status" required>
+            <option value="">Select license status...</option>
+            <option>Valid - standard license</option>
+            <option>Valid - commercial license (CDL)</option>
+            <option>Expired</option>
+            <option>Suspended</option>
+            <option>No license yet</option>
+          </select>
+        </div>
+
+        <div class="service-form__field">
+          <label for="FleetPlatform">Platform of Interest</label>
+          <input id="FleetPlatform" type="text" name="platform_interest" placeholder="Uber, DoorDash, Grubhub, Lyft, personal use">
+        </div>
+
+        <div class="service-form__grid">
+          <div class="service-form__field">
+            <label for="FleetTimeline">Rental Timeline</label>
+            <select id="FleetTimeline" name="desired_start_date">
+              <option value="">Select timeline...</option>
+              <option>Immediately</option>
+              <option>Within 1-2 weeks</option>
+              <option>Within 1 month</option>
+              <option>Flexible</option>
+            </select>
+          </div>
+          <div class="service-form__field">
+            <label for="FleetDuration">Expected Rental Duration</label>
+            <input id="FleetDuration" type="text" name="rental_duration" placeholder="e.g. 1 week, 1 month, ongoing">
+          </div>
+        </div>
+
+        <div class="service-form__field">
+          <label for="FleetDetails">Additional Details</label>
+          <textarea id="FleetDetails" name="notes" rows="4"></textarea>
+        </div>
+
+        <label class="service-form__consent">
+          <input type="checkbox" name="consent_accepted" value="true" required>
+          <span>By submitting this form, you agree to be contacted by Jamm Trade about your vehicle rental inquiry.</span>
+        </label>
+
+        <div class="service-form__message" role="status" aria-live="polite"></div>
+
+        <noscript>
+          <p class="service-form__message service-form__message--error">JavaScript is required to submit this form.</p>
+        </noscript>
+
+        <div class="service-form__fallback">
+          <p>If the form does not submit, email us at <a href="mailto:contact@jammtrade.com">contact@jammtrade.com</a>.</p>
+        </div>
+
+        <button type="submit" class="btn btn--primary service-form__submit">Submit Rental Inquiry</button>
+      </form>
+    </div>
+
+    <p class="service-disclaimer">
+      Jamm Fleet is a vehicle rental service operated by Jamm Trade LLC. Submitting an inquiry does not guarantee vehicle availability or rental approval. All rentals are subject to driver qualification, availability, and agreement to rental terms. Jamm Trade LLC is not affiliated with, endorsed by, or a partner of Uber, DoorDash, Grubhub, or Lyft.
+    </p>
+  </div>
+</section>

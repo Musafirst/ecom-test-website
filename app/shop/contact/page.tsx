@@ -29,6 +29,10 @@ export default function ContactPage() {
         <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-10">
           <div className="space-y-6 font-sans text-sm leading-relaxed text-jamm-dark/68">
             <div>
+              <h2 className="font-sans text-base font-semibold text-jamm-dark">Business</h2>
+              <p className="mt-2">Jamm Trade LLC</p>
+            </div>
+            <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Email</h2>
               <Link href={`mailto:${site.supportEmail}`} className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
                 {site.supportEmail}

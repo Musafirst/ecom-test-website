@@ -30,7 +30,7 @@ export const categoryDetails = {
   clothing: {
     name: 'Clothing',
     intro: 'Jamm Trade branded apparel with the lotus mark across everyday essentials.',
-    detail: 'Hoodies, tees, and essentials printed on demand. Each piece carries the Jamm Trade identity.',
+    detail: 'Hoodies, tees, and everyday pieces carrying the Jamm Trade identity.',
   },
   electronics: {
     name: 'Electronics',

@@ -1,0 +1,77 @@
+<section class="collection-grid-section" id="collections">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Collections</p>
+      <div class="section-header__row">
+        <h2 class="section-title">Shop by scent family</h2>
+        <p class="section-subtitle">Choose by mood first, then explore the products inside each edit.</p>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <div class="collection-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'collection_card' %}
+        {% assign card_url = block.settings.url_override %}
+        {% if card_url == blank %}{% assign card_url = block.settings.collection.url %}{% endif %}
+        {% if card_url == blank %}{% assign card_url = '/collections/' | append: block.settings.name | handleize %}{% endif %}
+        <a href="{{ card_url }}" class="collection-card" {{ block.shopify_attributes }}>
+          <div class="collection-card__inner">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" loading="lazy">
+            {% elsif block.settings.collection.image != blank %}
+              <img src="{{ block.settings.collection.image | img_url: '800x' }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" loading="lazy">
+            {% elsif block.settings.asset_image != blank %}
+              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" loading="lazy">
+            {% else %}
+              <div class="collection-card__img collection-card__img--placeholder"></div>
+            {% endif %}
+            <div class="collection-card__overlay"></div>
+            <div class="collection-card__badge">{{ block.settings.name }}</div>
+            <div class="collection-card__body">
+              <p class="collection-card__count">
+                {% if block.settings.collection != blank %}{{ block.settings.collection.products_count }} fragrances{% else %}{{ block.settings.count_override }}{% endif %}
+              </p>
+              <h3 class="collection-card__name">{{ block.settings.name }}</h3>
+              <p class="collection-card__copy">{{ block.settings.copy }}</p>
+              <span class="collection-card__cta">Explore</span>
+            </div>
+          </div>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "url_override", "label": "URL override (use when handle has suffix)" },
+        { "type": "text", "id": "name", "label": "Collection name", "default": "Oud" },
+        { "type": "text", "id": "copy", "label": "Description", "default": "Resinous, dark, and long lasting." },
+        { "type": "text", "id": "count_override", "label": "Count label (if no collection)", "default": "5 fragrances" },
+        { "type": "image_picker", "id": "image", "label": "Card image" },
+        { "type": "text", "id": "asset_image", "label": "Fallback theme asset filename" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Collection Grid",
+      "blocks": [
+        { "type": "collection_card", "settings": { "asset_image": "featured-oud.png", "name": "Oud", "copy": "Resinous, dark, and long lasting.", "count_override": "5 fragrances" } },
+        { "type": "collection_card", "settings": { "asset_image": "featured-amber.png", "name": "Amber", "copy": "Warm vanilla, soft spice, skin-close depth.", "count_override": "8 fragrances" } },
+        { "type": "collection_card", "settings": { "asset_image": "featured-daily.png", "name": "Daily", "copy": "Clean signatures for repeat wear.", "count_override": "Daily fragrances" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

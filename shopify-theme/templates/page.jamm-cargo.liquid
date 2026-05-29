@@ -1,0 +1,158 @@
+<section class="service-page">
+  <div class="container service-page__inner">
+    <div class="service-hero-grid">
+      <div class="service-card">
+        <p class="section-eyebrow">Jamm Cargo</p>
+        <h1 class="service-title">Ship from the US to Africa, Europe &amp; Asia</h1>
+        <p class="service-copy">
+          Jamm Cargo is a quote-based shipping service. We work with trusted shipping partners to help you move products from the United States to destinations across Africa, Europe, and Asia.
+        </p>
+        <p class="service-copy service-copy--muted">
+          Submit your details below. We will review your request and contact you with a quote. If you accept, we proceed with our available partners.
+        </p>
+        <div class="service-actions">
+          <a href="#quote-form" class="btn btn--primary">Request a Quote</a>
+          <a href="/pages/contact" class="btn btn--ghost">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="service-card service-card--alt">
+        <p class="section-eyebrow">How it works</p>
+        <ol class="service-steps">
+          <li>
+            <span>1</span>
+            <div>
+              <h3>Submit your request</h3>
+              <p>Fill in the form with your shipping details, destination, item type, and timeline.</p>
+            </div>
+          </li>
+          <li>
+            <span>2</span>
+            <div>
+              <h3>We review and quote</h3>
+              <p>Our team reviews your request and contacts you with a personalized shipping quote.</p>
+            </div>
+          </li>
+          <li>
+            <span>3</span>
+            <div>
+              <h3>Confirm and ship</h3>
+              <p>If you accept the quote, we coordinate with our shipping partners to arrange your shipment.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <p class="section-eyebrow">Destinations</p>
+      <h2 class="service-section-title">Where we ship</h2>
+      <div class="service-feature-grid service-feature-grid--3">
+        <div class="service-feature">
+          <h3>Africa</h3>
+          <p>Nigeria, Ghana, Senegal, Ivory Coast, Cameroon, and more</p>
+        </div>
+        <div class="service-feature">
+          <h3>Europe</h3>
+          <p>France, UK, Germany, Italy, Spain, Belgium, and more</p>
+        </div>
+        <div class="service-feature">
+          <h3>Asia</h3>
+          <p>Saudi Arabia, UAE, Qatar, Kuwait, and more</p>
+        </div>
+      </div>
+      <p class="service-note">Do not see your country listed? Submit a request anyway and we will let you know if we can accommodate your shipment.</p>
+    </div>
+
+    <div id="quote-form" class="service-card">
+      <p class="section-eyebrow">Quote Request</p>
+      <h2 class="service-section-title">Request a shipping quote</h2>
+      <p class="service-copy service-copy--muted">
+        Fields marked <span class="text-gold">*</span> are required. After submitting, our team will review your request and contact you with a quote.
+      </p>
+
+      <form id="JammCargoQuoteForm" class="service-form" data-jamm-api-form data-jamm-api-endpoint="https://www.jammtrade.com/api/jamm-cargo">
+
+        <div class="service-form__field">
+          <label for="CargoName">Full Name <span>*</span></label>
+          <input id="CargoName" type="text" name="full_name" autocomplete="name" required>
+        </div>
+
+        <div class="service-form__grid">
+          <div class="service-form__field">
+            <label for="CargoEmail">Email Address <span>*</span></label>
+            <input id="CargoEmail" type="email" name="email" autocomplete="email" required>
+          </div>
+          <div class="service-form__field">
+            <label for="CargoPhone">Phone Number</label>
+            <input id="CargoPhone" type="tel" name="phone" autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="service-form__field">
+          <label for="CargoOrigin">Origin Location</label>
+          <input id="CargoOrigin" type="text" name="origin_location" placeholder="City, State">
+        </div>
+
+        <div class="service-form__grid">
+          <div class="service-form__field">
+            <label for="CargoCountry">Destination Country <span>*</span></label>
+            <input id="CargoCountry" type="text" name="destination_country" required>
+          </div>
+          <div class="service-form__field">
+            <label for="CargoCity">Destination City / Region</label>
+            <input id="CargoCity" type="text" name="destination_city">
+          </div>
+        </div>
+
+        <div class="service-form__field">
+          <label for="CargoItems">Type of Items to Ship <span>*</span></label>
+          <textarea id="CargoItems" name="item_type" rows="4" required></textarea>
+        </div>
+
+        <div class="service-form__grid">
+          <div class="service-form__field">
+            <label for="CargoWeight">Estimated Weight or Quantity</label>
+            <input id="CargoWeight" type="text" name="estimated_weight">
+          </div>
+          <div class="service-form__field">
+            <label for="CargoTimeline">Preferred Timeline</label>
+            <select id="CargoTimeline" name="preferred_timeline">
+              <option value="">Select timeline...</option>
+              <option>As quickly as possible</option>
+              <option>Within 1-2 weeks</option>
+              <option>Within 1 month</option>
+              <option>Flexible / No rush</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="service-form__field">
+          <label for="CargoDetails">Additional Details</label>
+          <textarea id="CargoDetails" name="notes" rows="4"></textarea>
+        </div>
+
+        <label class="service-form__consent">
+          <input type="checkbox" name="consent_accepted" value="true" required>
+          <span>By submitting this form, you agree to be contacted by Jamm Trade about your shipping quote request.</span>
+        </label>
+
+        <div class="service-form__message" role="status" aria-live="polite"></div>
+
+        <noscript>
+          <p class="service-form__message service-form__message--error">JavaScript is required to submit this form.</p>
+        </noscript>
+
+        <div class="service-form__fallback">
+          <p>If the form does not submit, email us at <a href="mailto:contact@jammtrade.com">contact@jammtrade.com</a>.</p>
+        </div>
+
+        <button type="submit" class="btn btn--primary service-form__submit">Submit Quote Request</button>
+      </form>
+    </div>
+
+    <p class="service-disclaimer">
+      Jamm Cargo is a quote-request and coordination service operated by Jamm Trade LLC. Pricing, availability, and transit times depend on the specific shipment and partners available at the time of request. Jamm Trade is not responsible for customs delays, duties, or import restrictions at the destination country. All quotes are subject to confirmation.
+    </p>
+  </div>
+</section>

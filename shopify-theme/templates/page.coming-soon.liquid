@@ -1,0 +1,19 @@
+<section class="page-template">
+  <div class="container container--narrow">
+    <header class="page-header">
+      <p class="section-eyebrow">Jamm Trade</p>
+      <h1 class="page-title">{{ page.title }}</h1>
+    </header>
+
+    <div class="page-content">
+      {% if page.content != blank %}
+        {{ page.content }}
+      {% else %}
+        <p>For details about this service or category, contact Jamm Trade and our team will help with the next step.</p>
+      {% endif %}
+      <p>
+        <a href="/pages/contact">Contact Jamm Trade</a>
+      </p>
+    </div>
+  </div>
+</section>

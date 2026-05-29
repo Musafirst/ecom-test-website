@@ -36,6 +36,9 @@ export async function generateMetadata({ params }: CollectionPageProps): Promise
   return {
     title: `${collection.name} Collection`,
     description: collection.intro,
+    alternates: {
+      canonical: `/shop/collection/${collectionParam}`,
+    },
   }
 }
 
@@ -50,8 +53,8 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   const collection = dynamicCollectionDetails[collectionParam]
   const products = await getCollectionProducts(collectionParam)
   const emptyMessage = collectionParam === 'daily'
-    ? 'Daily fragrances coming soon.'
-    : `${collection.name} products coming soon.`
+    ? 'Daily fragrances are being updated.'
+    : `${collection.name} products are being updated.`
 
   return (
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">
@@ -83,7 +86,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               {emptyMessage}
             </p>
             <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
-              This collection will update automatically once products are assigned in Shopify.
+              Contact Jamm Trade for current availability or explore another collection.
             </p>
           </div>
         )}

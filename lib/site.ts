@@ -1,6 +1,6 @@
 export const site = {
   name: 'Jamm Trade',
-  defaultUrl: 'https://jammtrade.com',
+  defaultUrl: 'https://www.jammtrade.com',
   apexUrl: 'https://jammtrade.com',
   wwwUrl: 'https://www.jammtrade.com',
   shopUrl: 'https://shop.jammtrade.com',
@@ -20,7 +20,6 @@ export function normalizeOrigin(value?: string) {
 
 export const siteUrl =
   normalizeOrigin(process.env.NEXT_PUBLIC_SITE_URL) ??
-  normalizeOrigin(process.env.VERCEL_URL) ??
   site.defaultUrl
 
 // Browser-facing API routes should only accept calls from the public storefront.

@@ -69,8 +69,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         '@type': 'Organization',
         '@id': `${siteUrl}/#organization`,
         name: site.name,
+        legalName: 'Jamm Trade LLC',
         url: siteUrl,
         logo: absoluteSiteUrl('/brand_assets/icons/jammtrade-favicon-512.png'),
+        email: site.supportEmail,
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',

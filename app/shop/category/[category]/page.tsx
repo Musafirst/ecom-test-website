@@ -37,6 +37,9 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   return {
     title: category.name,
     description: category.intro,
+    alternates: {
+      canonical: `/shop/category/${categoryParam}`,
+    },
   }
 }
 
@@ -150,9 +153,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </>
           ) : (
             <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
-              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Fragrances coming soon.</p>
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Fragrance products are being updated.</p>
               <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
-                This category will update automatically once products are assigned in Shopify.
+                Contact Jamm Trade for current availability or explore another category.
               </p>
             </div>
           )}
@@ -264,9 +267,55 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </>
           ) : (
             <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
-              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Electronics coming soon.</p>
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Electronics products are being updated.</p>
               <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
-                This category will update automatically once products are assigned in Shopify.
+                Contact Jamm Trade for current availability or explore another category.
+              </p>
+            </div>
+          )}
+
+          <Link
+            href="/shop"
+            className="mt-10 inline-flex items-center gap-3 font-sans text-[10px] uppercase tracking-[0.22em] text-jamm-gold transition-colors duration-200 hover:text-jamm-gold-muted"
+          >
+            <span className="h-px w-6 bg-current" />
+            Back to shop
+          </Link>
+        </div>
+      </section>
+    )
+  }
+
+  if (categoryParam === 'clothing') {
+    const products = await getCollectionProducts('clothing')
+
+    return (
+      <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">
+        <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">
+          <div className="mb-8 max-w-3xl rounded-lg border border-jamm-gold/15 bg-white/28 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mb-12 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
+            <SectionLabel>Category</SectionLabel>
+            <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+              {category.name}
+            </h1>
+            <p className="mt-4 font-sans text-base leading-relaxed text-jamm-muted sm:mt-5 sm:text-lg">
+              {category.intro}
+            </p>
+            <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-muted/80">
+              {category.detail}
+            </p>
+          </div>
+
+          {products.length > 0 ? (
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Clothing products are being updated.</p>
+              <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
+                Contact Jamm Trade for current availability or explore another category.
               </p>
             </div>
           )}
@@ -302,22 +351,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <p className="mt-3 max-w-xl font-sans text-sm leading-relaxed text-jamm-muted">
             {category.detail}
           </p>
-          <p className="mt-4 max-w-xl font-sans text-xs leading-relaxed text-jamm-dark/45">
-            Products in this category are fulfilled via print-on-demand. New items are added regularly. Contact us if you have a specific request.
-          </p>
-
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="mailto:contact@jammtrade.com"
+              href="/shop/contact"
               className="inline-flex items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-jamm-gold hover:text-jamm-dark"
             >
-              Contact for Requests
+              Contact Jamm Trade
             </Link>
             <Link
               href="/shop"
               className="inline-flex items-center justify-center rounded-full border border-black/15 px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-jamm-dark transition-colors duration-300 hover:border-jamm-gold hover:text-jamm-gold"
             >
-              Shop Fragrance
+              Back to Shop
             </Link>
           </div>
         </div>

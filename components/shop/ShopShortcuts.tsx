@@ -43,8 +43,8 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
     },
     {
       label: 'Clothing',
-      detail: 'Coming soon',
-      href: '/shop/category/clothing',
+      detail: categoryDetails.clothing.name,
+      href: '/shop/collection/clothing',
     },
   ]
 
@@ -59,7 +59,6 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
       >
         <div className="no-scrollbar flex snap-x gap-2.5 overflow-x-auto pb-2 lg:grid lg:grid-cols-6 lg:overflow-visible lg:pb-0">
           {shortcuts.map((item) => {
-            const isComingSoon = item.detail === 'Coming soon'
             const inner = (
               <>
                 <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-jamm-gold">
@@ -75,14 +74,7 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
                 </span>
               </>
             )
-            return isComingSoon ? (
-              <div
-                key={item.label}
-                className="flex min-w-[142px] snap-start flex-col justify-between rounded-lg border border-jamm-gold/25 bg-[#FAF7F2]/82 px-4 py-3 shadow-[0_12px_28px_rgba(12,11,9,0.05)] backdrop-blur-sm cursor-default opacity-50 sm:min-w-[170px] lg:min-w-0"
-              >
-                {inner}
-              </div>
-            ) : (
+            return (
               <Link
                 key={item.label}
                 href={item.href}
