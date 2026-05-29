@@ -159,13 +159,13 @@ function getProductCollection(product: ShopifyProduct): ProductCollection | unde
 }
 
 function getCategory(product: ShopifyProduct, collection?: ProductCollection): ProductCategory {
-  const values = [product.productType, product.vendor, ...product.tags, collection ?? ''].map(normalizeHandle)
+  const values = [product.productType, product.vendor, ...product.tags, collection ?? '', product.handle, product.title].map(normalizeHandle)
 
   if (values.some((value) => value.includes('electronics') || value.includes('audio') || value.includes('watch'))) {
     return 'electronics'
   }
 
-  if (values.some((value) => value.includes('clothing') || value.includes('apparel') || value.includes('hoodie'))) {
+  if (values.some((value) => value.includes('clothing') || value.includes('apparel') || value.includes('hoodie') || value.includes('tee') || value.includes('shirt'))) {
     return 'clothing'
   }
 
@@ -302,7 +302,14 @@ export const getShopifyCollectionProducts = cache(async (handle: string, first =
     if (normalizedHandle === 'audio') return product.subcategory === 'headphones-audio'
     if (normalizedHandle === 'smartwatches') return product.subcategory === 'smartwatches'
     if (normalizedHandle === 'electronics') return product.category === 'electronics'
-    if (normalizedHandle === 'clothing') return product.category === 'clothing' || product.collection === 'clothing'
+    if (normalizedHandle === 'clothing') {
+      const h = normalizeHandle(product.handle)
+      return (
+        product.category === 'clothing' ||
+        product.collection === 'clothing' ||
+        h.includes('hoodie') || h.includes('apparel') || h.includes('tee') || h.includes('shirt')
+      )
+    }
     return product.collection === normalizedHandle
   })
 
