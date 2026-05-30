@@ -102,10 +102,10 @@ export function TabNav() {
           <div className="overflow-hidden rounded-lg bg-jamm-dark py-1.5 text-center font-sans text-[10px] font-medium text-jamm-cream sm:rounded-xl sm:py-2 sm:text-[11px]">
             <div className="flex whitespace-nowrap animate-marquee">
               <span className="px-8">
-                Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
+                Free shipping&nbsp;&nbsp;-&nbsp;&nbsp;Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
               </span>
               <span className="px-8" aria-hidden>
-                Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
+                Free shipping&nbsp;&nbsp;-&nbsp;&nbsp;Save 20% on your first order&nbsp;&nbsp;-&nbsp;&nbsp;New fragrance arrivals weekly&nbsp;&nbsp;-&nbsp;&nbsp;Curated perfume essentials&nbsp;&nbsp;-&nbsp;&nbsp;
               </span>
             </div>
           </div>
