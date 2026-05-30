@@ -230,9 +230,9 @@ export function JammFleetApplicationForm() {
 
       <div>
         <p className={`${labelClass} mb-3`}>Platform of Interest</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 min-[390px]:grid-cols-2 sm:grid-cols-3">
           {PLATFORMS.map((platform) => (
-            <label key={platform} className="flex cursor-pointer items-center gap-2.5 rounded-md border border-jamm-gold/20 bg-white/60 px-3 py-2.5 transition-colors hover:border-jamm-gold/50">
+            <label key={platform} className="flex min-w-0 cursor-pointer items-center gap-2.5 rounded-md border border-jamm-gold/20 bg-white/60 px-3 py-2.5 transition-colors hover:border-jamm-gold/50">
               <input
                 type="checkbox"
                 name="platform_interest"
@@ -241,7 +241,7 @@ export function JammFleetApplicationForm() {
                 onChange={handleChange}
                 className="h-5 w-5 flex-shrink-0 cursor-pointer accent-jamm-gold"
               />
-              <span className="font-sans text-xs font-medium text-jamm-dark">{platform}</span>
+              <span className="min-w-0 [overflow-wrap:anywhere] font-sans text-xs font-medium leading-snug text-jamm-dark">{platform}</span>
             </label>
           ))}
         </div>

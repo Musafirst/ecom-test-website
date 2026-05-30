@@ -35,7 +35,7 @@ export default function JammFleetPage() {
             <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
               Jamm Fleet
             </p>
-            <h1 className="font-serif text-4xl font-light leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+            <h1 className="[overflow-wrap:anywhere] font-serif text-[clamp(2rem,9vw,3rem)] font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               Vehicle Rental for Gig Workers & Personal Use
             </h1>
             <p className="mt-4 font-sans text-sm leading-relaxed text-jamm-dark/68 sm:text-base">
@@ -44,16 +44,16 @@ export default function JammFleetPage() {
             <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-dark/60">
               Vehicle availability is limited. Submit an inquiry below and we will contact you to discuss availability, pricing, requirements, and next steps.
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <a
                 href="#inquiry-form"
-                className="inline-flex rounded-md bg-jamm-dark px-5 py-3 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
+                className="inline-flex min-h-11 max-w-full items-center justify-center rounded-md bg-jamm-dark px-4 py-3 text-center font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark min-[380px]:px-5 min-[380px]:tracking-[0.14em]"
               >
                 Submit Inquiry
               </a>
               <Link
                 href="/shop/contact"
-                className="inline-flex rounded-md border border-jamm-gold/40 bg-transparent px-5 py-3 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:border-jamm-gold hover:text-jamm-gold"
+                className="inline-flex min-h-11 max-w-full items-center justify-center rounded-md border border-jamm-gold/40 bg-transparent px-4 py-3 text-center font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-jamm-dark transition-colors duration-200 hover:border-jamm-gold hover:text-jamm-gold min-[380px]:px-5 min-[380px]:tracking-[0.14em]"
               >
                 Contact Us
               </Link>
@@ -90,13 +90,13 @@ export default function JammFleetPage() {
             <h2 className="mb-4 font-serif text-xl font-light text-jamm-dark sm:text-2xl">
               PA, NJ, DE & MD
             </h2>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-2">
               {serviceAreas.map(({ state, abbr }) => (
-                <div key={abbr} className="flex items-center gap-2.5 rounded-md border border-jamm-gold/15 bg-[#EDE8DC] px-3 py-2.5">
+                <div key={abbr} className="flex min-w-0 items-center gap-2.5 rounded-md border border-jamm-gold/15 bg-[#EDE8DC] px-3 py-2.5">
                   <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-jamm-gold/30 bg-white/55 font-sans text-[10px] font-bold text-jamm-gold">
                     {abbr}
                   </span>
-                  <span className="font-sans text-xs font-medium text-jamm-dark">{state}</span>
+                  <span className="min-w-0 [overflow-wrap:anywhere] font-sans text-xs font-medium leading-snug text-jamm-dark">{state}</span>
                 </div>
               ))}
             </div>
@@ -116,7 +116,7 @@ export default function JammFleetPage() {
               {platforms.map((p) => (
                 <span
                   key={p}
-                  className="rounded-full border border-jamm-gold/30 bg-[#EDE8DC] px-3.5 py-1.5 font-sans text-xs font-medium text-jamm-dark"
+                  className="max-w-full [overflow-wrap:anywhere] rounded-full border border-jamm-gold/30 bg-[#EDE8DC] px-3.5 py-1.5 font-sans text-xs font-medium leading-snug text-jamm-dark"
                 >
                   {p}
                 </span>

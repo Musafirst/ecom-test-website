@@ -44,7 +44,7 @@
             "title": "Wear the mark.",
             "subtitle": "Minimal clothing pieces built around comfort, identity, and quiet detail.",
             "cta_label": "Shop Clothing",
-            "cta_url": "/collections/clothing"
+            "cta_url": "https://shop.jammtrade.com/collections/clothing"
           }
         }
       },
@@ -106,7 +106,7 @@
           "settings": {
             "detail": "Apparel",
             "label": "Clothing",
-            "url": "/collections/clothing"
+            "url": "https://shop.jammtrade.com/collections/clothing"
           }
         }
       },
@@ -177,7 +177,7 @@
             "name": "Clothing",
             "eyebrow": "Wear the mark.",
             "copy": "Hoodies, tees, and essentials with the Jamm Trade lotus mark.",
-            "url": "/collections/clothing"
+            "url": "https://shop.jammtrade.com/collections/clothing"
           }
         },
         "cat-2": {

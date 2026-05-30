@@ -44,7 +44,7 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
     {
       label: 'Clothing',
       detail: categoryDetails.clothing.name,
-      href: '/shop/collection/clothing',
+      href: 'https://shop.jammtrade.com/collections/clothing',
     },
   ]
 
@@ -61,12 +61,12 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
           {shortcuts.map((item) => {
             const inner = (
               <>
-                <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-jamm-gold">
+                <span className="min-w-0 truncate font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-jamm-gold">
                   {item.detail}
                 </span>
-                <span className="mt-2 flex items-center justify-between gap-3 font-sans text-base font-semibold text-jamm-dark">
-                  {item.label}
-                  <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-jamm-dark/6 text-jamm-dark/55 transition-colors group-hover:bg-jamm-gold group-hover:text-jamm-dark">
+                <span className="mt-2 grid grid-cols-[minmax(0,1fr)_28px] items-center gap-3 font-sans text-base font-semibold text-jamm-dark">
+                  <span className="min-w-0 truncate">{item.label}</span>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-jamm-dark/6 text-jamm-dark/55 transition-colors group-hover:bg-jamm-gold group-hover:text-jamm-dark">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-3.5 w-3.5" aria-hidden="true">
                       <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>

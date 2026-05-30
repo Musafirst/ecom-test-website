@@ -68,7 +68,7 @@ export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio 
         ))}
       </div>
 
-      <div className="relative order-1 overflow-hidden rounded-lg border border-black/10 bg-[#F4EFE4] shadow-[0_20px_54px_rgba(12,11,9,0.08)] sm:order-2 sm:rounded-xl sm:shadow-[0_24px_70px_rgba(12,11,9,0.08)]">
+      <div className="relative order-1 overflow-hidden rounded-lg border border-black/10 bg-[#F4EFE4] shadow-[0_14px_36px_rgba(12,11,9,0.07)] sm:order-2 sm:rounded-xl sm:shadow-[0_24px_70px_rgba(12,11,9,0.08)]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeImage}

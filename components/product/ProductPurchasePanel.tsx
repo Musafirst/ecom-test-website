@@ -83,13 +83,13 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
         </div>
       </div>
 
-      <div className="flex gap-2.5 sm:gap-3">
+      <div className="grid grid-cols-[minmax(0,1fr)_56px] gap-2.5 sm:gap-3">
         <motion.button
           type="button"
           onClick={addToCart}
           disabled={adding || product.availableForSale === false}
           whileTap={{ scale: 0.97 }}
-          className={`inline-flex min-h-14 flex-1 items-center justify-center rounded-md px-5 py-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] shadow-[0_16px_36px_rgba(196,151,58,0.16)] transition-[transform,background-color,opacity] duration-150 sm:px-8 ${
+          className={`inline-flex min-h-14 min-w-0 items-center justify-center rounded-md px-4 py-4 text-center font-sans text-[11px] font-semibold uppercase tracking-[0.12em] shadow-[0_16px_36px_rgba(196,151,58,0.16)] transition-[transform,background-color,opacity] duration-150 min-[390px]:tracking-[0.14em] sm:px-8 ${
             added ? 'bg-jamm-gold text-jamm-dark' : 'bg-jamm-gold text-jamm-dark hover:bg-jamm-gold/82'
           } disabled:cursor-not-allowed disabled:opacity-55`}
         >

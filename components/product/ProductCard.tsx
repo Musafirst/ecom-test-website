@@ -19,6 +19,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const [adding, setAdding] = useState(false)
   const isElectronics = product.category === 'electronics'
   const isPerfume = product.category === 'perfume'
+  const isClothing = product.category === 'clothing'
   const canAddToCart = Boolean(product.variantId && product.availableForSale !== false)
   const electronicsImageClassName =
     product.handle === 'sony-wh-1000xm5'
@@ -27,6 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
         ? 'object-contain p-2 mix-blend-multiply'
         : 'object-contain p-4 mix-blend-multiply'
   const perfumeImageClassName = 'object-contain p-4 mix-blend-multiply contrast-[1.04] drop-shadow-[0_18px_24px_rgba(12,11,9,0.24)] sm:p-5'
+  const clothingImageClassName = 'object-contain p-3 mix-blend-multiply drop-shadow-[0_16px_22px_rgba(12,11,9,0.16)] sm:p-5'
 
   return (
     <motion.article
@@ -54,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={product.imageAlt}
             aspectRatio={isElectronics ? '4/3' : '3/4'}
             className="transition-transform duration-500 ease-out group-hover:scale-[1.035]"
-            imageClassName={isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : 'object-cover'}
+            imageClassName={isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : isClothing ? clothingImageClassName : 'object-cover'}
           />
 
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-gradient-to-t from-black/54 via-black/10 to-transparent p-2.5 opacity-100 transition-opacity duration-300 sm:p-4 sm:opacity-0 sm:group-hover:opacity-100">

@@ -6,7 +6,7 @@
         <a href="{{ block.settings.url | default: '#' }}" class="shortcut-card" {{ block.shopify_attributes }}>
           <span class="shortcut-card__detail">{{ block.settings.detail }}</span>
           <span class="shortcut-card__label">
-            {{ block.settings.label }}
+            <span class="shortcut-card__label-text">{{ block.settings.label }}</span>
             <span class="shortcut-card__arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
@@ -43,7 +43,7 @@
         { "type": "shortcut", "settings": { "detail": "8 fragrances", "label": "Amber" } },
         { "type": "shortcut", "settings": { "detail": "Daily", "label": "Daily" } },
         { "type": "shortcut", "settings": { "detail": "Electronics", "label": "Electronics" } },
-        { "type": "shortcut", "settings": { "detail": "Apparel", "label": "Clothing" } }
+        { "type": "shortcut", "settings": { "detail": "Apparel", "label": "Clothing", "url": "https://shop.jammtrade.com/collections/clothing" } }
       ]
     }
   ]

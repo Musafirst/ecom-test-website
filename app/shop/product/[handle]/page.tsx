@@ -92,6 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const backLabel = product.collection ? `${product.categoryLabel} collection` : product.categoryLabel
   const isElectronics = product.category === 'electronics'
   const isPerfume = product.category === 'perfume'
+  const isClothing = product.category === 'clothing'
   const electronicsImageClassName =
     product.handle === 'sony-wh-1000xm5'
       ? 'object-contain p-5 mix-blend-multiply sm:p-7'
@@ -99,7 +100,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         ? 'object-contain p-3 mix-blend-multiply sm:p-4'
         : 'object-contain p-5 mix-blend-multiply sm:p-7'
   const perfumeImageClassName = 'object-contain p-6 mix-blend-multiply contrast-[1.04] drop-shadow-[0_28px_34px_rgba(12,11,9,0.26)] sm:p-8'
-  const imageClassName = isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : 'object-cover'
+  const clothingImageClassName = 'object-contain p-4 mix-blend-multiply drop-shadow-[0_20px_28px_rgba(12,11,9,0.18)] sm:p-7'
+  const imageClassName = isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : isClothing ? clothingImageClassName : 'object-contain p-5'
   const galleryImages = getProductGalleryImages(product)
   const productTitle = cleanProductTitle(product.title)
   const productDescription = cleanProductDescription(product)
@@ -204,11 +206,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <ProductDetailGallery
             images={galleryImages}
             alt={product.imageAlt}
-            aspectRatio={isElectronics ? '4/3' : '4/5'}
+            aspectRatio={isElectronics ? '4/3' : isClothing ? '1/1' : '4/5'}
             imageClassName={imageClassName}
           />
 
-          <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-5 shadow-[0_18px_50px_rgba(12,11,9,0.06)] backdrop-blur-sm sm:p-8 lg:sticky lg:top-[136px]">
+          <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-4 shadow-[0_18px_50px_rgba(12,11,9,0.06)] backdrop-blur-sm min-[390px]:p-5 sm:p-8 lg:sticky lg:top-[136px]">
             <div className="mb-4 flex flex-wrap items-center gap-3">
               {product.badge && <ProductBadge type={product.badge} />}
               <span className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-jamm-muted">
@@ -216,7 +218,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </span>
             </div>
 
-            <h1 className="max-w-xl break-words font-serif text-[32px] font-light leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-xl [overflow-wrap:anywhere] font-serif text-[clamp(1.9rem,9vw,2.55rem)] font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               {productTitle}
             </h1>
 
@@ -239,11 +241,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="mb-3 font-sans text-sm font-semibold text-jamm-dark">
                 {product.category === 'perfume' ? 'Notes' : product.category === 'electronics' ? 'Finish' : 'Colors'}
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2.5 sm:gap-3">
                 {details.slice(0, 4).map((detail) => (
                   <span
                     key={detail}
-                    className="rounded-md border border-jamm-gold/20 bg-white/70 px-3 py-2 font-sans text-xs font-medium capitalize text-jamm-muted"
+                    className="max-w-full [overflow-wrap:anywhere] rounded-md border border-jamm-gold/20 bg-white/70 px-3 py-2 font-sans text-xs font-medium capitalize leading-snug text-jamm-muted"
                   >
                     {detail}
                   </span>
