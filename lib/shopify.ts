@@ -58,6 +58,46 @@ type ShopifyProduct = {
   }
 }
 
+type PublicShopifyVariant = {
+  id: number
+  title: string
+  available: boolean
+  price: number
+  compare_at_price: number | null
+  featured_image?: {
+    src?: string
+    alt?: string | null
+  } | null
+}
+
+type PublicShopifyProduct = {
+  id: number
+  handle: string
+  title: string
+  description?: string
+  vendor?: string
+  type?: string | null
+  product_type?: string | null
+  tags?: string[]
+  available?: boolean
+  price?: number
+  compare_at_price?: number | null
+  variants?: PublicShopifyVariant[]
+  images?: string[]
+  featured_image?: string | null
+  options?: {
+    name: string
+    values: string[]
+  }[]
+  media?: {
+    alt?: string | null
+    src?: string
+    preview_image?: {
+      src?: string
+    }
+  }[]
+}
+
 export type ShopifyCollection = {
   id: string
   handle: string
@@ -141,6 +181,25 @@ export async function shopifyFetch<T>(query: string, variables: Record<string, u
 
 function normalizeHandle(value: string) {
   return value.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+}
+
+function normalizeShopifyAssetUrl(url?: string | null) {
+  if (!url) return undefined
+  if (url.startsWith('//')) return `https:${url}`
+  return url
+}
+
+function stripHtml(value?: string) {
+  return (value ?? '')
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<\/p>/gi, ' ')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
 // Shopify products can be categorized by collection, product type, or tags.
@@ -246,6 +305,82 @@ function mapShopifyProduct(product: ShopifyProduct): JammProduct {
   }
 }
 
+function mapPublicShopifyProduct(product: PublicShopifyProduct): JammProduct {
+  const selectedVariant = product.variants?.find((variant) => variant.available) ?? product.variants?.[0]
+  const type = product.type ?? product.product_type ?? ''
+  const tags = product.tags ?? []
+  const values = [type, product.vendor ?? '', ...tags, product.handle, product.title].map(normalizeHandle)
+  const category: ProductCategory = values.some((value) =>
+    value.includes('clothing') || value.includes('apparel') || value.includes('hoodie') || value.includes('tee') || value.includes('shirt')
+  )
+    ? 'clothing'
+    : values.some((value) => value.includes('electronics') || value.includes('audio') || value.includes('watch'))
+      ? 'electronics'
+      : 'perfume'
+  const collection: ProductCollection | undefined = category === 'clothing' ? 'clothing' : undefined
+  const subcategory: ProductSubcategory | undefined =
+    category === 'clothing'
+      ? 'apparel'
+      : category === 'electronics' && values.some((value) => value.includes('watch'))
+        ? 'smartwatches'
+        : category === 'electronics'
+          ? 'headphones-audio'
+          : 'fragrance'
+  const galleryImages = (product.images ?? [])
+    .map(normalizeShopifyAssetUrl)
+    .filter((url): url is string => Boolean(url))
+  const featuredImage =
+    normalizeShopifyAssetUrl(selectedVariant?.featured_image?.src) ??
+    normalizeShopifyAssetUrl(product.featured_image) ??
+    galleryImages[0]
+  const colorOptions = product.options?.find((option) => normalizeHandle(option.name) === 'color')?.values
+  const price = ((selectedVariant?.price ?? product.price ?? 0) / 100)
+  const compareAtPrice = selectedVariant?.compare_at_price ?? product.compare_at_price
+
+  return {
+    id: `gid://shopify/Product/${product.id}`,
+    handle: product.handle,
+    title: product.title,
+    price,
+    compareAtPrice: compareAtPrice && compareAtPrice / 100 > price ? compareAtPrice / 100 : undefined,
+    currencyCode: 'USD',
+    variantId: selectedVariant ? `gid://shopify/ProductVariant/${selectedVariant.id}` : undefined,
+    availableForSale: selectedVariant?.available ?? product.available,
+    quantityAvailable: null,
+    collection,
+    category,
+    categoryLabel: getCategoryLabel(category, collection, subcategory),
+    subcategory,
+    tags,
+    description: stripHtml(product.description),
+    brand: product.vendor,
+    image: featuredImage ?? '/product-images/placeholders/perfume.webp',
+    imageAlt: sanitizeAltText(selectedVariant?.featured_image?.alt ?? product.media?.[0]?.alt ?? null, product.title),
+    galleryImages: galleryImages.length > 0 ? galleryImages : featuredImage ? [featuredImage] : undefined,
+    details: colorOptions ?? tags.map((tag) => tag.replace(/-/g, ' ')),
+  }
+}
+
+async function getPublicShopifyProductByHandle(handle: string): Promise<JammProduct | undefined> {
+  const domain = process.env.SHOPIFY_STORE_DOMAIN?.replace(/^https?:\/\//, '').replace(/\/$/, '')
+
+  if (!domain) return undefined
+
+  try {
+    const response = await fetch(`https://${domain}/products/${encodeURIComponent(handle)}.js`, {
+      next: { revalidate: 300 },
+    })
+
+    if (!response.ok) return undefined
+
+    const product = (await response.json()) as PublicShopifyProduct
+    return product?.handle ? mapPublicShopifyProduct(product) : undefined
+  } catch (error) {
+    logShopifyErrorOnce('public-product-request-failed', 'Public Shopify product fallback failed:', error)
+    return undefined
+  }
+}
+
 function fallbackByCollection(handle: string) {
   return fallbackProducts.filter((product) => {
     if (handle === 'audio') return product.subcategory === 'headphones-audio'
@@ -268,7 +403,9 @@ export const getShopifyProductByHandle = cache(async (handle: string): Promise<J
   const data = await shopifyFetch<{ product: ShopifyProduct | null }>(productByHandleQuery, { handle })
   const product = data?.product ? mapShopifyProduct(data.product) : undefined
 
-  return product ?? (allowDemoFallback ? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle) : undefined)
+  return product
+    ?? await getPublicShopifyProductByHandle(handle)
+    ?? (allowDemoFallback ? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle) : undefined)
 })
 
 export const getShopifyCollections = cache(async (): Promise<ShopifyCollection[]> => {
