@@ -100,11 +100,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         ? 'object-contain p-3 mix-blend-multiply sm:p-4'
         : 'object-contain p-5 mix-blend-multiply sm:p-7'
   const perfumeImageClassName = 'object-contain p-6 mix-blend-multiply contrast-[1.04] drop-shadow-[0_28px_34px_rgba(12,11,9,0.26)] sm:p-8'
-  const clothingImageClassName = 'object-contain p-4 mix-blend-multiply drop-shadow-[0_20px_28px_rgba(12,11,9,0.18)] sm:p-7'
+  const clothingImageClassName = 'object-contain p-2 mix-blend-multiply drop-shadow-[0_20px_28px_rgba(12,11,9,0.18)] sm:p-5'
   const imageClassName = isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : isClothing ? clothingImageClassName : 'object-contain p-5'
   const galleryImages = getProductGalleryImages(product)
   const productTitle = cleanProductTitle(product.title)
   const productDescription = cleanProductDescription(product)
+  const productDescriptionPreview = productDescription.length > 180
+    ? `${productDescription.slice(0, 180).trim()}...`
+    : productDescription
   const productUrl = `${siteUrl}/shop/product/${product.handle}`
   const productSchema = {
     '@context': 'https://schema.org',
@@ -185,7 +188,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-12">
+    <section className="relative overflow-hidden bg-transparent px-3 py-4 text-jamm-dark sm:px-4 sm:py-6 lg:py-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -194,7 +197,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="mx-auto max-w-[1560px]">
         <Link
           href={backHref}
-          className="mb-4 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-jamm-gold/20 bg-white/35 px-4 font-sans text-sm font-medium text-jamm-muted transition-colors duration-200 hover:text-jamm-dark sm:mb-6 sm:border-0 sm:bg-transparent sm:px-0"
+          className="mb-3 inline-flex min-h-9 items-center gap-1.5 rounded-full border border-jamm-gold/20 bg-white/35 px-3 font-sans text-xs font-medium text-jamm-muted transition-colors duration-200 hover:text-jamm-dark sm:mb-6 sm:min-h-10 sm:border-0 sm:bg-transparent sm:px-0 sm:text-sm"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 flex-shrink-0" aria-hidden>
             <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
@@ -202,32 +205,33 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {backLabel}
         </Link>
 
-        <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <div className="grid min-w-0 grid-cols-1 gap-3 sm:gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
           <ProductDetailGallery
             images={galleryImages}
             alt={product.imageAlt}
-            aspectRatio={isElectronics ? '4/3' : isClothing ? '1/1' : '4/5'}
+            aspectRatio={isElectronics ? '4/3' : isClothing ? '4/3' : '4/5'}
             imageClassName={imageClassName}
+            compact={isClothing}
           />
 
-          <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-4 shadow-[0_18px_50px_rgba(12,11,9,0.06)] backdrop-blur-sm min-[390px]:p-5 sm:p-8 lg:sticky lg:top-[136px]">
-            <div className="mb-4 flex flex-wrap items-center gap-3">
+          <div className={`${isClothing ? 'p-3 min-[390px]:p-4' : 'p-4'} min-w-0 rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 shadow-[0_18px_50px_rgba(12,11,9,0.06)] backdrop-blur-sm sm:p-8 lg:sticky lg:top-[136px]`}>
+            <div className="mb-3 flex flex-wrap items-center gap-2.5 sm:mb-4 sm:gap-3">
               {product.badge && <ProductBadge type={product.badge} />}
               <span className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-jamm-muted">
                 {product.brand || 'Jamm Trade'}
               </span>
             </div>
 
-            <h1 className="max-w-xl [overflow-wrap:anywhere] font-serif text-[clamp(1.9rem,9vw,2.55rem)] font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-xl [overflow-wrap:anywhere] font-serif text-[clamp(1.45rem,6.5vw,2rem)] font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               {productTitle}
             </h1>
 
 
-            <div className="mt-6 rounded-md border border-jamm-gold/20 bg-white/55 px-4 py-3 sm:mt-7">
+            <div className="mt-4 rounded-md border border-jamm-gold/20 bg-white/55 px-3 py-2.5 sm:mt-7 sm:px-4 sm:py-3">
               <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} onLight />
             </div>
 
-            <p className="mt-3 font-sans text-xs font-medium uppercase tracking-[0.16em] text-jamm-muted">
+            <p className="mt-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-muted sm:mt-3 sm:text-xs sm:tracking-[0.16em]">
               {product.availableForSale === false
                 ? 'Out of stock'
                 : typeof product.quantityAvailable === 'number'
@@ -237,8 +241,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   : 'In stock'}
             </p>
 
-            <div className="mt-6 border-t border-jamm-gold/15 pt-5 sm:mt-8 sm:pt-6">
-              <p className="mb-3 font-sans text-sm font-semibold text-jamm-dark">
+            <div className="mt-4 border-t border-jamm-gold/15 pt-4 sm:mt-8 sm:pt-6">
+              <p className="mb-2.5 font-sans text-sm font-semibold text-jamm-dark sm:mb-3">
                 {product.category === 'perfume' ? 'Notes' : product.category === 'electronics' ? 'Finish' : 'Colors'}
               </p>
               <div className="flex flex-wrap gap-2.5 sm:gap-3">
@@ -253,7 +257,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
 
-            <ProductPurchasePanel product={product} />
+            <ProductPurchasePanel product={product} compact={isClothing} />
 
             <Link
               href="/shop#perfumes"
@@ -267,9 +271,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="mt-10 grid grid-cols-1 gap-8 rounded-lg border border-jamm-gold/18 bg-white/24 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mt-12 sm:border-t sm:border-x-0 sm:border-b-0 sm:bg-transparent sm:p-0 sm:pt-10 sm:shadow-none lg:grid-cols-[1.3fr_0.7fr]">
           <div>
             <h2 className="mb-4 font-sans text-xl font-semibold text-jamm-dark">Description</h2>
-            <p className="max-w-3xl font-sans text-sm leading-relaxed text-jamm-dark/72 sm:text-base">
-              {productDescription}
-            </p>
+            <div className="max-w-3xl font-sans text-sm leading-relaxed text-jamm-dark/72 sm:text-base">
+              <p>{productDescriptionPreview}</p>
+              {productDescriptionPreview !== productDescription && (
+                <details className="group mt-3">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-md border border-jamm-gold/25 bg-[#FAF7F2]/70 px-3 py-2 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-jamm-dark transition-colors hover:border-jamm-gold/55 [&::-webkit-details-marker]:hidden">
+                    <span className="group-open:hidden">Read more</span>
+                    <span className="hidden group-open:inline">Show less</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 transition-transform group-open:rotate-180" aria-hidden>
+                      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </summary>
+                  <p className="mt-3">{productDescription}</p>
+                </details>
+              )}
+            </div>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
             <div>

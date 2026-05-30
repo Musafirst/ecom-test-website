@@ -3,16 +3,29 @@
   Usage: {% render 'product-card', product: product %}
 {% endcomment %}
 
-<div class="product-card">
+{% assign card_label = product.collections.first.title | default: product.vendor %}
+{% assign card_title_downcase = product.title | downcase %}
+{% assign card_type_downcase = product.type | downcase %}
+{% assign card_tags_downcase = product.tags | join: ',' | downcase %}
+{% assign is_electronics_card = false %}
+{% assign is_smartwatch_card = false %}
+{% if card_title_downcase contains 'watch' or card_title_downcase contains 'headphone' or card_type_downcase contains 'electronics' or card_tags_downcase contains 'electronics' %}
+  {% assign is_electronics_card = true %}
+{% endif %}
+{% if card_title_downcase contains 'smartwatch' or card_title_downcase contains 'watch' or card_tags_downcase contains 'smartwatch' %}
+  {% assign is_smartwatch_card = true %}
+{% endif %}
+
+<div class="product-card{% if is_electronics_card %} product-card--electronics{% endif %}{% if is_smartwatch_card %} product-card--smartwatch{% endif %}">
   <a href="{{ product.url }}" class="product-card__link" aria-label="{{ product.title | escape }}">
     <div class="product-card__media">
       {% if product.featured_image != blank %}
         <img
-          src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
+          src="{{ product.featured_image | img_url: '800x' }}"
           srcset="
-            {{ product.featured_image | img_url: '400x400', crop: 'center' }} 400w,
-            {{ product.featured_image | img_url: '600x600', crop: 'center' }} 600w,
-            {{ product.featured_image | img_url: '800x800', crop: 'center' }} 800w
+            {{ product.featured_image | img_url: '400x' }} 400w,
+            {{ product.featured_image | img_url: '600x' }} 600w,
+            {{ product.featured_image | img_url: '800x' }} 800w
           "
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 50vw"
           alt="{{ product.featured_image.alt | default: product.title | escape }}"
@@ -28,11 +41,15 @@
       {% if product.compare_at_price > product.price %}
         <span class="product-card__badge product-card__badge--sale">Sale</span>
       {% endif %}
+
+      <span class="product-card__overlay" aria-hidden="true">
+        <span class="product-card__view">View Product</span>
+      </span>
     </div>
 
     <div class="product-card__info">
-      {% if product.vendor != blank %}
-        <p class="product-card__vendor">{{ product.vendor }}</p>
+      {% if card_label != blank %}
+        <p class="product-card__vendor">{{ card_label }}</p>
       {% endif %}
       <h3 class="product-card__title">{{ product.title }}</h3>
       <div class="product-card__price">

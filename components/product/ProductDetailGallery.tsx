@@ -9,9 +9,10 @@ interface ProductDetailGalleryProps {
   alt: string
   imageClassName: string
   aspectRatio: string
+  compact?: boolean
 }
 
-export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio }: ProductDetailGalleryProps) {
+export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio, compact = false }: ProductDetailGalleryProps) {
   const galleryImages = images.length > 0 ? images : []
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -41,14 +42,14 @@ export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio 
   const activeImage = galleryImages[activeIndex]
 
   return (
-    <div className="grid gap-3 sm:grid-cols-[86px_1fr] sm:gap-4 lg:grid-cols-[104px_1fr]">
-      <div className="order-2 flex snap-x gap-2.5 overflow-x-auto pb-1 sm:order-1 sm:flex-col sm:gap-3 sm:overflow-visible sm:pb-0">
+    <div className="grid min-w-0 gap-2.5 sm:grid-cols-[86px_1fr] sm:gap-4 lg:grid-cols-[104px_1fr]">
+      <div className="order-2 flex snap-x gap-2 overflow-x-auto pb-1 sm:order-1 sm:flex-col sm:gap-3 sm:overflow-visible sm:pb-0">
         {galleryImages.slice(0, 5).map((image, index) => (
           <button
             key={`${image}-${index}`}
             type="button"
             onClick={() => goTo(index)}
-            className={`relative h-[68px] w-[68px] flex-none snap-start overflow-hidden rounded-md border bg-[#F4EFE4] transition-all duration-200 sm:h-auto sm:w-auto sm:aspect-square ${
+            className={`relative ${compact ? 'h-14 w-14' : 'h-[68px] w-[68px]'} flex-none snap-start overflow-hidden rounded-md border bg-[#F4EFE4] transition-all duration-200 sm:h-auto sm:w-auto sm:aspect-square ${
               activeIndex === index
                 ? 'border-jamm-gold shadow-[0_0_0_2px_rgba(196,151,58,0.22)] scale-[1.04]'
                 : 'border-black/10 opacity-70 hover:opacity-100 hover:border-jamm-gold/50 hover:scale-[1.02]'
@@ -68,7 +69,7 @@ export function ProductDetailGallery({ images, alt, imageClassName, aspectRatio 
         ))}
       </div>
 
-      <div className="relative order-1 overflow-hidden rounded-lg border border-black/10 bg-[#F4EFE4] shadow-[0_14px_36px_rgba(12,11,9,0.07)] sm:order-2 sm:rounded-xl sm:shadow-[0_24px_70px_rgba(12,11,9,0.08)]">
+      <div className="relative order-1 min-w-0 overflow-hidden rounded-lg border border-black/10 bg-[#F4EFE4] shadow-[0_14px_36px_rgba(12,11,9,0.07)] sm:order-2 sm:rounded-xl sm:shadow-[0_24px_70px_rgba(12,11,9,0.08)]">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeImage}

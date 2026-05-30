@@ -1,4 +1,26 @@
-<div class="product-page">
+{% assign product_is_clothing = false %}
+{% assign product_title_downcase = product.title | downcase %}
+{% assign product_type_downcase = product.type | downcase %}
+{% assign product_tags_downcase = product.tags | join: ',' | downcase %}
+{% if product_title_downcase contains 'hoodie' or product_title_downcase contains 'shirt' or product_title_downcase contains 'apparel' %}
+  {% assign product_is_clothing = true %}
+{% endif %}
+{% if product_type_downcase contains 'clothing' or product_type_downcase contains 'apparel' %}
+  {% assign product_is_clothing = true %}
+{% endif %}
+{% if product_tags_downcase contains 'clothing' or product_tags_downcase contains 'apparel' or product_tags_downcase contains 'hoodie' %}
+  {% assign product_is_clothing = true %}
+{% endif %}
+{% if product.type contains 'Clothing' or product.type contains 'Apparel' %}
+  {% assign product_is_clothing = true %}
+{% endif %}
+{% for product_collection in product.collections %}
+  {% if product_collection.handle == 'clothing' or product_collection.handle == 'clothing-collection' %}
+    {% assign product_is_clothing = true %}
+  {% endif %}
+{% endfor %}
+
+<div class="product-page{% if product_is_clothing %} product-page--clothing{% endif %}">
   <div class="container">
     <div class="product-page__grid">
 
@@ -62,7 +84,22 @@
         </div>
 
         {% if product.description != blank %}
-          <div class="product-purchase__desc">{{ product.description }}</div>
+          {% assign description_plain = product.description | strip_html | replace: '&nbsp;', ' ' | strip %}
+          <div class="product-purchase__desc">
+            <p>{{ description_plain | truncate: 180 }}</p>
+            {% if description_plain.size > 180 %}
+              <details class="product-description-toggle">
+                <summary>
+                  <span class="product-description-toggle__more">Read more</span>
+                  <span class="product-description-toggle__less">Show less</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </summary>
+                <div class="product-description-toggle__content">{{ product.description }}</div>
+              </details>
+            {% endif %}
+          </div>
         {% endif %}
 
         <div class="product-purchase__rule"></div>

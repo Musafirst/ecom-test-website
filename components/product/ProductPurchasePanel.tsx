@@ -7,9 +7,10 @@ import type { JammProduct } from '@/types/product'
 
 interface ProductPurchasePanelProps {
   product: JammProduct
+  compact?: boolean
 }
 
-export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
+export function ProductPurchasePanel({ product, compact = false }: ProductPurchasePanelProps) {
   const [added, setAdded] = useState(false)
   const [adding, setAdding] = useState(false)
   const [cartError, setCartError] = useState<string | null>(null)
@@ -53,14 +54,14 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
   }
 
   return (
-    <div className="mt-6 space-y-3 border-t border-jamm-gold/15 pt-5 sm:mt-8 sm:pt-6">
+    <div className={`${compact ? 'mt-4 space-y-2.5 pt-4' : 'mt-6 space-y-3 pt-5'} border-t border-jamm-gold/15 sm:mt-8 sm:space-y-3 sm:pt-6`}>
       <div className="flex items-center justify-between gap-3">
         <span className="font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-jamm-muted">Qty</span>
         <div className="flex items-center overflow-hidden rounded-md border border-jamm-gold/30 bg-white/70 shadow-[0_10px_24px_rgba(12,11,9,0.04)]">
           <button
             type="button"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="flex h-11 w-11 items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark"
+            className={`${compact ? 'h-10 w-10' : 'h-11 w-11'} flex items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark sm:h-11 sm:w-11`}
             aria-label="Decrease quantity"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-3.5 w-3.5" aria-hidden>
@@ -73,7 +74,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
           <button
             type="button"
             onClick={() => setQty((q) => Math.min(10, q + 1))}
-            className="flex h-11 w-11 items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark"
+            className={`${compact ? 'h-10 w-10' : 'h-11 w-11'} flex items-center justify-center text-jamm-dark/50 transition-[background-color,color] duration-100 active:scale-[0.92] hover:bg-jamm-gold/12 hover:text-jamm-dark sm:h-11 sm:w-11`}
             aria-label="Increase quantity"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-3.5 w-3.5" aria-hidden>
@@ -83,13 +84,13 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-[minmax(0,1fr)_56px] gap-2.5 sm:gap-3">
+      <div className={`${compact ? 'grid-cols-[minmax(0,1fr)_48px]' : 'grid-cols-[minmax(0,1fr)_56px]'} grid gap-2.5 sm:grid-cols-[minmax(0,1fr)_56px] sm:gap-3`}>
         <motion.button
           type="button"
           onClick={addToCart}
           disabled={adding || product.availableForSale === false}
           whileTap={{ scale: 0.97 }}
-          className={`inline-flex min-h-14 min-w-0 items-center justify-center rounded-md px-4 py-4 text-center font-sans text-[11px] font-semibold uppercase tracking-[0.12em] shadow-[0_16px_36px_rgba(196,151,58,0.16)] transition-[transform,background-color,opacity] duration-150 min-[390px]:tracking-[0.14em] sm:px-8 ${
+          className={`inline-flex ${compact ? 'min-h-12 py-3' : 'min-h-14 py-4'} min-w-0 items-center justify-center rounded-md px-4 text-center font-sans text-[11px] font-semibold uppercase tracking-[0.12em] shadow-[0_16px_36px_rgba(196,151,58,0.16)] transition-[transform,background-color,opacity] duration-150 min-[390px]:tracking-[0.14em] sm:min-h-14 sm:px-8 sm:py-4 ${
             added ? 'bg-jamm-gold text-jamm-dark' : 'bg-jamm-gold text-jamm-dark hover:bg-jamm-gold/82'
           } disabled:cursor-not-allowed disabled:opacity-55`}
         >
@@ -111,7 +112,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
           whileTap={{ scale: 0.97 }}
           onClick={() => setSaved((s) => !s)}
           aria-label={saved ? 'Remove from saved' : 'Save product'}
-          className={`inline-flex h-14 w-14 items-center justify-center rounded-md border shadow-[0_14px_32px_rgba(12,11,9,0.06)] transition-[transform,background-color,color,border-color] duration-150 ${
+          className={`inline-flex ${compact ? 'h-12 w-12' : 'h-14 w-14'} items-center justify-center rounded-md border shadow-[0_14px_32px_rgba(12,11,9,0.06)] transition-[transform,background-color,color,border-color] duration-150 sm:h-14 sm:w-14 ${
             saved
               ? 'border-jamm-gold bg-jamm-gold/15 text-jamm-gold'
               : 'border-jamm-gold/45 bg-white/60 text-jamm-gold hover:bg-jamm-gold hover:text-jamm-dark'
@@ -141,7 +142,7 @@ export function ProductPurchasePanel({ product }: ProductPurchasePanelProps) {
         whileTap={{ scale: 0.98 }}
         onClick={buyNow}
         disabled={adding || product.availableForSale === false}
-        className="inline-flex min-h-14 w-full items-center justify-center rounded-md border border-jamm-dark/20 bg-white/45 px-8 py-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark shadow-[0_14px_30px_rgba(12,11,9,0.08)] transition-[transform,background-color,color,border-color,opacity] duration-150 hover:border-jamm-gold hover:bg-jamm-dark hover:text-white disabled:cursor-not-allowed disabled:opacity-55"
+        className={`inline-flex ${compact ? 'min-h-12 py-3' : 'min-h-14 py-4'} w-full items-center justify-center rounded-md border border-jamm-dark/20 bg-white/45 px-8 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark shadow-[0_14px_30px_rgba(12,11,9,0.08)] transition-[transform,background-color,color,border-color,opacity] duration-150 hover:border-jamm-gold hover:bg-jamm-dark hover:text-white disabled:cursor-not-allowed disabled:opacity-55 sm:min-h-14 sm:py-4`}
       >
         Buy Now
       </motion.button>
