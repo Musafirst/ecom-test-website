@@ -31,6 +31,7 @@ export default function ContactPage() {
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Business</h2>
               <p className="mt-2">Jamm Trade LLC</p>
+              <p className="mt-1">5941 Lansdowne Ave, Philadelphia, PA 19151</p>
             </div>
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Email</h2>
