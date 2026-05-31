@@ -47,13 +47,31 @@ export async function getAllProducts() {
   return getShopifyProducts()
 }
 
-// Homepage product grid stays curated by count/order, but its products now come
-// from Shopify when available.
+// Homepage product grid: one product per category first, then fill to 4.
+// This ensures the grid reflects the full store, not just fragrances.
 export async function getFeaturedProducts() {
   const products = await getShopifyProducts()
-  const fragranceProducts = products.filter((product) => product.category === 'perfume')
+  if (products.length === 0) return []
 
-  return (fragranceProducts.length > 0 ? fragranceProducts : products).slice(0, 4)
+  const seen = new Set<string>()
+  const picks: typeof products = []
+
+  for (const p of products) {
+    if (!seen.has(p.category)) {
+      seen.add(p.category)
+      picks.push(p)
+      if (picks.length === 4) return picks
+    }
+  }
+
+  for (const p of products) {
+    if (!picks.includes(p)) {
+      picks.push(p)
+      if (picks.length === 4) return picks
+    }
+  }
+
+  return picks
 }
 
 // Perfume category: all fragrance products across oud, amber, and daily.
