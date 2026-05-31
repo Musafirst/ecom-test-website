@@ -122,13 +122,6 @@
     },
     "featured-products": {
       "type": "featured-products",
-      "blocks": {
-        "fp-1": { "type": "product", "settings": {} },
-        "fp-2": { "type": "product", "settings": {} },
-        "fp-3": { "type": "product", "settings": {} },
-        "fp-4": { "type": "product", "settings": {} }
-      },
-      "block_order": ["fp-1", "fp-2", "fp-3", "fp-4"],
       "settings": {
         "products_count": 4
       }
