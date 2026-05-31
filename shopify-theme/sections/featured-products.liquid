@@ -13,19 +13,43 @@
       </a>
     </div>
     <div class="section-rule"></div>
-    <div class="product-grid product-grid--4">
-      {% assign featured_col = section.settings.collection %}
-      {% if featured_col != blank %}
-        {% for product in featured_col.products limit: section.settings.products_count %}
-          {% render 'product-card', product: product %}
-        {% endfor %}
-      {% else %}
-        {% for product in collections.all.products limit: section.settings.products_count %}
-          {% render 'product-card', product: product %}
-        {% else %}
-          <div class="empty-state"><p>Add products to your store to see them here.</p></div>
-        {% endfor %}
-      {% endif %}
+
+    <div class="product-grid product-grid--4 product-grid--featured">
+      {%- assign rendered = 0 -%}
+
+      {%- comment -%} 1. Products picked manually in the theme editor {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'product' and block.settings.product != blank -%}
+          {%- render 'product-card', product: block.settings.product -%}
+          {%- assign rendered = rendered | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} 2. Fall back to a chosen collection {%- endcomment -%}
+      {%- if rendered == 0 -%}
+        {%- assign featured_col = section.settings.collection -%}
+        {%- if featured_col != blank -%}
+          {%- for product in featured_col.products limit: section.settings.products_count -%}
+            {%- render 'product-card', product: product -%}
+            {%- assign rendered = rendered | plus: 1 -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%} 3. Fall back to the store's all-products collection {%- endcomment -%}
+      {%- if rendered == 0 -%}
+        {%- for product in collections.all.products limit: section.settings.products_count -%}
+          {%- render 'product-card', product: product -%}
+          {%- assign rendered = rendered | plus: 1 -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if rendered == 0 -%}
+        <div class="featured-empty">
+          <p class="featured-empty__title">Products are temporarily unavailable.</p>
+          <p class="featured-empty__text">Please check back soon.</p>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -34,9 +58,35 @@
 {
   "name": "Featured Products",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection to feature" },
-    { "type": "range", "id": "products_count", "label": "Number of products", "min": 2, "max": 12, "step": 1, "default": 4 }
+    {
+      "type": "paragraph",
+      "content": "Pick up to 8 products below. If none are selected, the fallback collection is used instead."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Fallback collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Max products from fallback collection",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
   ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
   "presets": [
     { "name": "Featured Products" }
   ]

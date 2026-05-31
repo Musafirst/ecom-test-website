@@ -1114,6 +1114,41 @@ input, textarea { font-family: inherit; }
 }
 @media (min-width: 1024px) { .featured-products-section { padding: 64px var(--container-px); } }
 
+/* Match the Next.js storefront gap rhythm */
+.product-grid--featured {
+  gap: 12px;
+}
+@media (min-width: 640px)  { .product-grid--featured { gap: 16px; } }
+@media (min-width: 1024px) { .product-grid--featured { gap: 20px; } }
+
+/* Stagger cards like framer-motion staggerChildren: 0.07s */
+.product-grid--featured .product-card:nth-child(1) { animation-delay:   0ms; }
+.product-grid--featured .product-card:nth-child(2) { animation-delay:  70ms; }
+.product-grid--featured .product-card:nth-child(3) { animation-delay: 140ms; }
+.product-grid--featured .product-card:nth-child(4) { animation-delay: 210ms; }
+
+/* Empty state — matches the Next.js fallback card */
+.featured-empty {
+  grid-column: 1 / -1;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(196,151,58,0.2);
+  background: var(--color-card);
+  padding: 48px 24px;
+  text-align: center;
+}
+.featured-empty__title {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+.featured-empty__text {
+  margin-top: 8px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
 /* ---------- Collection Grid -------------------------------- */
 .collection-grid-section {
   padding: 40px var(--container-px);

@@ -11,7 +11,7 @@
             "title": "From essentials to enterprise.",
             "subtitle": "Curated fragrances, fashion, and everyday goods selected with intention.",
             "cta_label": "Explore Products",
-            "cta_url": "/collections/perfumes-collection"
+            "cta_url": "https://www.jammtrade.com/shop/category/perfumes"
           }
         },
         "slide-2": {
@@ -22,7 +22,7 @@
             "title": "Signature scents, selected with care.",
             "subtitle": "Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.",
             "cta_label": "Shop Perfumes",
-            "cta_url": "/collections/perfumes-collection"
+            "cta_url": "https://www.jammtrade.com/shop/category/perfumes"
           }
         },
         "slide-3": {
@@ -33,7 +33,7 @@
             "title": "Everyday tech, refined.",
             "subtitle": "Useful electronics and accessories selected for quality, simplicity, and daily use.",
             "cta_label": "Shop Electronics",
-            "cta_url": "/collections/electronics-collection"
+            "cta_url": "https://www.jammtrade.com/shop/category/electronics"
           }
         },
         "slide-4": {
@@ -66,7 +66,7 @@
           "settings": {
             "detail": "Oud · Amber · Daily",
             "label": "Perfumes",
-            "url": "/collections/perfumes-collection"
+            "url": "https://www.jammtrade.com/shop/category/perfumes"
           }
         },
         "sc-2": {
@@ -74,7 +74,7 @@
           "settings": {
             "detail": "5 fragrances",
             "label": "Oud",
-            "url": "/collections/oud-collection"
+            "url": "https://www.jammtrade.com/shop/collection/oud"
           }
         },
         "sc-3": {
@@ -82,7 +82,7 @@
           "settings": {
             "detail": "8 fragrances",
             "label": "Amber",
-            "url": "/collections/amber-collection"
+            "url": "https://www.jammtrade.com/shop/collection/amber"
           }
         },
         "sc-4": {
@@ -90,7 +90,7 @@
           "settings": {
             "detail": "Daily",
             "label": "Daily",
-            "url": "/collections/daily-collection"
+            "url": "https://www.jammtrade.com/shop/collection/daily"
           }
         },
         "sc-5": {
@@ -98,7 +98,7 @@
           "settings": {
             "detail": "Electronics",
             "label": "Electronics",
-            "url": "/collections/electronics-collection"
+            "url": "https://www.jammtrade.com/shop/category/electronics"
           }
         },
         "sc-6": {
@@ -122,6 +122,13 @@
     },
     "featured-products": {
       "type": "featured-products",
+      "blocks": {
+        "fp-1": { "type": "product", "settings": {} },
+        "fp-2": { "type": "product", "settings": {} },
+        "fp-3": { "type": "product", "settings": {} },
+        "fp-4": { "type": "product", "settings": {} }
+      },
+      "block_order": ["fp-1", "fp-2", "fp-3", "fp-4"],
       "settings": {
         "products_count": 4
       }
@@ -136,7 +143,7 @@
             "name": "Oud",
             "copy": "Resinous, dark, and long lasting.",
             "count_override": "5 fragrances",
-            "url_override": "/collections/oud-collection"
+            "url_override": "https://www.jammtrade.com/shop/collection/oud"
           }
         },
         "col-2": {
@@ -146,7 +153,7 @@
             "name": "Amber",
             "copy": "Warm vanilla, soft spice, skin-close depth.",
             "count_override": "8 fragrances",
-            "url_override": "/collections/amber-collection"
+            "url_override": "https://www.jammtrade.com/shop/collection/amber"
           }
         },
         "col-3": {
@@ -156,7 +163,7 @@
             "name": "Daily",
             "copy": "Clean signatures for repeat wear.",
             "count_override": "Daily fragrances",
-            "url_override": "/collections/daily-collection"
+            "url_override": "https://www.jammtrade.com/shop/collection/daily"
           }
         }
       },
@@ -187,7 +194,7 @@
             "name": "Electronics",
             "eyebrow": "Precision essentials.",
             "copy": "Premium audio and everyday electronics selected for quality and focus.",
-            "url": "/collections/electronics-collection"
+            "url": "https://www.jammtrade.com/shop/category/electronics"
           }
         }
       },
