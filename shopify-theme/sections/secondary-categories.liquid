@@ -1,3 +1,5 @@
+{% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
+
 <section class="secondary-categories-section">
   <div class="container">
     <div class="section-header">
@@ -11,8 +13,18 @@
     <div class="category-grid">
       {% for block in section.blocks %}
         {% if block.type == 'category_card' %}
-        <a href="{{ block.settings.url | default: '#' }}" class="category-card" {{ block.shopify_attributes }}>
+        {% assign category_url = block.settings.url %}
+        {% if category_url == blank %}
+          {% assign category_handle = block.settings.name | handleize %}
+          {% if category_handle == 'perfumes' or category_handle == 'electronics' %}
+            {% assign category_url = public_shop_url | append: '/category/' | append: category_handle %}
+          {% else %}
+            {% assign category_url = public_shop_url | append: '/collection/' | append: category_handle %}
+          {% endif %}
+        {% endif %}
+        <a href="{{ category_url }}" class="category-card" {{ block.shopify_attributes }}>
           <div class="category-card__inner">
+            <div class="beam beam--lg{% if forloop.index0 == 1 %} beam--d1{% elsif forloop.index0 == 2 %} beam--d2{% elsif forloop.index0 >= 3 %} beam--d3{% endif %}" aria-hidden="true"></div>
             {% if block.settings.image != blank %}
               <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.name | escape }}" class="category-card__img" loading="lazy">
             {% elsif block.settings.asset_image != blank %}

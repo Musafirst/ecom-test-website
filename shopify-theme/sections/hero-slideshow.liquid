@@ -1,5 +1,6 @@
 <div class="hero-section">
   <div class="hero-slider" id="HeroSlider" data-speed="{{ section.settings.autoplay_speed | times: 1000 }}">
+    <div class="beam beam--hero" aria-hidden="true"></div>
 
     {% for block in section.blocks %}
       {% if block.type == 'slide' %}

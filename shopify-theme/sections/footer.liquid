@@ -1,10 +1,14 @@
+{% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
+{% assign public_shop_url = public_storefront_url | append: '/shop' %}
+
 <footer class="site-footer" role="contentinfo">
   <div class="container">
     <div class="footer-shell">
+      <div class="beam beam--xl beam--d1" aria-hidden="true"></div>
       <div class="footer-inner">
 
         <div class="footer-brand">
-          <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+          <a href="{{ public_shop_url }}" aria-label="{{ shop.name }}">
             {% if section.settings.logo != blank %}
               <img
                 src="{{ section.settings.logo | img_url: '600x' }}"
@@ -37,22 +41,22 @@
 
         <nav class="footer-link-group" aria-label="Shop navigation">
           <p class="footer-link-group__title">Shop</p>
-          <a href="{{ routes.root_url }}" class="footer-nav__link">Shop</a>
-          <a href="/pages/contact" class="footer-nav__link">Contact</a>
+          <a href="{{ public_shop_url }}" class="footer-nav__link">Shop</a>
+          <a href="{{ public_shop_url }}/contact" class="footer-nav__link">Contact</a>
         </nav>
 
         <nav class="footer-link-group" aria-label="Services navigation">
           <p class="footer-link-group__title">Services</p>
-          <a href="/pages/jamm-cargo" class="footer-nav__link">Jamm Cargo</a>
-          <a href="/pages/jamm-fleet" class="footer-nav__link">Jamm Fleet</a>
+          <a href="{{ public_storefront_url }}/jamm-cargo" class="footer-nav__link">Jamm Cargo</a>
+          <a href="{{ public_storefront_url }}/jamm-fleet" class="footer-nav__link">Jamm Fleet</a>
         </nav>
 
         <nav class="footer-link-group" aria-label="Legal navigation">
           <p class="footer-link-group__title">Policies</p>
-          <a href="/pages/shipping-policy" class="footer-nav__link">Shipping Policy</a>
-          <a href="/pages/refund-policy" class="footer-nav__link">Refund Policy</a>
-          <a href="/pages/privacy-policy" class="footer-nav__link">Privacy Policy</a>
-          <a href="/pages/terms-of-service" class="footer-nav__link">Terms of Service</a>
+          <a href="{{ public_shop_url }}/shipping-policy" class="footer-nav__link">Shipping Policy</a>
+          <a href="{{ public_shop_url }}/return-policy" class="footer-nav__link">Return Policy</a>
+          <a href="{{ public_shop_url }}/privacy-policy" class="footer-nav__link">Privacy Policy</a>
+          <a href="{{ public_shop_url }}/terms-of-service" class="footer-nav__link">Terms of Service</a>
         </nav>
       </div>
 

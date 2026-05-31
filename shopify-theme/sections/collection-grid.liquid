@@ -1,3 +1,5 @@
+{% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
+
 <section class="collection-grid-section" id="collections">
   <div class="container">
     <div class="section-header">
@@ -12,10 +14,11 @@
       {% for block in section.blocks %}
         {% if block.type == 'collection_card' %}
         {% assign card_url = block.settings.url_override %}
-        {% if card_url == blank %}{% assign card_url = block.settings.collection.url %}{% endif %}
-        {% if card_url == blank %}{% assign card_url = '/collections/' | append: block.settings.name | handleize %}{% endif %}
+        {% assign card_handle = block.settings.collection.handle | default: block.settings.name | handleize | replace: '-collection', '' %}
+        {% if card_url == blank %}{% assign card_url = public_shop_url | append: '/collection/' | append: card_handle %}{% endif %}
         <a href="{{ card_url }}" class="collection-card" {{ block.shopify_attributes }}>
           <div class="collection-card__inner">
+            <div class="beam beam--lg{% if forloop.index0 == 1 %} beam--d1{% elsif forloop.index0 == 2 %} beam--d2{% elsif forloop.index0 >= 3 %} beam--d3{% endif %}" aria-hidden="true"></div>
             {% if block.settings.image != blank %}
               <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" loading="lazy">
             {% elsif block.settings.collection.image != blank %}

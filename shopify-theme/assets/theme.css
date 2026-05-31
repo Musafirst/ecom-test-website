@@ -1364,6 +1364,7 @@ input, textarea { font-family: inherit; }
 @media (min-width: 1024px) { .trust-bar-section { padding: 48px var(--container-px) 80px; } }
 
 .trust-bar {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   border-radius: var(--radius-lg);
@@ -2922,4 +2923,78 @@ input, textarea { font-family: inherit; }
   background: rgba(12,11,9,0.38);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+}
+
+/* ============================================================
+   BORDER BEAM
+   Animated gold light travelling around card perimeters,
+   matching the Next.js storefront effect.
+   ============================================================ */
+
+@keyframes border-beam {
+  100% { offset-distance: 100%; }
+}
+
+.beam {
+  --beam-size:        260px;
+  --beam-duration:    12s;
+  --beam-delay:       0s;
+  --beam-width:       2.5px;
+  --beam-color-from:  #C4973A;
+  --beam-color-to:    #F0D98C;
+  --beam-anchor:      90%;
+
+  pointer-events: none;
+  position:       absolute;
+  inset:          0;
+  z-index:        10;
+  border-radius:  inherit;
+  border:         var(--beam-width) solid transparent;
+
+  /* Mask: reveal only the border area, hide the interior */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.beam::after {
+  content:        '';
+  pointer-events: none;
+  position:       absolute;
+  aspect-ratio:   1;
+  width:          var(--beam-size);
+  background:     linear-gradient(
+    90deg,
+    transparent             0%,
+    var(--beam-color-from)  22%,
+    var(--beam-color-to)    50%,
+    var(--beam-color-from)  78%,
+    transparent             100%
+  );
+  filter:            drop-shadow(0 0 8px var(--beam-color-to))
+                     drop-shadow(0 0 18px var(--beam-color-from));
+  offset-anchor:     var(--beam-anchor) 50%;
+  offset-path:       rect(0 auto auto 0 round var(--beam-size));
+  animation:         border-beam var(--beam-duration) infinite linear;
+  animation-delay:   var(--beam-delay);
+}
+
+/* Size / speed variants */
+.beam--md   { --beam-size: 360px; --beam-duration: 12s; }
+.beam--lg   { --beam-size: 420px; --beam-duration: 13s; }
+.beam--xl   { --beam-size: 480px; --beam-duration: 14s; }
+.beam--hero { --beam-size: 520px; --beam-duration: 13s; }
+
+/* Staggered delay variants (negative = starts mid-cycle) */
+.beam--d1 { --beam-delay: -2s; }
+.beam--d2 { --beam-delay: -4s; }
+.beam--d3 { --beam-delay: -6s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .beam, .beam::after { animation: none !important; }
 }
