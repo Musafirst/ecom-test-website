@@ -118,11 +118,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
         name: productTitle,
         description: productDescription,
         image: galleryImages.map(absoluteSiteUrl),
-        brand: {
-          '@type': 'Brand',
-          name: product.brand || site.name,
-        },
-        sku: product.id,
+        ...(product.brand ? {
+          brand: {
+            '@type': 'Brand',
+            name: product.brand,
+          },
+        } : {}),
+        ...(product.sku ? { sku: product.sku } : {}),
+        ...(product.gtin ? { gtin: product.gtin } : {}),
+        ...(product.mpn ? { mpn: product.mpn } : {}),
         category: product.categoryLabel,
         offers: {
           '@type': 'Offer',

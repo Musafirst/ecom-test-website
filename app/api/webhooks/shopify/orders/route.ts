@@ -10,7 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 const WEBHOOK_SECRET  = process.env.SHOPIFY_WEBHOOK_SECRET ?? ''
 const IS_PROD         = process.env.NODE_ENV === 'production'
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
       expires_at:           expiresAt.toISOString(),
     }
 
-    const { error } = await supabase
+    const { error } = await getSupabase()
       .from('orders')
       .upsert(row, { onConflict: 'shopify_order_id' })
 

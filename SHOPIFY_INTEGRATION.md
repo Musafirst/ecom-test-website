@@ -16,7 +16,8 @@ SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
 SHOPIFY_STOREFRONT_ACCESS_TOKEN=your_storefront_token
 ```
 
-If either value is missing, product grids and product pages fall back to `data/products.ts`.
+If either value is missing, development previews fall back to `data/products.ts`.
+Production renders a temporary-unavailable state and never exposes demo catalog items.
 
 ## Main Files
 
@@ -33,7 +34,7 @@ If either value is missing, product grids and product pages fall back to `data/p
 1. A page calls `getAllProducts`, `getFeaturedProducts`, `getCollectionProducts`, or `getProductByHandle` from `lib/products.ts`.
 2. `lib/products.ts` calls Shopify helpers in `lib/shopify.ts`.
 3. `lib/shopify.ts` fetches Shopify Storefront API data and maps each product into `JammProduct`.
-4. If Shopify is unavailable or returns no products, local demo products from `data/products.ts` are used.
+4. If Shopify is unavailable or returns no products, local demo products from `data/products.ts` are used only outside production.
 5. Components render the same `JammProduct` shape in both live and fallback modes.
 
 ## Cart Flow

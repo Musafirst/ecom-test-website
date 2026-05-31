@@ -44,7 +44,7 @@ export function Footer() {
             </p>
             <div className="mt-4 space-y-1 font-sans text-xs leading-relaxed text-jamm-dark/52">
               <p className="font-semibold text-jamm-dark/62">Jamm Trade LLC</p>
-              <p>5941 Lansdowne Ave, Philadelphia, PA 19151</p>
+              <p>{site.publicLocation}</p>
               <a href={`mailto:${site.supportEmail}`} className="transition-colors hover:text-jamm-gold">
                 {site.supportEmail}
               </a>

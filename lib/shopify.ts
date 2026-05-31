@@ -10,6 +10,7 @@ import {
   productsQuery,
   shopPoliciesQuery,
 } from '@/lib/shopifyQueries'
+import { site } from '@/lib/site'
 import type { JammProduct, ProductCategory, ProductCollection, ProductSubcategory } from '@/types/product'
 
 // This module is the Shopify boundary. Raw Storefront API responses are mapped
@@ -48,6 +49,8 @@ type ShopifyProduct = {
       availableForSale: boolean
       price: ShopifyMoney
       compareAtPrice: ShopifyMoney | null
+      sku?: string | null
+      barcode?: string | null
     }>[]
   }
   collections: {
@@ -64,6 +67,8 @@ type PublicShopifyVariant = {
   available: boolean
   price: number
   compare_at_price: number | null
+  sku?: string | null
+  barcode?: string | null
   featured_image?: {
     src?: string
     alt?: string | null
@@ -138,7 +143,7 @@ export function isShopifyConfigured() {
 }
 
 // Server-side Storefront API fetch helper. It returns null instead of throwing
-// so callers can fall back to local demo data during setup or API outages.
+// so development callers can fall back to local demo data during setup or API outages.
 export async function shopifyFetch<T>(query: string, variables: Record<string, unknown> = {}): Promise<T | null> {
   const url = getStorefrontUrl()
   const token = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN
@@ -290,6 +295,8 @@ function mapShopifyProduct(product: ShopifyProduct): JammProduct {
     compareAtPrice: compareAtPrice && compareAtPrice > price ? compareAtPrice : undefined,
     currencyCode: selectedVariant?.price.currencyCode ?? product.priceRange.minVariantPrice.currencyCode,
     variantId: selectedVariant?.id,
+    sku: selectedVariant?.sku || undefined,
+    gtin: selectedVariant?.barcode || undefined,
     availableForSale: selectedVariant?.availableForSale ?? product.availableForSale,
     quantityAvailable: null,
     collection,
@@ -345,6 +352,8 @@ function mapPublicShopifyProduct(product: PublicShopifyProduct): JammProduct {
     compareAtPrice: compareAtPrice && compareAtPrice / 100 > price ? compareAtPrice / 100 : undefined,
     currencyCode: 'USD',
     variantId: selectedVariant ? `gid://shopify/ProductVariant/${selectedVariant.id}` : undefined,
+    sku: selectedVariant?.sku || undefined,
+    gtin: selectedVariant?.barcode || undefined,
     availableForSale: selectedVariant?.available ?? product.available,
     quantityAvailable: null,
     collection,
@@ -504,9 +513,27 @@ export type ShopPolicies = {
   termsOfService: ShopPolicy | null
 }
 
+function normalizeCustomerPolicy(policy: ShopPolicy | null) {
+  if (!policy) return null
+
+  return {
+    ...policy,
+    body: policy.body
+      .replace(/mailto:[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, `mailto:${site.supportEmail}`)
+      .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, site.supportEmail),
+  }
+}
+
 export const getShopifyPolicies = cache(async (): Promise<ShopPolicies | null> => {
   const data = await shopifyFetch<{ shop: ShopPolicies }>(shopPoliciesQuery)
-  return data?.shop ?? null
+  if (!data?.shop) return null
+
+  return {
+    privacyPolicy: normalizeCustomerPolicy(data.shop.privacyPolicy),
+    refundPolicy: normalizeCustomerPolicy(data.shop.refundPolicy),
+    shippingPolicy: normalizeCustomerPolicy(data.shop.shippingPolicy),
+    termsOfService: normalizeCustomerPolicy(data.shop.termsOfService),
+  }
 })
 
 export async function addShopifyCartLines(cartId: string, variantId: string, quantity: number) {

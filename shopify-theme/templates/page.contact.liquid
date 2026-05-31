@@ -12,10 +12,11 @@
         <div class="contact-info__item">
           <h2 class="contact-info__heading">Business</h2>
           <p class="contact-info__text">Jamm Trade LLC</p>
+          <p class="contact-info__text contact-info__address">{{ settings.public_location | default: 'Philadelphia, PA' }}</p>
         </div>
         <div class="contact-info__item">
           <h2 class="contact-info__heading">Email</h2>
-          <a href="mailto:contact@jammtrade.com" class="contact-info__link">contact@jammtrade.com</a>
+          <a href="mailto:{{ settings.support_email | default: 'contact@jammtrade.com' }}" class="contact-info__link">{{ settings.support_email | default: 'contact@jammtrade.com' }}</a>
         </div>
         <div class="contact-info__item">
           <h2 class="contact-info__heading">Support Hours</h2>

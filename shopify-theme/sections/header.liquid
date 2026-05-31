@@ -157,7 +157,7 @@
   </nav>
 
   <div class="mobile-menu__footer">
-    <a href="mailto:contact@jammtrade.com" class="mobile-menu__email">contact@jammtrade.com</a>
+    <a href="mailto:{{ settings.support_email | default: 'contact@jammtrade.com' }}" class="mobile-menu__email">{{ settings.support_email | default: 'contact@jammtrade.com' }}</a>
   </div>
 </div>
 

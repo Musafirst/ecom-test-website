@@ -5,7 +5,7 @@ export type ProductBadgeType = 'new' | 'bestseller'
 
 // Stable product shape used by all product UI.
 // Shopify products are mapped into this shape in lib/shopify.ts, while
-// data/products.ts remains the local demo/fallback catalog.
+// data/products.ts remains the local development-only demo catalog.
 export interface JammProduct {
   id: string
   handle: string
@@ -14,6 +14,9 @@ export interface JammProduct {
   compareAtPrice?: number
   currencyCode?: string
   variantId?: string
+  sku?: string
+  gtin?: string
+  mpn?: string
   availableForSale?: boolean
   quantityAvailable?: number | null
   collection?: ProductCollection

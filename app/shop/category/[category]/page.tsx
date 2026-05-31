@@ -153,7 +153,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </>
           ) : (
             <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
-              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Fragrance products are being updated.</p>
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Products are temporarily unavailable.</p>
               <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
                 Contact Jamm Trade for current availability or explore another category.
               </p>
@@ -267,7 +267,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </>
           ) : (
             <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
-              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Electronics products are being updated.</p>
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Products are temporarily unavailable.</p>
               <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
                 Contact Jamm Trade for current availability or explore another category.
               </p>
@@ -313,7 +313,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </div>
           ) : (
             <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-14 text-center shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:px-8 sm:py-16">
-              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Clothing products are being updated.</p>
+              <p className="font-sans text-xl font-semibold text-jamm-dark sm:text-2xl">Products are temporarily unavailable.</p>
               <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
                 Contact Jamm Trade for current availability or explore another category.
               </p>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { PolicyPage } from '@/components/legal/PolicyPage'
 import { getShopifyPolicies } from '@/lib/shopify'
+import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -23,7 +24,7 @@ export default async function PrivacyPolicyPage() {
       sections={[
         {
           heading: 'Contact',
-          body: ['For privacy questions, contact us at contact@jammtrade.com.'],
+          body: [`For privacy questions, contact us at ${site.supportEmail}.`],
         },
       ]}
     />

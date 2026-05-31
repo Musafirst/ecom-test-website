@@ -20,7 +20,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self' https://*.myshopify.com https://*.shopify.com https://*.supabase.co",
+              "connect-src 'self'",
               "frame-src 'none'",
               "frame-ancestors 'none'",
               "form-action 'self' https://*.myshopify.com",

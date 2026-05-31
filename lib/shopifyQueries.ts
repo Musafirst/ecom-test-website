@@ -53,6 +53,8 @@ const productFields = /* GraphQL */ `
             amount
             currencyCode
           }
+          sku
+          barcode
           selectedOptions {
             name
             value

@@ -2,17 +2,30 @@
  * Shopify OAuth callback — exchanges the authorization code for an access token
  * then immediately pushes all legal policies and fixes product data.
  *
- * Triggered when the user approves the OAuth flow at:
- * https://jamm-trade.myshopify.com/admin/oauth/authorize?client_id=b63704e1c1dc653a6f024f499086b46c&scope=write_content,write_products&redirect_uri=https://jammtrade.com/api/auth/shopify/callback
+ * Configure SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, and SHOPIFY_OAUTH_STATE
+ * before using this internal maintenance callback.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { site } from '@/lib/site'
 
-const CLIENT_ID     = 'b63704e1c1dc653a6f024f499086b46c'
+const CLIENT_ID     = process.env.SHOPIFY_CLIENT_ID ?? ''
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET ?? ''
-const STORE         = 'jamm-trade.myshopify.com'
+const OAUTH_STATE   = process.env.SHOPIFY_OAUTH_STATE ?? ''
+const STORE         = process.env.SHOPIFY_STORE_DOMAIN ?? 'jamm-trade.myshopify.com'
+const SUPPORT_EMAIL = site.supportEmail
 
-const PRIVACY_POLICY = `<p>Jamm Trade LLC ("Jamm Trade," "we," "us," or "our") is committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information when you visit jammtrade.com or shop.jammtrade.com or make a purchase.</p>
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character] ?? character)
+}
+
+const PRIVACY_POLICY = `<p>Jamm Trade LLC ("Jamm Trade," "we," "us," or "our") is committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information when you visit jammtrade.com or make a purchase.</p>
 
 <h2>Information We Collect</h2>
 <p>When you place an order or contact us, we may collect: your name, email address, shipping and billing address, phone number, payment information (processed securely by Shopify and its payment partners — we never store full card numbers), order history, and communications sent to our support team.</p>
@@ -32,15 +45,15 @@ const PRIVACY_POLICY = `<p>Jamm Trade LLC ("Jamm Trade," "we," "us," or "our") i
 <p>Order records are retained for a minimum of 7 years as required for accounting and legal compliance. You may contact us to request access to, correction of, or deletion of your personal data where applicable under law.</p>
 
 <h2>Your Rights</h2>
-<p>Depending on your location, you may have rights to access, correct, or request deletion of your personal data. To exercise these rights, contact us at contact@jammtrade.com.</p>
+<p>Depending on your location, you may have rights to access, correct, or request deletion of your personal data. To exercise these rights, contact us at ${SUPPORT_EMAIL}.</p>
 
 <h2>Contact</h2>
-<p>For privacy questions, contact Jamm Trade LLC at: contact@jammtrade.com. We aim to respond within 5 business days.</p>`
+<p>For privacy questions, contact Jamm Trade LLC at: ${SUPPORT_EMAIL}. We aim to respond within 5 business days.</p>`
 
 const REFUND_POLICY = `<p>Jamm Trade LLC reviews every order with care. This policy explains how returns, refunds, and exchanges are handled.</p>
 
 <h2>Return Window</h2>
-<p>Eligible items may be returned within <strong>14 days of the delivery date</strong>. To initiate a return, contact us at contact@jammtrade.com with your order number and reason for return before sending any item back.</p>
+<p>Eligible items may be returned within <strong>14 days of the delivery date</strong>. To initiate a return, contact us at ${SUPPORT_EMAIL} with your order number and reason for return before sending any item back.</p>
 <p>Items must be: unused and unopened, in their original retail packaging, in the same condition as received, and accompanied by proof of purchase.</p>
 
 <h2>Fragrance Returns</h2>
@@ -53,14 +66,14 @@ const REFUND_POLICY = `<p>Jamm Trade LLC reviews every order with care. This pol
 <p>The following items are not eligible for return: opened fragrances, used or registered electronics, personal care items, gift cards, final sale or clearance items, and items damaged after delivery due to customer handling.</p>
 
 <h2>Damaged, Defective, or Incorrect Orders</h2>
-<p>If your order arrives damaged, defective, or not as described, contact us at contact@jammtrade.com within <strong>48 hours of delivery</strong> with: your order number, a description of the issue, and clear photos of the item and packaging. Approved claims will be resolved with a replacement, exchange, or full refund depending on availability.</p>
+<p>If your order arrives damaged, defective, or not as described, contact us at ${SUPPORT_EMAIL} within <strong>48 hours of delivery</strong> with: your order number, a description of the issue, and clear photos of the item and packaging. Approved claims will be resolved with a replacement, exchange, or full refund depending on availability.</p>
 
 <h2>Refund Process</h2>
 <p>Once a return is approved and the item is received and inspected, refunds are issued to the original payment method. Please allow 5–10 business days for the refund to appear, depending on your bank or card issuer.</p>
 <p>Return shipping costs are the responsibility of the customer unless the return is due to a Jamm Trade error.</p>
 
 <h2>Contact</h2>
-<p>To start a return or ask a question about your order, email contact@jammtrade.com with your order number. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
+<p>To start a return or ask a question about your order, email ${SUPPORT_EMAIL} with your order number. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
 
 const SHIPPING_POLICY = `<p>Jamm Trade LLC ships eligible orders with careful packaging and tracked delivery from the United States.</p>
 
@@ -87,12 +100,12 @@ const SHIPPING_POLICY = `<p>Jamm Trade LLC ships eligible orders with careful pa
 <p>You are responsible for providing a complete and accurate shipping address at checkout. Jamm Trade is not responsible for orders delivered to an incorrect address provided by the customer. Orders returned due to an undeliverable address may require additional shipping fees for reshipment.</p>
 
 <h2>Damaged Items in Transit</h2>
-<p>If your order arrives damaged during shipping, contact us at contact@jammtrade.com within <strong>48 hours of delivery</strong> with your order number and photos of the damaged item and packaging. We will work with you to resolve the issue.</p>
+<p>If your order arrives damaged during shipping, contact us at ${SUPPORT_EMAIL} within <strong>48 hours of delivery</strong> with your order number and photos of the damaged item and packaging. We will work with you to resolve the issue.</p>
 
 <h2>Contact</h2>
-<p>For shipping questions, email contact@jammtrade.com. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
+<p>For shipping questions, email ${SUPPORT_EMAIL}. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
 
-const TERMS_OF_SERVICE = `<p>These Terms of Service ("Terms") govern your use of the Jamm Trade LLC storefront at jammtrade.com and shop.jammtrade.com ("Site") and any purchases made through it. By using the Site or placing an order, you agree to these Terms.</p>
+const TERMS_OF_SERVICE = `<p>These Terms of Service ("Terms") govern your use of the Jamm Trade LLC storefront at jammtrade.com ("Site") and any purchases made through it. By using the Site or placing an order, you agree to these Terms.</p>
 
 <h2>About Jamm Trade LLC</h2>
 <p>Jamm Trade LLC is an independent retailer based in the United States. We are not officially affiliated with, sponsored by, or endorsed by any third-party brand whose products appear on this Site unless explicitly stated. All brand names, trademarks, and product names referenced are the property of their respective owners. We sell authentic products sourced from authorized distributors and suppliers.</p>
@@ -122,7 +135,7 @@ const TERMS_OF_SERVICE = `<p>These Terms of Service ("Terms") govern your use of
 <p>Jamm Trade LLC reserves the right to update these Terms at any time. Continued use of the Site after changes are posted constitutes acceptance of the revised Terms.</p>
 
 <h2>Contact</h2>
-<p>For questions about these Terms, contact Jamm Trade LLC at: contact@jammtrade.com. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
+<p>For questions about these Terms, contact Jamm Trade LLC at: ${SUPPORT_EMAIL}. Support hours: Monday–Friday, 10:00 AM–6:00 PM ET.</p>`
 
 type AdminImage   = { id: number; alt: string | null }
 type AdminVariant = { id: number; title: string; option1: string; price: string; compareAtPrice: string | null }
@@ -239,8 +252,8 @@ async function fixProducts(token: string): Promise<string[]> {
 }
 
 // Shopify's public Admin API has no mutation to update system-level shop policies.
-// We create/update them as standard Pages instead. They go live at
-// shop.jammtrade.com/pages/{handle} and can be linked in Admin → Settings → Policies.
+// We create/update standard Pages as a backend copy, then report the public
+// Next.js policy URLs for Shopify Admin settings.
 async function updatePolicies(token: string): Promise<{ title: string; url: string }[]> {
   const POLICIES = [
     { title: 'Privacy Policy',   handle: 'privacy-policy',   body_html: PRIVACY_POLICY   },
@@ -271,7 +284,7 @@ async function updatePolicies(token: string): Promise<{ title: string; url: stri
       })
     }
 
-    results.push({ title: policy.title, url: `https://shop.jammtrade.com/pages/${policy.handle}` })
+    results.push({ title: policy.title, url: `https://www.jammtrade.com/shop/${policy.handle}` })
   }
 
   return results
@@ -281,22 +294,28 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     const code  = searchParams.get('code')
+    const state = searchParams.get('state')
     const error = searchParams.get('error')
 
     if (error) {
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
-        <h2>❌ OAuth error: ${error}</h2>
-        <p>${searchParams.get('error_description') ?? ''}</p>
+        <h2>OAuth error: ${escapeHtml(error)}</h2>
+        <p>${escapeHtml(searchParams.get('error_description') ?? '')}</p>
       </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
+    }
+
+    if (!CLIENT_ID || !CLIENT_SECRET || !OAUTH_STATE) {
+      return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>Shopify OAuth maintenance variables are not configured.</h2></body></html>',
+        { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
+    }
+
+    if (state !== OAUTH_STATE) {
+      return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>Invalid OAuth state.</h2></body></html>',
+        { status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
     if (!code) {
       return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>❌ No code received.</h2></body></html>',
-        { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
-    }
-
-    if (!CLIENT_SECRET) {
-      return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>❌ SHOPIFY_CLIENT_SECRET env var not set.</h2></body></html>',
         { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
@@ -309,7 +328,7 @@ export async function GET(req: NextRequest) {
 
     if (!tokenData.access_token) {
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
-        <h2>❌ Token exchange failed</h2><pre>${JSON.stringify(tokenData, null, 2)}</pre>
+        <h2>Token exchange failed</h2><p>Check the server logs for details.</p>
       </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
@@ -345,12 +364,12 @@ export async function GET(req: NextRequest) {
       </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     } catch (err) {
       return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
-        <h2>❌ Update failed</h2><pre>${err}</pre>
+        <h2>Update failed</h2><p>Check the server logs for details.</p>
       </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
   } catch (err) {
     return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
-      <h2>❌ Unexpected error</h2><pre>${String(err)}</pre>
+      <h2>Unexpected error</h2><p>Check the server logs for details.</p>
     </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
   }
 }

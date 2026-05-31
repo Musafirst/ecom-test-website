@@ -144,7 +144,7 @@
         </noscript>
 
         <div class="service-form__fallback">
-          <p>If the form does not submit, email us at <a href="mailto:contact@jammtrade.com">contact@jammtrade.com</a>.</p>
+          <p>If the form does not submit, email us at <a href="mailto:{{ settings.support_email | default: 'contact@jammtrade.com' }}">{{ settings.support_email | default: 'contact@jammtrade.com' }}</a>.</p>
         </div>
 
         <button type="submit" class="btn btn--primary service-form__submit">Submit Quote Request</button>

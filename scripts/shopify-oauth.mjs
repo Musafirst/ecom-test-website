@@ -1,5 +1,5 @@
 /**
- * Shopify OAuth flow — gets an Admin API access token for shop.jammtrade.com
+ * Shopify OAuth flow — gets an Admin API access token for the Shopify backend
  * then immediately runs the policy update.
  *
  * Run: node scripts/shopify-oauth.mjs
@@ -8,14 +8,15 @@
 import http from 'http'
 import { exec } from 'child_process'
 
-const CLIENT_ID     = process.env.SHOPIFY_CLIENT_ID     || 'b63704e1c1dc653a6f024f499086b46c'
+const CLIENT_ID     = process.env.SHOPIFY_CLIENT_ID     || ''
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET || ''
 
-if (!CLIENT_SECRET) {
-  console.error('Error: set SHOPIFY_CLIENT_SECRET=<your-secret> before running.')
+if (!CLIENT_ID || !CLIENT_SECRET) {
+  console.error('Error: set SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET before running.')
   process.exit(1)
 }
-const STORE         = 'shop.jammtrade.com'
+const STORE         = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com'
+const SUPPORT_EMAIL = 'contact@jammtrade.com'
 const PORT          = 3456
 const REDIRECT_URI  = `http://localhost:${PORT}/callback`
 const SCOPES        = 'write_legal,read_legal'
@@ -39,7 +40,7 @@ const PRIVACY_POLICY = `<p>Jamm Trade respects customer privacy. This policy exp
 <h2>Service Providers</h2>
 <p>Jamm Trade may share necessary order and site information with Shopify, payment processors, fulfillment providers, carriers, analytics services, and other service providers used to operate the store.</p>
 <h2>Customer Choices</h2>
-<p>Customers may contact Jamm Trade to request help with privacy questions, order data, or communication preferences. For privacy questions, contact us at contact@jammtrade.com.</p>`
+<p>Customers may contact Jamm Trade to request help with privacy questions, order data, or communication preferences. For privacy questions, contact us at ${SUPPORT_EMAIL}.</p>`
 
 const REFUND_POLICY = `<p>Jamm Trade reviews every order with care. This policy explains how returns, refunds, and exchanges are handled for eligible purchases.</p>
 <h2>Return Window</h2>
@@ -63,7 +64,7 @@ const SHIPPING_POLICY = `<p>Jamm Trade ships eligible orders with tracked delive
 <h2>Address Accuracy</h2>
 <p>Customers are responsible for entering a complete and accurate shipping address. Orders returned due to incorrect addresses may require additional shipping fees for reshipment.</p>
 <h2>Damaged Items</h2>
-<p>If your order arrives damaged, please contact us within 48 hours of delivery at contact@jammtrade.com with photos of the damage and your order number.</p>`
+<p>If your order arrives damaged, please contact us within 48 hours of delivery at ${SUPPORT_EMAIL} with photos of the damage and your order number.</p>`
 
 const TERMS_OF_SERVICE = `<p>These terms govern use of the Jamm Trade storefront and purchases made through secure Shopify checkout.</p>
 <h2>Store Use</h2>

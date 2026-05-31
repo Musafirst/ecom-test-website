@@ -19,7 +19,7 @@ This project is a Next.js storefront backed by Shopify commerce.
 | `app/` | Next.js App Router pages, API routes, sitemap, robots, and layout. |
 | `components/` | Reusable UI blocks split by domain: layout, product, shop, legal, hero, and UI primitives. |
 | `lib/` | Shared business logic, Shopify API boundary, cart helpers, site constants, and utilities. |
-| `data/` | Local fallback/demo product and collection data used when Shopify is unavailable. |
+| `data/` | Local demo product and collection data used only outside production. |
 | `types/` | Shared TypeScript contracts, especially the normalized `JammProduct` shape. |
 | `scripts/` | Manual Shopify/Admin maintenance scripts. These are not part of normal page rendering. |
 | `_theme_check/` | Shopify theme assets kept for reference/testing only. The public site should stay on Next.js. |
@@ -44,7 +44,7 @@ This project is a Next.js storefront backed by Shopify commerce.
 | `lib/products.ts` | App-facing product facade used by pages. |
 | `lib/cart.ts` | Browser-side cart storage and Shopify cart sync helpers. |
 | `app/api/shopify/cart/route.ts` | Server route that keeps Storefront token use server-side. |
-| `middleware.ts` | Request guard for CORS, webhook browser blocking, and security headers. |
+| `proxy.ts` | Request guard for CORS, webhook browser blocking, and security headers. |
 | `next.config.mjs` | Global security headers and allowed remote image sources. |
 
 ## Editing Rules
@@ -53,6 +53,8 @@ This project is a Next.js storefront backed by Shopify commerce.
 - Change public presentation in `app/` and `components/`.
 - Keep raw Shopify response handling inside `lib/shopify.ts`.
 - Keep shared URLs, brand name, and support email in `lib/site.ts`.
+- Keep Shopify theme support email and public location defaults in `shopify-theme/config/settings_schema.json`.
+- Never expose demo catalog items when `NODE_ENV=production`; use a temporary-unavailable state.
 - Keep comments short and useful. Prefer names that explain the code before
   adding comments.
 - Do not publish Shopify themes unless intentionally moving the public storefront

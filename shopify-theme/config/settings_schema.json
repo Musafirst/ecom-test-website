@@ -5,7 +5,24 @@
     "theme_version": "1.0.0",
     "theme_author": "Jamm Trade",
     "theme_documentation_url": "https://jammtrade.com",
-    "theme_support_url": "https://jammtrade.com/pages/contact"
+    "theme_support_url": "https://www.jammtrade.com/shop/contact"
+  },
+  {
+    "name": "Business information",
+    "settings": [
+      {
+        "type": "text",
+        "id": "support_email",
+        "label": "Customer support email",
+        "default": "contact@jammtrade.com"
+      },
+      {
+        "type": "text",
+        "id": "public_location",
+        "label": "Public business location",
+        "default": "Philadelphia, PA"
+      }
+    ]
   },
   {
     "name": "Colors",

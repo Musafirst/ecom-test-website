@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { PolicyPage } from '@/components/legal/PolicyPage'
 import { getShopifyPolicies } from '@/lib/shopify'
+import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Refund Policy',
@@ -18,7 +19,7 @@ export default async function RefundPolicyPage() {
     <PolicyPage
       title="Refund Policy"
       html={policy?.body}
-      intro="Jamm Trade reviews every order with care. Contact us at contact@jammtrade.com for return and refund requests."
+      intro={`Jamm Trade reviews every order with care. Contact us at ${site.supportEmail} for return and refund requests.`}
       sections={[
         {
           heading: 'Return Window',

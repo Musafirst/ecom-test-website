@@ -44,7 +44,7 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
     {
       label: 'Clothing',
       detail: categoryDetails.clothing.name,
-      href: 'https://shop.jammtrade.com/collections/clothing',
+      href: '/shop/collection/clothing',
     },
   ]
 

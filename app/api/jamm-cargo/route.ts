@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { rateLimit, getClientIP } from '@/lib/rateLimit'
+import { cleanEmail, cleanText } from '@/lib/validation'
 
 const MAX_BODY_BYTES = 10_240
 const RATE_LIMIT     = 5
@@ -32,36 +33,39 @@ export async function POST(req: NextRequest) {
       notes, consent_accepted,
     } = body
 
-    if (!full_name || typeof full_name !== 'string' || full_name.trim().length < 2) {
+    const fullName = cleanText(full_name, 120)
+    const rawEmail = cleanEmail(email)
+    const destinationCountry = cleanText(destination_country, 100)
+    const itemType = cleanText(item_type, 1_000)
+
+    if (!fullName || fullName.length < 2) {
       return NextResponse.json({ error: 'Full name is required.' }, { status: 400 })
     }
-    const rawEmail = typeof email === 'string' ? email.trim() : ''
-    if (!rawEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(rawEmail)) {
+    if (!rawEmail) {
       return NextResponse.json({ error: 'A valid email address is required.' }, { status: 400 })
     }
-    if (!destination_country || typeof destination_country !== 'string' || destination_country.trim().length < 2) {
+    if (!destinationCountry || destinationCountry.length < 2) {
       return NextResponse.json({ error: 'Destination country is required.' }, { status: 400 })
     }
-    if (!item_type || typeof item_type !== 'string' || item_type.trim().length < 2) {
+    if (!itemType || itemType.length < 2) {
       return NextResponse.json({ error: 'Please describe the items to ship.' }, { status: 400 })
     }
-    if (!consent_accepted) {
+    if (consent_accepted !== true) {
       return NextResponse.json({ error: 'You must agree to be contacted to submit this form.' }, { status: 400 })
     }
 
-    const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null)
-
+    const supabase = getSupabase()
     const { error } = await supabase.from('jamm_cargo_leads').insert({
-      full_name:           String(full_name).trim(),
-      email:               rawEmail.toLowerCase(),
-      phone:               str(phone),
-      origin_location:     str(origin_location),
-      destination_country: String(destination_country).trim(),
-      destination_city:    str(destination_city),
-      item_type:           String(item_type).trim(),
-      estimated_weight:    str(estimated_weight),
-      preferred_timeline:  str(preferred_timeline),
-      notes:               str(notes),
+      full_name:           fullName,
+      email:               rawEmail,
+      phone:               cleanText(phone, 40),
+      origin_location:     cleanText(origin_location, 160),
+      destination_country: destinationCountry,
+      destination_city:    cleanText(destination_city, 120),
+      item_type:           itemType,
+      estimated_weight:    cleanText(estimated_weight, 120),
+      preferred_timeline:  cleanText(preferred_timeline, 120),
+      notes:               cleanText(notes, 2_000),
       consent_accepted:    true,
     })
 

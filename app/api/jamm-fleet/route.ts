@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { rateLimit, getClientIP } from '@/lib/rateLimit'
+import { cleanEmail, cleanText } from '@/lib/validation'
 
 const MAX_BODY_BYTES = 10_240
 const RATE_LIMIT     = 5
@@ -32,44 +33,51 @@ export async function POST(req: NextRequest) {
       insurance_status, notes, consent_accepted,
     } = body
 
-    if (!full_name || typeof full_name !== 'string' || full_name.trim().length < 2) {
+    const fullName = cleanText(full_name, 120)
+    const rawEmail = cleanEmail(email)
+    const cleanPhone = cleanText(phone, 40)
+    const cleanState = cleanText(state, 80)
+    const cleanCity = cleanText(city, 120)
+    const cleanLicenseStatus = cleanText(license_status, 80)
+
+    if (!fullName || fullName.length < 2) {
       return NextResponse.json({ error: 'Full name is required.' }, { status: 400 })
     }
-    const rawEmail = typeof email === 'string' ? email.trim() : ''
-    if (!rawEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(rawEmail)) {
+    if (!rawEmail) {
       return NextResponse.json({ error: 'A valid email address is required.' }, { status: 400 })
     }
-    if (!phone || typeof phone !== 'string' || phone.trim().length < 7) {
+    if (!cleanPhone || cleanPhone.length < 7) {
       return NextResponse.json({ error: 'A valid phone number is required.' }, { status: 400 })
     }
-    if (!state || typeof state !== 'string' || state.trim().length < 2) {
+    if (!cleanState || cleanState.length < 2) {
       return NextResponse.json({ error: 'State is required.' }, { status: 400 })
     }
-    if (!city || typeof city !== 'string' || city.trim().length < 2) {
+    if (!cleanCity || cleanCity.length < 2) {
       return NextResponse.json({ error: 'City is required.' }, { status: 400 })
     }
-    if (!license_status || typeof license_status !== 'string') {
+    if (!cleanLicenseStatus) {
       return NextResponse.json({ error: "Driver's license status is required." }, { status: 400 })
     }
-    if (!consent_accepted) {
+    if (consent_accepted !== true) {
       return NextResponse.json({ error: 'You must agree to be contacted to submit this form.' }, { status: 400 })
     }
 
-    const str  = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null)
-    const platformStr = Array.isArray(platform_interest) ? platform_interest.join(', ') : str(platform_interest)
-
+    const platforms = Array.isArray(platform_interest)
+      ? platform_interest.map((value) => cleanText(value, 80)).filter(Boolean).slice(0, 10).join(', ')
+      : cleanText(platform_interest, 500)
+    const supabase = getSupabase()
     const { error } = await supabase.from('jamm_fleet_leads').insert({
-      full_name:          String(full_name).trim(),
-      email:              rawEmail.toLowerCase(),
-      phone:              String(phone).trim(),
-      state:              String(state).trim(),
-      city:               String(city).trim(),
-      license_status:     String(license_status).trim(),
-      platform_interest:  platformStr,
-      desired_start_date: str(desired_start_date),
-      rental_duration:    str(rental_duration),
-      insurance_status:   str(insurance_status),
-      notes:              str(notes),
+      full_name:          fullName,
+      email:              rawEmail,
+      phone:              cleanPhone,
+      state:              cleanState,
+      city:               cleanCity,
+      license_status:     cleanLicenseStatus,
+      platform_interest:  platforms || null,
+      desired_start_date: cleanText(desired_start_date, 40),
+      rental_duration:    cleanText(rental_duration, 120),
+      insurance_status:   cleanText(insurance_status, 80),
+      notes:              cleanText(notes, 2_000),
       consent_accepted:   true,
     })
 

@@ -48,6 +48,6 @@ export const heroSlides: HeroSlide[] = [
     image: '/images/hero-clothing.webp',
     imagePosition: 'center 34%',
     ctaLabel: 'Shop Clothing',
-    ctaHref: 'https://shop.jammtrade.com/collections/clothing',
+    ctaHref: '/shop/collection/clothing',
   },
 ]

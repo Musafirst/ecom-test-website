@@ -11,6 +11,16 @@ export interface CartItem {
 export const cartStorageKey = 'jamm-trade-cart'
 export const checkoutUrlStorageKey = 'jamm-trade-checkout-url'
 
+export function isSafeCheckoutUrl(value: string | null): value is string {
+  if (!value) return false
+
+  try {
+    return new URL(value).protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
 export function readCart(): CartItem[] {
   try {
     const storedCart = window.localStorage.getItem(cartStorageKey)
@@ -47,7 +57,7 @@ export async function addShopifyItem(variantId: string, quantity: number) {
   })
   const data = await response.json().catch(() => null)
 
-  if (!response.ok || !data?.cart?.checkoutUrl) {
+  if (!response.ok || !isSafeCheckoutUrl(data?.cart?.checkoutUrl)) {
     throw new Error(data?.error ?? 'Unable to update Shopify cart.')
   }
 
@@ -72,7 +82,7 @@ export async function syncShopifyCart(cart: CartItem[]) {
   })
   const data = await response.json().catch(() => null)
 
-  if (!response.ok || !data?.cart?.checkoutUrl) {
+  if (!response.ok || !isSafeCheckoutUrl(data?.cart?.checkoutUrl)) {
     throw new Error(data?.error ?? 'Unable to sync Shopify cart.')
   }
 

@@ -54,9 +54,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   const dynamicCollectionDetails = await getCollectionDetails()
   const collection = dynamicCollectionDetails[collectionParam]
   const products = await getCollectionProducts(collectionParam)
-  const emptyMessage = collectionParam === 'daily'
-    ? 'Daily fragrances are being updated.'
-    : `${collection.name} products are being updated.`
+  const emptyMessage = 'Products are temporarily unavailable.'
 
   return (
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">

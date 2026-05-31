@@ -19,7 +19,7 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
       name: 'Clothing',
       copy: 'Wear the mark.',
       sub: 'Hoodies, tees, and essentials with the Jamm Trade lotus mark.',
-      href: 'https://shop.jammtrade.com/collections/clothing',
+      href: '/shop/collection/clothing',
       image: '/product-images/jamm-hoodie.png',
       imageClassName: 'object-contain object-center p-4 sm:p-6',
     },

@@ -9,7 +9,7 @@ import {
 } from '@/lib/shopify'
 
 // App-facing product facade. Pages import from here so the Shopify migration
-// stays centralized and local demo products remain available as fallback data.
+// stays centralized and local demo products remain development-only fallback data.
 export const collectionDetails = {
   ...fallbackCollectionDetails,
   electronics: {

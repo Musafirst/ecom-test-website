@@ -4,6 +4,7 @@ out/
 .env
 .env.local
 .env.*.local
+!.env.example
 *.tsbuildinfo
 .DS_Store
 .agents/
@@ -12,3 +13,5 @@ out/
 skills-lock.json
 *.log
 *.zip
+
+.vercel

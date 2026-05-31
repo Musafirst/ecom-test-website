@@ -10,8 +10,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { rateLimit, getClientIP } from '@/lib/rateLimit'
+import { cleanEmail } from '@/lib/validation'
 
 const CODE           = 'WELCOME20'
 const MAX_BODY_BYTES = 1_024          // 1 KB — an email fits in ~100 bytes
@@ -42,18 +43,12 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as { email?: unknown }
 
-    if (typeof body.email !== 'string') {
+    const normalised = cleanEmail(body.email)
+    if (!normalised) {
       return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 })
     }
 
-    const raw = body.email.trim()
-
-    // Strict email validation
-    if (!raw || raw.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(raw)) {
-      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 })
-    }
-
-    const normalised = raw.toLowerCase()
+    const supabase = getSupabase()
 
     // Check if already claimed
     const { data: existing } = await supabase
