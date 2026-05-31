@@ -1118,6 +1118,11 @@ input, textarea { font-family: inherit; }
 .product-grid--featured {
   gap: 12px;
 }
+
+/* All cards in the featured grid share the same portrait aspect ratio */
+.product-grid--featured .product-card__media {
+  aspect-ratio: 3 / 4;
+}
 @media (min-width: 640px)  { .product-grid--featured { gap: 16px; } }
 @media (min-width: 1024px) { .product-grid--featured { gap: 20px; } }
 
