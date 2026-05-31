@@ -1127,6 +1127,22 @@ input, textarea { font-family: inherit; }
 .product-grid--featured .product-card:nth-child(3) { animation-delay: 140ms; }
 .product-grid--featured .product-card:nth-child(4) { animation-delay: 210ms; }
 
+/* Skeleton loader shown while JS fetches from Storefront API */
+.fp-skeleton {
+  display: contents; /* children flow directly into the grid */
+}
+.fp-skeleton__card {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--color-card) 25%, rgba(255,255,255,0.55) 50%, var(--color-card) 75%);
+  background-size: 200% 100%;
+  animation: fp-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes fp-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* Empty state — matches the Next.js fallback card */
 .featured-empty {
   grid-column: 1 / -1;

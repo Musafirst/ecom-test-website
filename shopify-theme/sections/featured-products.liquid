@@ -1,5 +1,12 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 
+{%- comment -%}
+  Storefront token: set via theme settings, falls back to the configured default.
+  The storefront token is public-facing by design (used in browser requests).
+{%- endcomment -%}
+{%- assign sf_token = settings.storefront_token -%}
+{%- if sf_token == blank -%}{%- assign sf_token = '781b12760312eb3b20f920e52f247d87' -%}{%- endif -%}
+
 <section class="featured-products-section" id="featured-products">
   <div class="container">
     <div class="section-header">
@@ -14,10 +21,11 @@
     </div>
     <div class="section-rule"></div>
 
-    <div class="product-grid product-grid--4 product-grid--featured">
+    <div class="product-grid product-grid--4 product-grid--featured" id="featured-products-grid">
+
       {%- assign rendered = 0 -%}
 
-      {%- comment -%} 1. Products picked manually in the theme editor {%- endcomment -%}
+      {%- comment -%} 1. Manually picked product blocks (theme editor) {%- endcomment -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'product' and block.settings.product != blank -%}
           {%- render 'product-card', product: block.settings.product -%}
@@ -25,18 +33,15 @@
         {%- endif -%}
       {%- endfor -%}
 
-      {%- comment -%} 2. Fall back to a chosen collection {%- endcomment -%}
-      {%- if rendered == 0 -%}
-        {%- assign featured_col = section.settings.collection -%}
-        {%- if featured_col != blank -%}
-          {%- for product in featured_col.products limit: section.settings.products_count -%}
-            {%- render 'product-card', product: product -%}
-            {%- assign rendered = rendered | plus: 1 -%}
-          {%- endfor -%}
-        {%- endif -%}
+      {%- comment -%} 2. Fallback: chosen collection {%- endcomment -%}
+      {%- if rendered == 0 and section.settings.collection != blank -%}
+        {%- for product in section.settings.collection.products limit: section.settings.products_count -%}
+          {%- render 'product-card', product: product -%}
+          {%- assign rendered = rendered | plus: 1 -%}
+        {%- endfor -%}
       {%- endif -%}
 
-      {%- comment -%} 3. Fall back to the store's all-products collection {%- endcomment -%}
+      {%- comment -%} 3. Fallback: Online Store published products {%- endcomment -%}
       {%- if rendered == 0 -%}
         {%- for product in collections.all.products limit: section.settings.products_count -%}
           {%- render 'product-card', product: product -%}
@@ -44,15 +49,105 @@
         {%- endfor -%}
       {%- endif -%}
 
+      {%- comment -%}
+        4. JS fallback: Storefront API fetch (works for headless-only published products).
+           The placeholder skeleton is replaced by real cards after the fetch resolves.
+      {%- endcomment -%}
       {%- if rendered == 0 -%}
-        <div class="featured-empty">
-          <p class="featured-empty__title">Products are temporarily unavailable.</p>
-          <p class="featured-empty__text">Please check back soon.</p>
+        <div class="fp-skeleton" id="fp-skeleton">
+          <div class="fp-skeleton__card"></div>
+          <div class="fp-skeleton__card"></div>
+          <div class="fp-skeleton__card"></div>
+          <div class="fp-skeleton__card"></div>
         </div>
       {%- endif -%}
+
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+  var skeleton = document.getElementById('fp-skeleton');
+  if (!skeleton) return; // Liquid already rendered products — nothing to do
+
+  var SHOP_DOMAIN  = {{ shop.permanent_domain | json }};
+  var SF_TOKEN     = {{ sf_token | json }};
+  var SHOP_URL     = {{ public_shop_url | json }};
+  var COUNT        = {{ section.settings.products_count | default: 4 }};
+
+  var QUERY = 'query($n:Int!){products(first:$n,sortKey:BEST_SELLING){edges{node{id title handle availableForSale productType tags priceRange{minVariantPrice{amount currencyCode}}compareAtPriceRange{minVariantPrice{amount}}featuredImage{url(transform:{maxWidth:800})altText}variants(first:1){edges{node{id}}}vendor}}}}';
+
+  fetch('https://' + SHOP_DOMAIN + '/api/2024-01/graphql.json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': SF_TOKEN
+    },
+    body: JSON.stringify({ query: QUERY, variables: { n: COUNT } })
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (json) {
+    var edges = json && json.data && json.data.products && json.data.products.edges;
+    if (!edges || !edges.length) { showEmpty(); return; }
+
+    var delays = ['0ms','70ms','140ms','210ms'];
+    var html = edges.map(function (edge, i) {
+      var p        = edge.node;
+      var price    = parseFloat(p.priceRange.minVariantPrice.amount);
+      var cmpRaw   = p.compareAtPriceRange && parseFloat(p.compareAtPriceRange.minVariantPrice.amount);
+      var currency = p.priceRange.minVariantPrice.currencyCode;
+      var isSale   = cmpRaw && cmpRaw > price;
+      var varId    = p.variants.edges[0] ? p.variants.edges[0].node.id : '';
+      var img      = p.featuredImage;
+      var tl       = p.title.toLowerCase();
+      var typtl    = (p.productType || '').toLowerCase();
+      var tagsl    = p.tags.join(',').toLowerCase();
+      var isElec   = tl.includes('watch') || tl.includes('headphone') || typtl === 'electronics' || tagsl.includes('electronics');
+      var isSW     = tl.includes('smartwatch') || (tl.includes('watch') && !tl.includes('headphone'));
+      var beamCls  = 'beam' + (i===1?' beam--d1':i===2?' beam--d2':i===3?' beam--d3':'');
+      var cardCls  = 'product-card' + (isElec?' product-card--electronics':'') + (isSW?' product-card--smartwatch':'');
+      var fmt      = new Intl.NumberFormat('en-US', { style: 'currency', currency: currency });
+      var href     = SHOP_URL + '/product/' + p.handle;
+      var titleEsc = p.title.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+
+      return '<div class="' + cardCls + '" style="animation-delay:' + delays[i] + '">'
+        + '<a href="' + href + '" class="product-card__link" aria-label="' + titleEsc + '">'
+        +   '<div class="product-card__media">'
+        +     '<div class="' + beamCls + '" aria-hidden="true"></div>'
+        +     (img
+               ? '<img src="' + img.url + '" alt="' + (img.altText || titleEsc).replace(/"/g,'&quot;') + '" class="product-card__img" loading="lazy">'
+               : '<div class="product-card__img product-card__img--placeholder"></div>')
+        +     (isSale ? '<span class="product-card__badge product-card__badge--sale">Sale</span>' : '')
+        +     '<span class="product-card__overlay" aria-hidden="true"><span class="product-card__view">View Product</span></span>'
+        +   '</div>'
+        +   '<div class="product-card__info">'
+        +     (p.vendor ? '<p class="product-card__vendor">' + p.vendor + '</p>' : '')
+        +     '<h3 class="product-card__title">' + p.title + '</h3>'
+        +     '<div class="product-card__price">'
+        +       (isSale ? '<span class="product-card__price--compare">' + fmt.format(cmpRaw) + '</span>' : '')
+        +       '<span class="product-card__price--current">' + fmt.format(price) + '</span>'
+        +     '</div>'
+        +   '</div>'
+        + '</a>'
+        + '<button type="button" class="product-card__atc" data-product-id="' + varId + '" aria-label="Add ' + titleEsc + ' to cart">'
+        +   (p.availableForSale ? 'Add to Cart' : 'Sold Out')
+        + '</button>'
+        + '</div>';
+    }).join('');
+
+    skeleton.outerHTML = html;
+  })
+  .catch(showEmpty);
+
+  function showEmpty() {
+    skeleton.outerHTML = '<div class="featured-empty">'
+      + '<p class="featured-empty__title">Products are temporarily unavailable.</p>'
+      + '<p class="featured-empty__text">Please check back soon.</p>'
+      + '</div>';
+  }
+}());
+</script>
 
 {% schema %}
 {
@@ -60,7 +155,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Pick up to 8 products below. If none are selected, the fallback collection is used instead."
+      "content": "Pick products below. If none are selected the section falls back to a collection, then auto-fetches via the Storefront API."
     },
     {
       "type": "collection",
@@ -70,9 +165,9 @@
     {
       "type": "range",
       "id": "products_count",
-      "label": "Max products from fallback collection",
+      "label": "Number of products",
       "min": 2,
-      "max": 12,
+      "max": 8,
       "step": 1,
       "default": 4
     }
