@@ -4,7 +4,6 @@ import './globals.css'
 import { TabNav } from '@/components/layout/TabNav'
 import { Footer } from '@/components/layout/Footer'
 import BackgroundComponents from '@/components/ui/background-components'
-import { WelcomePopup } from '@/components/ui/WelcomePopup'
 import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
 
 const cormorant = Cormorant_Garamond({
@@ -103,7 +102,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <TabNav />
           <main>{children}</main>
           <Footer />
-          <WelcomePopup />
         </BackgroundComponents>
       </body>
     </html>
