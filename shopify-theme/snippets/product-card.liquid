@@ -51,15 +51,18 @@
     </div>
 
     <div class="product-card__info">
-      {% if card_label != blank %}
-        <p class="product-card__vendor">{{ card_label }}</p>
-      {% endif %}
-      <h3 class="product-card__title">{{ product.title }}</h3>
+      <div class="product-card__info-text">
+        {% if card_label != blank %}
+          <p class="product-card__vendor">{{ card_label }}</p>
+        {% endif %}
+        <h3 class="product-card__title">{{ product.title }}</h3>
+      </div>
       <div class="product-card__price">
         {% if product.compare_at_price > product.price %}
           <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
         {% endif %}
         <span class="product-card__price--current">{{ product.price | money }}</span>
+      </div>
       </div>
     </div>
   </a>

@@ -1029,6 +1029,23 @@ input, textarea { font-family: inherit; }
   gap: 8px;
   padding: 10px 2px 0;
 }
+@media (min-width: 640px) {
+  .product-card__info {
+    flex-direction: row;
+    align-items: flex-start;
+    min-height: 0;
+    gap: 16px;
+    padding: 12px 4px 0;
+  }
+  .product-card__info .product-card__price {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}
+.product-card__info-text {
+  flex: 1;
+  min-width: 0;
+}
 
 .product-card__vendor {
   font-family: var(--font-sans);
@@ -1133,9 +1150,6 @@ input, textarea { font-family: inherit; }
 .product-grid--featured .product-card:nth-child(4) { animation-delay: 210ms; }
 
 /* Skeleton loader shown while JS fetches from Storefront API */
-.fp-skeleton {
-  display: contents; /* children flow directly into the grid */
-}
 .fp-skeleton__card {
   aspect-ratio: 3 / 4;
   border-radius: var(--radius-md);
