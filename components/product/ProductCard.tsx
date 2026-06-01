@@ -21,12 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const isPerfume = product.category === 'perfume'
   const isClothing = product.category === 'clothing'
   const canAddToCart = Boolean(product.variantId && product.availableForSale !== false)
-  const electronicsImageClassName =
-    product.handle === 'sony-wh-1000xm5'
-      ? 'object-contain p-3 mix-blend-multiply'
-      : product.subcategory === 'smartwatches'
-        ? 'object-contain p-2 mix-blend-multiply'
-        : 'object-contain p-4 mix-blend-multiply'
+  const electronicsImageClassName = 'object-contain mix-blend-multiply'
   const perfumeImageClassName = 'object-contain p-4 mix-blend-multiply contrast-[1.04] drop-shadow-[0_18px_24px_rgba(12,11,9,0.24)] sm:p-5'
   const clothingImageClassName = 'object-contain p-3 mix-blend-multiply drop-shadow-[0_16px_22px_rgba(12,11,9,0.16)] sm:p-5'
 
