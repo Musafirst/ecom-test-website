@@ -54,7 +54,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <ProductPhoto
             src={product.image}
             alt={product.imageAlt}
-            aspectRatio={isElectronics ? '4/3' : '3/4'}
+            aspectRatio="3/4"
             className="transition-transform duration-500 ease-out group-hover:scale-[1.035]"
             imageClassName={isElectronics ? electronicsImageClassName : isPerfume ? perfumeImageClassName : isClothing ? clothingImageClassName : 'object-cover'}
           />
