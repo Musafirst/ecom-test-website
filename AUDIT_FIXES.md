@@ -46,10 +46,15 @@
 
 - `npm audit` still reports a moderate PostCSS advisory from `next@16.2.6` because Next bundles `postcss@8.4.31`. The suggested automatic fix is an unsafe downgrade to Next 9, so it was not applied. Recheck after the next patched Next.js release.
 
+## Live Verification
+
+- The Shopify fallback theme is live and renders four featured products without a browser-exposed Storefront token.
+- The deployed Next.js storefront serves the cleaned public email, internal clothing route, legal pages, sitemap, and robots file.
+- The deployed cart API rejects invalid input and creates a secure Shopify checkout handoff for an available product variant.
+
 ## Remaining Live Follow-Up
 
-The Shopify fallback theme is live. The remaining deployment and Shopify Admin
-actions are:
-
-1. Redeploy the Next.js storefront so the public footer and clothing navigation use the cleaned local source.
-2. Run `scripts/update-shopify-policies.mjs` with a temporary Admin API token that has `write_legal_policies`, then verify Shopify Admin policies. The rendered live checkout privacy policy still displayed `musa@jammtrade.com` during the June 1, 2026 verification.
+Run `scripts/update-shopify-policies.mjs` with a temporary Admin API token that
+has `write_legal_policies`, then verify Shopify Admin policies. The rendered
+live checkout privacy policy still displayed `musa@jammtrade.com` during the
+June 1, 2026 verification.
