@@ -1,19 +1,33 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
+  {% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FAF7F2">
+  <!-- The Next.js storefront is canonical. Shopify remains available for cart and checkout. -->
+  <meta name="robots" content="noindex, follow">
 
   <title>
-    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
-    {% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
-    {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    {%- if template.name == 'index' -%}
+      {{ shop.name }} | Luxury Fragrances, Electronics &amp; Essentials
+    {%- else -%}
+      {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    {%- endif -%}
   </title>
 
-  {% if page_description %}
+  {%- if page_description -%}
     <meta name="description" content="{{ page_description | escape }}">
-  {% endif %}
+  {%- elsif template.name == 'index' -%}
+    <meta name="description" content="Jamm Trade. From essentials to enterprise. Curated fragrances, fashion, and everyday goods selected with intention.">
+  {%- elsif shop.description != blank -%}
+    <meta name="description" content="{{ shop.description | escape }}">
+  {%- endif -%}
+
+  <!-- Favicon — same assets as jammtrade.com -->
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ 'jammtrade-icon-32.png' | asset_url }}">
+  <link rel="icon" type="image/png" sizes="512x512" href="{{ 'jammtrade-favicon-512.png' | asset_url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'jammtrade-apple-touch-icon.png' | asset_url }}">
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="{{ shop.name }}">
@@ -36,7 +50,11 @@
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   <script>
-    // Cart count sync
+    window.JammTrade = {
+      publicStorefrontUrl: {{ public_storefront_url | json }}
+    };
+
+    // Keep cart badges accurate when Shopify renders a fallback page.
     document.addEventListener('DOMContentLoaded', function() {
       updateCartCount();
     });
