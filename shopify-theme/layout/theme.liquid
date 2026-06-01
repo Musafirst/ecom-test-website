@@ -5,8 +5,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FAF7F2">
-  <!-- The Next.js storefront is canonical. Shopify remains available for cart and checkout. -->
-  <meta name="robots" content="noindex, follow">
+  <!-- www.jammtrade.com is the canonical storefront. Shopify handles cart/checkout only. -->
+  <meta name="robots" content="noindex, nofollow">
+  {%- if template.name == 'product' -%}
+    <link rel="canonical" href="https://www.jammtrade.com/shop/product/{{ product.handle }}">
+  {%- elsif template.name == 'collection' -%}
+    <link rel="canonical" href="https://www.jammtrade.com/shop/collection/{{ collection.handle }}">
+  {%- else -%}
+    <link rel="canonical" href="https://www.jammtrade.com/shop">
+  {%- endif -%}
 
   <title>
     {%- if template.name == 'index' -%}
