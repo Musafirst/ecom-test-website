@@ -1508,7 +1508,15 @@ input, textarea { font-family: inherit; }
 /* ---------- Footer ---------------------------------------- */
 .site-footer { padding: 0 var(--container-px) 16px; }
 
-/* ---- Footer accordion (mobile collapse) ---- */
+/* ---- Footer accordion (mobile only) ---- */
+.footer-mobile-only  { display: block; }
+.footer-desktop-only { display: none; }
+
+@media (min-width: 768px) {
+  .footer-mobile-only  { display: none; }
+  .footer-desktop-only { display: flex; }
+}
+
 .footer-accordion {
   border-top: 1px solid rgba(196,151,58,0.15);
 }
@@ -1536,12 +1544,6 @@ input, textarea { font-family: inherit; }
   gap: 8px;
   padding-bottom: 12px;
 }
-@media (min-width: 768px) {
-  .footer-accordion { border-top: none; }
-  .footer-accordion__summary { padding: 0 0 4px; cursor: default; pointer-events: none; }
-  .footer-accordion__chevron { display: none; }
-  .footer-accordion > *:not(summary) { display: flex !important; flex-direction: column; padding-bottom: 0; }
-}
 
 .footer-shell {
   position: relative;
@@ -1556,7 +1558,7 @@ input, textarea { font-family: inherit; }
 .footer-inner {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 0;
   padding: 32px 20px;
 }
 @media (min-width: 640px) { .footer-inner { padding: 40px 32px; } }
@@ -1574,6 +1576,10 @@ input, textarea { font-family: inherit; }
   height: 88px;
   width: auto;
   object-fit: contain;
+}
+/* On mobile, brand block needs bottom breathing room before first accordion */
+@media (max-width: 767px) {
+  .footer-inner > .footer-brand { padding-bottom: 20px; }
 }
 @media (min-width: 640px) { .footer-logo { height: 102px; } }
 @media (min-width: 768px) { .footer-logo { height: 118px; } }
