@@ -65,6 +65,14 @@ a {
   background: rgba(196, 151, 58, 0.6);
 }
 
+/* Footer accordions: always expanded on md+ regardless of open attribute */
+@media (min-width: 768px) {
+  details.footer-accordion > *:not(summary) {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

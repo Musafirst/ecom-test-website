@@ -52,46 +52,49 @@ export function Footer() {
           </div>
 
           {/* Shop links */}
-          <nav aria-label="Shop navigation" className="flex flex-col gap-2 md:pt-1">
-            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Shop</p>
-            {shopLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <details className="footer-accordion group border-t border-jamm-gold/15 md:border-none">
+            <summary className="flex cursor-pointer select-none list-none items-center justify-between py-3 [&::-webkit-details-marker]:hidden md:cursor-default md:py-0">
+              <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Shop</p>
+              <svg className="h-3.5 w-3.5 flex-shrink-0 text-jamm-dark/35 transition-transform duration-200 group-open:rotate-180 md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </summary>
+            <nav aria-label="Shop navigation" className="flex flex-col gap-2 pb-3 pt-1 md:pt-1 md:pb-0">
+              {shopLinks.map((link) => (
+                <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
 
           {/* Services links */}
-          <nav aria-label="Services navigation" className="flex flex-col gap-2 md:pt-1">
-            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Services</p>
-            {serviceLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <details className="footer-accordion group border-t border-jamm-gold/15 md:border-none">
+            <summary className="flex cursor-pointer select-none list-none items-center justify-between py-3 [&::-webkit-details-marker]:hidden md:cursor-default md:py-0">
+              <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Services</p>
+              <svg className="h-3.5 w-3.5 flex-shrink-0 text-jamm-dark/35 transition-transform duration-200 group-open:rotate-180 md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </summary>
+            <nav aria-label="Services navigation" className="flex flex-col gap-2 pb-3 pt-1 md:pt-1 md:pb-0">
+              {serviceLinks.map((link) => (
+                <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
 
           {/* Legal links */}
-          <nav aria-label="Legal navigation" className="flex flex-col gap-2 md:pt-1">
-            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Policies</p>
-            {legalLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <details className="footer-accordion group border-t border-jamm-gold/15 md:border-none">
+            <summary className="flex cursor-pointer select-none list-none items-center justify-between py-3 [&::-webkit-details-marker]:hidden md:cursor-default md:py-0">
+              <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">Policies</p>
+              <svg className="h-3.5 w-3.5 flex-shrink-0 text-jamm-dark/35 transition-transform duration-200 group-open:rotate-180 md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </summary>
+            <nav aria-label="Legal navigation" className="flex flex-col gap-2 pb-3 pt-1 md:pt-1 md:pb-0">
+              {legalLinks.map((link) => (
+                <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
         </div>
 
         {/* Retailer disclaimer */}

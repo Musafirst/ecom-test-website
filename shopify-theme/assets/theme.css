@@ -1508,6 +1508,41 @@ input, textarea { font-family: inherit; }
 /* ---------- Footer ---------------------------------------- */
 .site-footer { padding: 0 var(--container-px) 16px; }
 
+/* ---- Footer accordion (mobile collapse) ---- */
+.footer-accordion {
+  border-top: 1px solid rgba(196,151,58,0.15);
+}
+.footer-accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.footer-accordion__summary::-webkit-details-marker { display: none; }
+.footer-accordion__chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: rgba(12,11,9,0.35);
+  transition: transform 0.2s ease;
+}
+.footer-accordion[open] .footer-accordion__chevron { transform: rotate(180deg); }
+.footer-link-group__links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+@media (min-width: 768px) {
+  .footer-accordion { border-top: none; }
+  .footer-accordion__summary { padding: 0 0 4px; cursor: default; pointer-events: none; }
+  .footer-accordion__chevron { display: none; }
+  .footer-accordion > *:not(summary) { display: flex !important; flex-direction: column; padding-bottom: 0; }
+}
+
 .footer-shell {
   position: relative;
   border-radius: var(--radius-lg);
