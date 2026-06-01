@@ -14,12 +14,16 @@ import { getSupabase } from '@/lib/supabase'
 import { rateLimit, getClientIP } from '@/lib/rateLimit'
 import { cleanEmail } from '@/lib/validation'
 
-const CODE           = 'WELCOME20'
+const CODE           = process.env.NEXT_PUBLIC_WELCOME_DISCOUNT_CODE?.trim()
 const MAX_BODY_BYTES = 1_024          // 1 KB — an email fits in ~100 bytes
 const RATE_LIMIT     = 5             // requests
 const RATE_WINDOW_MS = 15 * 60_000  // 15 minutes
 
 export async function POST(req: NextRequest) {
+  if (!CODE) {
+    return NextResponse.json({ error: 'This promotion is not currently available.' }, { status: 503 })
+  }
+
   // ── Rate limiting ──────────────────────────────────────────────────────
   const ip     = getClientIP(req)
   const { allowed, retryAfterSec } = rateLimit(`subscribe:${ip}`, RATE_LIMIT, RATE_WINDOW_MS)
@@ -53,12 +57,12 @@ export async function POST(req: NextRequest) {
     // Check if already claimed
     const { data: existing } = await supabase
       .from('discount_claims')
-      .select('id, code')
+      .select('id')
       .eq('email', normalised)
       .maybeSingle()
 
     if (existing) {
-      return NextResponse.json({ code: existing.code, alreadyClaimed: true })
+      return NextResponse.json({ code: CODE, alreadyClaimed: true })
     }
 
     // New — save and return code

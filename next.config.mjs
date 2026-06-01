@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Keep static generation reliable on memory-constrained CI and local machines.
+  experimental: {
+    cpus: 2,
+  },
+
   // Security headers apply to every route served by the public Next.js site.
   async headers() {
     return [

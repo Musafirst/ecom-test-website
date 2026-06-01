@@ -7,6 +7,7 @@
 
 import http from 'http'
 import { exec } from 'child_process'
+import crypto from 'crypto'
 
 const CLIENT_ID     = process.env.SHOPIFY_CLIENT_ID     || ''
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET || ''
@@ -15,12 +16,13 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Error: set SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET before running.')
   process.exit(1)
 }
-const STORE         = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com'
+const STORE         = (process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com').replace(/^https?:\/\//, '').replace(/\/$/, '')
 const SUPPORT_EMAIL = 'contact@jammtrade.com'
 const PORT          = 3456
 const REDIRECT_URI  = `http://localhost:${PORT}/callback`
-const SCOPES        = 'write_legal,read_legal'
+const SCOPES        = 'write_legal_policies'
 const STATE         = Math.random().toString(36).slice(2)
+const SHOP_HOSTNAME_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]*\.myshopify\.com$/
 
 const authUrl =
   `https://${STORE}/admin/oauth/authorize` +
@@ -28,6 +30,28 @@ const authUrl =
   `&scope=${SCOPES}` +
   `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
   `&state=${STATE}`
+
+function safeEqual(left, right) {
+  try {
+    return crypto.timingSafeEqual(Buffer.from(left), Buffer.from(right))
+  } catch {
+    return false
+  }
+}
+
+function verifyShopifyCallback(searchParams) {
+  const hmac = searchParams.get('hmac')
+  if (!hmac) return false
+
+  const message = Array.from(searchParams.entries())
+    .filter(([key]) => key !== 'hmac')
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+  const digest = crypto.createHmac('sha256', CLIENT_SECRET).update(message).digest('hex')
+
+  return safeEqual(digest, hmac)
+}
 
 // ── Policy content (matches jammtrade.com website) ───────────────────────────
 
@@ -51,7 +75,8 @@ const REFUND_POLICY = `<p>Jamm Trade reviews every order with care. This policy 
 <h2>Damaged or Incorrect Orders</h2>
 <p>If an order arrives damaged, defective, or incorrect, contact Jamm Trade within 48 hours of delivery with the order number and clear photos of the item and packaging. Approved claims may be resolved with a replacement, exchange, or refund depending on inventory and order details.</p>
 <h2>Refund Timing</h2>
-<p>Approved refunds are issued to the original payment method after the returned item is received and inspected. Bank or card processing times may vary.</p>`
+<p>Approved refunds are issued to the original payment method after the returned item is received and inspected. Bank or card processing times may vary.</p>
+<p>To start a return, contact us at ${SUPPORT_EMAIL} with your order number.</p>`
 
 const SHIPPING_POLICY = `<p>Jamm Trade ships eligible orders with tracked delivery and careful packaging for fragrances, electronics, and curated essentials.</p>
 <h2>Processing Time</h2>
@@ -74,12 +99,13 @@ const TERMS_OF_SERVICE = `<p>These terms govern use of the Jamm Trade storefront
 <h2>Pricing and Payment</h2>
 <p>Prices are shown in the storefront currency and confirmed at checkout. Taxes, shipping, and applicable duties are calculated during checkout before payment is submitted. Payments are processed securely through Shopify and approved payment providers.</p>
 <h2>Checkout and Fulfillment</h2>
-<p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>`
+<p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>
+<p>For questions about these terms, contact us at ${SUPPORT_EMAIL}.</p>`
 
 // ── Push policies to Shopify ─────────────────────────────────────────────────
 
-async function updatePolicies(token) {
-  const url = `https://${STORE}/admin/api/2024-01/graphql.json`
+async function updatePolicy(token, policy) {
+  const url = `https://${STORE}/admin/api/2026-04/graphql.json`
 
   const res = await fetch(url, {
     method: 'POST',
@@ -89,32 +115,36 @@ async function updatePolicies(token) {
     },
     body: JSON.stringify({
       query: `
-        mutation UpdatePolicies($policies: [ShopPolicyInput!]!) {
-          shopPoliciesUpdate(shopPolicies: $policies) {
+        mutation UpdatePolicy($policy: ShopPolicyInput!) {
+          shopPolicyUpdate(shopPolicy: $policy) {
             userErrors { field message }
-            shopPolicies { type title }
+            shopPolicy { type title }
           }
         }
       `,
-      variables: {
-        policies: [
-          { type: 'PRIVACY_POLICY',   body: PRIVACY_POLICY   },
-          { type: 'REFUND_POLICY',    body: REFUND_POLICY    },
-          { type: 'SHIPPING_POLICY',  body: SHIPPING_POLICY  },
-          { type: 'TERMS_OF_SERVICE', body: TERMS_OF_SERVICE },
-        ],
-      },
+      variables: { policy },
     }),
   })
 
   const json = await res.json()
   if (json.errors) throw new Error(JSON.stringify(json.errors, null, 2))
 
-  const { userErrors, shopPolicies } = json.data.shopPoliciesUpdate
+  const { userErrors, shopPolicy } = json.data.shopPolicyUpdate
   if (userErrors?.length) throw new Error(JSON.stringify(userErrors, null, 2))
 
-  for (const policy of shopPolicies ?? []) {
-    console.log(`  ✓ ${policy.title}`)
+  console.log(`  Updated ${shopPolicy.title}`)
+}
+
+async function updatePolicies(token) {
+  const policies = [
+    { type: 'PRIVACY_POLICY',   body: PRIVACY_POLICY   },
+    { type: 'REFUND_POLICY',    body: REFUND_POLICY    },
+    { type: 'SHIPPING_POLICY',  body: SHIPPING_POLICY  },
+    { type: 'TERMS_OF_SERVICE', body: TERMS_OF_SERVICE },
+  ]
+
+  for (const policy of policies) {
+    await updatePolicy(token, policy)
   }
 }
 
@@ -133,6 +163,13 @@ const server = http.createServer(async (req, res) => {
 
   const code  = url.searchParams.get('code')
   const state = url.searchParams.get('state')
+  const shop  = url.searchParams.get('shop')
+
+  if (!shop || !SHOP_HOSTNAME_PATTERN.test(shop) || shop !== STORE || !verifyShopifyCallback(url.searchParams)) {
+    res.end('<h2>Invalid Shopify callback signature. Close this tab and try again.</h2>')
+    server.close()
+    return
+  }
 
   if (state !== STATE) {
     res.end('<h2>❌ State mismatch. Close this tab and try again.</h2>')

@@ -1,11 +1,14 @@
+{% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
+{% assign public_shop_url = public_storefront_url | append: '/shop' %}
+
 <header class="site-header" id="SiteHeader" role="banner">
   <div class="header-inner">
 
     <!-- Logo -->
-    <a href="{{ routes.root_url }}" class="header-logo" aria-label="{{ shop.name }}">
+    <a href="{{ public_shop_url }}" class="header-logo" aria-label="{{ shop.name }}">
       {% if section.settings.logo != blank %}
         <img
-          src="{{ section.settings.logo | img_url: '800x' }}"
+          src="{{ section.settings.logo | image_url: width: 800 }}"
           alt="{{ shop.name }}"
           class="header-logo__img"
           width="400"
@@ -26,8 +29,8 @@
 
     <!-- Desktop Nav -->
     <nav class="header-nav" aria-label="Main navigation">
-      <a href="{{ routes.root_url }}" class="header-nav__link{% if request.path == '/' %} is-active{% endif %}">Shop</a>
-      <a href="{{ routes.root_url }}#collections" class="header-nav__link">Collections</a>
+      <a href="{{ public_shop_url }}" class="header-nav__link">Shop</a>
+      <a href="{{ public_shop_url }}#collections" class="header-nav__link">Collections</a>
     </nav>
 
     <!-- Header Actions -->
@@ -47,11 +50,11 @@
           </svg>
         </button>
         <div id="HeaderServicesMenu" class="header-services__menu" role="menu" data-services-panel hidden>
-          <a href="/pages/jamm-fleet" class="header-services__item" role="menuitem">
+          <a href="{{ public_storefront_url }}/jamm-fleet" class="header-services__item" role="menuitem">
             <span class="header-services__title">Jamm Fleet</span>
             <span class="header-services__copy">Vehicle rental inquiries</span>
           </a>
-          <a href="/pages/jamm-cargo" class="header-services__item" role="menuitem">
+          <a href="{{ public_storefront_url }}/jamm-cargo" class="header-services__item" role="menuitem">
             <span class="header-services__title">Jamm Cargo</span>
             <span class="header-services__copy">Shipping quote requests</span>
           </a>
@@ -108,11 +111,11 @@
   hidden
 >
   <div class="mobile-menu__header">
-    <a href="{{ routes.root_url }}" class="mobile-menu__logo" aria-label="{{ shop.name }}">
+    <a href="{{ public_shop_url }}" class="mobile-menu__logo" aria-label="{{ shop.name }}">
       {% if section.settings.logo != blank %}
-        <img src="{{ section.settings.logo | img_url: '600x' }}" alt="{{ shop.name }}" class="header-logo__img">
+        <img src="{{ section.settings.logo | image_url: width: 600 }}" alt="{{ shop.name }}" class="header-logo__img" width="400" height="267">
       {% else %}
-        <img src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}" alt="{{ shop.name }}" class="header-logo__img">
+        <img src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}" alt="{{ shop.name }}" class="header-logo__img" width="400" height="267">
       {% endif %}
     </a>
     <button
@@ -128,8 +131,8 @@
   </div>
 
   <nav class="mobile-menu__nav" aria-label="Mobile navigation">
-    <a href="{{ routes.root_url }}" class="mobile-menu__link">Shop</a>
-    <a href="{{ routes.root_url }}#collections" class="mobile-menu__link">Collections</a>
+    <a href="{{ public_shop_url }}" class="mobile-menu__link">Shop</a>
+    <a href="{{ public_shop_url }}#collections" class="mobile-menu__link">Collections</a>
     <div class="mobile-services">
       <button
         type="button"
@@ -144,11 +147,11 @@
         </svg>
       </button>
       <div id="MobileServicesMenu" class="mobile-services__panel" data-mobile-services-panel hidden>
-        <a href="/pages/jamm-fleet" class="mobile-services__item">
+        <a href="{{ public_storefront_url }}/jamm-fleet" class="mobile-services__item">
           <span class="mobile-services__title">Jamm Fleet</span>
           <span class="mobile-services__copy">Vehicle rental inquiries</span>
         </a>
-        <a href="/pages/jamm-cargo" class="mobile-services__item">
+        <a href="{{ public_storefront_url }}/jamm-cargo" class="mobile-services__item">
           <span class="mobile-services__title">Jamm Cargo</span>
           <span class="mobile-services__copy">Shipping quote requests</span>
         </a>

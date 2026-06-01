@@ -21,7 +21,7 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-const ADMIN_URL = `https://${STORE}/admin/api/2024-01/graphql.json`;
+const ADMIN_URL = `https://${STORE}/admin/api/2026-04/graphql.json`;
 
 async function gql(query, variables = {}) {
   const res = await fetch(ADMIN_URL, {

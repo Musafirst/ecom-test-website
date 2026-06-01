@@ -1,7 +1,7 @@
 /**
  * Overwrites the Shopify shop's built-in legal policies to match the website.
  *
- * Required Admin API scopes: write_legal, write_content
+ * Required Admin API scope: write_legal_policies
  *
  * Run:
  *   SHOPIFY_ADMIN_TOKEN=<token> node scripts/update-shopify-policies.mjs
@@ -9,13 +9,14 @@
 
 const STORE = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com';
 const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN;
+const SUPPORT_EMAIL = 'contact@jammtrade.com';
 
 if (!TOKEN) {
   console.error('Error: set SHOPIFY_ADMIN_TOKEN=<your-admin-token> before running.');
   process.exit(1);
 }
 
-const ADMIN_URL = `https://${STORE}/admin/api/2024-01/graphql.json`;
+const ADMIN_URL = `https://${STORE}/admin/api/2026-04/graphql.json`;
 
 async function gql(query, variables = {}) {
   const res = await fetch(ADMIN_URL, {
@@ -42,7 +43,7 @@ const PRIVACY_POLICY = `<p>Jamm Trade respects customer privacy. This policy exp
 <h2>Service Providers</h2>
 <p>Jamm Trade may share necessary order and site information with Shopify, payment processors, fulfillment providers, carriers, analytics services, and other service providers used to operate the store.</p>
 <h2>Customer Choices</h2>
-<p>Customers may contact Jamm Trade to request help with privacy questions, order data, or communication preferences.</p>`;
+<p>Customers may contact Jamm Trade to request help with privacy questions, order data, or communication preferences. For privacy questions, contact us at ${SUPPORT_EMAIL}.</p>`;
 
 const REFUND_POLICY = `<p>Jamm Trade reviews every order with care. This policy explains how returns, refunds, and exchanges are handled for eligible purchases.</p>
 <h2>Return Window</h2>
@@ -54,7 +55,8 @@ const REFUND_POLICY = `<p>Jamm Trade reviews every order with care. This policy 
 <p>If an order arrives damaged, defective, or incorrect, contact Jamm Trade within 48 hours of delivery with the order number and clear photos of the item and packaging.</p>
 <p>Approved claims may be resolved with a replacement, exchange, or refund depending on inventory and order details.</p>
 <h2>Refund Timing</h2>
-<p>Approved refunds are issued to the original payment method after the returned item is received and inspected. Bank or card processing times may vary.</p>`;
+<p>Approved refunds are issued to the original payment method after the returned item is received and inspected. Bank or card processing times may vary.</p>
+<p>To start a return, contact us at ${SUPPORT_EMAIL} with your order number.</p>`;
 
 const SHIPPING_POLICY = `<p>Jamm Trade ships eligible orders with tracked delivery and careful packaging for fragrances, electronics, and curated essentials.</p>
 <h2>Processing Time</h2>
@@ -65,7 +67,8 @@ const SHIPPING_POLICY = `<p>Jamm Trade ships eligible orders with tracked delive
 <h2>Tracking</h2>
 <p>When tracking is available, customers receive shipment details by email after the order has been fulfilled.</p>
 <h2>Address Accuracy</h2>
-<p>Customers are responsible for entering a complete and accurate shipping address. Contact Jamm Trade quickly if an address needs correction before fulfillment.</p>`;
+<p>Customers are responsible for entering a complete and accurate shipping address. Contact Jamm Trade quickly if an address needs correction before fulfillment.</p>
+<p>For shipping questions, contact us at ${SUPPORT_EMAIL}.</p>`;
 
 const TERMS_OF_SERVICE = `<p>These terms govern use of the Jamm Trade storefront and purchases made through secure Shopify checkout.</p>
 <h2>Store Use</h2>
@@ -76,40 +79,37 @@ const TERMS_OF_SERVICE = `<p>These terms govern use of the Jamm Trade storefront
 <h2>Pricing and Payment</h2>
 <p>Prices are shown in the storefront currency and confirmed at checkout. Taxes, shipping, and applicable duties are calculated during checkout before payment is submitted.</p>
 <h2>Checkout and Fulfillment</h2>
-<p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>`;
+<p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>
+<p>For questions about these terms, contact us at ${SUPPORT_EMAIL}.</p>`;
 
 // ── Update shop policies ──────────────────────────────────────────────────────
 
 console.log(`\nUpdating Shopify policies for ${STORE}...\n`);
 
-const data = await gql(`
-  mutation UpdatePolicies($policies: [ShopPolicyInput!]!) {
-    shopPoliciesUpdate(shopPolicies: $policies) {
-      userErrors { field message }
-      shopPolicies {
-        type
-        title
+const policies = [
+  { type: 'PRIVACY_POLICY',   body: PRIVACY_POLICY   },
+  { type: 'REFUND_POLICY',    body: REFUND_POLICY    },
+  { type: 'SHIPPING_POLICY',  body: SHIPPING_POLICY  },
+  { type: 'TERMS_OF_SERVICE', body: TERMS_OF_SERVICE },
+];
+
+for (const policy of policies) {
+  const data = await gql(`
+    mutation UpdatePolicy($policy: ShopPolicyInput!) {
+      shopPolicyUpdate(shopPolicy: $policy) {
+        userErrors { field message }
+        shopPolicy { type title }
       }
     }
+  `, { policy });
+  const { userErrors, shopPolicy } = data.shopPolicyUpdate;
+
+  if (userErrors?.length) {
+    console.error('Errors:', JSON.stringify(userErrors, null, 2));
+    process.exit(1);
   }
-`, {
-  policies: [
-    { type: 'PRIVACY_POLICY',   body: PRIVACY_POLICY   },
-    { type: 'REFUND_POLICY',    body: REFUND_POLICY    },
-    { type: 'SHIPPING_POLICY',  body: SHIPPING_POLICY  },
-    { type: 'TERMS_OF_SERVICE', body: TERMS_OF_SERVICE },
-  ],
-});
 
-const { userErrors, shopPolicies } = data.shopPoliciesUpdate;
-
-if (userErrors?.length) {
-  console.error('Errors:', JSON.stringify(userErrors, null, 2));
-  process.exit(1);
-}
-
-for (const policy of shopPolicies ?? []) {
-  console.log(`✓ ${policy.title} (${policy.type})`);
+  console.log(`Updated ${shopPolicy.title} (${shopPolicy.type})`);
 }
 
 console.log('\nDone. Shopify policies now match the website.');

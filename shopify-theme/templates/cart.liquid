@@ -1,9 +1,11 @@
+{% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
+
 <div class="cart-page">
   <div class="container container--narrow">
 
     <div class="cart-header">
-      <!-- ✅ THIS is the fix: logo links back to jammtrade.com root, not Shopify storefront -->
-      <a href="{{ routes.root_url }}" class="cart-header__back" aria-label="Back to Jamm Trade">
+      <!-- Product browsing belongs on the canonical Next.js storefront. -->
+      <a href="{{ public_shop_url }}" class="cart-header__back" aria-label="Back to Jamm Trade">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -20,19 +22,21 @@
           <div class="cart-items">
             {% for item in cart.items %}
               <div class="cart-item" data-line="{{ forloop.index }}">
-                <a href="{{ item.url }}" class="cart-item__media">
+                <a href="{{ public_shop_url }}/product/{{ item.product.handle }}" class="cart-item__media">
                   {% if item.image %}
                     <img
-                      src="{{ item.image | img_url: '200x200', crop: 'center' }}"
+                      src="{{ item.image | image_url: width: 200, height: 200, crop: 'center' }}"
                       alt="{{ item.image.alt | default: item.title | escape }}"
                       class="cart-item__img"
+                      width="{{ item.image.width }}"
+                      height="{{ item.image.height }}"
                       loading="lazy"
                     >
                   {% endif %}
                 </a>
 
                 <div class="cart-item__details">
-                  <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+                  <a href="{{ public_shop_url }}/product/{{ item.product.handle }}" class="cart-item__title">{{ item.product.title }}</a>
                   {% unless item.product.has_only_default_variant %}
                     <p class="cart-item__variant">{{ item.variant.title }}</p>
                   {% endunless %}
@@ -89,7 +93,7 @@
                 </svg>
               </button>
 
-              <a href="{{ routes.root_url }}" class="cart-summary__continue">
+              <a href="{{ public_shop_url }}" class="cart-summary__continue">
                 ← Continue shopping
               </a>
             </div>
@@ -107,7 +111,7 @@
         </svg>
         <h2 class="cart-empty__title">Your cart is empty</h2>
         <p class="cart-empty__sub">Add something from the shop to get started.</p>
-        <a href="{{ routes.root_url }}" class="btn btn--primary">Browse products</a>
+        <a href="{{ public_shop_url }}" class="btn btn--primary">Browse products</a>
       </div>
     {% endif %}
 

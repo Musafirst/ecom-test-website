@@ -4,7 +4,7 @@
  *
  * Security:
  *  - HMAC-SHA256 signature verification (required — no bypass in production)
- *  - Webhook routes are blocked from browser origin calls (see middleware.ts)
+ *  - Webhook routes are blocked from browser origin calls (see proxy.ts)
  *  - Body capped at 1 MB (Shopify orders are typically < 50 KB)
  */
 

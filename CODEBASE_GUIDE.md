@@ -22,7 +22,8 @@ This project is a Next.js storefront backed by Shopify commerce.
 | `data/` | Local demo product and collection data used only outside production. |
 | `types/` | Shared TypeScript contracts, especially the normalized `JammProduct` shape. |
 | `scripts/` | Manual Shopify/Admin maintenance scripts. These are not part of normal page rendering. |
-| `_theme_check/` | Shopify theme assets kept for reference/testing only. The public site should stay on Next.js. |
+| `shopify-theme/` | No-index Shopify commerce fallback. Its browsing links return customers to the public Next.js storefront. |
+| `_theme_check/` | Older Shopify theme reference assets. Do not publish from this folder. |
 | `public/` | Static images and brand assets served by Next.js. |
 
 ## Main Runtime Flow
@@ -53,19 +54,26 @@ This project is a Next.js storefront backed by Shopify commerce.
 - Change public presentation in `app/` and `components/`.
 - Keep raw Shopify response handling inside `lib/shopify.ts`.
 - Keep shared URLs, brand name, and support email in `lib/site.ts`.
-- Keep Shopify theme support email and public location defaults in `shopify-theme/config/settings_schema.json`.
+- Keep Shopify theme support email, public location, and canonical storefront URL defaults in `shopify-theme/config/settings_schema.json`.
+- Keep the Shopify fallback theme no-indexed and route normal browsing back to the Next.js storefront.
+- Keep Shopify API endpoint versions supported; Shopify releases stable API versions quarterly.
 - Never expose demo catalog items when `NODE_ENV=production`; use a temporary-unavailable state.
 - Keep comments short and useful. Prefer names that explain the code before
   adding comments.
-- Do not publish Shopify themes unless intentionally moving the public storefront
-  away from Vercel/Next.js.
+- Preview Shopify theme updates as unpublished before publishing them to the
+  Shopify fallback domain. Publishing must not change the Next.js site as the
+  canonical storefront.
 
 ## Verification
 
-Run the production build after code changes:
+Run the app and active Shopify theme checks after code changes:
 
 ```bash
+npm.cmd run lint
 npm.cmd run build
+shopify.cmd theme check --path shopify-theme
 ```
 
 On Windows PowerShell, `npm.cmd` avoids script execution policy issues.
+Preview theme updates with `shopify theme push --unpublished --strict` before
+publishing them.

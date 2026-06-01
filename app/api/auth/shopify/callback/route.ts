@@ -3,17 +3,21 @@
  * then immediately pushes all legal policies and fixes product data.
  *
  * Configure SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET, and SHOPIFY_OAUTH_STATE
- * before using this internal maintenance callback.
+ * before using this internal maintenance callback. Its Shopify app also needs
+ * write_legal_policies, write_online_store_pages, and write_products scopes.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import crypto from 'crypto'
 import { site } from '@/lib/site'
 
 const CLIENT_ID     = process.env.SHOPIFY_CLIENT_ID ?? ''
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET ?? ''
 const OAUTH_STATE   = process.env.SHOPIFY_OAUTH_STATE ?? ''
-const STORE         = process.env.SHOPIFY_STORE_DOMAIN ?? 'jamm-trade.myshopify.com'
+const STORE         = (process.env.SHOPIFY_STORE_DOMAIN ?? 'jamm-trade.myshopify.com').replace(/^https?:\/\//, '').replace(/\/$/, '')
 const SUPPORT_EMAIL = site.supportEmail
+const ADMIN_API_VERSION = '2026-04'
+const SHOP_HOSTNAME_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]*\.myshopify\.com$/
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => ({
@@ -23,6 +27,29 @@ function escapeHtml(value: string) {
     '"': '&quot;',
     "'": '&#39;',
   })[character] ?? character)
+}
+
+function safeEqual(left: string, right: string) {
+  try {
+    return crypto.timingSafeEqual(Buffer.from(left), Buffer.from(right))
+  } catch {
+    return false
+  }
+}
+
+// Shopify signs OAuth callback parameters differently from webhook bodies.
+function verifyShopifyCallback(searchParams: URLSearchParams) {
+  const hmac = searchParams.get('hmac')
+  if (!hmac || !CLIENT_SECRET) return false
+
+  const message = Array.from(searchParams.entries())
+    .filter(([key]) => key !== 'hmac')
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+  const digest = crypto.createHmac('sha256', CLIENT_SECRET).update(message).digest('hex')
+
+  return safeEqual(digest, hmac)
 }
 
 const PRIVACY_POLICY = `<p>Jamm Trade LLC ("Jamm Trade," "we," "us," or "our") is committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information when you visit jammtrade.com or make a purchase.</p>
@@ -142,13 +169,28 @@ type AdminVariant = { id: number; title: string; option1: string; price: string;
 type AdminProduct = { id: number; title: string; vendor: string; images: AdminImage[]; variants: AdminVariant[] }
 
 async function adminFetch(path: string, token: string, method = 'GET', body?: unknown) {
-  const res = await fetch(`https://${STORE}/admin/api/2024-10${path}`, {
+  const res = await fetch(`https://${STORE}/admin/api/${ADMIN_API_VERSION}${path}`, {
     method,
     headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': token },
     ...(body ? { body: JSON.stringify(body) } : {}),
   })
   if (!res.ok) throw new Error(`Admin API ${method} ${path} → ${res.status}`)
   return res.json()
+}
+
+async function adminGraphqlFetch<T>(query: string, token: string, variables: Record<string, unknown> = {}): Promise<T> {
+  const res = await fetch(`https://${STORE}/admin/api/${ADMIN_API_VERSION}/graphql.json`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': token },
+    body: JSON.stringify({ query, variables }),
+  })
+  const json = await res.json() as { data?: T; errors?: unknown[] }
+
+  if (!res.ok || json.errors || !json.data) {
+    throw new Error(`Admin GraphQL API failed: ${JSON.stringify(json.errors ?? res.status)}`)
+  }
+
+  return json.data
 }
 
 // Small delay to stay well within Shopify's 2 req/s Admin REST rate limit.
@@ -251,10 +293,44 @@ async function fixProducts(token: string): Promise<string[]> {
   return log
 }
 
-// Shopify's public Admin API has no mutation to update system-level shop policies.
-// We create/update standard Pages as a backend copy, then report the public
-// Next.js policy URLs for Shopify Admin settings.
-async function updatePolicies(token: string): Promise<{ title: string; url: string }[]> {
+async function updateCheckoutPolicies(token: string): Promise<string[]> {
+  const policies = [
+    { type: 'PRIVACY_POLICY',   body: PRIVACY_POLICY   },
+    { type: 'REFUND_POLICY',    body: REFUND_POLICY    },
+    { type: 'SHIPPING_POLICY',  body: SHIPPING_POLICY  },
+    { type: 'TERMS_OF_SERVICE', body: TERMS_OF_SERVICE },
+  ]
+  const titles: string[] = []
+
+  for (const policy of policies) {
+    await delay(550)
+    const data = await adminGraphqlFetch<{
+      shopPolicyUpdate: {
+        userErrors: { message: string }[]
+        shopPolicy: { title: string } | null
+      }
+    }>(`
+      mutation UpdatePolicy($policy: ShopPolicyInput!) {
+        shopPolicyUpdate(shopPolicy: $policy) {
+          userErrors { message }
+          shopPolicy { title }
+        }
+      }
+    `, token, { policy })
+    const { userErrors, shopPolicy } = data.shopPolicyUpdate
+
+    if (userErrors.length > 0 || !shopPolicy) {
+      throw new Error(userErrors[0]?.message ?? 'Shopify checkout policy update failed.')
+    }
+    titles.push(shopPolicy.title)
+  }
+
+  return titles
+}
+
+// Keep Online Store page copies aligned even though the canonical policy pages
+// are served by Next.js and checkout reads Shopify's system-level policies.
+async function updatePolicyPages(token: string): Promise<{ title: string; url: string }[]> {
   const POLICIES = [
     { title: 'Privacy Policy',   handle: 'privacy-policy',   body_html: PRIVACY_POLICY   },
     { title: 'Refund Policy',    handle: 'refund-policy',    body_html: REFUND_POLICY    },
@@ -296,22 +372,28 @@ export async function GET(req: NextRequest) {
     const code  = searchParams.get('code')
     const state = searchParams.get('state')
     const error = searchParams.get('error')
-
-    if (error) {
-      return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
-        <h2>OAuth error: ${escapeHtml(error)}</h2>
-        <p>${escapeHtml(searchParams.get('error_description') ?? '')}</p>
-      </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
-    }
+    const shop  = searchParams.get('shop')
 
     if (!CLIENT_ID || !CLIENT_SECRET || !OAUTH_STATE) {
       return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>Shopify OAuth maintenance variables are not configured.</h2></body></html>',
         { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
+    if (!shop || !SHOP_HOSTNAME_PATTERN.test(shop) || shop !== STORE || !verifyShopifyCallback(searchParams)) {
+      return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>Invalid Shopify callback signature.</h2></body></html>',
+        { status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
+    }
+
     if (state !== OAUTH_STATE) {
       return new NextResponse('<html><body style="font-family:sans-serif;padding:40px"><h2>Invalid OAuth state.</h2></body></html>',
         { status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
+    }
+
+    if (error) {
+      return new NextResponse(`<html><body style="font-family:sans-serif;padding:40px">
+        <h2>OAuth error: ${escapeHtml(error)}</h2>
+        <p>${escapeHtml(searchParams.get('error_description') ?? '')}</p>
+      </body></html>`, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
     if (!code) {
@@ -333,11 +415,13 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-      const [updatedPolicies, productFixes] = await Promise.all([
-        updatePolicies(tokenData.access_token),
-        fixProducts(tokenData.access_token),
-      ])
-      const policyList = updatedPolicies.map(p =>
+      const updatedCheckoutPolicies = await updateCheckoutPolicies(tokenData.access_token)
+      const updatedPolicyPages = await updatePolicyPages(tokenData.access_token)
+      const productFixes = await fixProducts(tokenData.access_token)
+      const checkoutPolicyList = updatedCheckoutPolicies.map(title =>
+        `<li>&#10003;<strong>${title}</strong></li>`
+      ).join('')
+      const policyPageList = updatedPolicyPages.map(p =>
         `<li>&#10003;<strong>${p.title}</strong> — <a href="${p.url}">${p.url}</a></li>`
       ).join('')
       const fixList = productFixes.length
@@ -349,15 +433,17 @@ export async function GET(req: NextRequest) {
         <h3>Product fixes</h3>
         <ul>${fixList}</ul>
 
-        <h3>Policy pages created</h3>
-        <ul>${policyList}</ul>
+        <h3>Official checkout policies updated</h3>
+        <ul>${checkoutPolicyList}</ul>
+
+        <h3>Online Store policy page copies updated</h3>
+        <ul>${policyPageList}</ul>
 
         <div style="margin-top:24px;padding:16px;background:#fff3cd;border:1px solid #ffc107;border-radius:6px">
-          <strong>One manual step remaining:</strong><br>
+          <strong>Verification:</strong><br>
           Go to <a href="https://jamm-trade.myshopify.com/admin/settings/legal" target="_blank">
             Shopify Admin → Settings → Policies
-          </a> and paste each page URL above into the corresponding policy field, then save.
-          This links the pages as your store's official checkout policies.
+          </a> and review the saved official checkout policies.
         </div>
 
         <p style="margin-top:20px"><a href="/shop">Back to shop</a></p>

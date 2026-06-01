@@ -19,7 +19,7 @@ Complete these steps inside Shopify admin:
 1. Install the official Google & YouTube sales channel.
 2. Connect the correct Google account.
 3. Connect or create the Google Merchant Center account for Jamm Trade.
-4. Confirm the primary domain is `https://jammtrade.com`.
+4. Confirm the Merchant Center website URL is `https://www.jammtrade.com`.
 5. Let Shopify claim or verify the domain through the Google & YouTube channel.
 6. Confirm shipping settings and returns settings in Shopify match the public policy pages.
 7. Make all approved products available to the Google & YouTube sales channel.
@@ -28,9 +28,9 @@ Complete these steps inside Shopify admin:
 
 ## Shopify Checkout Logo Link
 
-The local Jamm Trade checkout page logo points to `NEXT_PUBLIC_SITE_URL` and falls back to `https://jammtrade.com`.
+The local Jamm Trade checkout page logo points to `NEXT_PUBLIC_SITE_URL` and falls back to `https://www.jammtrade.com`.
 
-The hosted Shopify checkout logo/link is controlled in Shopify, not in this Next.js storefront. In Shopify admin, set `jammtrade.com` as the primary domain for the store or the correct storefront target so checkout branding and return/store links resolve to the live website instead of the `.myshopify.com` storefront.
+The hosted Shopify checkout logo/link is controlled in Shopify, not in this Next.js storefront. Keep the customer-facing website on Vercel at `https://www.jammtrade.com`, keep the Shopify fallback subdomain no-indexed, and review Shopify checkout branding and return links so customers return to the canonical website.
 
 ## Feed Quality Notes
 
@@ -46,4 +46,4 @@ The checkout API requires:
 
 - `SHOPIFY_STORE_DOMAIN`
 - `SHOPIFY_STOREFRONT_ACCESS_TOKEN`
-- `NEXT_PUBLIC_SITE_URL=https://jammtrade.com`
+- `NEXT_PUBLIC_SITE_URL=https://www.jammtrade.com`

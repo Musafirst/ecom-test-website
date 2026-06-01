@@ -22,6 +22,10 @@ export const siteUrl =
   normalizeOrigin(process.env.NEXT_PUBLIC_SITE_URL) ??
   site.defaultUrl
 
+const localDevelopmentOrigins = process.env.NODE_ENV === 'production'
+  ? []
+  : ['http://localhost:3000', 'http://127.0.0.1:3000']
+
 // Browser-facing API routes should only accept calls from the public storefront.
 // Shopify webhooks are handled separately because they are server-to-server.
 export const allowedStorefrontOrigins = new Set(
@@ -30,6 +34,7 @@ export const allowedStorefrontOrigins = new Set(
     site.apexUrl,
     site.wwwUrl,
     normalizeOrigin(process.env.VERCEL_URL),
+    ...localDevelopmentOrigins,
   ].filter((value): value is string => Boolean(value)),
 )
 

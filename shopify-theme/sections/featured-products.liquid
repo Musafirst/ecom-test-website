@@ -1,4 +1,8 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
+{% assign featured_products = section.settings.collection.products %}
+{% if featured_products == blank %}
+  {% assign featured_products = collections.all.products %}
+{% endif %}
 
 <section class="featured-products-section" id="featured-products">
   <div class="container">
@@ -14,114 +18,32 @@
     </div>
     <div class="section-rule"></div>
 
-    <div class="product-grid product-grid--4 product-grid--featured" id="fp-grid">
-      <div class="fp-skeleton__card"></div>
-      <div class="fp-skeleton__card"></div>
-      <div class="fp-skeleton__card"></div>
-      <div class="fp-skeleton__card"></div>
+    {% comment %}
+      Render products with Liquid so the homepage does not depend on a
+      browser-exposed token or a Storefront API version.
+    {% endcomment %}
+    <div class="product-grid product-grid--4 product-grid--featured">
+      {% for product in featured_products limit: section.settings.products_count %}
+        {% render 'product-card', product: product %}
+      {% else %}
+        <div class="featured-empty">
+          <p class="featured-empty__title">Products are temporarily unavailable.</p>
+          <p class="featured-empty__text">Please check back soon.</p>
+        </div>
+      {% endfor %}
     </div>
   </div>
 </section>
-
-<script>
-(function () {
-  var grid   = document.getElementById('fp-grid');
-  if (!grid) return;
-
-  var DOMAIN  = 'jamm-trade.myshopify.com';
-  var TOKEN   = '781b12760312eb3b20f920e52f247d87';
-  var SHOPURL = {{ public_shop_url | json }};
-  var COUNT   = {{ section.settings.products_count | default: 4 }};
-  var DELAYS  = ['0ms','70ms','140ms','210ms'];
-
-  var Q = 'query($n:Int!){products(first:$n,sortKey:BEST_SELLING){edges{node{'
-        + 'title handle availableForSale productType tags vendor '
-        + 'priceRange{minVariantPrice{amount currencyCode}}'
-        + 'compareAtPriceRange{minVariantPrice{amount}}'
-        + 'featuredImage{url(transform:{maxWidth:800})altText}'
-        + 'variants(first:1){edges{node{id}}}'
-        + 'collections(first:1){edges{node{title}}}'
-        + '}}}}';
-
-  fetch('https://' + DOMAIN + '/api/2024-01/graphql.json', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': TOKEN
-    },
-    body: JSON.stringify({ query: Q, variables: { n: COUNT } })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(json) {
-    var edges = json && json.data && json.data.products && json.data.products.edges;
-    if (!edges || !edges.length) { showEmpty(); return; }
-
-    grid.innerHTML = edges.map(function(e, i) {
-      var p     = e.node;
-      var price = parseFloat(p.priceRange.minVariantPrice.amount);
-      var cmp   = p.compareAtPriceRange ? parseFloat(p.compareAtPriceRange.minVariantPrice.amount) : 0;
-      var cur   = p.priceRange.minVariantPrice.currencyCode;
-      var sale  = cmp > price;
-      var vid   = p.variants.edges[0] ? p.variants.edges[0].node.id : '';
-      var img   = p.featuredImage;
-      var col   = p.collections.edges[0] ? p.collections.edges[0].node.title : p.vendor;
-      var tl    = p.title.toLowerCase();
-      var tags  = p.tags.join(',').toLowerCase();
-      var type  = (p.productType || '').toLowerCase();
-      var isElec = tl.indexOf('headphone') > -1 || type === 'electronics' || tags.indexOf('electronics') > -1 || tl.indexOf('watch') > -1;
-      var isSW   = tl.indexOf('smartwatch') > -1 || (tl.indexOf('watch') > -1 && tl.indexOf('headphone') === -1);
-      var fmt   = new Intl.NumberFormat('en-US', { style: 'currency', currency: cur });
-      var href  = SHOPURL + '/product/' + p.handle;
-      var bd    = ['beam', 'beam beam--d1', 'beam beam--d2', 'beam beam--d3'][i] || 'beam';
-      var cls   = 'product-card' + (isElec ? ' product-card--electronics' : '') + (isSW ? ' product-card--smartwatch' : '');
-
-      function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }
-
-      return ''
-        + '<div class="' + cls + '" style="animation-delay:' + DELAYS[i] + '">'
-        +   '<a href="' + href + '" class="product-card__link" aria-label="' + esc(p.title) + '">'
-        +     '<div class="product-card__media">'
-        +       '<div class="' + bd + '" aria-hidden="true"></div>'
-        +       (img
-                  ? '<img src="' + img.url + '" alt="' + esc(img.altText || p.title) + '" class="product-card__img" loading="lazy">'
-                  : '<div class="product-card__img product-card__img--placeholder"></div>')
-        +       (sale ? '<span class="product-card__badge product-card__badge--sale">Sale</span>' : '')
-        +       '<span class="product-card__overlay" aria-hidden="true"><span class="product-card__view">View Product</span></span>'
-        +     '</div>'
-        +     '<div class="product-card__info">'
-        +       '<div class="product-card__info-text">'
-        +         (col ? '<p class="product-card__vendor">' + esc(col) + '</p>' : '')
-        +         '<h3 class="product-card__title">' + esc(p.title) + '</h3>'
-        +       '</div>'
-        +       '<div class="product-card__price">'
-        +         (sale ? '<span class="product-card__price--compare">' + fmt.format(cmp) + '</span>' : '')
-        +         '<span class="product-card__price--current">' + fmt.format(price) + '</span>'
-        +       '</div>'
-        +     '</div>'
-        +   '</a>'
-        +   (vid
-              ? '<button type="button" class="product-card__atc" data-product-id="' + vid + '" aria-label="Add ' + esc(p.title) + ' to cart">'
-              +   (p.availableForSale ? 'Add to Cart' : 'Sold Out')
-              + '</button>'
-              : '')
-        + '</div>';
-    }).join('');
-  })
-  .catch(showEmpty);
-
-  function showEmpty() {
-    grid.innerHTML = '<div class="featured-empty">'
-      + '<p class="featured-empty__title">Products are temporarily unavailable.</p>'
-      + '<p class="featured-empty__text">Please check back soon.</p>'
-      + '</div>';
-  }
-}());
-</script>
 
 {% schema %}
 {
   "name": "Featured Products",
   "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Featured collection"
+    },
     {
       "type": "range",
       "id": "products_count",

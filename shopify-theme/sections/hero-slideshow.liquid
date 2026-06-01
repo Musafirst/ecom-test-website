@@ -6,9 +6,21 @@
       {% if block.type == 'slide' %}
       <div class="hero-slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
         {% if block.settings.image != blank %}
-          <img src="{{ block.settings.image | img_url: '2000x' }}" srcset="{{ block.settings.image | img_url: '800x' }} 800w, {{ block.settings.image | img_url: '1400x' }} 1400w, {{ block.settings.image | img_url: '2000x' }} 2000w" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
+          <img src="{{ block.settings.image | image_url: width: 2000 }}" srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1400 }} 1400w, {{ block.settings.image | image_url: width: 2000 }} 2000w" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
         {% elsif block.settings.asset_image != blank %}
-          <img src="{{ block.settings.asset_image | asset_url }}" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
+          {% assign asset_image_width = 1800 %}
+          {% assign asset_image_height = 1000 %}
+          {% case block.settings.asset_image %}
+            {% when 'hero-perfumes.webp' %}
+              {% assign asset_image_height = 1013 %}
+            {% when 'hero-electronics.webp' %}
+              {% assign asset_image_width = 1600 %}
+              {% assign asset_image_height = 2133 %}
+            {% when 'hero-clothing.webp' %}
+              {% assign asset_image_width = 1024 %}
+              {% assign asset_image_height = 1536 %}
+          {% endcase %}
+          <img src="{{ block.settings.asset_image | asset_url }}" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" width="{{ asset_image_width }}" height="{{ asset_image_height }}" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
         {% else %}
           <div class="hero-slide__bg hero-slide__bg--placeholder"></div>
         {% endif %}

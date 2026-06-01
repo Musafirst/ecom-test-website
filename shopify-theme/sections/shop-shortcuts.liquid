@@ -1,9 +1,20 @@
+{% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
+
 <section class="shortcuts-section">
   <div class="container">
     <div class="shortcuts-grid">
       {% for block in section.blocks %}
         {% if block.type == 'shortcut' %}
-        <a href="{{ block.settings.url | default: '#' }}" class="shortcut-card" {{ block.shopify_attributes }}>
+        {% assign shortcut_url = block.settings.url %}
+        {% if shortcut_url == blank %}
+          {% assign shortcut_handle = block.settings.label | handleize %}
+          {% if shortcut_handle == 'perfumes' or shortcut_handle == 'electronics' %}
+            {% assign shortcut_url = public_shop_url | append: '/category/' | append: shortcut_handle %}
+          {% else %}
+            {% assign shortcut_url = public_shop_url | append: '/collection/' | append: shortcut_handle %}
+          {% endif %}
+        {% endif %}
+        <a href="{{ shortcut_url }}" class="shortcut-card" {{ block.shopify_attributes }}>
           <span class="shortcut-card__detail">{{ block.settings.detail }}</span>
           <span class="shortcut-card__label">
             <span class="shortcut-card__label-text">{{ block.settings.label }}</span>

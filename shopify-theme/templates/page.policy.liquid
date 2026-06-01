@@ -1,3 +1,5 @@
+{% assign public_contact_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop/contact' %}
+
 <section class="policy-page">
   <div class="container">
     <div class="policy-card">
@@ -16,7 +18,7 @@
         {{ page.content }}
       </div>
 
-      <a href="/pages/contact" class="btn btn--primary" style="margin-top:32px;display:inline-flex;">Contact Jamm Trade</a>
+      <a href="{{ public_contact_url }}" class="btn btn--primary" style="margin-top:32px;display:inline-flex;">Contact Jamm Trade</a>
     </div>
   </div>
 </section>

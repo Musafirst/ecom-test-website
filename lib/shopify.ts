@@ -116,6 +116,7 @@ const collectionHandles = ['oud', 'amber', 'daily', 'electronics', 'audio', 'sma
 const collectionHandleSet = new Set<string>(collectionHandles)
 const loggedShopifyErrors = new Set<string>()
 const allowDemoFallback = process.env.NODE_ENV !== 'production'
+const storefrontApiVersion = '2026-04'
 
 function logShopifyErrorOnce(key: string, message: string, details?: unknown) {
   if (loggedShopifyErrors.has(key)) return
@@ -135,7 +136,7 @@ function getStorefrontUrl() {
   if (!domain) return null
 
   const normalizedDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '')
-  return `https://${normalizedDomain}/api/2026-01/graphql.json`
+  return `https://${normalizedDomain}/api/${storefrontApiVersion}/graphql.json`
 }
 
 export function isShopifyConfigured() {
@@ -411,8 +412,12 @@ export const getShopifyProducts = cache(async (first = 60): Promise<JammProduct[
 export const getShopifyProductByHandle = cache(async (handle: string): Promise<JammProduct | undefined> => {
   const data = await shopifyFetch<{ product: ShopifyProduct | null }>(productByHandleQuery, { handle })
   const product = data?.product ? mapShopifyProduct(data.product) : undefined
+  const listedProduct = product
+    ? undefined
+    : (await getShopifyProducts()).find((candidate) => candidate.handle === handle)
 
   return product
+    ?? listedProduct
     ?? await getPublicShopifyProductByHandle(handle)
     ?? (allowDemoFallback ? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle) : undefined)
 })

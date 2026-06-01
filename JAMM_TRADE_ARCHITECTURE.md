@@ -15,9 +15,9 @@ Jamm Trade is a headless commerce site:
 - **Shopify checkout is the only customer-facing Shopify step.** The Next.js
   app creates a Shopify cart through the Storefront API, then redirects the
   customer to the returned Shopify checkout URL.
-- **Do not publish Shopify themes as the main storefront** unless intentionally
-  changing the architecture. `scripts/deploy-shopify-theme.mjs` uploads themes
-  as unpublished by default.
+- **Keep the Shopify theme as a no-index fallback.** Preview theme updates as
+  unpublished, then publish only the reviewed fallback for `shop.jammtrade.com`.
+  The Next.js storefront remains canonical.
 
 ---
 

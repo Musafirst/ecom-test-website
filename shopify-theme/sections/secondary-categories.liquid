@@ -26,9 +26,15 @@
           <div class="category-card__inner">
             <div class="beam beam--lg{% if forloop.index0 == 1 %} beam--d1{% elsif forloop.index0 == 2 %} beam--d2{% elsif forloop.index0 >= 3 %} beam--d3{% endif %}" aria-hidden="true"></div>
             {% if block.settings.image != blank %}
-              <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.name | escape }}" class="category-card__img" loading="lazy">
+              <img src="{{ block.settings.image | image_url: width: 1000 }}" alt="{{ block.settings.name | escape }}" class="category-card__img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
             {% elsif block.settings.asset_image != blank %}
-              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.name | escape }}" class="category-card__img" loading="lazy">
+              {% assign asset_image_width = 1200 %}
+              {% assign asset_image_height = 1050 %}
+              {% if block.settings.asset_image == 'jamm-hoodie.png' %}
+                {% assign asset_image_width = 1024 %}
+                {% assign asset_image_height = 1536 %}
+              {% endif %}
+              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.name | escape }}" class="category-card__img" width="{{ asset_image_width }}" height="{{ asset_image_height }}" loading="lazy">
             {% else %}
               <div class="category-card__img category-card__img--placeholder"></div>
             {% endif %}

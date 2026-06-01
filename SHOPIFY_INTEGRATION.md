@@ -53,9 +53,9 @@ Production renders a temporary-unavailable state and never exposes demo catalog 
   permanent `*.myshopify.com` domain. Do not use it as the canonical website URL.
 - Do not point the primary public domain away from Vercel unless you want
   Shopify to become the visible website.
-- Do not publish a Shopify theme as a replacement storefront. The helper script
-  `scripts/deploy-shopify-theme.mjs` now uploads themes as unpublished by
-  default; publishing requires `PUBLISH_SHOPIFY_THEME=true`.
+- Keep the Shopify theme as a `noindex, follow` fallback. Preview it unpublished
+  first; publishing requires `PUBLISH_SHOPIFY_THEME=true` and must not replace
+  the Next.js site as the canonical storefront.
 - Use Shopify Admin for backend commerce changes: products, variants, stock,
   shipping rates, taxes, payments, policies, and orders.
 - Use this repo for public website changes: layout, navigation, SEO, product
@@ -68,7 +68,7 @@ Production renders a temporary-unavailable state and never exposes demo catalog 
 - Product page says out of stock: check selected variant availability in Shopify. Exact stock counts require the `unauthenticated_read_product_inventory` Storefront API scope; this app only uses `availableForSale` by default.
 - Add to cart works locally but not in Shopify: confirm the product has variants and the mapped `variantId` is present.
 - Checkout button does not open Shopify: the Shopify cart API call failed, env
-  vars are missing, or the request origin is not included in `middleware.ts`.
+  vars are missing, or the request origin is not included in `proxy.ts`.
 - Images fail in production: add the Shopify image hostname to `next.config.mjs` remote image patterns if it is not already allowed.
 
 ## Verification

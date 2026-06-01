@@ -11,7 +11,7 @@
           <a href="{{ public_shop_url }}" aria-label="{{ shop.name }}">
             {% if section.settings.logo != blank %}
               <img
-                src="{{ section.settings.logo | img_url: '600x' }}"
+                src="{{ section.settings.logo | image_url: width: 600 }}"
                 alt="{{ shop.name }}"
                 class="footer-logo"
                 width="360"

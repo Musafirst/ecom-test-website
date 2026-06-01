@@ -1,10 +1,38 @@
 /* ============================================================
-   JAMM TRADE — SHOPIFY THEME JS
-   Hero slider · Mobile menu · Add-to-cart · Gallery · Qty
+   JAMM TRADE SHOPIFY THEME JS
+   Hero slider, mobile menu, add-to-cart, gallery, quantity
    ============================================================ */
 
 (function () {
   'use strict';
+
+  var publicStorefrontUrl = (
+    window.JammTrade && window.JammTrade.publicStorefrontUrl
+      ? window.JammTrade.publicStorefrontUrl
+      : 'https://www.jammtrade.com'
+  ).replace(/\/+$/, '');
+
+  function escapeHtml(value) {
+    var replacements = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    };
+    return String(value || '').replace(/[&<>"']/g, function (character) {
+      return replacements[character];
+    });
+  }
+
+  function publicProductUrl(product) {
+    var handle = product.handle || '';
+    if (!handle && product.url) {
+      handle = product.url.split('/products/')[1] || '';
+      handle = handle.split(/[/?#]/)[0];
+    }
+    return publicStorefrontUrl + '/shop/product/' + encodeURIComponent(handle);
+  }
 
   /* ---- Scrolled header ------------------------------------ */
   var header = document.getElementById('SiteHeader');
@@ -402,16 +430,16 @@
     var html = products.map(function (p) {
       var imgSrc = p.featured_image && p.featured_image.url ? p.featured_image.url : '';
       var imgTag = imgSrc
-        ? '<img src="' + imgSrc + '" alt="" class="search-result-item__img" loading="lazy">'
+        ? '<img src="' + escapeHtml(imgSrc) + '" alt="" class="search-result-item__img" width="48" height="48" loading="lazy">'
         : '<div class="search-result-item__img"></div>';
       var price = p.price ? ('$' + (p.price / 100).toFixed(2)) : '';
-      return '<li><a href="' + p.url + '" class="search-result-item">'
+      return '<li><a href="' + escapeHtml(publicProductUrl(p)) + '" class="search-result-item">'
         + imgTag
-        + '<span class="search-result-item__title">' + p.title + '</span>'
-        + '<span class="search-result-item__price">' + price + '</span>'
+        + '<span class="search-result-item__title">' + escapeHtml(p.title) + '</span>'
+        + '<span class="search-result-item__price">' + escapeHtml(price) + '</span>'
         + '</a></li>';
     }).join('');
-    html += '<li><a href="/search?type=product&q=' + encodeURIComponent(q) + '" class="search-result-item search-result-item--all">View all results &rarr;</a></li>';
+    html += '<li><a href="' + escapeHtml(publicStorefrontUrl + '/shop') + '" class="search-result-item search-result-item--all">Browse all products &rarr;</a></li>';
     searchResults.innerHTML = html;
   }
 

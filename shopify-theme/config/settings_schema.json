@@ -21,6 +21,12 @@
         "id": "public_location",
         "label": "Public business location",
         "default": "Philadelphia, PA"
+      },
+      {
+        "type": "text",
+        "id": "public_storefront_url",
+        "label": "Canonical Next.js storefront URL",
+        "default": "https://www.jammtrade.com"
       }
     ]
   },

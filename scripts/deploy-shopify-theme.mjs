@@ -10,14 +10,16 @@
  *   1. Shopify Admin → Settings → Apps → Develop apps → Create app
  *   2. Admin API scopes: write_themes, read_themes
  *   3. Install app and copy the Admin API access token
- *   4. Run: SHOPIFY_ADMIN_TOKEN=<token> node scripts/deploy-shopify-theme.mjs
+ *   4. Create and review a zip from shopify-theme/
+ *   5. Run:
+ *      SHOPIFY_ADMIN_TOKEN=<token> SHOPIFY_THEME_ZIP=<path> node scripts/deploy-shopify-theme.mjs
  *
  * Optional:
- *   Set PUBLISH_SHOPIFY_THEME=true only if you intentionally want Shopify to
- *   become the public storefront for its attached sales channel/domain.
+ *   Set PUBLISH_SHOPIFY_THEME=true only after reviewing the fallback preview.
+ *   The published fallback must remain no-indexed and send browsing to Next.js.
  */
 
-import { readFileSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -26,6 +28,7 @@ const ROOT = resolve(__dirname, '..')
 
 const STORE  = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com'
 const TOKEN  = process.env.SHOPIFY_ADMIN_TOKEN
+const ZIP_FILE = process.env.SHOPIFY_THEME_ZIP
 const SHOULD_PUBLISH = process.env.PUBLISH_SHOPIFY_THEME === 'true'
 
 if (!TOKEN) {
@@ -33,7 +36,12 @@ if (!TOKEN) {
   process.exit(1)
 }
 
-const BASE_URL = `https://${STORE}/admin/api/2024-01`
+if (!ZIP_FILE) {
+  console.error('Error: set SHOPIFY_THEME_ZIP=<reviewed-theme-archive.zip> before running.')
+  process.exit(1)
+}
+
+const BASE_URL = `https://${STORE}/admin/api/2026-04`
 
 async function api(path, options = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -53,7 +61,11 @@ async function api(path, options = {}) {
 }
 
 // ── 1. Read and base64-encode the zip ─────────────────────────────────────
-const zipPath = resolve(ROOT, 'jammtrade-shopify-theme-v3-shopify-upload.zip')
+const zipPath = resolve(ROOT, ZIP_FILE)
+if (!existsSync(zipPath)) {
+  console.error('Error: theme zip not found:', zipPath)
+  process.exit(1)
+}
 const zipBase64 = readFileSync(zipPath).toString('base64')
 console.log('📦 Theme zip loaded:', zipPath)
 

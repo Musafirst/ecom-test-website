@@ -1,3 +1,5 @@
+{% assign public_contact_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop/contact' %}
+
 <section class="service-page">
   <div class="container service-page__inner">
     <div class="service-hero-grid">
@@ -12,7 +14,7 @@
         </p>
         <div class="service-actions">
           <a href="#quote-form" class="btn btn--primary">Request a Quote</a>
-          <a href="/pages/contact" class="btn btn--ghost">Contact Us</a>
+          <a href="{{ public_contact_url }}" class="btn btn--ghost">Contact Us</a>
         </div>
       </div>
 
@@ -71,7 +73,7 @@
         Fields marked <span class="text-gold">*</span> are required. After submitting, our team will review your request and contact you with a quote.
       </p>
 
-      <form id="JammCargoQuoteForm" class="service-form" data-jamm-api-form data-jamm-api-endpoint="https://www.jammtrade.com/api/jamm-cargo">
+      <form id="JammCargoQuoteForm" class="service-form" data-jamm-api-form data-jamm-api-endpoint="{{ settings.public_storefront_url | default: 'https://www.jammtrade.com' }}/api/jamm-cargo">
 
         <div class="service-form__field">
           <label for="CargoName">Full Name <span>*</span></label>

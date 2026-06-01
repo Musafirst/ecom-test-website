@@ -5,7 +5,10 @@
     "color_gold": "#C4973A",
     "color_bg": "#FAF7F2",
     "color_card": "#EDE8DC",
-    "font_heading": "Cormorant Garamond"
+    "font_heading": "Cormorant Garamond",
+    "support_email": "contact@jammtrade.com",
+    "public_location": "Philadelphia, PA",
+    "public_storefront_url": "https://www.jammtrade.com"
   },
   "presets": {}
 }

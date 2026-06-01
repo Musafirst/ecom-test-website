@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const STORAGE_KEY   = 'jamm-welcome-claimed'   // localStorage — never show again after code claimed
 const SESSION_KEY   = 'jamm-welcome-dismissed' // sessionStorage — skip for this browser session
-const DISCOUNT_CODE = 'WELCOME20'
+const DISCOUNT_CODE = process.env.NEXT_PUBLIC_WELCOME_DISCOUNT_CODE?.trim() ?? ''
+const DISCOUNT_PERCENT = Number(process.env.NEXT_PUBLIC_WELCOME_DISCOUNT_PERCENT)
+const PROMOTION_ENABLED = Boolean(DISCOUNT_CODE) && Number.isFinite(DISCOUNT_PERCENT) && DISCOUNT_PERCENT > 0
 
 function CloseIcon() {
   return (
@@ -23,6 +25,7 @@ export function WelcomePopup() {
   const [error, setError]     = useState('')
 
   useEffect(() => {
+    if (!PROMOTION_ENABLED) return
     if (typeof window === 'undefined') return
     if (localStorage.getItem(STORAGE_KEY)) return    // already claimed
     if (sessionStorage.getItem(SESSION_KEY)) return  // dismissed this session
@@ -65,11 +68,14 @@ export function WelcomePopup() {
   }
 
   function handleCopy() {
+    if (!DISCOUNT_CODE) return
     navigator.clipboard.writeText(DISCOUNT_CODE).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     })
   }
+
+  if (!PROMOTION_ENABLED) return null
 
   return (
     <AnimatePresence>
@@ -132,7 +138,7 @@ export function WelcomePopup() {
                   id="welcome-popup-title"
                   className="font-serif text-[2rem] font-light leading-tight text-jamm-dark sm:text-3xl"
                 >
-                  20% off your<br />first order
+                  {DISCOUNT_PERCENT}% off your<br />first order
                 </h2>
                 <p className="mt-2.5 font-sans text-sm leading-relaxed text-jamm-dark/55">
                   Enter your email to unlock your exclusive discount code.
@@ -156,7 +162,7 @@ export function WelcomePopup() {
                       type="submit"
                       className="w-full rounded-xl bg-jamm-dark py-3.5 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
                     >
-                      Unlock 20% off
+                      Unlock {DISCOUNT_PERCENT}% off
                     </button>
 
                     {/* No thanks link */}
@@ -202,7 +208,7 @@ export function WelcomePopup() {
                     </div>
 
                     <p className="mt-3 font-sans text-xs leading-relaxed text-jamm-dark/45">
-                      Apply at checkout to save 20% on your first order. Valid for new customers only.
+                      Apply at checkout to save {DISCOUNT_PERCENT}% on your first order. Valid for new customers only.
                     </p>
 
                     <button

@@ -1,3 +1,4 @@
+{% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 {% assign is_clothing = false %}
 {% assign is_electronics = false %}
 {% assign is_perfumes = false %}
@@ -32,9 +33,9 @@
       <div class="section-rule"></div>
 
       <div class="category-grid category-grid--3 subcollection-nav">
-        <a href="/collections/oud-collection" class="category-card subcollection-card">
+        <a href="{{ public_shop_url }}/collection/oud" class="category-card subcollection-card">
           <div class="category-card__inner">
-            <img src="{{ 'featured-oud.png' | asset_url }}" alt="Oud" class="category-card__img" loading="lazy">
+            <img src="{{ 'featured-oud.png' | asset_url }}" alt="Oud" class="category-card__img" width="1122" height="1402" loading="lazy">
             <div class="category-card__overlay"></div>
             <div class="category-card__badge">Oud</div>
             <div class="category-card__body">
@@ -48,9 +49,9 @@
           </div>
         </a>
 
-        <a href="/collections/amber-collection" class="category-card subcollection-card">
+        <a href="{{ public_shop_url }}/collection/amber" class="category-card subcollection-card">
           <div class="category-card__inner">
-            <img src="{{ 'featured-amber.png' | asset_url }}" alt="Amber" class="category-card__img" loading="lazy">
+            <img src="{{ 'featured-amber.png' | asset_url }}" alt="Amber" class="category-card__img" width="1122" height="1402" loading="lazy">
             <div class="category-card__overlay"></div>
             <div class="category-card__badge">Amber</div>
             <div class="category-card__body">
@@ -64,9 +65,9 @@
           </div>
         </a>
 
-        <a href="/collections/daily-collection" class="category-card subcollection-card">
+        <a href="{{ public_shop_url }}/collection/daily" class="category-card subcollection-card">
           <div class="category-card__inner">
-            <img src="{{ 'featured-daily.png' | asset_url }}" alt="Daily" class="category-card__img" loading="lazy">
+            <img src="{{ 'featured-daily.png' | asset_url }}" alt="Daily" class="category-card__img" width="1122" height="1402" loading="lazy">
             <div class="category-card__overlay"></div>
             <div class="category-card__badge">Daily</div>
             <div class="category-card__body">
@@ -95,7 +96,7 @@
         {% endpaginate %}
       {% endif %}
 
-      <a href="{{ routes.root_url }}" class="collection-back">
+      <a href="{{ public_shop_url }}" class="collection-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5" stroke-linecap="round"/>
         </svg>
@@ -121,14 +122,14 @@
       <div class="section-rule"></div>
 
       <div class="category-grid subcollection-nav">
-        <a href="/collections/smartwatches-collection" class="category-card subcollection-card">
+        <a href="{{ public_shop_url }}/collection/smartwatches" class="category-card subcollection-card">
           <div class="category-card__inner">
             {% assign sw_col = collections['smartwatches-collection'] %}
             {% assign sw_product = sw_col.products.first %}
             {% if sw_product.featured_image %}
-              <img src="{{ sw_product.featured_image | img_url: '600x600' }}" alt="Smartwatches" class="category-card__img" loading="lazy">
+              <img src="{{ sw_product.featured_image | image_url: width: 600, height: 600, crop: 'center' }}" alt="Smartwatches" class="category-card__img" width="{{ sw_product.featured_image.width }}" height="{{ sw_product.featured_image.height }}" loading="lazy">
             {% else %}
-              <img src="{{ 'sony-wh-1000xm5.webp' | asset_url }}" alt="Smartwatches" class="category-card__img" loading="lazy">
+              <img src="{{ 'sony-wh-1000xm5.webp' | asset_url }}" alt="Smartwatches" class="category-card__img" width="1200" height="1050" loading="lazy">
             {% endif %}
             <div class="category-card__overlay"></div>
             <div class="category-card__badge">Smartwatches</div>
@@ -142,14 +143,14 @@
           </div>
         </a>
 
-        <a href="/collections/audio-collection" class="category-card subcollection-card">
+        <a href="{{ public_shop_url }}/collection/audio" class="category-card subcollection-card">
           <div class="category-card__inner">
             {% assign audio_col = collections['audio-collection'] %}
             {% assign audio_product = audio_col.products.first %}
             {% if audio_product.featured_image %}
-              <img src="{{ audio_product.featured_image | img_url: '600x600' }}" alt="Audio" class="category-card__img" loading="lazy">
+              <img src="{{ audio_product.featured_image | image_url: width: 600, height: 600, crop: 'center' }}" alt="Audio" class="category-card__img" width="{{ audio_product.featured_image.width }}" height="{{ audio_product.featured_image.height }}" loading="lazy">
             {% else %}
-              <img src="{{ 'sony-wh-1000xm5.webp' | asset_url }}" alt="Audio" class="category-card__img" loading="lazy">
+              <img src="{{ 'sony-wh-1000xm5.webp' | asset_url }}" alt="Audio" class="category-card__img" width="1200" height="1050" loading="lazy">
             {% endif %}
             <div class="category-card__overlay"></div>
             <div class="category-card__badge">Audio</div>
@@ -178,7 +179,7 @@
         {% endpaginate %}
       {% endif %}
 
-      <a href="{{ routes.root_url }}" class="collection-back">
+      <a href="{{ public_shop_url }}" class="collection-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5" stroke-linecap="round"/>
         </svg>
@@ -226,7 +227,7 @@
         </div>
       {% endif %}
 
-      <a href="{{ routes.root_url }}" class="collection-back">
+      <a href="{{ public_shop_url }}" class="collection-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5" stroke-linecap="round"/>
         </svg>
@@ -271,7 +272,7 @@
         </div>
       {% endif %}
 
-      <a href="/collections/electronics-collection" class="collection-back">
+      <a href="{{ public_shop_url }}/category/electronics" class="collection-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5" stroke-linecap="round"/>
         </svg>
@@ -316,7 +317,7 @@
         </div>
       {% endif %}
 
-      <a href="/collections/perfumes-collection" class="collection-back">
+      <a href="{{ public_shop_url }}/category/perfumes" class="collection-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5" stroke-linecap="round"/>
         </svg>
@@ -334,9 +335,11 @@
       <div class="collection-page__header">
         {% if collection.image %}
           <img
-            src="{{ collection.image | img_url: '2000x600', crop: 'center' }}"
+            src="{{ collection.image | image_url: width: 2000, height: 600, crop: 'center' }}"
             alt="{{ collection.title | escape }}"
             class="collection-page__banner"
+            width="{{ collection.image.width }}"
+            height="{{ collection.image.height }}"
             loading="eager"
           >
         {% endif %}
@@ -364,7 +367,7 @@
         {% endif %}
       {% endpaginate %}
 
-      <a href="{{ routes.root_url }}" class="collection-back">
+      <a href="{{ public_shop_url }}" class="collection-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5" stroke-linecap="round"/>
         </svg>

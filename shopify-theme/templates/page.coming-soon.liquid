@@ -1,3 +1,5 @@
+{% assign public_contact_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop/contact' %}
+
 <section class="page-template">
   <div class="container container--narrow">
     <header class="page-header">
@@ -12,7 +14,7 @@
         <p>For details about this service or category, contact Jamm Trade and our team will help with the next step.</p>
       {% endif %}
       <p>
-        <a href="/pages/contact">Contact Jamm Trade</a>
+        <a href="{{ public_contact_url }}">Contact Jamm Trade</a>
       </p>
     </div>
   </div>

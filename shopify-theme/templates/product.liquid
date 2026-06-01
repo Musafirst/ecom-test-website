@@ -30,10 +30,12 @@
           {% if product.images.size > 0 %}
             {% for image in product.images %}
               <img
-                src="{{ image | img_url: '1000x1000', crop: 'center' }}"
+                src="{{ image | image_url: width: 1000, height: 1000, crop: 'center' }}"
                 alt="{{ image.alt | default: product.title | escape }}"
                 class="product-gallery__img{% if forloop.first %} is-active{% endif %}"
                 data-gallery-img="{{ forloop.index0 }}"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
               >
             {% endfor %}
@@ -54,8 +56,10 @@
                 aria-label="View image {{ forloop.index }}"
               >
                 <img
-                  src="{{ image | img_url: '200x200', crop: 'center' }}"
+                  src="{{ image | image_url: width: 200, height: 200, crop: 'center' }}"
                   alt="{{ image.alt | default: product.title | escape }}"
+                  width="{{ image.width }}"
+                  height="{{ image.height }}"
                   loading="lazy"
                 >
               </button>

@@ -12,13 +12,14 @@
 
 const STORE = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com';
 const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN;
+const SUPPORT_EMAIL = 'contact@jammtrade.com';
 
 if (!TOKEN) {
   console.error('Error: Set SHOPIFY_ADMIN_TOKEN=<your-token> before running.');
   process.exit(1);
 }
 
-const ADMIN_URL = `https://${STORE}/admin/api/2024-01/graphql.json`;
+const ADMIN_URL = `https://${STORE}/admin/api/2026-04/graphql.json`;
 
 async function gql(query) {
   const res = await fetch(ADMIN_URL, {
@@ -68,7 +69,7 @@ const PAGES = [
 <h2>Service Providers</h2>
 <p>Jamm Trade may share necessary order and site information with Shopify, payment processors, fulfillment providers, carriers, analytics services, and other service providers used to operate the store.</p>
 <h2>Customer Choices</h2>
-<p>Customers may contact Jamm Trade to request help with privacy questions, order data, or communication preferences.</p>`,
+<p>Customers may contact Jamm Trade to request help with privacy questions, order data, or communication preferences. For privacy questions, contact us at ${SUPPORT_EMAIL}.</p>`,
   },
   {
     alias: 'refundPage',
@@ -84,7 +85,8 @@ const PAGES = [
 <p>If an order arrives damaged, defective, or incorrect, contact Jamm Trade within 48 hours of delivery with the order number and clear photos of the item and packaging.</p>
 <p>Approved claims may be resolved with a replacement, exchange, or refund depending on inventory and order details.</p>
 <h2>Refund Timing</h2>
-<p>Approved refunds are issued to the original payment method after the returned item is received and inspected. Bank or card processing times may vary.</p>`,
+<p>Approved refunds are issued to the original payment method after the returned item is received and inspected. Bank or card processing times may vary.</p>
+<p>To start a return, contact us at ${SUPPORT_EMAIL} with your order number.</p>`,
   },
   {
     alias: 'shippingPolicyPage',
@@ -99,7 +101,8 @@ const PAGES = [
 <h2>Tracking</h2>
 <p>When tracking is available, customers receive shipment details by email after the order has been fulfilled.</p>
 <h2>Address Accuracy</h2>
-<p>Customers are responsible for entering a complete and accurate shipping address. Contact Jamm Trade quickly if an address needs correction before fulfillment.</p>`,
+<p>Customers are responsible for entering a complete and accurate shipping address. Contact Jamm Trade quickly if an address needs correction before fulfillment.</p>
+<p>For shipping questions, contact us at ${SUPPORT_EMAIL}.</p>`,
   },
   {
     alias: 'shippingReturnsPage',
@@ -111,7 +114,7 @@ const PAGES = [
 <h2>Returns</h2>
 <p>Eligible return requests must be made within 14 days of delivery. Items must be unused, unopened, and in original retail packaging unless the item arrived damaged or incorrect.</p>
 <h2>Support</h2>
-<p>Contact Jamm Trade with your order number and product details for shipping, delivery, return, or damaged-item support.</p>`,
+<p>Contact Jamm Trade at ${SUPPORT_EMAIL} with your order number and product details for shipping, delivery, return, or damaged-item support.</p>`,
   },
   {
     alias: 'termsPage',
@@ -126,7 +129,8 @@ const PAGES = [
 <h2>Pricing and Payment</h2>
 <p>Prices are shown in the storefront currency and confirmed at checkout. Taxes, shipping, and applicable duties are calculated during checkout before payment is submitted.</p>
 <h2>Checkout and Fulfillment</h2>
-<p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>`,
+<p>Purchases are completed through secure Shopify checkout. Order fulfillment depends on payment authorization, inventory availability, and successful carrier acceptance.</p>
+<p>For questions about these terms, contact us at ${SUPPORT_EMAIL}.</p>`,
   },
   {
     alias: 'fleetPage',
