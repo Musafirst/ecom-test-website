@@ -122,11 +122,16 @@ function logShopifyErrorOnce(key: string, message: string, details?: unknown) {
   if (loggedShopifyErrors.has(key)) return
 
   loggedShopifyErrors.add(key)
-  if (details) {
-    console.error(message, details)
-  } else {
-    console.error(message)
-  }
+  console.error(JSON.stringify({
+    level: 'error',
+    event: 'shopify.storefront_failed',
+    reason: key,
+    message,
+    errorType: details && typeof details === 'object' && 'name' in details
+      ? String(details.name).slice(0, 80)
+      : undefined,
+    timestamp: new Date().toISOString(),
+  }))
 }
 
 // Accept either "store.myshopify.com" or a full URL in env vars.

@@ -13,6 +13,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabase } from '@/lib/supabase'
 import { rateLimit, getClientIP } from '@/lib/rateLimit'
 import { cleanEmail } from '@/lib/validation'
+import { incrementMetric, logError, recordApiResult } from '@/lib/observability'
 
 const CODE           = process.env.NEXT_PUBLIC_WELCOME_DISCOUNT_CODE?.trim()
 const MAX_BODY_BYTES = 1_024          // 1 KB — an email fits in ~100 bytes
@@ -20,8 +21,14 @@ const RATE_LIMIT     = 5             // requests
 const RATE_WINDOW_MS = 15 * 60_000  // 15 minutes
 
 export async function POST(req: NextRequest) {
+  const startedAt = Date.now()
+  const respond = (body: Record<string, unknown>, status = 200) => {
+    recordApiResult('/api/subscribe', status, startedAt)
+    return NextResponse.json(body, { status })
+  }
+
   if (!CODE) {
-    return NextResponse.json({ error: 'This promotion is not currently available.' }, { status: 503 })
+    return respond({ error: 'This promotion is not currently available.' }, 503)
   }
 
   // ── Rate limiting ──────────────────────────────────────────────────────
@@ -29,6 +36,7 @@ export async function POST(req: NextRequest) {
   const { allowed, retryAfterSec } = rateLimit(`subscribe:${ip}`, RATE_LIMIT, RATE_WINDOW_MS)
 
   if (!allowed) {
+    recordApiResult('/api/subscribe', 429, startedAt)
     return NextResponse.json(
       { error: 'Too many requests. Please try again later.' },
       {
@@ -41,7 +49,7 @@ export async function POST(req: NextRequest) {
   // ── Body size guard ────────────────────────────────────────────────────
   const contentLength = Number(req.headers.get('content-length') ?? 0)
   if (contentLength > MAX_BODY_BYTES) {
-    return NextResponse.json({ error: 'Request too large.' }, { status: 413 })
+    return respond({ error: 'Request too large.' }, 413)
   }
 
   try {
@@ -49,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     const normalised = cleanEmail(body.email)
     if (!normalised) {
-      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 })
+      return respond({ error: 'Invalid email address.' }, 400)
     }
 
     const supabase = getSupabase()
@@ -62,7 +70,8 @@ export async function POST(req: NextRequest) {
       .maybeSingle()
 
     if (existing) {
-      return NextResponse.json({ code: CODE, alreadyClaimed: true })
+      incrementMetric('lead_submissions_total', { form: 'discount', result: 'duplicate' })
+      return respond({ code: CODE, alreadyClaimed: true })
     }
 
     // New — save and return code
@@ -72,9 +81,11 @@ export async function POST(req: NextRequest) {
 
     if (error) throw error
 
-    return NextResponse.json({ code: CODE, alreadyClaimed: false })
+    incrementMetric('lead_submissions_total', { form: 'discount', result: 'accepted' })
+    return respond({ code: CODE, alreadyClaimed: false })
   } catch (err) {
-    console.error('[/api/subscribe]', err)
-    return NextResponse.json({ error: 'Server error. Please try again.' }, { status: 500 })
+    incrementMetric('lead_submissions_total', { form: 'discount', result: 'error' })
+    logError('lead.discount_failed', err)
+    return respond({ error: 'Server error. Please try again.' }, 500)
   }
 }

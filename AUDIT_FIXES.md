@@ -36,6 +36,9 @@
 - Migrated the deprecated Next.js middleware convention to `proxy.ts` and restored `npm run lint` as a TypeScript check.
 - Upgraded Next.js to `16.2.6`, which removes the high-severity Proxy bypass advisory present in `16.2.5`.
 - Limited Next.js static-generation concurrency to two workers so production builds remain reliable on memory-constrained machines.
+- Added privacy-safe structured logs, a minimal health endpoint, and a token-protected metrics endpoint.
+- Added automated regression tests for validation, cart abuse guards, Shopify webhook signatures, order-data minimization, and log redaction.
+- Added explicit PII retention windows and a Supabase cleanup function for lead, discount-claim, and retained order records.
 
 ## Merchant Data
 

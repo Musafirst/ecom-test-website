@@ -47,6 +47,8 @@ This project is a Next.js storefront backed by Shopify commerce.
 | `app/api/shopify/cart/route.ts` | Server route that keeps Storefront token use server-side. |
 | `proxy.ts` | Request guard for CORS, webhook browser blocking, and security headers. |
 | `next.config.mjs` | Global security headers and allowed remote image sources. |
+| `lib/observability.ts` | Redacted structured logs and bounded in-memory metrics. |
+| `PII_HANDLING.md` | PII inventory, retention rules, and cleanup instructions. |
 
 ## Editing Rules
 
@@ -70,6 +72,7 @@ Run the app and active Shopify theme checks after code changes:
 
 ```bash
 npm.cmd run lint
+npm.cmd test
 npm.cmd run build
 shopify.cmd theme check --path shopify-theme
 ```

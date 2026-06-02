@@ -20,7 +20,8 @@ create table if not exists public.jamm_cargo_leads (
   preferred_timeline  text,
   notes               text,
   consent_accepted    boolean not null default true,
-  created_at          timestamptz not null default now()
+  created_at          timestamptz not null default now(),
+  expires_at          timestamptz not null default (now() + interval '2 years')
 );
 
 -- Index for quick lookup by email
@@ -52,7 +53,8 @@ create table if not exists public.jamm_fleet_leads (
   insurance_status    text,
   notes               text,
   consent_accepted    boolean not null default true,
-  created_at          timestamptz not null default now()
+  created_at          timestamptz not null default now(),
+  expires_at          timestamptz not null default (now() + interval '2 years')
 );
 
 -- Index for quick lookup by email
@@ -75,3 +77,55 @@ alter table public.jamm_fleet_leads enable row level security;
 -- Or run in SQL Editor:
 --   select * from public.jamm_cargo_leads order by created_at desc;
 --   select * from public.jamm_fleet_leads order by created_at desc;
+
+
+-- ============================================================
+-- 3. PII retention maintenance
+-- Run this section on existing projects after adding the tables above.
+-- Schedule `select public.cleanup_expired_pii();` daily with Supabase Cron.
+-- ============================================================
+
+alter table public.jamm_cargo_leads
+  add column if not exists expires_at timestamptz
+  default (now() + interval '2 years');
+
+alter table public.jamm_fleet_leads
+  add column if not exists expires_at timestamptz
+  default (now() + interval '2 years');
+
+update public.jamm_cargo_leads
+set expires_at = created_at + interval '2 years'
+where expires_at is null;
+
+update public.jamm_fleet_leads
+set expires_at = created_at + interval '2 years'
+where expires_at is null;
+
+alter table public.jamm_cargo_leads
+  alter column expires_at set not null;
+
+alter table public.jamm_fleet_leads
+  alter column expires_at set not null;
+
+create or replace function public.cleanup_expired_pii()
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  delete from public.jamm_cargo_leads where expires_at < now();
+  delete from public.jamm_fleet_leads where expires_at < now();
+
+  if to_regclass('public.discount_claims') is not null then
+    execute 'delete from public.discount_claims where created_at < now() - interval ''2 years''';
+  end if;
+
+  if to_regclass('public.orders') is not null then
+    execute 'delete from public.orders where expires_at < now()';
+  end if;
+end;
+$$;
+
+revoke all on function public.cleanup_expired_pii() from public, anon, authenticated;
+grant execute on function public.cleanup_expired_pii() to service_role;

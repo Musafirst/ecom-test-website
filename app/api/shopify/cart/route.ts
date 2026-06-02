@@ -1,18 +1,10 @@
 import { NextResponse } from 'next/server'
 import { addShopifyCartLines, createShopifyCart, createShopifyCartFromLines, isShopifyConfigured } from '@/lib/shopify'
+import { maxCartLines, parseCartLine, requestIsTooLarge } from '@/lib/cartValidation'
+import { incrementMetric, recordApiResult } from '@/lib/observability'
 
 const cartIdCookieName = 'jamm_shopify_cart_id'
 const cartCookieMaxAge = 60 * 60 * 24 * 30
-const maxBodyBytes = 20_480
-const maxCartLines = 50
-const maxQuantity = 99
-const shopifyVariantIdPattern = /^gid:\/\/shopify\/ProductVariant\/\d+$/
-
-type CartLineInput = {
-  variantId: string
-  quantity: number
-}
-
 function readCartId(request: Request) {
   const cookieHeader = request.headers.get('cookie') ?? ''
 
@@ -33,26 +25,15 @@ function readCartId(request: Request) {
   }
 }
 
-function parseCartLine(line: unknown): CartLineInput | null {
-  if (!line || typeof line !== 'object') return null
-
-  const variantId = 'variantId' in line && typeof line.variantId === 'string' ? line.variantId : ''
-  const quantity = Number('quantity' in line ? line.quantity : 0)
-
-  return shopifyVariantIdPattern.test(variantId) && Number.isInteger(quantity) && quantity > 0 && quantity <= maxQuantity
-    ? { variantId, quantity }
-    : null
-}
-
-function requestIsTooLarge(request: Request) {
-  return Number(request.headers.get('content-length') ?? 0) > maxBodyBytes
-}
-
-function jsonError(message: string, status: number) {
+function jsonError(message: string, status: number, operation: string, startedAt: number) {
+  incrementMetric('cart_operations_total', { operation, result: status >= 500 ? 'error' : 'rejected' })
+  recordApiResult('/api/shopify/cart', status, startedAt)
   return NextResponse.json({ error: message }, { status })
 }
 
-function jsonCartResponse(cart: { id: string; checkoutUrl: string; totalQuantity: number }) {
+function jsonCartResponse(cart: { id: string; checkoutUrl: string; totalQuantity: number }, operation: string, startedAt: number) {
+  incrementMetric('cart_operations_total', { operation, result: 'accepted' })
+  recordApiResult('/api/shopify/cart', 200, startedAt)
   const response = NextResponse.json({ cart })
 
   response.cookies.set(cartIdCookieName, cart.id, {
@@ -70,12 +51,14 @@ function jsonCartResponse(cart: { id: string; checkoutUrl: string; totalQuantity
 // Storefront token stays server-side. The Shopify cart id is kept in an
 // httpOnly cookie and reused for later add-to-cart actions.
 export async function POST(request: Request) {
+  const startedAt = Date.now()
+  const operation = 'add'
   if (requestIsTooLarge(request)) {
-    return jsonError('Request too large.', 413)
+    return jsonError('Request too large.', 413, operation, startedAt)
   }
 
   if (!isShopifyConfigured()) {
-    return jsonError('Shopify is not configured.', 503)
+    return jsonError('Shopify is not configured.', 503, operation, startedAt)
   }
 
   const body = await request.json().catch(() => null)
@@ -85,7 +68,7 @@ export async function POST(request: Request) {
   })
 
   if (!line) {
-    return jsonError('A valid variantId and quantity are required.', 400)
+    return jsonError('A valid variantId and quantity are required.', 400, operation, startedAt)
   }
 
   // First item creates a Shopify cart; later items append lines to that cart.
@@ -96,25 +79,27 @@ export async function POST(request: Request) {
   const errors = payload?.userErrors ?? []
 
   if (!payload?.cart || errors.length > 0) {
-    return jsonError(errors[0]?.message ?? 'Unable to update Shopify cart.', 400)
+    return jsonError(errors[0]?.message ?? 'Unable to update Shopify cart.', 400, operation, startedAt)
   }
 
-  return jsonCartResponse(payload.cart)
+  return jsonCartResponse(payload.cart, operation, startedAt)
 }
 
 export async function PUT(request: Request) {
+  const startedAt = Date.now()
+  const operation = 'sync'
   if (requestIsTooLarge(request)) {
-    return jsonError('Request too large.', 413)
+    return jsonError('Request too large.', 413, operation, startedAt)
   }
 
   if (!isShopifyConfigured()) {
-    return jsonError('Shopify is not configured.', 503)
+    return jsonError('Shopify is not configured.', 503, operation, startedAt)
   }
 
   const body = await request.json().catch(() => null)
   const lines: unknown[] = Array.isArray(body?.lines) ? body.lines : []
   if (lines.length > maxCartLines) {
-    return jsonError(`A cart may contain at most ${maxCartLines} lines.`, 400)
+    return jsonError(`A cart may contain at most ${maxCartLines} lines.`, 400, operation, startedAt)
   }
 
   const validLines = lines.flatMap((line) => {
@@ -123,15 +108,15 @@ export async function PUT(request: Request) {
   })
 
   if (validLines.length === 0 || validLines.length !== lines.length) {
-    return jsonError('Every cart line needs a valid Shopify variantId and quantity from 1 to 99.', 400)
+    return jsonError('Every cart line needs a valid Shopify variantId and quantity from 1 to 99.', 400, operation, startedAt)
   }
 
   const payload = (await createShopifyCartFromLines(validLines))?.cartCreate
   const errors = payload?.userErrors ?? []
 
   if (!payload?.cart || errors.length > 0) {
-    return jsonError(errors[0]?.message ?? 'Unable to sync Shopify cart.', 400)
+    return jsonError(errors[0]?.message ?? 'Unable to sync Shopify cart.', 400, operation, startedAt)
   }
 
-  return jsonCartResponse(payload.cart)
+  return jsonCartResponse(payload.cart, operation, startedAt)
 }
