@@ -12,3 +12,7 @@ redirect_urls = [
 
 [webhooks]
 api_version = "2026-04"
+
+[[webhooks.subscriptions]]
+topics = [ "shop/update" ]
+uri = "https://www.jammtrade.com/api/webhooks/shopify/shop-update"

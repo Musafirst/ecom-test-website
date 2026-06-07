@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { businessInfo } from '@/lib/businessInfo'
 import { site } from '@/lib/site'
@@ -14,6 +15,7 @@ const serviceLinks = [
 
 export function Footer() {
   const { t } = useLocale()
+  const [activeBusinessInfo, setActiveBusinessInfo] = useState(businessInfo)
   const localizedShopLinks = [
     { label: t('footer.shop'), href: '/shop' },
     { label: t('footer.about'), href: '/shop/about' },
@@ -25,6 +27,22 @@ export function Footer() {
     { label: t('footer.privacy'), href: '/shop/privacy-policy' },
     { label: t('footer.terms'), href: '/shop/terms-of-service' },
   ]
+
+  useEffect(() => {
+    let isMounted = true
+
+    fetch('/api/shopify/business-info')
+      .then((response) => response.ok ? response.json() : null)
+      .then((data: typeof businessInfo | null) => {
+        if (!isMounted || !data) return
+        setActiveBusinessInfo(data)
+      })
+      .catch(() => undefined)
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   return (
     <footer className="bg-transparent px-3 pb-4 sm:px-4">
@@ -47,10 +65,10 @@ export function Footer() {
               {t('footer.tagline')}
             </p>
             <div className="mt-4 space-y-1 font-sans text-xs leading-relaxed text-jamm-dark/52">
-              <p className="font-semibold text-jamm-dark/62">{businessInfo.name}</p>
-              <p>{businessInfo.publicLocation}</p>
-              <a href={`mailto:${businessInfo.supportEmail}`} className="transition-colors hover:text-jamm-gold">
-                {businessInfo.supportEmail}
+              <p className="font-semibold text-jamm-dark/62">{activeBusinessInfo.name}</p>
+              <p className="whitespace-pre-line">{activeBusinessInfo.publicLocation}</p>
+              <a href={`mailto:${activeBusinessInfo.supportEmail}`} className="transition-colors hover:text-jamm-gold">
+                {activeBusinessInfo.supportEmail}
               </a>
             </div>
           </div>
