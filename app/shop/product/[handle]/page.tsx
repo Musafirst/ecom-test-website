@@ -32,6 +32,34 @@ function getProductGalleryImages(product: JammProduct) {
   return uniqueImages([product.image, ...(product.galleryImages ?? [])]).slice(0, 5)
 }
 
+function getProductBackLink(product: JammProduct) {
+  if (product.collection) {
+    return {
+      href: `/shop/collection/${product.collection}`,
+      label: `${product.categoryLabel} collection`,
+    }
+  }
+
+  if (product.category === 'clothing') {
+    return {
+      href: '/shop/collection/clothing',
+      label: 'Clothing collection',
+    }
+  }
+
+  if (product.category === 'perfume') {
+    return {
+      href: '/shop/category/perfumes',
+      label: 'Perfumes',
+    }
+  }
+
+  return {
+    href: '/shop/category/electronics',
+    label: 'Electronics',
+  }
+}
+
 export async function generateStaticParams() {
   const products = await getAllProducts()
 
@@ -88,8 +116,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound()
   }
 
-  const backHref = product.collection ? `/shop/collection/${product.collection}` : '/shop/category/electronics'
-  const backLabel = product.collection ? `${product.categoryLabel} collection` : product.categoryLabel
+  const { href: backHref, label: backLabel } = getProductBackLink(product)
   const isElectronics = product.category === 'electronics'
   const isPerfume = product.category === 'perfume'
   const isClothing = product.category === 'clothing'
@@ -264,10 +291,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <ProductPurchasePanel product={product} compact={isClothing} />
 
             <Link
-              href="/shop#perfumes"
+              href={backHref}
               className="mt-4 inline-flex font-sans text-sm font-medium text-jamm-muted underline underline-offset-4 transition-colors duration-200 hover:text-jamm-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jamm-gold focus-visible:ring-offset-2"
             >
-              Back to Shop
+              Back to {backLabel}
             </Link>
           </div>
         </div>
