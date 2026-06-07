@@ -9,7 +9,7 @@
   {%- if shop.address.country != blank -%}<br>{{ shop.address.country }}{%- endif -%}
 {% endcapture %}
 {% assign shop_business_address = shop_business_address | strip %}
-{% assign footer_business_address = settings.public_location | default: shop_business_address | default: 'Philadelphia, PA' %}
+{% assign footer_business_address = shop_business_address | default: settings.public_location | default: 'Philadelphia, PA' %}
 
 <footer class="site-footer" role="contentinfo">
   <div class="container">

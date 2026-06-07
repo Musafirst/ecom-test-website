@@ -6,7 +6,8 @@ embedded = false
 
 [auth]
 redirect_urls = [
-  "https://www.jammtrade.com/api/auth/shopify/callback"
+  "https://www.jammtrade.com/api/auth/shopify/callback",
+  "http://localhost:3456/callback"
 ]
 
 [webhooks]
