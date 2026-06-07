@@ -4,6 +4,7 @@ import './globals.css'
 import { TabNav } from '@/components/layout/TabNav'
 import { Footer } from '@/components/layout/Footer'
 import BackgroundComponents from '@/components/ui/background-components'
+import { LocaleProvider } from '@/components/i18n/LocaleProvider'
 import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
 
 const cormorant = Cormorant_Garamond({
@@ -92,17 +93,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
-      <body>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <BackgroundComponents>
-          <TabNav />
-          <main>{children}</main>
-          <Footer />
-        </BackgroundComponents>
+        <LocaleProvider>
+          <BackgroundComponents>
+            <TabNav />
+            <main>{children}</main>
+            <Footer />
+          </BackgroundComponents>
+        </LocaleProvider>
       </body>
     </html>
   )

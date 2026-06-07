@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 
 const trustItems = [
   {
+    key: 'authentic',
     label: 'Authentic Products',
     detail: 'Every item sourced and verified.',
     icon: (
@@ -14,6 +16,7 @@ const trustItems = [
     ),
   },
   {
+    key: 'shipping',
     label: 'Reliable Shipping',
     detail: 'Clear delivery options at checkout.',
     icon: (
@@ -24,6 +27,7 @@ const trustItems = [
     ),
   },
   {
+    key: 'quality',
     label: 'Premium Quality',
     detail: 'Curated with intention.',
     icon: (
@@ -34,6 +38,7 @@ const trustItems = [
     ),
   },
   {
+    key: 'checkout',
     label: 'Secure Checkout',
     detail: 'Your data, protected.',
     icon: (
@@ -46,6 +51,13 @@ const trustItems = [
 ]
 
 export function TrustBar() {
+  const { t } = useLocale()
+  const localizedTrustItems = trustItems.map((item) => ({
+    ...item,
+    label: t(`trust.${item.key}.label`),
+    detail: t(`trust.${item.key}.detail`),
+  }))
+
   return (
     <section className="bg-transparent px-3 py-10 sm:px-4 lg:pb-20 lg:pt-12">
       <motion.div
@@ -59,7 +71,7 @@ export function TrustBar() {
         }}
       >
         <BorderBeam size={420} duration={12} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={4} />
-        {trustItems.map(({ label, detail, icon }) => (
+        {localizedTrustItems.map(({ label, detail, icon }) => (
           <motion.div
             key={label}
             className="flex flex-col gap-3 border-b border-r border-jamm-gold/15 p-4 transition-colors duration-300 even:border-r-0 hover:bg-white/28 sm:flex-row sm:items-start sm:gap-4 sm:p-6 lg:border-b-0 lg:border-r lg:even:border-r lg:last:border-r-0"

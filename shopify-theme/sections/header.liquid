@@ -28,9 +28,9 @@
     </a>
 
     <!-- Desktop Nav -->
-    <nav class="header-nav" aria-label="Main navigation">
-      <a href="{{ public_shop_url }}" class="header-nav__link">Shop</a>
-      <a href="{{ public_shop_url }}#collections" class="header-nav__link">Collections</a>
+    <nav class="header-nav" aria-label="{{ 'navigation.main' | t }}">
+      <a href="{{ public_shop_url }}" class="header-nav__link">{{ 'navigation.shop' | t }}</a>
+      <a href="{{ public_shop_url }}#collections" class="header-nav__link">{{ 'navigation.collections' | t }}</a>
     </nav>
 
     <!-- Header Actions -->
@@ -44,7 +44,7 @@
           aria-controls="HeaderServicesMenu"
           data-services-toggle
         >
-          Services
+          {{ 'navigation.services' | t }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -52,16 +52,16 @@
         <div id="HeaderServicesMenu" class="header-services__menu" role="menu" data-services-panel hidden>
           <a href="{{ public_storefront_url }}/jamm-fleet" class="header-services__item" role="menuitem">
             <span class="header-services__title">Jamm Fleet</span>
-            <span class="header-services__copy">Vehicle rental inquiries</span>
+            <span class="header-services__copy">{{ 'services.fleet_copy' | t }}</span>
           </a>
           <a href="{{ public_storefront_url }}/jamm-cargo" class="header-services__item" role="menuitem">
             <span class="header-services__title">Jamm Cargo</span>
-            <span class="header-services__copy">Shipping quote requests</span>
+            <span class="header-services__copy">{{ 'services.cargo_copy' | t }}</span>
           </a>
         </div>
       </div>
       <!-- Search -->
-      <button type="button" id="SearchToggle" class="header-icon-btn" aria-label="Search" aria-expanded="false" aria-controls="SearchDrawer">
+      <button type="button" id="SearchToggle" class="header-icon-btn" aria-label="{{ 'navigation.search' | t }}" aria-expanded="false" aria-controls="SearchDrawer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <circle cx="11" cy="11" r="6"/>
           <path d="m16 16 4 4"/>
@@ -69,13 +69,13 @@
       </button>
 
       <!-- Cart (desktop) -->
-      <a href="{{ routes.cart_url }}" class="header-cart-btn" aria-label="Cart">
-        Cart
+      <a href="{{ routes.cart_url }}" class="header-cart-btn" aria-label="{{ 'navigation.cart' | t }}">
+        {{ 'navigation.cart' | t }}
         <span class="cart-badge" data-cart-count style="display:none;">0</span>
       </a>
 
       <!-- Cart (mobile) -->
-      <a href="{{ routes.cart_url }}" class="header-icon-btn header-cart-icon" aria-label="Cart">
+      <a href="{{ routes.cart_url }}" class="header-icon-btn header-cart-icon" aria-label="{{ 'navigation.cart' | t }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="9" cy="20" r="1"/>
@@ -88,7 +88,7 @@
       <button
         type="button"
         class="header-icon-btn header-menu-btn"
-        aria-label="Open menu"
+        aria-label="{{ 'navigation.open_menu' | t }}"
         aria-expanded="false"
         aria-controls="MobileMenu"
         id="MobileMenuToggle"
@@ -107,7 +107,7 @@
   class="mobile-menu"
   role="dialog"
   aria-modal="true"
-  aria-label="Navigation menu"
+  aria-label="{{ 'navigation.menu' | t }}"
   hidden
 >
   <div class="mobile-menu__header">
@@ -121,7 +121,7 @@
     <button
       type="button"
       class="header-icon-btn"
-      aria-label="Close menu"
+      aria-label="{{ 'navigation.close_menu' | t }}"
       id="MobileMenuClose"
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -130,9 +130,9 @@
     </button>
   </div>
 
-  <nav class="mobile-menu__nav" aria-label="Mobile navigation">
-    <a href="{{ public_shop_url }}" class="mobile-menu__link">Shop</a>
-    <a href="{{ public_shop_url }}#collections" class="mobile-menu__link">Collections</a>
+  <nav class="mobile-menu__nav" aria-label="{{ 'navigation.mobile' | t }}">
+    <a href="{{ public_shop_url }}" class="mobile-menu__link">{{ 'navigation.shop' | t }}</a>
+    <a href="{{ public_shop_url }}#collections" class="mobile-menu__link">{{ 'navigation.collections' | t }}</a>
     <div class="mobile-services">
       <button
         type="button"
@@ -141,7 +141,7 @@
         aria-controls="MobileServicesMenu"
         data-mobile-services-toggle
       >
-        Services
+        {{ 'navigation.services' | t }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -149,11 +149,11 @@
       <div id="MobileServicesMenu" class="mobile-services__panel" data-mobile-services-panel hidden>
         <a href="{{ public_storefront_url }}/jamm-fleet" class="mobile-services__item">
           <span class="mobile-services__title">Jamm Fleet</span>
-          <span class="mobile-services__copy">Vehicle rental inquiries</span>
+          <span class="mobile-services__copy">{{ 'services.fleet_copy' | t }}</span>
         </a>
         <a href="{{ public_storefront_url }}/jamm-cargo" class="mobile-services__item">
           <span class="mobile-services__title">Jamm Cargo</span>
-          <span class="mobile-services__copy">Shipping quote requests</span>
+          <span class="mobile-services__copy">{{ 'services.cargo_copy' | t }}</span>
         </a>
       </div>
     </div>
@@ -168,11 +168,11 @@
 <div id="MobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
 
 <!-- Search Drawer -->
-<div id="SearchDrawer" class="search-drawer" role="dialog" aria-modal="true" aria-label="Search products">
+<div id="SearchDrawer" class="search-drawer" role="dialog" aria-modal="true" aria-label="{{ 'navigation.search_products' | t }}">
   <div class="search-drawer__inner container">
     <form action="{{ routes.search_url }}" method="get" class="search-drawer__form" role="search">
       <input type="hidden" name="type" value="product">
-      <label for="SearchInput" class="visually-hidden">Search products</label>
+      <label for="SearchInput" class="visually-hidden">{{ 'navigation.search_products' | t }}</label>
       <input
         id="SearchInput"
         type="search"
@@ -182,19 +182,19 @@
         autocomplete="off"
         spellcheck="false"
       >
-      <button type="submit" class="header-icon-btn" aria-label="Submit search">
+      <button type="submit" class="header-icon-btn" aria-label="{{ 'navigation.submit_search' | t }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <circle cx="11" cy="11" r="6"/>
           <path d="m16 16 4 4"/>
         </svg>
       </button>
-      <button type="button" id="SearchClose" class="header-icon-btn" aria-label="Close search">
+      <button type="button" id="SearchClose" class="header-icon-btn" aria-label="{{ 'navigation.close_search' | t }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/>
         </svg>
       </button>
     </form>
-    <ul id="SearchResults" class="search-drawer__results" aria-live="polite" aria-label="Search results"></ul>
+    <ul id="SearchResults" class="search-drawer__results" aria-live="polite" aria-label="{{ 'navigation.search_results' | t }}"></ul>
   </div>
 </div>
 <div id="SearchOverlay" class="search-overlay" hidden></div>

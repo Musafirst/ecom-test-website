@@ -1,0 +1,76 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "Saisissez le mot de passe de la boutique",
+      "login_form_password_label": "Mot de passe",
+      "login_form_password_placeholder": "Votre mot de passe",
+      "login_form_submit": "Entrer",
+      "login_form_error": "Mot de passe incorrect. Réessayez."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Épuisé",
+      "view_product": "Voir le produit"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Votre panier",
+      "empty": "Votre panier est vide",
+      "checkout": "Paiement",
+      "continue_shopping": "Continuer vos achats",
+      "remove": "Supprimer",
+      "subtotal": "Sous-total",
+      "taxes_note": "Taxes et livraison calculées au paiement."
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "Aucun produit trouvé."
+    }
+  },
+  "navigation": {
+    "main": "Navigation principale",
+    "mobile": "Navigation mobile",
+    "shop": "Boutique",
+    "about": "A propos",
+    "collections": "Collections",
+    "services": "Services",
+    "contact": "Contact",
+    "search": "Rechercher",
+    "search_products": "Rechercher des produits",
+    "submit_search": "Lancer la recherche",
+    "close_search": "Fermer la recherche",
+    "search_results": "Résultats de recherche",
+    "cart": "Panier",
+    "open_menu": "Ouvrir le menu",
+    "close_menu": "Fermer le menu",
+    "menu": "Menu de navigation"
+  },
+  "services": {
+    "fleet_copy": "Demandes de location de véhicules",
+    "cargo_copy": "Demandes de devis d’expédition"
+  },
+  "announcement": {
+    "default": "Produits sélectionnés &nbsp;&nbsp;-&nbsp;&nbsp; Paiement Shopify sécurisé &nbsp;&nbsp;-&nbsp;&nbsp; Options de livraison claires au paiement &nbsp;&nbsp;-&nbsp;&nbsp; Assistance client quand vous en avez besoin &nbsp;&nbsp;-&nbsp;&nbsp;"
+  },
+  "shop": {
+    "curated_selection": "Sélection choisie",
+    "featured_products": "Produits en vedette",
+    "view_all_products": "Voir tous les produits",
+    "products_unavailable": "Les produits sont temporairement indisponibles.",
+    "check_back": "Revenez bientôt."
+  },
+  "footer": {
+    "tagline": "Fragrances rares et essentiels sélectionnés pour ceux qui savent faire la différence.",
+    "policies": "Politiques",
+    "shipping_policy": "Politique de livraison",
+    "refund_policy": "Politique de remboursement",
+    "privacy_policy": "Politique de confidentialité",
+    "terms": "Conditions d’utilisation",
+    "disclaimer": "Jamm Trade LLC est un détaillant indépendant. Nous ne sommes pas officiellement affiliés aux marques affichées sur ce site ni approuvés par elles, sauf indication explicite. Tous les noms de marque et marques commerciales appartiennent à leurs propriétaires respectifs.",
+    "rights": "Tous droits réservés."
+  }
+}

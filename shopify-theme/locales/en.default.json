@@ -30,5 +30,47 @@
     "general": {
       "no_matches": "No products found."
     }
+  },
+  "navigation": {
+    "main": "Main navigation",
+    "mobile": "Mobile navigation",
+    "shop": "Shop",
+    "about": "About",
+    "collections": "Collections",
+    "services": "Services",
+    "contact": "Contact",
+    "search": "Search",
+    "search_products": "Search products",
+    "submit_search": "Submit search",
+    "close_search": "Close search",
+    "search_results": "Search results",
+    "cart": "Cart",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "menu": "Navigation menu"
+  },
+  "services": {
+    "fleet_copy": "Vehicle rental inquiries",
+    "cargo_copy": "Shipping quote requests"
+  },
+  "announcement": {
+    "default": "Curated products &nbsp;&nbsp;-&nbsp;&nbsp; Secure Shopify checkout &nbsp;&nbsp;-&nbsp;&nbsp; Clear shipping options at checkout &nbsp;&nbsp;-&nbsp;&nbsp; Customer support when you need it &nbsp;&nbsp;-&nbsp;&nbsp;"
+  },
+  "shop": {
+    "curated_selection": "Curated selection",
+    "featured_products": "Featured Products",
+    "view_all_products": "View all products",
+    "products_unavailable": "Products are temporarily unavailable.",
+    "check_back": "Please check back soon."
+  },
+  "footer": {
+    "tagline": "Rare fragrances and curated essentials for those who know the difference.",
+    "policies": "Policies",
+    "shipping_policy": "Shipping Policy",
+    "refund_policy": "Refund Policy",
+    "privacy_policy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "disclaimer": "Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.",
+    "rights": "All rights reserved."
   }
 }

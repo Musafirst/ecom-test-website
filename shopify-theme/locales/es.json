@@ -1,0 +1,76 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "Ingresa la contraseña de la tienda",
+      "login_form_password_label": "Contraseña",
+      "login_form_password_placeholder": "Tu contraseña",
+      "login_form_submit": "Entrar",
+      "login_form_error": "Contraseña incorrecta. Inténtalo de nuevo."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Agregar al carrito",
+      "sold_out": "Agotado",
+      "view_product": "Ver producto"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Tu carrito",
+      "empty": "Tu carrito está vacío",
+      "checkout": "Pagar",
+      "continue_shopping": "Seguir comprando",
+      "remove": "Eliminar",
+      "subtotal": "Subtotal",
+      "taxes_note": "Impuestos y envío calculados al pagar."
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No se encontraron productos."
+    }
+  },
+  "navigation": {
+    "main": "Navegación principal",
+    "mobile": "Navegación móvil",
+    "shop": "Tienda",
+    "about": "Acerca de",
+    "collections": "Colecciones",
+    "services": "Servicios",
+    "contact": "Contacto",
+    "search": "Buscar",
+    "search_products": "Buscar productos",
+    "submit_search": "Enviar búsqueda",
+    "close_search": "Cerrar búsqueda",
+    "search_results": "Resultados de búsqueda",
+    "cart": "Carrito",
+    "open_menu": "Abrir menú",
+    "close_menu": "Cerrar menú",
+    "menu": "Menú de navegación"
+  },
+  "services": {
+    "fleet_copy": "Consultas de alquiler de vehículos",
+    "cargo_copy": "Solicitudes de cotización de envío"
+  },
+  "announcement": {
+    "default": "Productos curados &nbsp;&nbsp;-&nbsp;&nbsp; Pago seguro con Shopify &nbsp;&nbsp;-&nbsp;&nbsp; Opciones de envío claras al pagar &nbsp;&nbsp;-&nbsp;&nbsp; Atención al cliente cuando la necesites &nbsp;&nbsp;-&nbsp;&nbsp;"
+  },
+  "shop": {
+    "curated_selection": "Selección curada",
+    "featured_products": "Productos destacados",
+    "view_all_products": "Ver todos los productos",
+    "products_unavailable": "Los productos no están disponibles temporalmente.",
+    "check_back": "Vuelve pronto."
+  },
+  "footer": {
+    "tagline": "Fragancias raras y esenciales curados para quienes notan la diferencia.",
+    "policies": "Políticas",
+    "shipping_policy": "Política de envío",
+    "refund_policy": "Política de reembolso",
+    "privacy_policy": "Política de privacidad",
+    "terms": "Términos de servicio",
+    "disclaimer": "Jamm Trade LLC es un minorista independiente. No estamos afiliados oficialmente ni respaldados por las marcas mostradas en este sitio salvo que se indique explícitamente. Todos los nombres de marca y marcas comerciales pertenecen a sus respectivos propietarios.",
+    "rights": "Todos los derechos reservados."
+  }
+}

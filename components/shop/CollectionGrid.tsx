@@ -4,17 +4,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 
 interface CollectionGridProps {
   counts: Record<'oud' | 'amber' | 'daily', string>
 }
 
 export function CollectionGrid({ counts }: CollectionGridProps) {
+  const { t } = useLocale()
   const collections = [
     {
       id: 'oud',
-      name: 'Oud',
-      copy: 'Resinous, dark, and long lasting.',
+      name: t('shortcut.oud'),
+      copy: t('collections.oud.copy'),
       count: counts.oud,
       href: '/shop/collection/oud',
       image: '/images/collections/featured-oud.png',
@@ -22,8 +24,8 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
     },
     {
       id: 'amber',
-      name: 'Amber',
-      copy: 'Warm vanilla, soft spice, skin-close depth.',
+      name: t('shortcut.amber'),
+      copy: t('collections.amber.copy'),
       count: counts.amber,
       href: '/shop/collection/amber',
       image: '/images/collections/featured-amber.png',
@@ -31,8 +33,8 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
     },
     {
       id: 'daily',
-      name: 'Daily',
-      copy: 'Clean signatures for repeat wear.',
+      name: t('shortcut.daily'),
+      copy: t('collections.daily.copy'),
       count: counts.daily,
       href: '/shop/collection/daily',
       image: '/images/collections/featured-daily.png',
@@ -50,13 +52,13 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">Collections</p>
+          <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">{t('collections.kicker')}</p>
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
-              Shop by scent family
+              {t('collections.title')}
             </h2>
             <p className="max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
-              Choose by mood first, then explore the products inside each edit.
+              {t('collections.copy')}
             </p>
           </div>
           <div className="mt-5 h-px bg-gradient-to-r from-jamm-gold/40 via-jamm-gold/15 to-transparent" />
@@ -83,7 +85,7 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
                   <BorderBeam size={360} duration={12} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 2} />
                   <Image
                     src={col.image}
-                    alt={`${col.name} perfume collection`}
+                    alt={`${col.name} ${t('collections.kicker')}`}
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     quality={78}
@@ -105,7 +107,7 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
                       {col.copy}
                     </p>
                     <span className="inline-flex rounded-full border border-jamm-gold/60 bg-jamm-dark/26 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-cream backdrop-blur-sm transition-[background-color,color] duration-150 group-hover:bg-jamm-cream group-hover:text-jamm-dark">
-                      Explore
+                      {t('collections.explore')}
                     </span>
                   </div>
                 </div>

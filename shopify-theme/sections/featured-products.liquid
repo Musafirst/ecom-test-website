@@ -8,11 +8,11 @@
   <div class="container">
     <div class="section-header">
       <div class="section-header__row">
-        <p class="section-eyebrow">Curated selection</p>
-        <h2 class="section-title">Featured Products</h2>
+        <p class="section-eyebrow">{{ 'shop.curated_selection' | t }}</p>
+        <h2 class="section-title">{{ 'shop.featured_products' | t }}</h2>
       </div>
       <a href="{{ public_shop_url }}" class="section-header__link">
-        View all products
+        {{ 'shop.view_all_products' | t }}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
@@ -27,8 +27,8 @@
         {% render 'product-card', product: product %}
       {% else %}
         <div class="featured-empty">
-          <p class="featured-empty__title">Products are temporarily unavailable.</p>
-          <p class="featured-empty__text">Please check back soon.</p>
+          <p class="featured-empty__title">{{ 'shop.products_unavailable' | t }}</p>
+          <p class="featured-empty__text">{{ 'shop.check_back' | t }}</p>
         </div>
       {% endfor %}
     </div>

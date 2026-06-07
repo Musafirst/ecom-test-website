@@ -1,0 +1,76 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "أدخل كلمة مرور المتجر",
+      "login_form_password_label": "كلمة المرور",
+      "login_form_password_placeholder": "كلمة المرور الخاصة بك",
+      "login_form_submit": "دخول",
+      "login_form_error": "كلمة المرور غير صحيحة. حاول مرة أخرى."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "أضف إلى السلة",
+      "sold_out": "غير متوفر",
+      "view_product": "عرض المنتج"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "سلتك",
+      "empty": "سلتك فارغة",
+      "checkout": "الدفع",
+      "continue_shopping": "متابعة التسوق",
+      "remove": "إزالة",
+      "subtotal": "المجموع الفرعي",
+      "taxes_note": "تُحسب الضرائب والشحن عند الدفع."
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "لم يتم العثور على منتجات."
+    }
+  },
+  "navigation": {
+    "main": "التنقل الرئيسي",
+    "mobile": "تنقل الجوال",
+    "shop": "المتجر",
+    "about": "About",
+    "collections": "المجموعات",
+    "services": "الخدمات",
+    "contact": "تواصل معنا",
+    "search": "بحث",
+    "search_products": "البحث عن المنتجات",
+    "submit_search": "إرسال البحث",
+    "close_search": "إغلاق البحث",
+    "search_results": "نتائج البحث",
+    "cart": "السلة",
+    "open_menu": "فتح القائمة",
+    "close_menu": "إغلاق القائمة",
+    "menu": "قائمة التنقل"
+  },
+  "services": {
+    "fleet_copy": "استفسارات تأجير المركبات",
+    "cargo_copy": "طلبات عروض أسعار الشحن"
+  },
+  "announcement": {
+    "default": "منتجات مختارة &nbsp;&nbsp;-&nbsp;&nbsp; دفع آمن عبر Shopify &nbsp;&nbsp;-&nbsp;&nbsp; خيارات شحن واضحة عند الدفع &nbsp;&nbsp;-&nbsp;&nbsp; دعم العملاء عند الحاجة &nbsp;&nbsp;-&nbsp;&nbsp;"
+  },
+  "shop": {
+    "curated_selection": "اختيار منتقى",
+    "featured_products": "منتجات مميزة",
+    "view_all_products": "عرض كل المنتجات",
+    "products_unavailable": "المنتجات غير متاحة مؤقتاً.",
+    "check_back": "يرجى العودة قريباً."
+  },
+  "footer": {
+    "tagline": "عطور نادرة وأساسيات مختارة لمن يعرفون الفرق.",
+    "policies": "السياسات",
+    "shipping_policy": "سياسة الشحن",
+    "refund_policy": "سياسة الاسترداد",
+    "privacy_policy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "disclaimer": "Jamm Trade LLC بائع مستقل. لسنا تابعين رسمياً للعلامات التجارية المعروضة على هذا الموقع أو معتمدين منها ما لم يُذكر ذلك صراحة. جميع أسماء العلامات والعلامات التجارية مملوكة لأصحابها.",
+    "rights": "جميع الحقوق محفوظة."
+  }
+}

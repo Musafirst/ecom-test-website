@@ -7,6 +7,7 @@ import { ProductBadge } from '@/components/product/ProductBadge'
 import { PriceDisplay } from '@/components/product/PriceDisplay'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { ProductPhoto } from '@/components/ui/ProductPhoto'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 import { addShopifyItem, mergeCartItem, readCart, writeCart } from '@/lib/cart'
 import type { JammProduct } from '@/types/product'
 
@@ -15,6 +16,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { t } = useLocale()
   const [added, setAdded] = useState(false)
   const [adding, setAdding] = useState(false)
   const isElectronics = product.category === 'electronics'
@@ -56,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-center bg-gradient-to-t from-black/54 via-black/10 to-transparent p-2.5 opacity-100 transition-opacity duration-300 sm:p-4 sm:opacity-0 sm:group-hover:opacity-100">
             <span className="rounded-md border border-jamm-gold/70 bg-jamm-dark/86 px-3 py-2 font-sans text-[9px] font-semibold uppercase tracking-[0.12em] text-jamm-gold backdrop-blur-sm sm:px-4 sm:text-[10px]">
-              View Product
+              {t('product.view')}
             </span>
           </div>
         </div>
@@ -94,7 +96,7 @@ export function ProductCard({ product }: ProductCardProps) {
           }}
           className="mt-2 inline-flex min-h-[44px] w-full items-center justify-center rounded-md border border-jamm-gold/35 bg-jamm-dark px-3 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-cream shadow-[0_12px_28px_rgba(12,11,9,0.08)] transition-[transform,background-color,color,opacity] duration-150 active:scale-[0.98] hover:bg-jamm-gold hover:text-jamm-dark disabled:cursor-not-allowed disabled:opacity-55"
         >
-          {product.availableForSale === false ? 'Out of Stock' : added ? 'Added' : adding ? 'Adding' : 'Add to Cart'}
+          {product.availableForSale === false ? t('product.outOfStock') : added ? t('product.added') : adding ? t('product.adding') : t('product.addToCart')}
         </motion.button>
       )}
     </motion.article>

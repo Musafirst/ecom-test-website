@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 import type { JammProduct } from '@/types/product'
 
 interface SecondaryCategoriesProps {
@@ -11,23 +12,24 @@ interface SecondaryCategoriesProps {
 }
 
 export function SecondaryCategories({ electronicsProducts }: SecondaryCategoriesProps) {
+  const { t } = useLocale()
   const featuredElectronicsProduct =
     electronicsProducts.find((product) => product.handle === 'sony-wh-1000xm5') ?? electronicsProducts[0]
   const categories = [
     {
       id: 'clothing',
-      name: 'Clothing',
-      copy: 'Wear the mark.',
-      sub: 'Hoodies, tees, and essentials with the Jamm Trade lotus mark.',
+      name: t('shortcut.clothing'),
+      copy: t('secondary.clothing.copy'),
+      sub: t('secondary.clothing.sub'),
       href: '/shop/collection/clothing',
       image: '/product-images/jamm-hoodie.png',
       imageClassName: 'object-contain object-center p-4 sm:p-6',
     },
     {
       id: 'electronics',
-      name: 'Electronics',
-      copy: 'Precision essentials.',
-      sub: 'Premium audio and everyday electronics selected for quality and focus.',
+      name: t('shortcut.electronics'),
+      copy: t('secondary.electronics.copy'),
+      sub: t('secondary.electronics.sub'),
       href: '/shop/category/electronics',
       image: featuredElectronicsProduct?.image ?? '/product-images/placeholders/audio.webp',
       imageClassName: 'object-contain object-center p-6 sm:p-8',
@@ -44,13 +46,13 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">Also available</p>
+          <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">{t('secondary.kicker')}</p>
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
-              Beyond fragrance
+              {t('secondary.title')}
             </h2>
             <p className="max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
-              A small selection of essentials that fits the same curated standard.
+              {t('secondary.copy')}
             </p>
           </div>
           <div className="mt-5 h-px bg-gradient-to-r from-jamm-gold/40 via-jamm-gold/15 to-transparent" />
@@ -101,7 +103,7 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
                       {cat.sub}
                     </p>
                     <span className="inline-flex rounded-full border border-jamm-gold/60 bg-jamm-dark/26 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-cream backdrop-blur-sm transition-colors duration-200 group-hover:bg-jamm-cream group-hover:text-jamm-dark">
-                      Shop {cat.name}
+                      {t('secondary.shop')} {cat.name}
                     </span>
                   </div>
                 </div>

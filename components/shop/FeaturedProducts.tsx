@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion'
 import { ProductCard } from '@/components/product/ProductCard'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 import type { JammProduct } from '@/types/product'
 
 interface FeaturedProductsProps {
@@ -9,6 +10,7 @@ interface FeaturedProductsProps {
 }
 
 export function FeaturedProducts({ products }: FeaturedProductsProps) {
+  const { t } = useLocale()
   const prefersReducedMotion = useReducedMotion()
 
   return (
@@ -23,16 +25,16 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
         >
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">Fragrance collection</p>
+              <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">{t('featured.kicker')}</p>
               <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
-                Featured Products
+                {t('featured.title')}
               </h2>
             </div>
             <a
               href="/shop#collections"
               className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-jamm-dark/50 transition-[color] duration-150 hover:text-jamm-gold"
             >
-              View all products
+              {t('featured.viewAll')}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5" aria-hidden>
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -57,8 +59,8 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
             ))
           ) : (
             <div className="col-span-full rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] px-6 py-12 text-center">
-              <p className="font-sans text-lg font-semibold text-jamm-dark">Products are temporarily unavailable.</p>
-              <p className="mt-2 font-sans text-sm text-jamm-muted">Please check back soon.</p>
+              <p className="font-sans text-lg font-semibold text-jamm-dark">{t('featured.unavailable')}</p>
+              <p className="mt-2 font-sans text-sm text-jamm-muted">{t('featured.checkBack')}</p>
             </div>
           )}
         </motion.div>

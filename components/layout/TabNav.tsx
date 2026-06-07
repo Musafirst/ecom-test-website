@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { site } from '@/lib/site'
+import { LanguageSelector, useLocale } from '@/components/i18n/LocaleProvider'
 
 const tabs = [
   { label: 'Shop', href: '/shop', soon: false },
@@ -20,6 +21,7 @@ const serviceLinks = [
 const liveSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.defaultUrl
 
 export function TabNav() {
+  const { t } = useLocale()
   const pathname = usePathname()
   const isShop = pathname.startsWith('/shop') || pathname === '/'
   const logoHref = pathname.startsWith('/shop/checkout') ? liveSiteUrl : '/shop'
@@ -94,6 +96,14 @@ export function TabNav() {
   }, [])
 
   const visibleTabs = tabs.filter((tab) => isShop || !tab.shopOnly)
+  const localizedTabs = visibleTabs.map((tab) => ({
+    ...tab,
+    label: tab.href === '/shop#collections' ? t('nav.collections') : t('nav.shop'),
+  }))
+  const localizedServiceLinks = serviceLinks.map((service) => ({
+    ...service,
+    description: service.href.includes('fleet') ? t('service.fleet.description') : t('service.cargo.description'),
+  }))
 
   return (
     <>
@@ -102,10 +112,10 @@ export function TabNav() {
           <div className="overflow-hidden rounded-lg bg-jamm-dark py-1.5 text-center font-sans text-[10px] font-medium text-jamm-cream sm:rounded-xl sm:py-2 sm:text-[11px]">
             <div className="flex whitespace-nowrap animate-marquee">
               <span className="px-8">
-                Curated products&nbsp;&nbsp;-&nbsp;&nbsp;Secure Shopify checkout&nbsp;&nbsp;-&nbsp;&nbsp;Clear shipping options at checkout&nbsp;&nbsp;-&nbsp;&nbsp;Customer support when you need it&nbsp;&nbsp;-&nbsp;&nbsp;
+                {t('announcement')}&nbsp;&nbsp;
               </span>
               <span className="px-8" aria-hidden>
-                Curated products&nbsp;&nbsp;-&nbsp;&nbsp;Secure Shopify checkout&nbsp;&nbsp;-&nbsp;&nbsp;Clear shipping options at checkout&nbsp;&nbsp;-&nbsp;&nbsp;Customer support when you need it&nbsp;&nbsp;-&nbsp;&nbsp;
+                {t('announcement')}&nbsp;&nbsp;
               </span>
             </div>
           </div>
@@ -125,7 +135,7 @@ export function TabNav() {
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {visibleTabs.map((tab) => {
+            {localizedTabs.map((tab) => {
               const isActive = pathname === tab.href || (tab.href === '/shop#collections' && pathname === '/shop')
               return (
                 <Link
@@ -139,13 +149,14 @@ export function TabNav() {
                   }`}
                 >
                   {tab.label}
-                  {tab.soon && <span className="ml-2 text-[10px] text-jamm-gold">Soon</span>}
+                  {tab.soon && <span className="ml-2 text-[10px] text-jamm-gold">{t('nav.soon')}</span>}
                 </Link>
               )
             })}
           </nav>
 
           <div className="flex flex-shrink-0 items-center gap-0.5 md:gap-1 md:pt-0">
+            <LanguageSelector className="hidden md:inline-flex" />
             <div
               ref={servicesRef}
               className="group relative hidden md:block"
@@ -159,7 +170,7 @@ export function TabNav() {
                 onClick={() => setServicesOpen((open) => !open)}
                 className="inline-flex h-10 items-center gap-2 rounded-full px-3.5 font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-jamm-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF7F2]"
               >
-                Services
+                {t('nav.services')}
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -183,7 +194,7 @@ export function TabNav() {
                     exit={{ opacity: 0, y: 4, transition: { duration: 0.14 } }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {serviceLinks.map((service) => (
+                    {localizedServiceLinks.map((service) => (
                       <Link
                         key={service.href}
                         href={service.href}
@@ -203,7 +214,7 @@ export function TabNav() {
               <>
                 <Link
                   href="/shop#perfumes"
-                  aria-label="Search products"
+                  aria-label={t('nav.search')}
                   className="flex h-11 w-11 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
@@ -213,10 +224,10 @@ export function TabNav() {
                 </Link>
                 <Link
                   href="/shop/checkout"
-                  aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
+                  aria-label={`${t('nav.cart')}${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
                   className="relative hidden h-10 items-center justify-center rounded-full px-3 font-sans text-sm text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:flex"
                 >
-                  Cart
+                  {t('nav.cart')}
                   {cartCount > 0 && (
                     <span className="ml-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-jamm-gold px-1 font-sans text-[9px] font-bold text-jamm-dark">
                       {cartCount > 9 ? '9+' : cartCount}
@@ -225,7 +236,7 @@ export function TabNav() {
                 </Link>
                 <Link
                   href="/shop/checkout"
-                  aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
+                  aria-label={`${t('nav.cart')}${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
                   className="relative flex h-11 w-11 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden>
@@ -246,14 +257,14 @@ export function TabNav() {
                 href="/shop/contact"
                 className="hidden rounded-full border border-jamm-gold/40 px-4 py-2 font-sans text-sm text-jamm-dark/70 transition-colors duration-200 hover:border-jamm-gold hover:text-jamm-dark sm:inline-flex"
               >
-                Contact
+                {t('nav.contact')}
               </Link>
             )}
 
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
+              aria-label={t('nav.openMenu')}
               className="flex h-11 w-11 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark md:hidden"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden>
@@ -269,7 +280,7 @@ export function TabNav() {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="Navigation menu"
+            aria-label={t('nav.menu')}
             className="fixed inset-0 z-[100] flex max-h-[100dvh] flex-col overflow-y-auto bg-[#FAF7F2]/95 backdrop-blur-sm"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
@@ -291,7 +302,7 @@ export function TabNav() {
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                aria-label="Close menu"
+                aria-label={t('nav.closeMenu')}
                 className="flex h-11 w-11 items-center justify-center rounded-full text-jamm-dark/60 transition-colors duration-200 hover:bg-jamm-dark/6 hover:text-jamm-dark"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden>
@@ -301,7 +312,7 @@ export function TabNav() {
             </div>
 
             <nav className="flex flex-col gap-1 px-4 pt-6">
-              {visibleTabs.map((tab, i) => (
+              {localizedTabs.map((tab, i) => (
                 <motion.div
                   key={tab.href}
                   initial={{ opacity: 0, y: 8 }}
@@ -317,7 +328,7 @@ export function TabNav() {
                     {tab.label}
                     {tab.soon && (
                       <span className="rounded-full border border-jamm-gold/50 px-2.5 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-jamm-gold">
-                        Soon
+                        {t('nav.soon')}
                       </span>
                     )}
                   </Link>
@@ -335,7 +346,7 @@ export function TabNav() {
                   className="flex w-full items-center justify-between rounded-[14px] px-4 py-4 font-sans text-lg font-medium text-jamm-dark transition-colors duration-200 hover:bg-jamm-dark/6"
                   onClick={() => setMobileServicesOpen((open) => !open)}
                 >
-                  Services
+                  {t('nav.services')}
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -357,7 +368,7 @@ export function TabNav() {
                       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <div className="min-h-0 px-2 pb-2">
-                        {serviceLinks.map((service) => (
+                        {localizedServiceLinks.map((service) => (
                           <Link
                             key={service.href}
                             href={service.href}
@@ -376,19 +387,20 @@ export function TabNav() {
             </nav>
 
             <div className="mt-auto border-t border-jamm-dark/10 px-5 py-5 flex flex-col gap-2">
+              <LanguageSelector className="mb-2" />
               <Link
                 href="/shop/about"
                 onClick={() => setMobileOpen(false)}
                 className="font-sans text-sm text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold"
               >
-                About Jamm Trade
+                {t('nav.about')}
               </Link>
               <Link
                 href="/shop/contact"
                 onClick={() => setMobileOpen(false)}
                 className="font-sans text-sm text-jamm-dark/40 transition-colors duration-200 hover:text-jamm-gold"
               >
-                Contact
+                {t('nav.contact')}
               </Link>
             </div>
           </motion.div>

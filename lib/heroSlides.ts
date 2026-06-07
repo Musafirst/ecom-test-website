@@ -1,5 +1,6 @@
 export interface HeroSlide {
   id: string
+  i18nKey: 'main' | 'perfumes' | 'electronics' | 'clothing'
   category: string
   title: string
   subtitle: string
@@ -12,6 +13,7 @@ export interface HeroSlide {
 export const heroSlides: HeroSlide[] = [
   {
     id: 'main-commerce',
+    i18nKey: 'main',
     category: 'Jamm Trade',
     title: 'From essentials to enterprise.',
     subtitle: 'Curated fragrances, fashion, and everyday goods selected with intention.',
@@ -22,6 +24,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 'perfumes',
+    i18nKey: 'perfumes',
     category: 'Fragrances',
     title: 'Signature scents, selected with care.',
     subtitle: 'Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.',
@@ -32,6 +35,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 'electronics',
+    i18nKey: 'electronics',
     category: 'Electronics',
     title: 'Everyday tech, refined.',
     subtitle: 'Useful electronics and accessories selected for quality, simplicity, and daily use.',
@@ -42,6 +46,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 'clothing',
+    i18nKey: 'clothing',
     category: 'Clothing',
     title: 'Wear the mark.',
     subtitle: 'Minimal clothing pieces built around comfort, identity, and quiet detail.',

@@ -93,6 +93,21 @@
         "type": "url",
         "id": "tiktok",
         "label": "TikTok URL"
+      },
+      {
+        "type": "url",
+        "id": "facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "x_twitter",
+        "label": "X / Twitter URL"
+      },
+      {
+        "type": "url",
+        "id": "youtube",
+        "label": "YouTube URL"
       }
     ]
   },

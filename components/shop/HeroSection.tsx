@@ -7,10 +7,12 @@ import Link from 'next/link'
 import { AnimatePresence, motion, useReducedMotion, useSpring, type PanInfo } from 'framer-motion'
 import { heroSlides } from '@/lib/heroSlides'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 
 const swipeConfidenceThreshold = 80
 
 export function HeroSection() {
+  const { t } = useLocale()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobileHero, setIsMobileHero] = useState(false)
   const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
@@ -18,6 +20,7 @@ export function HeroSection() {
   const springY = useSpring(0, { stiffness: 80, damping: 20 })
   const prefersReducedMotion = useReducedMotion()
   const activeSlide = heroSlides[activeIndex]
+  const activeTitle = t(`hero.${activeSlide.i18nKey}.title`)
 
   const resetAutoSlideTimer = () => {
     setAutoSlideResetKey((current) => current + 1)
@@ -112,7 +115,7 @@ export function HeroSection() {
             >
               <Image
                 src={activeSlide.image}
-                alt={activeSlide.title}
+                alt={activeTitle}
                 fill
                 sizes="100vw"
                 quality={82}
@@ -136,19 +139,19 @@ export function HeroSection() {
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
               <p className="mb-3 font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold sm:mb-4 sm:text-[11px]">
-                {activeSlide.category}
+                {t(`hero.${activeSlide.i18nKey}.category`)}
               </p>
               <h1 className="mb-3 font-sans text-[28px] font-semibold leading-tight text-jamm-cream sm:mb-4 sm:text-[36px] md:text-[40px] lg:text-[42px]">
-                {activeSlide.title}
+                {activeTitle}
               </h1>
               <p className="mb-5 font-sans text-sm leading-relaxed text-jamm-cream/86 sm:text-[15px] md:text-base lg:mb-7">
-                {activeSlide.subtitle}
+                {t(`hero.${activeSlide.i18nKey}.subtitle`)}
               </p>
               <Link
                 href={activeSlide.ctaHref}
                 className="inline-flex min-h-11 items-center rounded-md bg-jamm-gold px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream"
               >
-                {activeSlide.ctaLabel}
+                {t(`hero.${activeSlide.i18nKey}.cta`)}
               </Link>
               <BorderBeam size={240} duration={9} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
             </motion.div>
@@ -159,7 +162,7 @@ export function HeroSection() {
               <button
                 key={slide.id}
                 type="button"
-                aria-label={`Show ${slide.title}`}
+                aria-label={`Show ${t(`hero.${slide.i18nKey}.title`)}`}
                 aria-current={index === activeIndex ? true : undefined}
                 onClick={() => {
                   setActiveIndex(index)
@@ -174,7 +177,7 @@ export function HeroSection() {
             ))}
           </div>
           <span className="sr-only" aria-live="polite" aria-atomic="true">
-            {activeSlide.title}
+            {activeTitle}
           </span>
         </div>
       </motion.div>

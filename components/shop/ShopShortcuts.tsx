@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { categoryDetails, collectionDetails } from '@/lib/products'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 
 interface ShopShortcutsProps {
   collectionCounts?: Record<'oud' | 'amber' | 'daily', string>
 }
 
 export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
+  const { t } = useLocale()
   const counts = collectionCounts ?? {
     oud: collectionDetails.oud.count,
     amber: collectionDetails.amber.count,
@@ -17,32 +19,32 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
 
   const shortcuts = [
     {
-      label: 'Perfumes',
-      detail: 'Oud · Amber · Daily',
+      label: t('shortcut.perfumes'),
+      detail: t('shortcut.perfumes.detail'),
       href: '/shop/category/perfumes',
     },
     {
-      label: 'Oud',
+      label: t('shortcut.oud'),
       detail: counts.oud,
       href: '/shop/collection/oud',
     },
     {
-      label: 'Amber',
+      label: t('shortcut.amber'),
       detail: counts.amber,
       href: '/shop/collection/amber',
     },
     {
-      label: 'Daily',
+      label: t('shortcut.daily'),
       detail: counts.daily,
       href: '/shop/collection/daily',
     },
     {
-      label: 'Electronics',
+      label: t('shortcut.electronics'),
       detail: categoryDetails.electronics.name,
       href: '/shop/category/electronics',
     },
     {
-      label: 'Clothing',
+      label: t('shortcut.clothing'),
       detail: categoryDetails.clothing.name,
       href: '/shop/collection/clothing',
     },
@@ -76,7 +78,7 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
             )
             return (
               <Link
-                key={item.label}
+                key={item.href}
                 href={item.href}
                 className="group flex min-w-[142px] snap-start flex-col justify-between rounded-lg border border-jamm-gold/25 bg-[#FAF7F2]/82 px-4 py-3 shadow-[0_12px_28px_rgba(12,11,9,0.05)] backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-jamm-gold/65 hover:bg-[#EDE8DC] hover:shadow-[0_18px_42px_rgba(12,11,9,0.09)] sm:min-w-[170px] lg:min-w-0"
               >

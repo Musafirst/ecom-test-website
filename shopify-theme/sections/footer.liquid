@@ -30,7 +30,7 @@
             {% endif %}
           </a>
           <p class="footer-tagline">
-            Rare fragrances and curated essentials for those who know the difference.
+            {{ 'footer.tagline' | t }}
           </p>
           <div class="footer-contact">
             <p class="footer-contact__business">Jamm Trade LLC</p>
@@ -39,20 +39,42 @@
           </div>
         </div>
 
-        <details class="footer-accordion">
+        <nav class="footer-link-group footer-link-group--desktop" aria-label="{{ 'navigation.shop' | t }}">
+          <p class="footer-link-group__title">{{ 'navigation.shop' | t }}</p>
+          <a href="{{ public_shop_url }}" class="footer-nav__link">{{ 'navigation.shop' | t }}</a>
+          <a href="{{ public_shop_url }}/about" class="footer-nav__link">{{ 'navigation.about' | t }}</a>
+          <a href="{{ public_shop_url }}/contact" class="footer-nav__link">{{ 'navigation.contact' | t }}</a>
+        </nav>
+
+        <nav class="footer-link-group footer-link-group--desktop" aria-label="{{ 'navigation.services' | t }}">
+          <p class="footer-link-group__title">{{ 'navigation.services' | t }}</p>
+          <a href="{{ public_storefront_url }}/jamm-cargo" class="footer-nav__link">Jamm Cargo</a>
+          <a href="{{ public_storefront_url }}/jamm-fleet" class="footer-nav__link">Jamm Fleet</a>
+        </nav>
+
+        <nav class="footer-link-group footer-link-group--desktop" aria-label="{{ 'footer.policies' | t }}">
+          <p class="footer-link-group__title">{{ 'footer.policies' | t }}</p>
+          <a href="{{ public_shop_url }}/shipping-policy" class="footer-nav__link">{{ 'footer.shipping_policy' | t }}</a>
+          <a href="{{ public_shop_url }}/refund-policy" class="footer-nav__link">{{ 'footer.refund_policy' | t }}</a>
+          <a href="{{ public_shop_url }}/privacy-policy" class="footer-nav__link">{{ 'footer.privacy_policy' | t }}</a>
+          <a href="{{ public_shop_url }}/terms-of-service" class="footer-nav__link">{{ 'footer.terms' | t }}</a>
+        </nav>
+
+        <details class="footer-accordion footer-accordion--mobile">
           <summary class="footer-accordion__summary">
-            <span class="footer-link-group__title">Shop</span>
+            <span class="footer-link-group__title">{{ 'navigation.shop' | t }}</span>
             <svg class="footer-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="footer-link-group__links">
-            <a href="{{ public_shop_url }}" class="footer-nav__link">Shop</a>
-            <a href="{{ public_shop_url }}/contact" class="footer-nav__link">Contact</a>
+            <a href="{{ public_shop_url }}" class="footer-nav__link">{{ 'navigation.shop' | t }}</a>
+            <a href="{{ public_shop_url }}/about" class="footer-nav__link">{{ 'navigation.about' | t }}</a>
+            <a href="{{ public_shop_url }}/contact" class="footer-nav__link">{{ 'navigation.contact' | t }}</a>
           </div>
         </details>
 
-        <details class="footer-accordion">
+        <details class="footer-accordion footer-accordion--mobile">
           <summary class="footer-accordion__summary">
-            <span class="footer-link-group__title">Services</span>
+            <span class="footer-link-group__title">{{ 'navigation.services' | t }}</span>
             <svg class="footer-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="footer-link-group__links">
@@ -61,47 +83,28 @@
           </div>
         </details>
 
-        <details class="footer-accordion">
+        <details class="footer-accordion footer-accordion--mobile">
           <summary class="footer-accordion__summary">
-            <span class="footer-link-group__title">Policies</span>
+            <span class="footer-link-group__title">{{ 'footer.policies' | t }}</span>
             <svg class="footer-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </summary>
           <div class="footer-link-group__links">
-            <a href="{{ public_shop_url }}/shipping-policy" class="footer-nav__link">Shipping Policy</a>
-            <a href="{{ public_shop_url }}/refund-policy" class="footer-nav__link">Refund Policy</a>
-            <a href="{{ public_shop_url }}/privacy-policy" class="footer-nav__link">Privacy Policy</a>
-            <a href="{{ public_shop_url }}/terms-of-service" class="footer-nav__link">Terms of Service</a>
+            <a href="{{ public_shop_url }}/shipping-policy" class="footer-nav__link">{{ 'footer.shipping_policy' | t }}</a>
+            <a href="{{ public_shop_url }}/refund-policy" class="footer-nav__link">{{ 'footer.refund_policy' | t }}</a>
+            <a href="{{ public_shop_url }}/privacy-policy" class="footer-nav__link">{{ 'footer.privacy_policy' | t }}</a>
+            <a href="{{ public_shop_url }}/terms-of-service" class="footer-nav__link">{{ 'footer.terms' | t }}</a>
           </div>
         </details>
       </div>
 
       <div class="footer-disclaimer">
         <p>
-          Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.
+          {{ 'footer.disclaimer' | t }}
         </p>
       </div>
 
       <div class="footer-bottom">
-        <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} Jamm Trade LLC. All rights reserved.</p>
-        <div class="footer-social">
-          {% if section.settings.instagram_url != blank %}
-            <a href="{{ section.settings.instagram_url }}" aria-label="Jamm Trade on Instagram" class="footer-social__link" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-linecap="round"/>
-              </svg>
-            </a>
-          {% endif %}
-
-          {% if section.settings.tiktok_url != blank %}
-            <a href="{{ section.settings.tiktok_url }}" aria-label="Jamm Trade on TikTok" class="footer-social__link" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
-              </svg>
-            </a>
-          {% endif %}
-        </div>
+        <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} Jamm Trade LLC. {{ 'footer.rights' | t }}</p>
       </div>
     </div>
   </div>
@@ -115,16 +118,6 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
-    },
-    {
-      "type": "url",
-      "id": "instagram_url",
-      "label": "Instagram URL"
-    },
-    {
-      "type": "url",
-      "id": "tiktok_url",
-      "label": "TikTok URL"
     }
   ]
 }

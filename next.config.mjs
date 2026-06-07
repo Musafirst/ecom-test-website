@@ -1,3 +1,8 @@
+const isProduction = process.env.NODE_ENV === 'production'
+const scriptSrc = isProduction
+  ? "'self' 'unsafe-inline' https://apis.google.com"
+  : "'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com"
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Keep static generation reliable on memory-constrained CI and local machines.
@@ -21,7 +26,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://apis.google.com",
+              `script-src ${scriptSrc}`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
