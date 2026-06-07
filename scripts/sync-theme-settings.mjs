@@ -61,14 +61,23 @@ if (!asset?.value) {
 const remoteSettings = JSON.parse(asset.value)
 const remoteCurrent = remoteSettings?.current ?? {}
 
-// Fields to sync (extend this list if you add more settings later)
-const SOCIAL_FIELDS = ['instagram', 'tiktok', 'facebook', 'x_twitter', 'youtube']
+// Fields to sync into the Next.js storefront build.
+const SYNC_FIELDS = [
+  'support_email',
+  'public_location',
+  'public_storefront_url',
+  'instagram',
+  'tiktok',
+  'facebook',
+  'x_twitter',
+  'youtube',
+]
 
 const localPath = resolve(ROOT, 'shopify-theme/config/settings_data.json')
 const local = JSON.parse(readFileSync(localPath, 'utf8'))
 
 let changed = 0
-for (const field of SOCIAL_FIELDS) {
+for (const field of SYNC_FIELDS) {
   const remoteValue = remoteCurrent[field]?.trim() || undefined
   const localValue = local.current?.[field]?.trim() || undefined
 

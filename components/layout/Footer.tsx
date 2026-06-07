@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { businessInfo } from '@/lib/businessInfo'
 import { site } from '@/lib/site'
 import { LanguageSelector, useLocale } from '@/components/i18n/LocaleProvider'
 
@@ -46,10 +47,10 @@ export function Footer() {
               {t('footer.tagline')}
             </p>
             <div className="mt-4 space-y-1 font-sans text-xs leading-relaxed text-jamm-dark/52">
-              <p className="font-semibold text-jamm-dark/62">Jamm Trade LLC</p>
-              <p>{site.publicLocation}</p>
-              <a href={`mailto:${site.supportEmail}`} className="transition-colors hover:text-jamm-gold">
-                {site.supportEmail}
+              <p className="font-semibold text-jamm-dark/62">{businessInfo.name}</p>
+              <p>{businessInfo.publicLocation}</p>
+              <a href={`mailto:${businessInfo.supportEmail}`} className="transition-colors hover:text-jamm-gold">
+                {businessInfo.supportEmail}
               </a>
             </div>
           </div>

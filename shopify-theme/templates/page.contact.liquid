@@ -1,3 +1,14 @@
+{% capture shop_business_address %}
+  {%- if shop.address.address1 != blank -%}{{ shop.address.address1 }}<br>{%- endif -%}
+  {%- if shop.address.address2 != blank -%}{{ shop.address.address2 }}<br>{%- endif -%}
+  {%- if shop.address.city != blank -%}{{ shop.address.city }}{%- endif -%}
+  {%- if shop.address.province_code != blank -%}{%- if shop.address.city != blank -%}, {% endif -%}{{ shop.address.province_code }}{%- elsif shop.address.province != blank -%}{%- if shop.address.city != blank -%}, {% endif -%}{{ shop.address.province }}{%- endif -%}
+  {%- if shop.address.zip != blank -%} {{ shop.address.zip }}{%- endif -%}
+  {%- if shop.address.country != blank -%}<br>{{ shop.address.country }}{%- endif -%}
+{% endcapture %}
+{% assign shop_business_address = shop_business_address | strip %}
+{% assign contact_business_address = settings.public_location | default: shop_business_address | default: 'Philadelphia, PA' %}
+
 <section class="contact-page">
   <div class="container">
     <div class="contact-grid">
@@ -12,7 +23,7 @@
         <div class="contact-info__item">
           <h2 class="contact-info__heading">Business</h2>
           <p class="contact-info__text">Jamm Trade LLC</p>
-          <p class="contact-info__text contact-info__address">{{ settings.public_location | default: 'Philadelphia, PA' }}</p>
+          <p class="contact-info__text contact-info__address">{{ contact_business_address }}</p>
         </div>
         <div class="contact-info__item">
           <h2 class="contact-info__heading">Email</h2>

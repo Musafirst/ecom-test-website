@@ -1,5 +1,15 @@
 {% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
 {% assign public_shop_url = public_storefront_url | append: '/shop' %}
+{% capture shop_business_address %}
+  {%- if shop.address.address1 != blank -%}{{ shop.address.address1 }}<br>{%- endif -%}
+  {%- if shop.address.address2 != blank -%}{{ shop.address.address2 }}<br>{%- endif -%}
+  {%- if shop.address.city != blank -%}{{ shop.address.city }}{%- endif -%}
+  {%- if shop.address.province_code != blank -%}{%- if shop.address.city != blank -%}, {% endif -%}{{ shop.address.province_code }}{%- elsif shop.address.province != blank -%}{%- if shop.address.city != blank -%}, {% endif -%}{{ shop.address.province }}{%- endif -%}
+  {%- if shop.address.zip != blank -%} {{ shop.address.zip }}{%- endif -%}
+  {%- if shop.address.country != blank -%}<br>{{ shop.address.country }}{%- endif -%}
+{% endcapture %}
+{% assign shop_business_address = shop_business_address | strip %}
+{% assign footer_business_address = settings.public_location | default: shop_business_address | default: 'Philadelphia, PA' %}
 
 <footer class="site-footer" role="contentinfo">
   <div class="container">
@@ -34,7 +44,7 @@
           </p>
           <div class="footer-contact">
             <p class="footer-contact__business">Jamm Trade LLC</p>
-            <p class="footer-contact__address">{{ settings.public_location | default: 'Philadelphia, PA' }}</p>
+            <p class="footer-contact__address">{{ footer_business_address }}</p>
             <a href="mailto:{{ settings.support_email | default: 'contact@jammtrade.com' }}" class="footer-contact__link">{{ settings.support_email | default: 'contact@jammtrade.com' }}</a>
           </div>
         </div>
