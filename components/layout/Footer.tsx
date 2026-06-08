@@ -13,6 +13,8 @@ const serviceLinks = [
   { label: 'Jamm Fleet', href: '/jamm-fleet' },
 ]
 
+const footerLocation = 'Darby, Pennsylvania'
+
 export function Footer() {
   const { t } = useLocale()
   const [activeBusinessInfo, setActiveBusinessInfo] = useState(businessInfo)
@@ -66,7 +68,7 @@ export function Footer() {
             </p>
             <div className="mt-4 space-y-1 font-sans text-xs leading-relaxed text-jamm-dark/52">
               <p className="font-semibold text-jamm-dark/62">{activeBusinessInfo.name}</p>
-              <p className="whitespace-pre-line">{activeBusinessInfo.publicLocation}</p>
+              <p>{footerLocation}</p>
               <a href={`mailto:${activeBusinessInfo.supportEmail}`} className="transition-colors hover:text-jamm-gold">
                 {activeBusinessInfo.supportEmail}
               </a>

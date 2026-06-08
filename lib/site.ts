@@ -4,7 +4,7 @@ export const site = {
   apexUrl: 'https://jammtrade.com',
   wwwUrl: 'https://www.jammtrade.com',
   supportEmail: 'contact@jammtrade.com',
-  publicLocation: 'Philadelphia, PA',
+  publicLocation: 'Darby, Pennsylvania',
   description: 'Rare fragrances. Curated for those who know the difference.',
 }
 

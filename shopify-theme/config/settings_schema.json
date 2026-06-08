@@ -20,7 +20,7 @@
         "type": "text",
         "id": "public_location",
         "label": "Public business location",
-        "default": "Philadelphia, PA"
+        "default": "Darby, Pennsylvania"
       },
       {
         "type": "text",

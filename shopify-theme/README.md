@@ -22,7 +22,7 @@ Edit these values in Shopify Theme Editor under **Business information**:
 | Setting | Production value |
 |---|---|
 | Customer support email | `contact@jammtrade.com` |
-| Public business location | `Philadelphia, PA` |
+| Public business location | `Darby, Pennsylvania` |
 | Canonical Next.js storefront URL | `https://www.jammtrade.com` |
 
 The full return address should appear only where legally or operationally

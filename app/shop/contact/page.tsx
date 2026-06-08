@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { site } from '@/lib/site'
+import { getShopifyBusinessInfo } from '@/lib/shopifyBusinessInfo'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const businessInfo = await getShopifyBusinessInfo()
+
   return (
     <section className="bg-transparent px-3 py-10 text-jamm-dark sm:px-4 lg:py-16">
       <div className="mx-auto grid max-w-[1100px] gap-6 lg:grid-cols-[0.9fr_1.1fr]">
@@ -30,13 +32,13 @@ export default function ContactPage() {
           <div className="space-y-6 font-sans text-sm leading-relaxed text-jamm-dark/68">
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Business</h2>
-              <p className="mt-2">Jamm Trade LLC</p>
-              <p className="mt-1">{site.publicLocation}</p>
+              <p className="mt-2">{businessInfo.name}</p>
+              <p className="mt-1 whitespace-pre-line">{businessInfo.publicLocation}</p>
             </div>
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Email</h2>
-              <Link href={`mailto:${site.supportEmail}`} className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
-                {site.supportEmail}
+              <Link href={`mailto:${businessInfo.supportEmail}`} className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
+                {businessInfo.supportEmail}
               </Link>
             </div>
             <div>
