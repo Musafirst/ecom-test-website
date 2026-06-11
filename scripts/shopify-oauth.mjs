@@ -8,6 +8,12 @@
 import http from 'http'
 import { exec } from 'child_process'
 import crypto from 'crypto'
+import { readFileSync, writeFileSync } from 'fs'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const ROOT = resolve(__dirname, '..')
 
 const CLIENT_ID     = process.env.SHOPIFY_CLIENT_ID     || ''
 const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET || ''
@@ -20,7 +26,7 @@ const STORE         = (process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify
 const SUPPORT_EMAIL = 'contact@jammtrade.com'
 const PORT          = 3456
 const REDIRECT_URI  = `http://localhost:${PORT}/callback`
-const SCOPES        = 'write_legal_policies'
+const SCOPES        = 'write_legal_policies,read_themes'
 const STATE         = Math.random().toString(36).slice(2)
 const SHOP_HOSTNAME_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9-]*\.myshopify\.com$/
 
@@ -148,6 +154,65 @@ async function updatePolicies(token) {
   }
 }
 
+// ── Theme settings sync ──────────────────────────────────────────────────────
+
+const SYNC_FIELDS = [
+  'support_email',
+  'public_location',
+  'public_storefront_url',
+  'instagram',
+  'tiktok',
+  'facebook',
+  'x_twitter',
+  'youtube',
+]
+
+async function syncThemeSettings(token) {
+  const api = `https://${STORE}/admin/api/2024-01`
+
+  const get = async (path) => {
+    const res = await fetch(`${api}${path}`, {
+      headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' },
+    })
+    if (!res.ok) throw new Error(`Shopify API ${res.status}: ${await res.text()}`)
+    return res.json()
+  }
+
+  const { themes } = await get('/themes.json?role=main')
+  if (!themes?.length) throw new Error('No published theme found.')
+  const theme = themes[0]
+  console.log(`  Active theme: "${theme.name}"`)
+
+  const { asset } = await get(`/themes/${theme.id}/assets.json?asset[key]=config/settings_data.json`)
+  if (!asset?.value) throw new Error('Could not read config/settings_data.json from Shopify theme.')
+
+  const remoteCurrent = JSON.parse(asset.value)?.current ?? {}
+  const localPath = resolve(ROOT, 'shopify-theme/config/settings_data.json')
+  const local = JSON.parse(readFileSync(localPath, 'utf8'))
+
+  let changed = 0
+  for (const field of SYNC_FIELDS) {
+    const remoteValue = remoteCurrent[field]?.trim() || undefined
+    const localValue  = local.current?.[field]?.trim() || undefined
+    if (remoteValue && remoteValue !== localValue) {
+      local.current[field] = remoteValue
+      console.log(`  ${field}: ${remoteValue}`)
+      changed++
+    } else if (!remoteValue && localValue) {
+      delete local.current[field]
+      console.log(`  ${field}: (removed — cleared in Shopify)`)
+      changed++
+    }
+  }
+
+  if (changed === 0) {
+    console.log('  Already in sync — no changes needed.')
+  } else {
+    writeFileSync(localPath, JSON.stringify(local, null, 2) + '\n')
+    console.log(`  Wrote ${changed} change(s) to shopify-theme/config/settings_data.json`)
+  }
+}
+
 // ── OAuth flow ───────────────────────────────────────────────────────────────
 
 console.log('\n🔐 Opening Shopify login in your browser...')
@@ -203,11 +268,15 @@ const server = http.createServer(async (req, res) => {
 
   try {
     await updatePolicies(tokenData.access_token)
-    console.log('\n✅ Done — Shopify policies now match the website.')
-    res.end('<h2>✅ Done! Shopify policies updated. You can close this tab.</h2>')
+    console.log('\n✅ Policies updated.\n')
+
+    console.log('Syncing theme settings (social links, address, email)...\n')
+    await syncThemeSettings(tokenData.access_token)
+    console.log('\n✅ Done — policies and theme settings are up to date.')
+    res.end('<h2>✅ Done! Policies updated and theme settings synced. You can close this tab.</h2>')
   } catch (err) {
-    console.error('❌ Policy update failed:', err.message)
-    res.end('<h2>❌ Policy update failed. Check your terminal.</h2>')
+    console.error('❌ Failed:', err.message)
+    res.end('<h2>❌ Something failed. Check your terminal.</h2>')
   }
 
   server.close()

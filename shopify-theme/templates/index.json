@@ -64,7 +64,7 @@
         "sc-1": {
           "type": "shortcut",
           "settings": {
-            "detail": "Oud · Amber · Daily",
+            "detail": "Oud, Amber, Daily",
             "label": "Perfumes",
             "url": "https://www.jammtrade.com/shop/category/perfumes"
           }
@@ -72,7 +72,7 @@
         "sc-2": {
           "type": "shortcut",
           "settings": {
-            "detail": "5 fragrances",
+            "detail": "6 fragrances",
             "label": "Oud",
             "url": "https://www.jammtrade.com/shop/collection/oud"
           }
@@ -80,7 +80,7 @@
         "sc-3": {
           "type": "shortcut",
           "settings": {
-            "detail": "8 fragrances",
+            "detail": "6 fragrances",
             "label": "Amber",
             "url": "https://www.jammtrade.com/shop/collection/amber"
           }
@@ -88,7 +88,7 @@
         "sc-4": {
           "type": "shortcut",
           "settings": {
-            "detail": "Daily",
+            "detail": "4 fragrances",
             "label": "Daily",
             "url": "https://www.jammtrade.com/shop/collection/daily"
           }
@@ -135,7 +135,7 @@
             "asset_image": "featured-oud.png",
             "name": "Oud",
             "copy": "Resinous, dark, and long lasting.",
-            "count_override": "5 fragrances",
+            "count_override": "6 fragrances",
             "url_override": "https://www.jammtrade.com/shop/collection/oud"
           }
         },
@@ -145,7 +145,7 @@
             "asset_image": "featured-amber.png",
             "name": "Amber",
             "copy": "Warm vanilla, soft spice, skin-close depth.",
-            "count_override": "8 fragrances",
+            "count_override": "6 fragrances",
             "url_override": "https://www.jammtrade.com/shop/collection/amber"
           }
         },
@@ -155,7 +155,7 @@
             "asset_image": "featured-daily.png",
             "name": "Daily",
             "copy": "Clean signatures for repeat wear.",
-            "count_override": "Daily fragrances",
+            "count_override": "4 fragrances",
             "url_override": "https://www.jammtrade.com/shop/collection/daily"
           }
         }
@@ -194,6 +194,44 @@
       "block_order": [
         "cat-1",
         "cat-2"
+      ],
+      "settings": {}
+    },
+    "trending-guides": {
+      "type": "trending-guides",
+      "blocks": {
+        "guide-1": {
+          "type": "guide",
+          "settings": {
+            "title": "Top Arabic Fragrances for Men in 2026",
+            "excerpt": "The best Arabic fragrances for men in 2026, including Lattafa Khamrah, Rasasi Hawas, Afnan 9PM, Amber Oud Gold Edition, and Lattafa Asad.",
+            "read_time": "7 min read",
+            "url": "https://www.jammtrade.com/shop/guides/top-arabic-fragrances-for-men-2026"
+          }
+        },
+        "guide-2": {
+          "type": "guide",
+          "settings": {
+            "title": "Lattafa Khamrah Review",
+            "excerpt": "A 2026 Lattafa Khamrah review covering notes, performance, best occasions, pros and cons, and whether it is worth buying.",
+            "read_time": "5 min read",
+            "url": "https://www.jammtrade.com/shop/guides/lattafa-khamrah-review"
+          }
+        },
+        "guide-3": {
+          "type": "guide",
+          "settings": {
+            "title": "Rasasi Hawas Review",
+            "excerpt": "A 2026 Rasasi Hawas review covering its fresh aquatic scent, performance, comparisons, best seasons, pros and cons, and overall value.",
+            "read_time": "6 min read",
+            "url": "https://www.jammtrade.com/shop/guides/rasasi-hawas-review"
+          }
+        }
+      },
+      "block_order": [
+        "guide-1",
+        "guide-2",
+        "guide-3"
       ],
       "settings": {}
     },
@@ -248,6 +286,7 @@
     "featured-products",
     "collection-grid",
     "secondary-categories",
+    "trending-guides",
     "trust-bar"
   ]
 }

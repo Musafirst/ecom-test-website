@@ -1,9 +1,11 @@
 import type { MetadataRoute } from 'next'
+import { getGuideArticles } from '@/lib/articles'
 import { getAllProducts } from '@/lib/products'
 import { absoluteSiteUrl } from '@/lib/site'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getAllProducts()
+  const articles = getGuideArticles()
   const staticRoutes = [
     '',
     '/shop',
@@ -18,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/shop/category/audio',
     '/shop/category/smartwatches',
     '/shop/contact',
+    '/shop/guides',
     '/shop/refund-policy',
     '/shop/shipping-policy',
     '/shop/shipping-returns',
@@ -37,6 +40,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.8,
+    })),
+    ...articles.map((article) => ({
+      url: absoluteSiteUrl(`/shop/guides/${article.slug}`),
+      lastModified: new Date(`${article.date}T00:00:00`),
+      changeFrequency: 'monthly' as const,
+      priority: 0.65,
     })),
   ]
 }

@@ -11,6 +11,7 @@ import { LanguageSelector, useLocale } from '@/components/i18n/LocaleProvider'
 const tabs = [
   { label: 'Shop', href: '/shop', soon: false },
   { label: 'Collections', href: '/shop#collections', soon: false, shopOnly: true },
+  { label: 'Fragrance Guides', href: '/shop/guides', soon: false, shopOnly: true },
 ]
 
 const serviceLinks = [
@@ -98,7 +99,12 @@ export function TabNav() {
   const visibleTabs = tabs.filter((tab) => isShop || !tab.shopOnly)
   const localizedTabs = visibleTabs.map((tab) => ({
     ...tab,
-    label: tab.href === '/shop#collections' ? t('nav.collections') : t('nav.shop'),
+    label:
+      tab.href === '/shop#collections'
+        ? t('nav.collections')
+        : tab.href === '/shop/guides'
+          ? t('nav.guides')
+          : t('nav.shop'),
   }))
   const localizedServiceLinks = serviceLinks.map((service) => ({
     ...service,

@@ -14,6 +14,7 @@ export const dictionaries = {
   en: {
     'nav.shop': 'Shop',
     'nav.collections': 'Collections',
+    'nav.guides': 'Fragrance Guides',
     'nav.services': 'Services',
     'nav.contact': 'Contact',
     'nav.about': 'About Jamm Trade',
@@ -97,6 +98,7 @@ export const dictionaries = {
   es: {
     'nav.shop': 'Tienda',
     'nav.collections': 'Colecciones',
+    'nav.guides': 'Fragrance Guides',
     'nav.services': 'Servicios',
     'nav.contact': 'Contacto',
     'nav.about': 'Acerca de Jamm Trade',
@@ -180,6 +182,7 @@ export const dictionaries = {
   fr: {
     'nav.shop': 'Boutique',
     'nav.collections': 'Collections',
+    'nav.guides': 'Fragrance Guides',
     'nav.services': 'Services',
     'nav.contact': 'Contact',
     'nav.about': 'À propos de Jamm Trade',
@@ -263,6 +266,7 @@ export const dictionaries = {
   ar: {
     'nav.shop': 'المتجر',
     'nav.collections': 'المجموعات',
+    'nav.guides': 'Fragrance Guides',
     'nav.services': 'الخدمات',
     'nav.contact': 'تواصل معنا',
     'nav.about': 'عن Jamm Trade',

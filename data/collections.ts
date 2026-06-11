@@ -4,13 +4,13 @@ export const collectionDetails = {
   oud: {
     name: 'Oud',
     intro: 'Deep, resinous fragrances built around oud, woods, smoke, and amber.',
-    note: 'Lattafa, Maison Alhambra, Afnan, and Armaf oud selections prepared for Shopify upload.',
+    note: 'Live Shopify oud selections shown with a local fallback.',
     count: `${perfumeProducts.filter((product) => product.collection === 'oud').length} fragrances`,
   },
   amber: {
     name: 'Amber',
     intro: 'Warm amber blends with sweet spice, musk, vanilla, and polished projection.',
-    note: 'Amber-led fragrance picks from Lattafa, Al Haramain, Afnan, and Armaf.',
+    note: 'Amber-led fragrance picks from the live Shopify catalog.',
     count: `${perfumeProducts.filter((product) => product.collection === 'amber').length} fragrances`,
   },
   daily: {
@@ -24,7 +24,7 @@ export const collectionDetails = {
 export const categoryDetails = {
   perfumes: {
     name: 'Perfumes',
-    intro: 'Rare fragrances curated across three scent families — oud, amber, and daily wear.',
+    intro: 'Rare fragrances curated across three scent families: oud, amber, and daily wear.',
     detail: 'Browse by collection to find your signature.',
   },
   clothing: {

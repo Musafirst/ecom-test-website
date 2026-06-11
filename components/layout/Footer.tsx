@@ -20,6 +20,7 @@ export function Footer() {
   const [activeBusinessInfo, setActiveBusinessInfo] = useState(businessInfo)
   const localizedShopLinks = [
     { label: t('footer.shop'), href: '/shop' },
+    { label: t('nav.guides'), href: '/shop/guides' },
     { label: t('footer.about'), href: '/shop/about' },
     { label: t('nav.contact'), href: '/shop/contact' },
   ]

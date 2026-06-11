@@ -4,6 +4,7 @@ import { ShopShortcuts } from '@/components/shop/ShopShortcuts'
 import { FeaturedProducts } from '@/components/shop/FeaturedProducts'
 import { CollectionGrid } from '@/components/shop/CollectionGrid'
 import { SecondaryCategories } from '@/components/shop/SecondaryCategories'
+import { TrendingGuides } from '@/components/shop/TrendingGuides'
 import { TrustBar } from '@/components/shop/TrustBar'
 import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts } from '@/lib/products'
 
@@ -38,6 +39,7 @@ export default async function ShopPage() {
         }}
       />
       <SecondaryCategories electronicsProducts={electronicsProducts} />
+      <TrendingGuides />
       <TrustBar />
     </>
   )
