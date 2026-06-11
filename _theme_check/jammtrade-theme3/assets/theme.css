@@ -989,6 +989,95 @@ input, textarea { font-family: inherit; }
   color: var(--color-dark);
 }
 
+/* ---------- Trending Guides ------------------------------ */
+.trending-guides-section {
+  padding: 40px var(--container-px);
+}
+@media (min-width: 1024px) { .trending-guides-section { padding: 64px var(--container-px); } }
+
+.guide-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 768px) { .guide-card-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .guide-card-grid { gap: 20px; } }
+
+.guide-card {
+  min-height: 100%;
+  border: var(--border-gold);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.42);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+.guide-card:hover {
+  border-color: rgba(196,151,58,0.55);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.guide-card__body {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  padding: 22px;
+}
+@media (min-width: 640px) { .guide-card__body { padding: 26px; } }
+
+.guide-card__meta {
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.guide-card__title {
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+.guide-card__title a { color: inherit; }
+.guide-card__title a:hover { color: var(--color-gold); }
+
+.guide-card__excerpt {
+  margin-bottom: 20px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-muted);
+}
+
+.guide-card__button {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  background: var(--color-dark);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  transition: background 0.15s, color 0.15s;
+}
+.guide-card__button:hover {
+  background: var(--color-gold);
+  color: var(--color-dark);
+}
+
 /* ---------- Secondary Categories -------------------------- */
 .secondary-categories-section {
   padding: 40px var(--container-px);
