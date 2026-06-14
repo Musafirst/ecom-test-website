@@ -4,30 +4,23 @@
 <footer class="site-footer" role="contentinfo">
   <div class="container">
     <div class="footer-shell">
-      <div class="beam beam--xl beam--d1" aria-hidden="true"></div>
       <div class="footer-inner">
 
         <div class="footer-brand">
-          <a href="{{ public_shop_url }}" aria-label="{{ shop.name }}">
-            {% if section.settings.logo != blank %}
-              <img
-                src="{{ section.settings.logo | image_url: width: 600 }}"
-                alt="{{ shop.name }}"
-                class="footer-logo"
-                width="360"
-                height="240"
-                loading="lazy"
-              >
-            {% else %}
-              <img
-                src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}"
-                alt="{{ shop.name }}"
-                class="footer-logo"
-                width="360"
-                height="240"
-                loading="lazy"
-              >
-            {% endif %}
+          <a href="{{ public_shop_url }}" aria-label="{{ shop.name }}" class="footer-logo-lockup">
+            <img
+              src="{{ 'jamm-trade-logo-badge.png' | asset_url }}"
+              alt=""
+              class="footer-logo-mark"
+              width="1254"
+              height="1254"
+              loading="lazy"
+              aria-hidden="true"
+            >
+            <span class="footer-logo-type">
+              <span class="footer-logo-name">JAMM TRADE</span>
+              <span class="footer-logo-tag">From Essentials to Enterprise</span>
+            </span>
           </a>
           <p class="footer-tagline">
             {{ 'footer.tagline' | t }}

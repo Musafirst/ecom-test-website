@@ -174,10 +174,10 @@ export function HeroSection() {
   }, [activeSlide.video, activeIndex])
 
   return (
-    <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
+    <section className="overflow-x-hidden bg-transparent px-[var(--jamm-pad)] pb-6 pt-[clamp(20px,3vw,34px)] sm:pb-8">
       <motion.div
-        className={`relative mx-auto max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:rounded-[24px] lg:h-auto lg:max-h-[820px] lg:min-h-[620px] lg:rounded-[28px] ${
-          isEcosystemSlide ? 'aspect-[8/5] min-h-0 max-h-none lg:aspect-auto' : 'h-[440px] min-h-0 sm:h-[500px] lg:h-auto lg:min-h-[620px]'
+        className={`relative mx-auto max-w-[1240px] cursor-grab touch-pan-y overflow-hidden rounded-[22px] bg-[linear-gradient(135deg,#e0c074_0%,#c4973a_40%,#8b6914_64%,#e8d09a_100%)] p-[1.5px] shadow-[0_30px_70px_-30px_rgba(0,0,0,0.7)] active:cursor-grabbing ${
+          isEcosystemSlide ? 'aspect-[16/9] min-h-0' : 'aspect-[5/6] min-h-0 sm:aspect-[16/10] lg:aspect-[16/9]'
         }`}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -190,9 +190,7 @@ export function HeroSection() {
         onMouseLeave={handleMouseLeave}
       >
         <BorderBeam size={520} duration={13} borderWidth={3} colorFrom="#C4973A" colorTo="#F8E7A6" />
-        <div className={`absolute overflow-hidden bg-[#101112] ${
-          isEcosystemSlide ? 'inset-0' : 'inset-x-0 top-0 bottom-[172px] sm:bottom-[180px] lg:inset-0'
-        }`}>
+        <div className="absolute inset-[1.5px] overflow-hidden rounded-[20px] bg-[#050403]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.id}
@@ -250,7 +248,7 @@ export function HeroSection() {
             </motion.div>
           </AnimatePresence>
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.42)_45%,rgba(0,0,0,0.08)_100%)] lg:bg-[linear-gradient(70deg,rgba(0,0,0,0.68)_0%,rgba(0,0,0,0.34)_42%,rgba(0,0,0,0.08)_100%)]" />
+        <div className="absolute inset-[1.5px] rounded-[20px] border border-[#e7cd8e]/30 bg-[linear-gradient(180deg,rgba(8,7,5,0.30)_0%,rgba(8,7,5,0.10)_32%,rgba(8,7,5,0.62)_74%,rgba(6,5,3,0.95)_100%),linear-gradient(75deg,rgba(6,5,3,0.72)_0%,rgba(6,5,3,0.18)_46%,transparent_70%)]" />
         {isEcosystemSlide && (
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_48%,rgba(196,151,58,0.18),transparent_30%),radial-gradient(circle_at_34%_70%,rgba(248,231,166,0.12),transparent_28%)]" />
         )}
@@ -274,21 +272,21 @@ export function HeroSection() {
           </div>
         )}
 
-        <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-5 md:p-6 lg:flex-row lg:items-end lg:justify-between lg:gap-6 lg:p-8">
+        <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-start gap-3 p-[clamp(26px,6vw,52px)] sm:gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
           {!isEcosystemSlide && (
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.id}
-                className="relative w-full max-w-[440px] overflow-hidden rounded-[12px] border border-white/14 bg-black/42 p-4 text-jamm-cream shadow-sm backdrop-blur-md sm:w-[88%] lg:block lg:w-full lg:max-w-[430px] lg:rounded-[14px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
+                className="relative w-full max-w-[640px] overflow-visible border-0 bg-transparent p-0 text-jamm-cream shadow-none backdrop-blur-0"
                 initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               >
-                <p className="mb-3 hidden font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold sm:mb-4 sm:text-[11px] lg:block">
+                <p className="mb-3 hidden items-center gap-3 font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-jamm-gold-light before:h-px before:w-8 before:bg-jamm-gold-light sm:mb-4 lg:flex">
                   {t(`hero.${activeSlide.i18nKey}.category`)}
                 </p>
-                <h1 className="mb-3 font-sans text-[24px] font-semibold leading-tight text-jamm-cream sm:text-[28px] lg:mb-4 lg:text-[42px]">
+                <h1 className="mb-3 font-serif text-[clamp(2.7rem,9vw,5rem)] font-semibold leading-[0.98] tracking-[-0.01em] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.5)] lg:mb-4 lg:text-[clamp(3.4rem,5vw,5.4rem)]">
                   {activeTitle}
                 </h1>
                 <p className="mb-5 hidden font-sans text-sm leading-relaxed text-jamm-cream/86 sm:text-[15px] md:text-base lg:mb-7 lg:block">
@@ -296,7 +294,7 @@ export function HeroSection() {
                 </p>
                 <Link
                   href={activeSlide.ctaHref}
-                  className="inline-flex min-h-10 items-center rounded-md bg-jamm-gold px-4 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream lg:min-h-11 lg:text-[11px]"
+                  className="inline-flex min-h-11 items-center rounded-[11px] bg-[linear-gradient(135deg,#e0c074_0%,#c4973a_40%,#8b6914_64%,#e8d09a_100%)] px-6 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-[#231c0a] shadow-[0_10px_26px_-14px_rgba(150,110,30,0.85)] transition-transform duration-300 hover:-translate-y-0.5 lg:min-h-12"
                   onClick={resetAutoSlideTimer}
                 >
                   {t(`hero.${activeSlide.i18nKey}.cta`)}
@@ -306,7 +304,7 @@ export function HeroSection() {
             </AnimatePresence>
           )}
 
-          <div className="flex min-w-[120px] items-center justify-center gap-0.5 py-1 lg:justify-end lg:pb-3">
+          <div className="absolute inset-x-0 bottom-4 flex min-w-[120px] items-center justify-center gap-2 py-1 lg:bottom-6">
             {heroSlides.map((slide, index) => (
               <button
                 key={slide.id}
@@ -317,10 +315,10 @@ export function HeroSection() {
                   setActiveIndex(index)
                   resetAutoSlideTimer()
                 }}
-                className="flex min-h-[44px] min-w-[44px] items-center justify-center"
+                className="flex min-h-8 min-w-8 items-center justify-center"
               >
-                <span className={`block h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
-                  index === activeIndex ? 'w-8 bg-jamm-gold lg:w-7' : 'w-3 bg-white/55 lg:w-2.5 lg:bg-white/45'
+                <span className={`block h-[9px] rounded-full transition-all duration-300 ${
+                  index === activeIndex ? 'w-[30px] bg-[linear-gradient(135deg,#e0c074,#a37d20)]' : 'w-[9px] bg-[#e7cd8e]/35'
                 }`} />
               </button>
             ))}

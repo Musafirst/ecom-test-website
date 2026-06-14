@@ -6,15 +6,15 @@ export function TrendingGuides() {
   const articles = getFeaturedGuideArticles()
 
   return (
-    <section className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
-      <div className="mx-auto max-w-[1560px]">
-        <div className="mb-5 sm:mb-7">
+    <section className="bg-transparent px-[var(--jamm-pad)] py-[clamp(48px,8vw,86px)] pt-0">
+      <div className="mx-auto max-w-[1240px]">
+        <div className="mb-[clamp(26px,4vw,40px)]">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">
+              <p className="mb-0 font-sans text-[11px] font-bold uppercase tracking-[0.24em] text-jamm-gold-deep">
                 Fragrance Guides
               </p>
-              <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
+              <h2 className="mt-2 font-serif text-[clamp(2.3rem,6vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.005em] text-jamm-dark">
                 Trending Fragrance Guides
               </h2>
             </div>
@@ -28,10 +28,10 @@ export function TrendingGuides() {
               </svg>
             </Link>
           </div>
-          <div className="mt-5 h-px bg-gradient-to-r from-jamm-gold/40 via-jamm-gold/15 to-transparent" />
+          <div className="mt-6 h-px bg-[linear-gradient(90deg,#c4973a_0_60px,rgba(28,22,10,0.12)_60px)] lg:hidden" />
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
+        <div className="grid gap-[clamp(16px,3vw,22px)] md:grid-cols-3">
           {articles.map((article) => (
             <GuideCard key={article.slug} article={article} compact />
           ))}

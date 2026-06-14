@@ -51,22 +51,22 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
   ]
 
   return (
-    <section className="bg-transparent px-3 pb-4 sm:px-4 lg:pb-6">
+    <section className="bg-transparent px-[var(--jamm-pad)] pb-8 pt-[clamp(22px,3.5vw,34px)]">
       <motion.div
-        className="mx-auto max-w-[1560px]"
+        className="mx-auto max-w-[1240px]"
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="no-scrollbar flex snap-x gap-2.5 overflow-x-auto pb-2 lg:grid lg:grid-cols-6 lg:overflow-visible lg:pb-0">
+        <div className="no-scrollbar flex snap-x gap-3.5 overflow-x-auto pb-2 lg:grid lg:grid-cols-6 lg:overflow-visible lg:pb-0">
           {shortcuts.map((item) => {
             const inner = (
               <>
-                <span className="min-w-0 truncate font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-jamm-gold">
+                <span className="min-w-0 truncate font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold-deep">
                   {item.detail}
                 </span>
-                <span className="mt-2 grid grid-cols-[minmax(0,1fr)_28px] items-center gap-3 font-sans text-base font-semibold text-jamm-dark">
+                <span className="mt-3 grid grid-cols-[minmax(0,1fr)_28px] items-center gap-3 font-serif text-[1.7rem] font-semibold leading-none text-jamm-dark">
                   <span className="min-w-0 truncate">{item.label}</span>
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-jamm-dark/6 text-jamm-dark/55 transition-colors group-hover:bg-jamm-gold group-hover:text-jamm-dark">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-3.5 w-3.5" aria-hidden="true">
@@ -80,7 +80,7 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex min-w-[142px] snap-start flex-col justify-between rounded-lg border border-jamm-gold/25 bg-[#FAF7F2]/82 px-4 py-3 shadow-[0_12px_28px_rgba(12,11,9,0.05)] backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-jamm-gold/65 hover:bg-[#EDE8DC] hover:shadow-[0_18px_42px_rgba(12,11,9,0.09)] sm:min-w-[170px] lg:min-w-0"
+                className="group flex min-w-[min(72vw,260px)] snap-start flex-col justify-between rounded-[16px] border border-jamm-dark/10 bg-[#FBF8F2] px-5 py-5 shadow-[0_1px_2px_rgba(20,15,5,0.05),0_14px_34px_-22px_rgba(20,15,5,0.35)] transition duration-300 hover:-translate-y-1 hover:border-jamm-gold/50 sm:min-w-[220px] lg:min-w-0"
               >
                 {inner}
               </Link>

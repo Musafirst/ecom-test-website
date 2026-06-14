@@ -113,34 +113,43 @@ export function TabNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#FAF7F2]/86 px-3 pt-3 backdrop-blur-md sm:px-4">
-        {isShop && (
-          <div className="overflow-hidden rounded-lg bg-jamm-dark py-1.5 text-center font-sans text-[10px] font-medium text-jamm-cream sm:rounded-xl sm:py-2 sm:text-[11px]">
-            <div className="flex whitespace-nowrap animate-marquee">
-              <span className="px-8">
-                {t('announcement')}&nbsp;&nbsp;
-              </span>
-              <span className="px-8" aria-hidden>
-                {t('announcement')}&nbsp;&nbsp;
-              </span>
-            </div>
+      {isShop && (
+        <div className="relative z-40 overflow-hidden border-b border-jamm-gold/20 bg-jamm-dark text-center font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-jamm-cream/78 sm:text-[11px]">
+          <div className="flex whitespace-nowrap animate-marquee py-2.5">
+            <span className="px-8">
+              {t('announcement')}&nbsp;&nbsp;·&nbsp;&nbsp;
+            </span>
+            <span className="px-8" aria-hidden>
+              {t('announcement')}&nbsp;&nbsp;·&nbsp;&nbsp;
+            </span>
           </div>
-        )}
+        </div>
+      )}
 
-        <div className={`mx-auto flex h-[78px] w-full max-w-[1560px] items-center justify-between overflow-hidden rounded-b-[18px] px-2 backdrop-blur-sm transition-[background-color,backdrop-filter,box-shadow] duration-200 sm:h-[104px] sm:rounded-b-[22px] sm:px-5 md:h-[112px] md:overflow-visible lg:h-[120px] ${scrolled ? 'bg-[#FAF7F2]/95 shadow-[0_10px_30px_rgba(12,11,9,0.06)]' : 'bg-[#FAF7F2]/78'}`}>
-          <Link href={logoHref} className="flex flex-shrink-0 items-center overflow-visible">
+      <header className="sticky top-0 z-50 border-b border-jamm-dark/10 bg-[#F3EFE7]/82 backdrop-blur-[14px] backdrop-saturate-110">
+        <div className={`mx-auto flex w-full max-w-[1240px] items-center justify-between gap-[18px] overflow-visible px-[var(--jamm-pad)] py-3.5 transition-[background-color,box-shadow] duration-200 ${scrolled ? 'bg-[#FAF7F2]/60 shadow-[0_10px_30px_rgba(12,11,9,0.04)]' : 'bg-transparent'}`}>
+          <Link href={logoHref} className="flex flex-shrink-0 items-center gap-2.5 overflow-visible sm:gap-3">
             <Image
-              src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
-              alt="Jamm Trade"
-              width={1536}
-              height={1024}
-              className="h-[72px] w-auto flex-shrink-0 object-contain sm:h-[88px] md:h-[96px] lg:h-[108px] xl:h-[120px]"
+              src="/brand_assets/logos/jamm-trade-logo-badge.png"
+              alt=""
+              width={1254}
+              height={1254}
+              className="h-11 w-11 flex-shrink-0 rounded-full object-contain shadow-[0_2px_10px_rgba(12,11,9,0.18)] ring-1 ring-jamm-gold/35 sm:h-[52px] sm:w-[52px]"
               priority
               loading="eager"
+              aria-hidden="true"
             />
+            <span className="flex flex-col leading-none">
+              <span className="font-serif text-[19px] font-semibold uppercase tracking-[0.14em] text-jamm-dark sm:text-[23px]">
+                JAMM TRADE
+              </span>
+              <span className="mt-1 font-sans text-[6px] font-semibold uppercase tracking-[0.32em] text-jamm-muted sm:text-[7px]">
+                From Essentials to Enterprise
+              </span>
+            </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-[30px] md:flex">
             {localizedTabs.map((tab) => {
               const isActive = pathname === tab.href || (tab.href === '/shop#collections' && pathname === '/shop')
               return (
@@ -148,10 +157,10 @@ export function TabNav() {
                   key={tab.href}
                   href={tab.href}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`rounded-full px-4 py-2 font-sans text-sm font-medium transition-colors duration-200 ${
+                  className={`relative py-1.5 font-sans text-[12px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-px after:bg-jamm-gold after:transition-[width] after:duration-300 ${
                     isActive
-                      ? 'bg-jamm-gold/15 text-jamm-dark'
-                      : 'text-jamm-dark/55 hover:bg-jamm-dark/6 hover:text-jamm-dark'
+                      ? 'text-jamm-gold-deep after:w-full'
+                      : 'text-jamm-dark/72 after:w-0 hover:text-jamm-gold-deep hover:after:w-full'
                   }`}
                 >
                   {tab.label}
@@ -294,16 +303,25 @@ export function TabNav() {
             transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
           >
             <div className="flex w-full items-center justify-between overflow-visible border-b border-jamm-dark/10 px-5 py-3">
-              <Link href={logoHref} onClick={() => setMobileOpen(false)} className="flex flex-shrink-0 items-center overflow-visible">
+              <Link href={logoHref} onClick={() => setMobileOpen(false)} className="flex flex-shrink-0 items-center gap-2.5 overflow-visible">
                 <Image
-                  src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
-                  alt="Jamm Trade"
-                  width={1536}
-                  height={1024}
-                  className="h-[88px] w-auto flex-shrink-0 object-contain"
+                  src="/brand_assets/logos/jamm-trade-logo-badge.png"
+                  alt=""
+                  width={1254}
+                  height={1254}
+                  className="h-[52px] w-[52px] flex-shrink-0 rounded-full object-contain shadow-[0_2px_10px_rgba(12,11,9,0.18)] ring-1 ring-jamm-gold/35"
                   priority
                   loading="eager"
+                  aria-hidden="true"
                 />
+                <span className="flex flex-col leading-none">
+                  <span className="font-serif text-[22px] font-semibold uppercase tracking-[0.14em] text-jamm-dark">
+                    JAMM TRADE
+                  </span>
+                  <span className="mt-1 font-sans text-[7px] font-semibold uppercase tracking-[0.32em] text-jamm-muted">
+                    From Essentials to Enterprise
+                  </span>
+                </span>
               </Link>
               <button
                 type="button"

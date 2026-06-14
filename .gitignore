@@ -13,5 +13,6 @@ out/
 skills-lock.json
 *.log
 *.zip
+design-port/
 
 .vercel

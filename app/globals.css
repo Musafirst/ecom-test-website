@@ -4,12 +4,18 @@
 
 :root {
   --color-dark: #0C0B09;
+  --color-dark-alt: #15130E;
   --color-cream: #F4EFE4;
+  --color-cream-soft: #FBF8F2;
   --color-gold: #C4973A;
-  --color-muted: #7A7060;
+  --color-gold-deep: #6E5214;   /* NEW — gold text on light backgrounds */
+  --color-gold-light: #E8D09A;
+  --color-muted: #514C3E;       /* CHANGED from #7A7060 — legible body copy */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --jamm-container: 1240px;
+  --jamm-pad: clamp(18px, 5vw, 40px);
 }
 
 html {
@@ -31,6 +37,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/brand_assets/patterns/jammtrade-design-lattice.png");
+  background-size: 30px auto;
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 button,
@@ -65,7 +88,6 @@ a {
   background: rgba(196, 151, 58, 0.6);
 }
 
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -82,16 +104,4 @@ a {
   [class*="animate-border-beam"] {
     animation: none !important;
   }
-}
-
-/* Background hero video: never show the native iOS/Safari play overlay */
-.hero-video::-webkit-media-controls,
-.hero-video::-webkit-media-controls-enclosure,
-.hero-video::-webkit-media-controls-panel,
-.hero-video::-webkit-media-controls-overlay-play-button,
-.hero-video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-  -webkit-appearance: none;
-  appearance: none;
-  opacity: 0 !important;
 }

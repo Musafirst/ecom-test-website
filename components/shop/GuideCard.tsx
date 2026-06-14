@@ -9,7 +9,7 @@ type GuideCardProps = {
 
 export function GuideCard({ article, compact = false }: GuideCardProps) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-jamm-gold/20 bg-[#EDE8DC]/70 shadow-[0_16px_38px_rgba(12,11,9,0.06)] transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-jamm-gold/45 hover:shadow-[0_22px_48px_rgba(12,11,9,0.09)]">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[16px] border border-jamm-dark/10 bg-[#FBF8F2] shadow-[0_1px_2px_rgba(20,15,5,0.05),0_14px_34px_-22px_rgba(20,15,5,0.35)] transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-jamm-gold/45">
       {article.heroImage && !compact && (
         <Link href={`/shop/guides/${article.slug}`} className="relative block aspect-[16/9] overflow-hidden bg-jamm-dark">
           <Image
@@ -27,7 +27,7 @@ export function GuideCard({ article, compact = false }: GuideCardProps) {
           <span className="text-jamm-gold">{article.category}</span>
           <span>{article.readTime}</span>
         </div>
-        <h3 className="font-sans text-xl font-semibold leading-tight text-jamm-dark sm:text-2xl">
+        <h3 className="font-serif text-[clamp(1.6rem,4.4vw,2rem)] font-semibold leading-[1.05] text-jamm-dark">
           <Link href={`/shop/guides/${article.slug}`} className="transition-colors duration-150 hover:text-jamm-gold">
             {article.title}
           </Link>
@@ -37,7 +37,7 @@ export function GuideCard({ article, compact = false }: GuideCardProps) {
         </p>
         <Link
           href={`/shop/guides/${article.slug}`}
-          className="mt-5 inline-flex min-h-11 w-fit items-center rounded-md bg-jamm-dark px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-cream transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
+          className="mt-5 inline-flex min-h-11 w-fit items-center rounded-[11px] border border-jamm-gold/35 bg-jamm-dark px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-cream transition-colors duration-200 hover:bg-jamm-gold hover:text-jamm-dark"
         >
           Read Guide
         </Link>

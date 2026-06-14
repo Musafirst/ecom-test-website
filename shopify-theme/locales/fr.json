@@ -63,7 +63,7 @@
     "cargo_copy": "Demandes de devis d’expédition"
   },
   "announcement": {
-    "default": "Produits sélectionnés &nbsp;&nbsp;-&nbsp;&nbsp; Paiement Shopify sécurisé &nbsp;&nbsp;-&nbsp;&nbsp; Options de livraison claires au paiement &nbsp;&nbsp;-&nbsp;&nbsp; Assistance client quand vous en avez besoin &nbsp;&nbsp;-&nbsp;&nbsp;"
+    "default": "Produits sélectionnés &nbsp;&nbsp;·&nbsp;&nbsp; Paiement Shopify sécurisé &nbsp;&nbsp;·&nbsp;&nbsp; Options de livraison claires au paiement &nbsp;&nbsp;·&nbsp;&nbsp; Assistance client quand vous en avez besoin"
   },
   "shop": {
     "curated_selection": "Sélection choisie",
