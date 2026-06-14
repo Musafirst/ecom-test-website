@@ -63,7 +63,7 @@
     "cargo_copy": "Shipping quote requests"
   },
   "announcement": {
-    "default": "Curated products &nbsp;&nbsp;·&nbsp;&nbsp; Secure Shopify checkout &nbsp;&nbsp;·&nbsp;&nbsp; Clear shipping options at checkout &nbsp;&nbsp;·&nbsp;&nbsp; Customer support when you need it"
+    "default": "Curated products &nbsp;&nbsp;-&nbsp;&nbsp; Secure Shopify checkout &nbsp;&nbsp;-&nbsp;&nbsp; Clear shipping options at checkout &nbsp;&nbsp;-&nbsp;&nbsp; Customer support when you need it &nbsp;&nbsp;-&nbsp;&nbsp;"
   },
   "shop": {
     "curated_selection": "Curated selection",

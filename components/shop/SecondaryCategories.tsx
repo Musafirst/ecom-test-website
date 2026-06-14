@@ -37,29 +37,29 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
   ]
 
   return (
-    <section className="bg-transparent px-[var(--jamm-pad)] py-[clamp(48px,8vw,86px)] pt-0">
-      <div className="mx-auto max-w-[1240px]">
+    <section className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
+      <div className="mx-auto max-w-[1560px]">
         <motion.div
-          className="mb-[clamp(26px,4vw,40px)]"
+          className="mb-5 sm:mb-7"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="mb-0 font-sans text-[11px] font-bold uppercase tracking-[0.24em] text-jamm-gold-deep">{t('secondary.kicker')}</p>
+          <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">{t('secondary.kicker')}</p>
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-            <h2 className="mt-2 font-serif text-[clamp(2.3rem,6vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.005em] text-jamm-dark">
+            <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
               {t('secondary.title')}
             </h2>
             <p className="max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
               {t('secondary.copy')}
             </p>
           </div>
-          <div className="mt-6 h-px bg-[linear-gradient(90deg,#c4973a_0_60px,rgba(28,22,10,0.12)_60px)] lg:hidden" />
+          <div className="mt-5 h-px bg-gradient-to-r from-jamm-gold/40 via-jamm-gold/15 to-transparent" />
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 gap-[clamp(16px,3vw,22px)] lg:grid-cols-2"
+          className="grid grid-cols-1 gap-4 lg:grid-cols-2"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
@@ -77,7 +77,7 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link href={cat.href} className="group block">
-                <div className="relative min-h-[360px] overflow-hidden rounded-[16px] bg-[linear-gradient(160deg,rgba(216,181,106,0.6),rgba(193,154,69,0.15)_45%,rgba(216,181,106,0.5))] p-[1.5px] transition-transform duration-300 group-hover:-translate-y-1">
+                <div className="relative min-h-[260px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition duration-300 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[320px] sm:rounded-[20px] lg:min-h-[460px]">
                   <BorderBeam size={420} duration={13} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 3} />
                   <Image
                     src={cat.image}
@@ -89,14 +89,14 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
                     loading="lazy"
                   />
                   <div className="absolute inset-0 z-10 bg-[linear-gradient(to_top,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.42)_45%,rgba(0,0,0,0.08)_100%)]" />
-                  <div className="absolute left-[1.5px] top-[1.5px] z-20 rounded-br-[14px] bg-[linear-gradient(135deg,#e0c074,#a37d20)] px-4 py-2 font-sans text-xs font-semibold text-[#241c08] sm:px-5 sm:text-sm">
+                  <div className="absolute left-0 top-0 z-20 rounded-br-[16px] bg-jamm-gold px-4 py-2 font-sans text-xs font-semibold text-jamm-dark sm:px-5 sm:text-sm">
                     {cat.name}
                   </div>
                   <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-7 lg:p-8">
                     <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
                       {cat.copy}
                     </p>
-                    <h3 className="mb-2 font-serif text-2xl font-semibold text-jamm-cream [text-shadow:0_2px_18px_rgba(0,0,0,0.45)] sm:text-3xl">
+                    <h3 className="mb-2 font-sans text-2xl font-semibold text-jamm-cream [text-shadow:0_2px_18px_rgba(0,0,0,0.45)] sm:text-3xl">
                       {cat.name}
                     </h3>
                     <p className="mb-5 max-w-sm font-sans text-sm font-semibold leading-relaxed text-jamm-cream [text-shadow:0_2px_14px_rgba(0,0,0,0.72)]">

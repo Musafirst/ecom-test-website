@@ -63,7 +63,7 @@
     "cargo_copy": "طلبات عروض أسعار الشحن"
   },
   "announcement": {
-    "default": "منتجات مختارة &nbsp;&nbsp;·&nbsp;&nbsp; دفع آمن عبر Shopify &nbsp;&nbsp;·&nbsp;&nbsp; خيارات شحن واضحة عند الدفع &nbsp;&nbsp;·&nbsp;&nbsp; دعم العملاء عند الحاجة"
+    "default": "منتجات مختارة &nbsp;&nbsp;-&nbsp;&nbsp; دفع آمن عبر Shopify &nbsp;&nbsp;-&nbsp;&nbsp; خيارات شحن واضحة عند الدفع &nbsp;&nbsp;-&nbsp;&nbsp; دعم العملاء عند الحاجة &nbsp;&nbsp;-&nbsp;&nbsp;"
   },
   "shop": {
     "curated_selection": "اختيار منتقى",

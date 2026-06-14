@@ -14,10 +14,10 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section id="perfumes" className="bg-transparent px-[var(--jamm-pad)] py-[clamp(48px,8vw,86px)]">
-      <div className="mx-auto max-w-[1240px]">
+    <section id="perfumes" className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
+      <div className="mx-auto max-w-[1560px]">
         <motion.div
-          className="mb-[clamp(26px,4vw,40px)]"
+          className="mb-5 sm:mb-7"
           initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
@@ -25,8 +25,8 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
         >
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <p className="mb-0 font-sans text-[11px] font-bold uppercase tracking-[0.24em] text-jamm-gold-deep">{t('featured.kicker')}</p>
-              <h2 className="mt-2 font-serif text-[clamp(2.3rem,6vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.005em] text-jamm-dark">
+              <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">{t('featured.kicker')}</p>
+              <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
                 {t('featured.title')}
               </h2>
             </div>
@@ -40,11 +40,11 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
               </svg>
             </a>
           </div>
-          <div className="mt-6 h-px bg-[linear-gradient(90deg,#c4973a_0_60px,rgba(28,22,10,0.12)_60px)] lg:hidden" />
+          <div className="mt-5 h-px bg-gradient-to-r from-jamm-gold/40 via-jamm-gold/15 to-transparent" />
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-2 gap-[clamp(14px,3vw,26px)] lg:grid-cols-4"
+          className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
           initial={prefersReducedMotion ? 'visible' : 'hidden'}
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}

@@ -6,19 +6,25 @@
 
     <!-- Logo -->
     <a href="{{ public_shop_url }}" class="header-logo" aria-label="{{ shop.name }}">
-      <img
-        src="{{ 'jamm-trade-logo-badge.png' | asset_url }}"
-        alt=""
-        class="header-logo__mark"
-        width="1254"
-        height="1254"
-        loading="eager"
-        aria-hidden="true"
-      >
-      <span class="header-logo__type">
-        <span class="header-logo__name">JAMM TRADE</span>
-        <span class="header-logo__tag">From Essentials to Enterprise</span>
-      </span>
+      {% if section.settings.logo != blank %}
+        <img
+          src="{{ section.settings.logo | image_url: width: 800 }}"
+          alt="{{ shop.name }}"
+          class="header-logo__img"
+          width="400"
+          height="267"
+          loading="eager"
+        >
+      {% else %}
+        <img
+          src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}"
+          alt="{{ shop.name }}"
+          class="header-logo__img"
+          width="400"
+          height="267"
+          loading="eager"
+        >
+      {% endif %}
     </a>
 
     <!-- Desktop Nav -->
@@ -107,11 +113,11 @@
 >
   <div class="mobile-menu__header">
     <a href="{{ public_shop_url }}" class="mobile-menu__logo" aria-label="{{ shop.name }}">
-      <img src="{{ 'jamm-trade-logo-badge.png' | asset_url }}" alt="" class="header-logo__mark" width="1254" height="1254" aria-hidden="true">
-      <span class="header-logo__type">
-        <span class="header-logo__name">JAMM TRADE</span>
-        <span class="header-logo__tag">From Essentials to Enterprise</span>
-      </span>
+      {% if section.settings.logo != blank %}
+        <img src="{{ section.settings.logo | image_url: width: 600 }}" alt="{{ shop.name }}" class="header-logo__img" width="400" height="267">
+      {% else %}
+        <img src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}" alt="{{ shop.name }}" class="header-logo__img" width="400" height="267">
+      {% endif %}
     </a>
     <button
       type="button"

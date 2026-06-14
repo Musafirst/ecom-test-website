@@ -3,11 +3,9 @@ interface SectionLabelProps {
   className?: string
 }
 
-// Deep, legible gold on light backgrounds (was text-jamm-gold / no weight).
-// Use this for kickers/eyebrows that sit on the cream page — NOT on dark surfaces.
 export function SectionLabel({ children, className = '' }: SectionLabelProps) {
   return (
-    <p className={`text-jamm-gold-deep text-[11px] font-semibold tracking-[0.32em] uppercase font-sans ${className}`}>
+    <p className={`text-jamm-gold text-[11px] tracking-[0.35em] uppercase font-sans ${className}`}>
       {children}
     </p>
   )
