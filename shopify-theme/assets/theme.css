@@ -638,13 +638,13 @@ input, textarea { font-family: inherit; }
 }
 .hero-slide:not(.hero-slide--ecosystem) .hero-slide__bg,
 .hero-slide:not(.hero-slide--ecosystem) .hero-slide__poster {
-  inset: 0 0 172px;
-  height: auto;
+  inset: 0 0 auto;
+  height: calc(100% - 172px);
 }
 @media (min-width: 640px) {
   .hero-slide:not(.hero-slide--ecosystem) .hero-slide__bg,
   .hero-slide:not(.hero-slide--ecosystem) .hero-slide__poster {
-    inset: 0 0 180px;
+    height: calc(100% - 180px);
   }
 }
 @media (min-width: 1024px) {
