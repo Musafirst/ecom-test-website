@@ -10,7 +10,7 @@
           {% if poster_asset != blank %}
             <div class="hero-slide__poster" style="background-image: url('{{ poster_asset | asset_url }}');" aria-hidden="true"></div>
           {% endif %}
-          <video class="hero-slide__bg hero-slide__video" autoplay muted loop playsinline preload="metadata" {% if poster_asset != blank %}poster="{{ poster_asset | asset_url }}"{% endif %} aria-label="{{ block.settings.title | escape }}">
+          <video class="hero-slide__bg hero-slide__video" autoplay muted loop playsinline preload="auto" {% if poster_asset != blank %}poster="{{ poster_asset | asset_url }}"{% endif %} aria-label="{{ block.settings.title | escape }}">
             <source src="{{ block.settings.video_asset | asset_url }}" type="video/mp4">
           </video>
         {% elsif block.settings.image != blank %}
