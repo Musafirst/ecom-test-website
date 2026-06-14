@@ -129,7 +129,7 @@ export function HeroSection() {
     <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
       <motion.div
         className={`relative mx-auto max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:rounded-[24px] lg:h-auto lg:max-h-[820px] lg:min-h-[620px] lg:rounded-[28px] ${
-          isEcosystemSlide ? 'aspect-[16/9] min-h-[220px] max-h-[58svh] lg:aspect-auto' : 'h-[min(560px,78svh)] min-h-[500px]'
+          isEcosystemSlide ? 'aspect-[8/5] min-h-0 max-h-none lg:aspect-auto' : 'h-[min(560px,78svh)] min-h-[500px]'
         }`}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -148,11 +148,11 @@ export function HeroSection() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.id}
-              className="absolute -inset-3 lg:-inset-5"
+              className="absolute inset-0 lg:-inset-5"
               style={isMobileHero ? undefined : { x: springX, y: springY }}
-              initial={isMobileHero ? { opacity: 0, scale: 1.03, y: 12 } : { opacity: 0, scale: 1.04 }}
-              animate={isMobileHero ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1 }}
-              exit={isMobileHero ? { opacity: 0, scale: 1.01, y: -8 } : { opacity: 0, scale: 1.01 }}
+              initial={isMobileHero ? { opacity: 0, y: 12 } : { opacity: 0, scale: 1.04 }}
+              animate={isMobileHero ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }}
+              exit={isMobileHero ? { opacity: 0, y: -8 } : { opacity: 0, scale: 1.01 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
               whileHover={isMobileHero ? undefined : { scale: 1.025 }}
             >
