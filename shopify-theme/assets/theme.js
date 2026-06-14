@@ -238,6 +238,11 @@
       video.addEventListener('error', function () {
         video.classList.add('is-autoplay-blocked');
       });
+      var replayWhenReady = function () {
+        if (slide.classList.contains('is-active')) attemptVideoPlayback(video);
+      };
+      video.addEventListener('loadeddata', replayWhenReady);
+      video.addEventListener('canplay', replayWhenReady);
     });
 
     attemptVideoPlayback(slides[current] && slides[current].querySelector('video'));

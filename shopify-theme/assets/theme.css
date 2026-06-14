@@ -672,6 +672,16 @@ input, textarea { font-family: inherit; }
 .hero-slide__video.is-autoplay-blocked {
   opacity: 0;
 }
+.hero-slide__video::-webkit-media-controls,
+.hero-slide__video::-webkit-media-controls-enclosure,
+.hero-slide__video::-webkit-media-controls-panel,
+.hero-slide__video::-webkit-media-controls-overlay-play-button,
+.hero-slide__video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  opacity: 0 !important;
+}
 .hero-slide__poster {
   position: absolute;
   inset: 0;

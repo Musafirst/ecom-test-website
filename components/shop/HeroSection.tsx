@@ -157,12 +157,16 @@ export function HeroSection() {
     }
 
     const frame = window.requestAnimationFrame(attemptPlayback)
+    video.addEventListener('loadeddata', attemptPlayback)
+    video.addEventListener('canplay', attemptPlayback)
     window.addEventListener('pointerdown', retryAfterInteraction, { once: true, passive: true })
     window.addEventListener('touchstart', retryAfterInteraction, { once: true, passive: true })
     window.addEventListener('click', retryAfterInteraction, { once: true })
 
     return () => {
       window.cancelAnimationFrame(frame)
+      video.removeEventListener('loadeddata', attemptPlayback)
+      video.removeEventListener('canplay', attemptPlayback)
       window.removeEventListener('pointerdown', retryAfterInteraction)
       window.removeEventListener('touchstart', retryAfterInteraction)
       window.removeEventListener('click', retryAfterInteraction)
@@ -213,7 +217,7 @@ export function HeroSection() {
                   />
                   <video
                     ref={activeVideoRef}
-                    className={`h-full w-full bg-[#101112] object-cover object-center transition-opacity duration-300 ${
+                    className={`hero-video h-full w-full bg-[#101112] object-cover object-center transition-opacity duration-300 ${
                       videoAutoplayBlocked ? 'opacity-0' : 'opacity-100'
                     }`}
                     autoPlay
