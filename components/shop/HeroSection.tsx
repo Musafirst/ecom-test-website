@@ -154,7 +154,7 @@ export function HeroSection() {
             >
               {activeSlide.video ? (
                 <video
-                  className="h-full w-full object-cover object-center"
+                  className="h-full w-full object-contain object-center bg-[#101112] sm:object-cover"
                   autoPlay
                   muted
                   loop

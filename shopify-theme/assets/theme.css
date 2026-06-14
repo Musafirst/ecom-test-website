@@ -633,6 +633,12 @@ input, textarea { font-family: inherit; }
 .hero-slide__bg--placeholder { background: linear-gradient(135deg, #1a1812, #2a2518); }
 .hero-slide__video {
   background: var(--color-hero);
+  object-fit: contain;
+}
+@media (min-width: 640px) {
+  .hero-slide__video {
+    object-fit: cover;
+  }
 }
 .hero-slide__poster {
   position: absolute;
