@@ -151,6 +151,34 @@
     var autoTimer = null;
     var SPEED     = parseInt(slider.dataset.speed || '6000', 10);
 
+    function attemptVideoPlayback(video) {
+      if (!video) return;
+
+      video.defaultMuted = true;
+      video.muted = true;
+      video.playsInline = true;
+
+      var playPromise = video.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise
+          .then(function () {
+            video.classList.remove('is-autoplay-blocked');
+          })
+          .catch(function () {
+            video.classList.add('is-autoplay-blocked');
+          });
+      }
+    }
+
+    function retryBlockedVideos() {
+      slides.forEach(function (slide) {
+        var video = slide.querySelector('video.is-autoplay-blocked');
+        if (video && slide.classList.contains('is-active')) {
+          attemptVideoPlayback(video);
+        }
+      });
+    }
+
     function goTo(index) {
       slides[current].classList.remove('is-active');
       var currentVideo = slides[current].querySelector('video');
@@ -162,7 +190,7 @@
 
       slides[current].classList.add('is-active');
       var nextVideo = slides[current].querySelector('video');
-      if (nextVideo) nextVideo.play().catch(function () {});
+      attemptVideoPlayback(nextVideo);
       dots[current] && dots[current].classList.add('is-active');
       dots[current] && dots[current].setAttribute('aria-selected', 'true');
     }
@@ -199,6 +227,23 @@
         startAuto();
       }
     }, { passive: true });
+
+    slides.forEach(function (slide) {
+      var video = slide.querySelector('video');
+      if (!video) return;
+
+      video.addEventListener('playing', function () {
+        video.classList.remove('is-autoplay-blocked');
+      });
+      video.addEventListener('error', function () {
+        video.classList.add('is-autoplay-blocked');
+      });
+    });
+
+    attemptVideoPlayback(slides[current] && slides[current].querySelector('video'));
+    window.addEventListener('pointerdown', retryBlockedVideos, { once: true, passive: true });
+    window.addEventListener('touchstart', retryBlockedVideos, { once: true, passive: true });
+    window.addEventListener('click', retryBlockedVideos, { once: true });
 
     if (slides.length > 1) startAuto();
   }

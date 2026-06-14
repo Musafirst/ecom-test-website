@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -45,6 +45,8 @@ export function HeroSection() {
   const [isMobileHero, setIsMobileHero] = useState(false)
   const [holdEcosystemPreview, setHoldEcosystemPreview] = useState(false)
   const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
+  const [videoAutoplayBlocked, setVideoAutoplayBlocked] = useState(false)
+  const activeVideoRef = useRef<HTMLVideoElement | null>(null)
   const springX = useSpring(0, { stiffness: 80, damping: 20 })
   const springY = useSpring(0, { stiffness: 80, damping: 20 })
   const prefersReducedMotion = useReducedMotion()
@@ -125,11 +127,53 @@ export function HeroSection() {
     return () => window.clearInterval(timer)
   }, [autoSlideResetKey, holdEcosystemPreview, prefersReducedMotion])
 
+  useEffect(() => {
+    setVideoAutoplayBlocked(false)
+
+    if (!activeSlide.video) return
+
+    const video = activeVideoRef.current
+    if (!video) return
+
+    video.defaultMuted = true
+    video.muted = true
+    video.playsInline = true
+
+    const attemptPlayback = () => {
+      const playPromise = video.play()
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setVideoAutoplayBlocked(false))
+          .catch(() => setVideoAutoplayBlocked(true))
+      }
+    }
+
+    const retryAfterInteraction = () => {
+      attemptPlayback()
+      window.removeEventListener('pointerdown', retryAfterInteraction)
+      window.removeEventListener('touchstart', retryAfterInteraction)
+      window.removeEventListener('click', retryAfterInteraction)
+    }
+
+    const frame = window.requestAnimationFrame(attemptPlayback)
+    window.addEventListener('pointerdown', retryAfterInteraction, { once: true, passive: true })
+    window.addEventListener('touchstart', retryAfterInteraction, { once: true, passive: true })
+    window.addEventListener('click', retryAfterInteraction, { once: true })
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('pointerdown', retryAfterInteraction)
+      window.removeEventListener('touchstart', retryAfterInteraction)
+      window.removeEventListener('click', retryAfterInteraction)
+    }
+  }, [activeSlide.video, activeIndex])
+
   return (
     <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
       <motion.div
         className={`relative mx-auto max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:rounded-[24px] lg:h-auto lg:max-h-[820px] lg:min-h-[620px] lg:rounded-[28px] ${
-          isEcosystemSlide ? 'aspect-[8/5] min-h-0 max-h-none lg:aspect-auto' : 'h-[min(560px,78svh)] min-h-[500px]'
+          isEcosystemSlide ? 'aspect-[8/5] min-h-0 max-h-none lg:aspect-auto' : 'h-[440px] min-h-0 sm:h-[500px] lg:h-auto lg:min-h-[620px]'
         }`}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -143,7 +187,7 @@ export function HeroSection() {
       >
         <BorderBeam size={520} duration={13} borderWidth={3} colorFrom="#C4973A" colorTo="#F8E7A6" />
         <div className={`absolute overflow-hidden bg-[#101112] ${
-          isEcosystemSlide ? 'inset-0' : 'inset-x-0 top-0 bottom-[180px] lg:inset-0'
+          isEcosystemSlide ? 'inset-0' : 'inset-x-0 top-0 bottom-[172px] sm:bottom-[180px] lg:inset-0'
         }`}>
           <AnimatePresence mode="wait">
             <motion.div
@@ -157,18 +201,36 @@ export function HeroSection() {
               whileHover={isMobileHero ? undefined : { scale: 1.025 }}
             >
               {activeSlide.video ? (
-                <video
-                  className="h-full w-full bg-[#101112] object-contain object-center lg:object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster={activeSlide.poster ?? activeSlide.image}
-                  aria-label={activeTitle}
-                >
-                  <source src={activeSlide.video} type="video/mp4" />
-                </video>
+                <>
+                  <Image
+                    src={activeSlide.poster ?? activeSlide.image}
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    quality={82}
+                    className="bg-[#101112] object-cover object-center"
+                    aria-hidden="true"
+                  />
+                  <video
+                    ref={activeVideoRef}
+                    className={`h-full w-full bg-[#101112] object-cover object-center transition-opacity duration-300 ${
+                      videoAutoplayBlocked ? 'opacity-0' : 'opacity-100'
+                    }`}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    poster={activeSlide.poster ?? activeSlide.image}
+                    aria-label={activeTitle}
+                    controls={false}
+                    disablePictureInPicture
+                    onPlaying={() => setVideoAutoplayBlocked(false)}
+                    onError={() => setVideoAutoplayBlocked(true)}
+                  >
+                    <source src={activeSlide.video} type="video/mp4" />
+                  </video>
+                </>
               ) : (
                 <Image
                   src={activeSlide.image}
