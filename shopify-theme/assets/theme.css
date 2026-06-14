@@ -654,6 +654,24 @@ input, textarea { font-family: inherit; }
     height: 100%;
   }
 }
+/* Mobile: show the full hero scene instead of cropping (no zoom); dark letterbox blends with the scene */
+.hero-slide:not(.hero-slide--ecosystem) .hero-slide__bg,
+.hero-slide:not(.hero-slide--ecosystem) .hero-slide__video {
+  object-fit: contain;
+}
+.hero-slide:not(.hero-slide--ecosystem) .hero-slide__poster {
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+@media (min-width: 1024px) {
+  .hero-slide:not(.hero-slide--ecosystem) .hero-slide__bg,
+  .hero-slide:not(.hero-slide--ecosystem) .hero-slide__video {
+    object-fit: cover;
+  }
+  .hero-slide:not(.hero-slide--ecosystem) .hero-slide__poster {
+    background-size: cover;
+  }
+}
 @media (min-width: 1024px) {
   .hero-slide__bg {
     transform: scale(1.04);

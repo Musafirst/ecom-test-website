@@ -2,8 +2,8 @@
 <div class="announcement-bar" aria-label="Announcement">
   <div class="announcement-marquee">
     <span class="announcement-track" aria-hidden="false">
-      {%- if section.settings.text != blank -%}{{ section.settings.text }}{%- else -%}{{ 'announcement.default' | t }}{%- endif -%}
-      {%- if section.settings.text != blank -%}{{ section.settings.text }}{%- else -%}{{ 'announcement.default' | t }}{%- endif -%}
+      {{ section.settings.text }}
+      {{ section.settings.text }}
     </span>
   </div>
 </div>
@@ -22,8 +22,8 @@
     {
       "type": "text",
       "id": "text",
-      "label": "Announcement text (leave blank to use the translated default)",
-      "default": ""
+      "label": "Announcement text",
+      "default": "Curated products · Secure Shopify checkout · Clear shipping options at checkout · Customer support when you need it ·"
     }
   ]
 }
