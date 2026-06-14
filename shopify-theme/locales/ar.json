@@ -11,17 +11,25 @@
   "products": {
     "product": {
       "add_to_cart": "أضف إلى السلة",
+      "buy_now": "اشترِ الآن",
       "sold_out": "غير متوفر",
-      "view_product": "عرض المنتج"
+      "view_product": "عرض المنتج",
+      "sale": "تخفيض",
+      "quantity": "الكمية",
+      "read_more": "اقرأ المزيد",
+      "show_less": "عرض أقل"
     }
   },
   "cart": {
     "general": {
       "title": "سلتك",
       "empty": "سلتك فارغة",
+      "empty_sub": "أضف شيئًا من المتجر للبدء.",
+      "browse_products": "تصفّح المنتجات",
       "checkout": "الدفع",
       "continue_shopping": "متابعة التسوق",
       "remove": "إزالة",
+      "order_summary": "ملخص الطلب",
       "subtotal": "المجموع الفرعي",
       "taxes_note": "تُحسب الضرائب والشحن عند الدفع."
     }
@@ -35,7 +43,7 @@
     "main": "التنقل الرئيسي",
     "mobile": "تنقل الجوال",
     "shop": "المتجر",
-    "about": "About",
+    "about": "من نحن",
     "collections": "المجموعات",
     "guides": "أدلة العطور",
     "services": "الخدمات",

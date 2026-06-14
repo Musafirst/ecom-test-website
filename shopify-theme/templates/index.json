@@ -7,6 +7,8 @@
           "type": "slide",
           "settings": {
             "asset_image": "hero-main-commerce.webp",
+            "video_asset": "jamm-trade-cinematic-hero.mp4",
+            "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg",
             "category": "Jamm Trade",
             "title": "From essentials to enterprise.",
             "subtitle": "Curated fragrances, fashion, and everyday goods selected with intention.",
@@ -18,6 +20,8 @@
           "type": "slide",
           "settings": {
             "asset_image": "hero-perfumes.webp",
+            "video_asset": "jamm-trade-cinematic-hero.mp4",
+            "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg",
             "category": "Fragrances",
             "title": "Signature scents, selected with care.",
             "subtitle": "Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.",
@@ -29,6 +33,8 @@
           "type": "slide",
           "settings": {
             "asset_image": "hero-electronics.webp",
+            "video_asset": "jamm-trade-cinematic-hero.mp4",
+            "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg",
             "category": "Electronics",
             "title": "Everyday tech, refined.",
             "subtitle": "Useful electronics and accessories selected for quality, simplicity, and daily use.",
@@ -40,11 +46,33 @@
           "type": "slide",
           "settings": {
             "asset_image": "hero-clothing.webp",
+            "video_asset": "jamm-trade-cinematic-hero.mp4",
+            "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg",
             "category": "Clothing",
             "title": "Wear the mark.",
             "subtitle": "Minimal clothing pieces built around comfort, identity, and quiet detail.",
             "cta_label": "Shop Clothing",
             "cta_url": "https://www.jammtrade.com/shop/collection/clothing"
+          }
+        },
+        "slide-5": {
+          "type": "slide",
+          "settings": {
+            "asset_image": "jamm-trade-ecosystem-poster-1600.jpg",
+            "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg",
+            "enable_hotspots": true,
+            "category": "Jamm Trade Ecosystem",
+            "title": "From essentials to enterprise.",
+            "subtitle": "Luxury fragrances, technology, apparel, mobility and logistics — connected through one ecosystem.",
+            "cta_label": "Explore Collections",
+            "cta_url": "https://www.jammtrade.com/shop#collections",
+            "secondary_cta_label": "Discover Our Services",
+            "secondary_cta_url": "https://www.jammtrade.com/jamm-fleet",
+            "apparel_url": "https://www.jammtrade.com/shop/collection/clothing",
+            "fragrance_url": "https://www.jammtrade.com/shop/category/perfumes",
+            "electronics_url": "https://www.jammtrade.com/shop/category/electronics",
+            "fleet_url": "https://www.jammtrade.com/jamm-fleet",
+            "cargo_url": "https://www.jammtrade.com/jamm-cargo"
           }
         }
       },
@@ -52,7 +80,8 @@
         "slide-1",
         "slide-2",
         "slide-3",
-        "slide-4"
+        "slide-4",
+        "slide-5"
       ],
       "settings": {
         "autoplay_speed": 6

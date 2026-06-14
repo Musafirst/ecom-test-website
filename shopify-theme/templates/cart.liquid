@@ -9,9 +9,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Continue shopping
+        {{ 'cart.general.continue_shopping' | t }}
       </a>
-      <h1 class="cart-header__title">Your Cart</h1>
+      <h1 class="cart-header__title">{{ 'cart.general.title' | t }}</h1>
     </div>
 
     {% if cart.item_count > 0 %}
@@ -66,7 +66,7 @@
                       data-line="{{ forloop.index }}"
                       aria-label="Remove {{ item.title | escape }} from cart"
                     >
-                      Remove
+                      {{ 'cart.general.remove' | t }}
                     </button>
                   </div>
                 </div>
@@ -77,24 +77,24 @@
           <!-- Order summary -->
           <div class="cart-summary">
             <div class="cart-summary__inner">
-              <h2 class="cart-summary__title">Order Summary</h2>
+              <h2 class="cart-summary__title">{{ 'cart.general.order_summary' | t }}</h2>
 
               <div class="cart-summary__row">
-                <span>Subtotal</span>
+                <span>{{ 'cart.general.subtotal' | t }}</span>
                 <span>{{ cart.total_price | money }}</span>
               </div>
 
-              <p class="cart-summary__note">Taxes and shipping calculated at checkout.</p>
+              <p class="cart-summary__note">{{ 'cart.general.taxes_note' | t }}</p>
 
               <button type="submit" name="checkout" class="btn btn--primary btn--full cart-summary__checkout">
-                Checkout
+                {{ 'cart.general.checkout' | t }}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
 
               <a href="{{ public_shop_url }}" class="cart-summary__continue">
-                ← Continue shopping
+                ← {{ 'cart.general.continue_shopping' | t }}
               </a>
             </div>
           </div>
@@ -109,9 +109,9 @@
           <circle cx="9" cy="20" r="1"/>
           <circle cx="17" cy="20" r="1"/>
         </svg>
-        <h2 class="cart-empty__title">Your cart is empty</h2>
-        <p class="cart-empty__sub">Add something from the shop to get started.</p>
-        <a href="{{ public_shop_url }}" class="btn btn--primary">Browse products</a>
+        <h2 class="cart-empty__title">{{ 'cart.general.empty' | t }}</h2>
+        <p class="cart-empty__sub">{{ 'cart.general.empty_sub' | t }}</p>
+        <a href="{{ public_shop_url }}" class="btn btn--primary">{{ 'cart.general.browse_products' | t }}</a>
       </div>
     {% endif %}
 

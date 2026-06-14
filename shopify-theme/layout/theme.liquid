@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html lang="{{ request.locale.iso_code }}" dir="{% if request.locale.iso_code == 'ar' %}rtl{% else %}ltr{% endif %}">
 <head>
   {% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
   <meta charset="utf-8">

@@ -11,17 +11,25 @@
   "products": {
     "product": {
       "add_to_cart": "Agregar al carrito",
+      "buy_now": "Comprar ahora",
       "sold_out": "Agotado",
-      "view_product": "Ver producto"
+      "view_product": "Ver producto",
+      "sale": "Oferta",
+      "quantity": "Cant.",
+      "read_more": "Leer más",
+      "show_less": "Ver menos"
     }
   },
   "cart": {
     "general": {
       "title": "Tu carrito",
       "empty": "Tu carrito está vacío",
+      "empty_sub": "Añade algo de la tienda para empezar.",
+      "browse_products": "Explorar productos",
       "checkout": "Pagar",
       "continue_shopping": "Seguir comprando",
       "remove": "Eliminar",
+      "order_summary": "Resumen del pedido",
       "subtotal": "Subtotal",
       "taxes_note": "Impuestos y envío calculados al pagar."
     }

@@ -4,8 +4,16 @@
 
     {% for block in section.blocks %}
       {% if block.type == 'slide' %}
-      <div class="hero-slide{% if forloop.first %} is-active{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-        {% if block.settings.image != blank %}
+      <div class="hero-slide{% if forloop.first %} is-active{% endif %}{% if block.settings.enable_hotspots %} hero-slide--ecosystem{% endif %}" data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+        {% if block.settings.video_asset != blank %}
+          {% assign poster_asset = block.settings.poster_asset | default: block.settings.asset_image %}
+          {% if poster_asset != blank %}
+            <div class="hero-slide__poster" style="background-image: url('{{ poster_asset | asset_url }}');" aria-hidden="true"></div>
+          {% endif %}
+          <video class="hero-slide__bg hero-slide__video" autoplay muted loop playsinline preload="metadata" {% if poster_asset != blank %}poster="{{ poster_asset | asset_url }}"{% endif %} aria-label="{{ block.settings.title | escape }}">
+            <source src="{{ block.settings.video_asset | asset_url }}" type="video/mp4">
+          </video>
+        {% elsif block.settings.image != blank %}
           <img src="{{ block.settings.image | image_url: width: 2000 }}" srcset="{{ block.settings.image | image_url: width: 800 }} 800w, {{ block.settings.image | image_url: width: 1400 }} 1400w, {{ block.settings.image | image_url: width: 2000 }} 2000w" sizes="100vw" alt="{{ block.settings.title | escape }}" class="hero-slide__bg" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% if forloop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
         {% elsif block.settings.asset_image != blank %}
           {% assign asset_image_width = 1800 %}
@@ -25,16 +33,33 @@
           <div class="hero-slide__bg hero-slide__bg--placeholder"></div>
         {% endif %}
         <div class="hero-slide__overlay"></div>
-        <div class="hero-slide__content">
-          <div class="hero-card">
-            {% if block.settings.category != blank %}<p class="hero-card__eyebrow">{{ block.settings.category }}</p>{% endif %}
-            <h2 class="hero-card__title">{{ block.settings.title | default: shop.name }}</h2>
-            <p class="hero-card__subtitle">{{ block.settings.subtitle }}</p>
-            {% if block.settings.cta_label != blank and block.settings.cta_url != blank %}
-              <a href="{{ block.settings.cta_url }}" class="hero-card__cta">{{ block.settings.cta_label }}</a>
-            {% endif %}
+        {% if block.settings.enable_hotspots %}
+          <div class="hero-slide__ecosystem-glow" aria-hidden="true"></div>
+          <div class="hero-hotspots">
+            <a class="hero-hotspot hero-hotspot--fleet" href="{{ block.settings.fleet_url }}" aria-label="Rent with Jamm Fleet"></a>
+            <a class="hero-hotspot hero-hotspot--perfume" href="{{ block.settings.fragrance_url }}" aria-label="Shop Fragrances"></a>
+            <a class="hero-hotspot hero-hotspot--cargo" href="{{ block.settings.cargo_url }}" aria-label="Ship with Jamm Cargo"></a>
+            <a class="hero-hotspot hero-hotspot--electronics" href="{{ block.settings.electronics_url }}" aria-label="Shop Electronics"></a>
+            <a class="hero-hotspot hero-hotspot--apparel" href="{{ block.settings.apparel_url }}" aria-label="Shop Apparel"></a>
           </div>
-        </div>
+        {% endif %}
+        {% unless block.settings.enable_hotspots %}
+          <div class="hero-slide__content">
+            <div class="hero-card">
+              {% if block.settings.category != blank %}<p class="hero-card__eyebrow">{{ block.settings.category }}</p>{% endif %}
+              <h2 class="hero-card__title">{{ block.settings.title | default: shop.name }}</h2>
+              <p class="hero-card__subtitle">{{ block.settings.subtitle }}</p>
+              <div class="hero-card__actions">
+                {% if block.settings.cta_label != blank and block.settings.cta_url != blank %}
+                  <a href="{{ block.settings.cta_url }}" class="hero-card__cta">{{ block.settings.cta_label }}</a>
+                {% endif %}
+                {% if block.settings.secondary_cta_label != blank and block.settings.secondary_cta_url != blank %}
+                  <a href="{{ block.settings.secondary_cta_url }}" class="hero-card__cta hero-card__cta--secondary">{{ block.settings.secondary_cta_label }}</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endunless %}
       </div>
       {% endif %}
     {% endfor %}
@@ -63,11 +88,21 @@
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Background image" },
         { "type": "text", "id": "asset_image", "label": "Fallback theme asset filename" },
+        { "type": "text", "id": "video_asset", "label": "Video asset filename" },
+        { "type": "text", "id": "poster_asset", "label": "Video poster asset filename" },
+        { "type": "checkbox", "id": "enable_hotspots", "label": "Enable ecosystem hotspots", "default": false },
         { "type": "text", "id": "category", "label": "Eyebrow label", "default": "Jamm Trade" },
         { "type": "text", "id": "title", "label": "Heading", "default": "From essentials to enterprise." },
         { "type": "textarea", "id": "subtitle", "label": "Subheading", "default": "Curated fragrances, fashion, and everyday goods selected with intention." },
         { "type": "text", "id": "cta_label", "label": "Button label", "default": "Explore Products" },
-        { "type": "url", "id": "cta_url", "label": "Button URL" }
+        { "type": "url", "id": "cta_url", "label": "Button URL" },
+        { "type": "text", "id": "secondary_cta_label", "label": "Secondary button label" },
+        { "type": "url", "id": "secondary_cta_url", "label": "Secondary button URL" },
+        { "type": "url", "id": "apparel_url", "label": "Apparel hotspot URL" },
+        { "type": "url", "id": "fragrance_url", "label": "Fragrance hotspot URL" },
+        { "type": "url", "id": "electronics_url", "label": "Electronics hotspot URL" },
+        { "type": "url", "id": "fleet_url", "label": "Fleet hotspot URL" },
+        { "type": "url", "id": "cargo_url", "label": "Cargo hotspot URL" }
       ]
     }
   ],
@@ -76,10 +111,11 @@
     {
       "name": "Hero Slideshow",
       "blocks": [
-        { "type": "slide", "settings": { "asset_image": "hero-main-commerce.webp", "category": "Jamm Trade", "title": "From essentials to enterprise.", "subtitle": "Curated fragrances, fashion, and everyday goods selected with intention.", "cta_label": "Explore Products" } },
-        { "type": "slide", "settings": { "asset_image": "hero-perfumes.webp", "category": "Fragrances", "title": "Signature scents, selected with care.", "subtitle": "Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.", "cta_label": "Shop Perfumes" } },
-        { "type": "slide", "settings": { "asset_image": "hero-electronics.webp", "category": "Electronics", "title": "Everyday tech, refined.", "subtitle": "Useful electronics and accessories selected for quality, simplicity, and daily use.", "cta_label": "Shop Electronics" } },
-        { "type": "slide", "settings": { "asset_image": "hero-clothing.webp", "category": "Clothing", "title": "Wear the mark.", "subtitle": "Minimal clothing pieces built around comfort, identity, and quiet detail.", "cta_label": "Shop Clothing" } }
+        { "type": "slide", "settings": { "asset_image": "hero-main-commerce.webp", "video_asset": "jamm-trade-cinematic-hero.mp4", "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg", "category": "Jamm Trade", "title": "From essentials to enterprise.", "subtitle": "Curated fragrances, fashion, and everyday goods selected with intention.", "cta_label": "Explore Products" } },
+        { "type": "slide", "settings": { "asset_image": "hero-perfumes.webp", "video_asset": "jamm-trade-cinematic-hero.mp4", "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg", "category": "Fragrances", "title": "Signature scents, selected with care.", "subtitle": "Oud, amber, rose, musk, and everyday fragrances chosen for presence and balance.", "cta_label": "Shop Perfumes" } },
+        { "type": "slide", "settings": { "asset_image": "hero-electronics.webp", "video_asset": "jamm-trade-cinematic-hero.mp4", "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg", "category": "Electronics", "title": "Everyday tech, refined.", "subtitle": "Useful electronics and accessories selected for quality, simplicity, and daily use.", "cta_label": "Shop Electronics" } },
+        { "type": "slide", "settings": { "asset_image": "hero-clothing.webp", "video_asset": "jamm-trade-cinematic-hero.mp4", "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg", "category": "Clothing", "title": "Wear the mark.", "subtitle": "Minimal clothing pieces built around comfort, identity, and quiet detail.", "cta_label": "Shop Clothing" } },
+        { "type": "slide", "settings": { "asset_image": "jamm-trade-ecosystem-poster-1600.jpg", "poster_asset": "jamm-trade-ecosystem-poster-1600.jpg", "enable_hotspots": true, "category": "Jamm Trade Ecosystem", "title": "From essentials to enterprise.", "subtitle": "Luxury fragrances, technology, apparel, mobility and logistics — connected through one ecosystem.", "cta_label": "Explore Collections", "secondary_cta_label": "Discover Our Services" } }
       ]
     }
   ]

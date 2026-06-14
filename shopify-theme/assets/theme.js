@@ -153,12 +153,16 @@
 
     function goTo(index) {
       slides[current].classList.remove('is-active');
+      var currentVideo = slides[current].querySelector('video');
+      if (currentVideo) currentVideo.pause();
       dots[current] && dots[current].classList.remove('is-active');
       dots[current] && dots[current].setAttribute('aria-selected', 'false');
 
       current = (index + slides.length) % slides.length;
 
       slides[current].classList.add('is-active');
+      var nextVideo = slides[current].querySelector('video');
+      if (nextVideo) nextVideo.play().catch(function () {});
       dots[current] && dots[current].classList.add('is-active');
       dots[current] && dots[current].setAttribute('aria-selected', 'true');
     }

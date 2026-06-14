@@ -44,11 +44,11 @@
       {% endif %}
 
       {% if product.compare_at_price > product.price %}
-        <span class="product-card__badge product-card__badge--sale">Sale</span>
+        <span class="product-card__badge product-card__badge--sale">{{ 'products.product.sale' | t }}</span>
       {% endif %}
 
       <span class="product-card__overlay" aria-hidden="true">
-        <span class="product-card__view">View Product</span>
+        <span class="product-card__view">{{ 'products.product.view_product' | t }}</span>
       </span>
     </div>
 
@@ -76,9 +76,9 @@
     {% unless product.available %}disabled{% endunless %}
   >
     {% if product.available %}
-      Add to Cart
+      {{ 'products.product.add_to_cart' | t }}
     {% else %}
-      Sold Out
+      {{ 'products.product.sold_out' | t }}
     {% endif %}
   </button>
 </div>

@@ -11,16 +11,46 @@ import { useLocale } from '@/components/i18n/LocaleProvider'
 
 const swipeConfidenceThreshold = 80
 
+const ecosystemHotspots = [
+  {
+    label: 'Shop Apparel',
+    href: '/shop/collection/clothing',
+    className: 'left-[73%] top-[31%] h-[43%] w-[20%] md:left-[72%] md:top-[27%] md:h-[46%] md:w-[22%]',
+  },
+  {
+    label: 'Shop Fragrances',
+    href: '/shop/category/perfumes',
+    className: 'left-[25%] top-[52%] h-[31%] w-[19%] md:left-[24%] md:top-[49%] md:h-[34%] md:w-[20%]',
+  },
+  {
+    label: 'Shop Electronics',
+    href: '/shop/category/electronics',
+    className: 'left-[54%] top-[55%] h-[24%] w-[18%] md:left-[53%] md:top-[53%] md:h-[26%] md:w-[18%]',
+  },
+  {
+    label: 'Rent with Jamm Fleet',
+    href: '/jamm-fleet',
+    className: 'left-[5%] top-[28%] h-[29%] w-[39%] md:left-[5%] md:top-[27%] md:h-[31%] md:w-[38%]',
+  },
+  {
+    label: 'Ship with Jamm Cargo',
+    href: '/jamm-cargo',
+    className: 'left-[47%] top-[22%] h-[28%] w-[31%] md:left-[48%] md:top-[20%] md:h-[31%] md:w-[29%]',
+  },
+]
+
 export function HeroSection() {
   const { t } = useLocale()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobileHero, setIsMobileHero] = useState(false)
+  const [holdEcosystemPreview, setHoldEcosystemPreview] = useState(false)
   const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
   const springX = useSpring(0, { stiffness: 80, damping: 20 })
   const springY = useSpring(0, { stiffness: 80, damping: 20 })
   const prefersReducedMotion = useReducedMotion()
   const activeSlide = heroSlides[activeIndex]
   const activeTitle = t(`hero.${activeSlide.i18nKey}.title`)
+  const isEcosystemSlide = activeSlide.id === 'ecosystem'
 
   const resetAutoSlideTimer = () => {
     setAutoSlideResetKey((current) => current + 1)
@@ -67,6 +97,14 @@ export function HeroSection() {
   }
 
   useEffect(() => {
+    if (window.location.search.includes('hero=ecosystem')) {
+      const ecosystemIndex = heroSlides.findIndex((slide) => slide.id === 'ecosystem')
+      if (ecosystemIndex >= 0) setActiveIndex(ecosystemIndex)
+      setHoldEcosystemPreview(true)
+    }
+  }, [])
+
+  useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 1023px)')
     const syncHeroMode = () => setIsMobileHero(mediaQuery.matches)
 
@@ -77,6 +115,7 @@ export function HeroSection() {
   }, [])
 
   useEffect(() => {
+    if (holdEcosystemPreview) return
     if (prefersReducedMotion) return
 
     const timer = window.setInterval(() => {
@@ -84,7 +123,7 @@ export function HeroSection() {
     }, 6000)
 
     return () => window.clearInterval(timer)
-  }, [autoSlideResetKey, prefersReducedMotion])
+  }, [autoSlideResetKey, holdEcosystemPreview, prefersReducedMotion])
 
   return (
     <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
@@ -113,49 +152,89 @@ export function HeroSection() {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               whileHover={isMobileHero ? undefined : { scale: 1.025 }}
             >
-              <Image
-                src={activeSlide.image}
-                alt={activeTitle}
-                fill
-                sizes="100vw"
-                quality={82}
-                priority={activeIndex === 0}
-                className="object-cover object-center"
-                style={{ objectPosition: activeSlide.imagePosition ?? 'center center' }}
-              />
+              {activeSlide.video ? (
+                <video
+                  className="h-full w-full object-cover object-center"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={activeSlide.poster ?? activeSlide.image}
+                  aria-label={activeTitle}
+                >
+                  <source src={activeSlide.video} type="video/mp4" />
+                </video>
+              ) : (
+                <Image
+                  src={activeSlide.image}
+                  alt={activeTitle}
+                  fill
+                  sizes="100vw"
+                  quality={82}
+                  priority={activeIndex === 0}
+                  className="object-cover object-center"
+                  style={{ objectPosition: activeSlide.imagePosition ?? 'center center' }}
+                />
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.42)_45%,rgba(0,0,0,0.08)_100%)] lg:bg-[linear-gradient(70deg,rgba(0,0,0,0.68)_0%,rgba(0,0,0,0.34)_42%,rgba(0,0,0,0.08)_100%)]" />
+        {isEcosystemSlide && (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_48%,rgba(196,151,58,0.18),transparent_30%),radial-gradient(circle_at_34%_70%,rgba(248,231,166,0.12),transparent_28%)]" />
+        )}
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-5 md:p-6 lg:flex-row lg:items-end lg:justify-between lg:gap-6 lg:p-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSlide.id}
-              className="relative w-full max-w-[440px] overflow-hidden rounded-[14px] border border-white/16 bg-black/38 p-4 text-jamm-cream shadow-sm backdrop-blur-md sm:w-[90%] sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <p className="mb-3 font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold sm:mb-4 sm:text-[11px]">
-                {t(`hero.${activeSlide.i18nKey}.category`)}
-              </p>
-              <h1 className="mb-3 font-sans text-[28px] font-semibold leading-tight text-jamm-cream sm:mb-4 sm:text-[36px] md:text-[40px] lg:text-[42px]">
-                {activeTitle}
-              </h1>
-              <p className="mb-5 font-sans text-sm leading-relaxed text-jamm-cream/86 sm:text-[15px] md:text-base lg:mb-7">
-                {t(`hero.${activeSlide.i18nKey}.subtitle`)}
-              </p>
+        {isEcosystemSlide && (
+          <div className="absolute inset-0 z-10">
+            {ecosystemHotspots.map((hotspot) => (
               <Link
-                href={activeSlide.ctaHref}
-                className="inline-flex min-h-11 items-center rounded-md bg-jamm-gold px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream"
+                key={hotspot.href}
+                href={hotspot.href}
+                aria-label={hotspot.label}
+                className={`group absolute ${hotspot.className} rounded-[18px] outline-none transition duration-300 hover:bg-jamm-gold/10 focus-visible:bg-jamm-gold/14 focus-visible:ring-2 focus-visible:ring-jamm-gold/80`}
+                onClick={resetAutoSlideTimer}
               >
-                {t(`hero.${activeSlide.i18nKey}.cta`)}
+                <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-jamm-gold/45 bg-jamm-dark/20 opacity-0 shadow-[0_0_22px_rgba(196,151,58,0.32)] backdrop-blur-sm transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" />
+                <span className="pointer-events-none absolute left-1/2 top-[calc(50%+18px)] -translate-x-1/2 whitespace-nowrap rounded-full border border-jamm-gold/35 bg-jamm-dark/72 px-3 py-1.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-jamm-cream opacity-0 shadow-[0_16px_36px_rgba(0,0,0,0.34)] backdrop-blur-md transition duration-300 group-hover:translate-y-1 group-hover:opacity-100 group-focus-visible:translate-y-1 group-focus-visible:opacity-100">
+                  {hotspot.label}
+                </span>
               </Link>
-              <BorderBeam size={240} duration={9} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
-            </motion.div>
-          </AnimatePresence>
+            ))}
+          </div>
+        )}
+
+        <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-5 md:p-6 lg:flex-row lg:items-end lg:justify-between lg:gap-6 lg:p-8">
+          {!isEcosystemSlide && (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSlide.id}
+                className="relative w-full max-w-[440px] overflow-hidden rounded-[14px] border border-white/16 bg-black/38 p-4 text-jamm-cream shadow-sm backdrop-blur-md sm:w-[90%] sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <p className="mb-3 font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold sm:mb-4 sm:text-[11px]">
+                  {t(`hero.${activeSlide.i18nKey}.category`)}
+                </p>
+                <h1 className="mb-3 font-sans text-[28px] font-semibold leading-tight text-jamm-cream sm:mb-4 sm:text-[36px] md:text-[40px] lg:text-[42px]">
+                  {activeTitle}
+                </h1>
+                <p className="mb-5 font-sans text-sm leading-relaxed text-jamm-cream/86 sm:text-[15px] md:text-base lg:mb-7">
+                  {t(`hero.${activeSlide.i18nKey}.subtitle`)}
+                </p>
+                <Link
+                  href={activeSlide.ctaHref}
+                  className="inline-flex min-h-11 items-center rounded-md bg-jamm-gold px-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream"
+                  onClick={resetAutoSlideTimer}
+                >
+                  {t(`hero.${activeSlide.i18nKey}.cta`)}
+                </Link>
+                <BorderBeam size={240} duration={9} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
+              </motion.div>
+            </AnimatePresence>
+          )}
 
           <div className="flex min-w-[120px] items-center justify-center gap-0.5 py-1 lg:justify-end lg:pb-3">
             {heroSlides.map((slide, index) => (

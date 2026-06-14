@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { TabNav } from '@/components/layout/TabNav'
@@ -59,6 +59,12 @@ export const metadata: Metadata = {
       { rel: 'icon', url: '/brand_assets/icons/jammtrade-icon-192.png', sizes: '192x192', type: 'image/png' },
     ],
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#FAF7F2',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

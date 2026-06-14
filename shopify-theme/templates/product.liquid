@@ -83,7 +83,7 @@
           {% endif %}
           <span class="price--current">{{ product.price | money }}</span>
           {% if product.compare_at_price > product.price %}
-            <span class="price--badge">Sale</span>
+            <span class="price--badge">{{ 'products.product.sale' | t }}</span>
           {% endif %}
         </div>
 
@@ -94,8 +94,8 @@
             {% if description_plain.size > 180 %}
               <details class="product-description-toggle">
                 <summary>
-                  <span class="product-description-toggle__more">Read more</span>
-                  <span class="product-description-toggle__less">Show less</span>
+                  <span class="product-description-toggle__more">{{ 'products.product.read_more' | t }}</span>
+                  <span class="product-description-toggle__less">{{ 'products.product.show_less' | t }}</span>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -135,7 +135,7 @@
           {% endif %}
 
           <div class="product-purchase__qty-row">
-            <span class="product-purchase__qty-label">Qty</span>
+            <span class="product-purchase__qty-label">{{ 'products.product.quantity' | t }}</span>
             <div class="qty-selector">
               <button type="button" class="qty-btn" data-qty="-1" aria-label="Decrease quantity">−</button>
               <input type="number" name="quantity" value="1" min="1" class="qty-input" aria-label="Quantity">
@@ -151,9 +151,9 @@
               {% unless product.available %}disabled{% endunless %}
             >
               {% if product.available %}
-                Add to Cart
+                {{ 'products.product.add_to_cart' | t }}
               {% else %}
-                Sold Out
+                {{ 'products.product.sold_out' | t }}
               {% endif %}
             </button>
           </div>
@@ -166,7 +166,7 @@
               class="btn btn--buy-now btn--full"
               data-buy-now
             >
-              Buy Now
+              {{ 'products.product.buy_now' | t }}
             </button>
           {% endif %}
         {% endform %}
