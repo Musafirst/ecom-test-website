@@ -154,7 +154,7 @@ export function HeroSection() {
             >
               {activeSlide.video ? (
                 <video
-                  className="h-full w-full object-contain object-center bg-[#101112] sm:object-cover"
+                  className="h-full w-full object-cover object-center bg-[#101112]"
                   autoPlay
                   muted
                   loop
@@ -209,7 +209,7 @@ export function HeroSection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.id}
-                className="relative w-full max-w-[440px] overflow-hidden rounded-[14px] border border-white/16 bg-black/38 p-4 text-jamm-cream shadow-sm backdrop-blur-md sm:w-[90%] sm:p-6 lg:w-full lg:max-w-[430px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
+                className="relative hidden w-full max-w-[440px] overflow-hidden rounded-[14px] border border-white/16 bg-black/38 p-4 text-jamm-cream shadow-sm backdrop-blur-md lg:block lg:w-full lg:max-w-[430px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
                 initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}

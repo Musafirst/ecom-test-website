@@ -633,12 +633,7 @@ input, textarea { font-family: inherit; }
 .hero-slide__bg--placeholder { background: linear-gradient(135deg, #1a1812, #2a2518); }
 .hero-slide__video {
   background: var(--color-hero);
-  object-fit: contain;
-}
-@media (min-width: 640px) {
-  .hero-slide__video {
-    object-fit: cover;
-  }
+  object-fit: cover;
 }
 .hero-slide__poster {
   position: absolute;
@@ -672,16 +667,15 @@ input, textarea { font-family: inherit; }
   position: absolute;
   inset: 0;
   z-index: 10;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   padding: 12px;
 }
-@media (min-width: 640px) { .hero-slide__content { padding: 20px; } }
-@media (min-width: 768px) { .hero-slide__content { padding: 24px; } }
 @media (min-width: 1024px) {
   .hero-slide__content {
+    display: flex;
     align-items: flex-end;
     flex-direction: row;
     justify-content: space-between;
@@ -851,6 +845,10 @@ input, textarea { font-family: inherit; }
 }
 
 .hero-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -860,8 +858,8 @@ input, textarea { font-family: inherit; }
 }
 @media (min-width: 1024px) {
   .hero-dots {
-    position: absolute;
     bottom: 32px;
+    left: auto;
     right: 32px;
     padding-bottom: 12px;
     min-width: 120px;
