@@ -5,9 +5,9 @@ interface CollectionGridProps {
 }
 
 const collections = [
-  { key: 'oud', name: 'Oud', tab: 'Oud', desc: 'Resinous, dark, and long lasting.', bg: 'radial-gradient(110% 90% at 70% 8%,#3a2b1c,#1c150d 58%,#0c0907)', lotusOpacity: 0.08 },
-  { key: 'amber', name: 'Amber', tab: 'Amber', desc: 'Warm vanilla, soft spice, skin-close depth.', bg: 'radial-gradient(110% 90% at 70% 8%,#4a3a1e,#241a0d 58%,#0d0a06)', lotusOpacity: 0.08 },
-  { key: 'daily', name: 'Daily', tab: 'Daily', desc: 'Clean signatures for repeat wear.', bg: 'radial-gradient(110% 90% at 70% 8%,#2f3230,#181917 58%,#0a0b0a)', lotusOpacity: 0.07 },
+  { key: 'oud', name: 'Oud', tab: 'Oud', desc: 'Resinous, dark, and long lasting.', bg: 'radial-gradient(110% 90% at 70% 8%,#3a2b1c,#1c150d 58%,#0c0907)', lotusOpacity: 0.08, image: '/images/collections/featured-oud.png', alt: 'Oud fragrance collection' },
+  { key: 'amber', name: 'Amber', tab: 'Amber', desc: 'Warm vanilla, soft spice, skin-close depth.', bg: 'radial-gradient(110% 90% at 70% 8%,#4a3a1e,#241a0d 58%,#0d0a06)', lotusOpacity: 0.08, image: '/images/collections/featured-amber.png', alt: 'Amber fragrance collection' },
+  { key: 'daily', name: 'Daily', tab: 'Daily', desc: 'Clean signatures for repeat wear.', bg: 'radial-gradient(110% 90% at 70% 8%,#2f3230,#181917 58%,#0a0b0a)', lotusOpacity: 0.07, image: '/images/collections/featured-daily.png', alt: 'Daily fragrance collection' },
 ] as const
 
 export function CollectionGrid({ counts }: CollectionGridProps) {
@@ -29,6 +29,9 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
               <div className="collection__inner">
                 <div className="collection__media-fallback" style={{ background: c.bg }} />
                 <img src="/design/logo-gold.png" alt="" className="slide__lotus" style={{ opacity: c.lotusOpacity, right: '-8%', bottom: '-10%', width: '70%' }} />
+                <div className="collection__img collection__img--scent">
+                  <img src={c.image} alt={c.alt} loading="lazy" />
+                </div>
                 <span className="collection__tab">{c.tab}</span>
                 <div className="collection__content">
                   <span className="collection__count">{counts[c.key]}</span>

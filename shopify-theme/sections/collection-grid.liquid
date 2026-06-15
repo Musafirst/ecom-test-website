@@ -1,4 +1,7 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
+{% assign oud_collection = collections['oud'] %}
+{% assign amber_collection = collections['amber'] %}
+{% assign daily_collection = collections['daily'] %}
 
 <section class="section" id="collections" style="padding-top:0">
   <div class="container">
@@ -16,9 +19,12 @@
         <div class="collection__inner">
           <div class="collection__media-fallback" style="background:radial-gradient(110% 90% at 70% 8%,#3a2b1c,#1c150d 58%,#0c0907)"></div>
           <img src="{{ 'logo-gold.png' | asset_url }}" alt="" class="slide__lotus" width="420" height="420" style="opacity:.08; right:-8%; bottom:-10%; width:70%">
+          <div class="collection__img collection__img--scent">
+            <img src="{{ 'featured-oud.png' | asset_url }}" alt="Oud fragrance collection" width="1200" height="1400" loading="lazy">
+          </div>
           <span class="collection__tab">Oud</span>
           <div class="collection__content">
-            <span class="collection__count">{{ collections.oud.products_count | default: 6 }} Fragrances</span>
+            <span class="collection__count">{{ oud_collection.products_count | default: oud_collection.all_products_count | default: 0 }} Fragrances</span>
             <h3 class="collection__name">Oud</h3>
             <p class="collection__desc">Resinous, dark, and long lasting.</p>
             <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/oud">Explore</a>
@@ -30,9 +36,12 @@
         <div class="collection__inner">
           <div class="collection__media-fallback" style="background:radial-gradient(110% 90% at 70% 8%,#4a3a1e,#241a0d 58%,#0d0a06)"></div>
           <img src="{{ 'logo-gold.png' | asset_url }}" alt="" class="slide__lotus" width="420" height="420" style="opacity:.08; right:-8%; bottom:-10%; width:70%">
+          <div class="collection__img collection__img--scent">
+            <img src="{{ 'featured-amber.png' | asset_url }}" alt="Amber fragrance collection" width="1200" height="1400" loading="lazy">
+          </div>
           <span class="collection__tab">Amber</span>
           <div class="collection__content">
-            <span class="collection__count">{{ collections.amber.products_count | default: 6 }} Fragrances</span>
+            <span class="collection__count">{{ amber_collection.products_count | default: amber_collection.all_products_count | default: 0 }} Fragrances</span>
             <h3 class="collection__name">Amber</h3>
             <p class="collection__desc">Warm vanilla, soft spice, skin-close depth.</p>
             <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/amber">Explore</a>
@@ -44,9 +53,12 @@
         <div class="collection__inner">
           <div class="collection__media-fallback" style="background:radial-gradient(110% 90% at 70% 8%,#2f3230,#181917 58%,#0a0b0a)"></div>
           <img src="{{ 'logo-gold.png' | asset_url }}" alt="" class="slide__lotus" width="420" height="420" style="opacity:.07; right:-8%; bottom:-10%; width:70%">
+          <div class="collection__img collection__img--scent">
+            <img src="{{ 'featured-daily.png' | asset_url }}" alt="Daily fragrance collection" width="1200" height="1400" loading="lazy">
+          </div>
           <span class="collection__tab">Daily</span>
           <div class="collection__content">
-            <span class="collection__count">{{ collections.daily.products_count | default: 4 }} Fragrances</span>
+            <span class="collection__count">{{ daily_collection.products_count | default: daily_collection.all_products_count | default: 0 }} Fragrances</span>
             <h3 class="collection__name">Daily</h3>
             <p class="collection__desc">Clean signatures for repeat wear.</p>
             <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/daily">Explore</a>
