@@ -1,84 +1,33 @@
 {% comment %}
-  Renders a product card.
+  Renders a product card in the redesign .product markup.
   Usage: {% render 'product-card', product: product %}
 {% endcomment %}
 
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 {% assign card_label = product.collections.first.title | default: product.vendor %}
-{% assign card_title_downcase = product.title | downcase %}
-{% assign card_type_downcase = product.type | downcase %}
-{% assign card_tags_downcase = product.tags | join: ',' | downcase %}
-{% assign is_electronics_card = false %}
-{% assign is_smartwatch_card = false %}
-{% if card_title_downcase contains 'watch' or card_title_downcase contains 'headphone' or card_type_downcase contains 'electronics' or card_tags_downcase contains 'electronics' %}
-  {% assign is_electronics_card = true %}
-{% endif %}
-{% if card_title_downcase contains 'smartwatch' or card_title_downcase contains 'watch' or card_tags_downcase contains 'smartwatch' %}
-  {% assign is_smartwatch_card = true %}
-{% endif %}
 
-<div class="product-card{% if is_electronics_card %} product-card--electronics{% endif %}{% if is_smartwatch_card %} product-card--smartwatch{% endif %}">
-  <a href="{{ public_shop_url }}/product/{{ product.handle }}" class="product-card__link" aria-label="{{ product.title | escape }}">
-    <div class="product-card__media">
-      {% assign beam_delay = product.handle.size | modulo: 4 %}
-      <div class="beam{% if beam_delay == 1 %} beam--d1{% elsif beam_delay == 2 %} beam--d2{% elsif beam_delay == 3 %} beam--d3{% endif %}" aria-hidden="true"></div>
-      {% if product.featured_image != blank %}
-        <img
-          src="{{ product.featured_image | image_url: width: 800 }}"
-          srcset="
-            {{ product.featured_image | image_url: width: 400 }} 400w,
-            {{ product.featured_image | image_url: width: 600 }} 600w,
-            {{ product.featured_image | image_url: width: 800 }} 800w
-          "
-          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 50vw"
-          alt="{{ product.featured_image.alt | default: product.title | escape }}"
-          class="product-card__img"
-          width="{{ product.featured_image.width }}"
-          height="{{ product.featured_image.height }}"
-          loading="lazy"
-        >
-      {% else %}
-        <div class="product-card__img product-card__img--placeholder">
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        </div>
-      {% endif %}
-
-      {% if product.compare_at_price > product.price %}
-        <span class="product-card__badge product-card__badge--sale">{{ 'products.product.sale' | t }}</span>
-      {% endif %}
-
-      <span class="product-card__overlay" aria-hidden="true">
-        <span class="product-card__view">{{ 'products.product.view_product' | t }}</span>
-      </span>
-    </div>
-
-    <div class="product-card__info">
-      <div class="product-card__info-text">
-        {% if card_label != blank %}
-          <p class="product-card__vendor">{{ card_label }}</p>
-        {% endif %}
-        <h3 class="product-card__title">{{ product.title }}</h3>
-      </div>
-      <div class="product-card__price">
-        {% if product.compare_at_price > product.price %}
-          <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
-        {% endif %}
-        <span class="product-card__price--current">{{ product.price | money }}</span>
-      </div>
-    </div>
-  </a>
-
-  <button
-    type="button"
-    class="product-card__atc"
-    data-product-id="{{ product.variants.first.id }}"
-    aria-label="Add {{ product.title | escape }} to cart"
-    {% unless product.available %}disabled{% endunless %}
-  >
-    {% if product.available %}
-      {{ 'products.product.add_to_cart' | t }}
+<article class="product reveal">
+  <a class="product__media product__media--photo" href="{{ public_shop_url }}/product/{{ product.handle }}">
+    {% if product.featured_image != blank %}
+      <img class="product__photo" src="{{ product.featured_image | image_url: width: 800 }}"
+        srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w"
+        sizes="(min-width:900px) 25vw, 50vw"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy"
+        width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}">
     {% else %}
-      {{ 'products.product.sold_out' | t }}
+      {{ 'product-1' | placeholder_svg_tag: 'product__photo' }}
     {% endif %}
-  </button>
-</div>
+  </a>
+  <div class="product__body">
+    {% if card_label != blank %}<span class="product__cat">{{ card_label }}{% if product.vendor != blank and product.vendor != card_label %} &middot; {{ product.vendor }}{% endif %}</span>{% endif %}
+    <h3 class="product__name"><a href="{{ public_shop_url }}/product/{{ product.handle }}">{{ product.title }}</a></h3>
+    <span class="product__price">{{ product.price | money }}</span>
+    <div class="product__cart">
+      {% if product.available %}
+        <button class="btn btn--dark btn--block" type="button" data-product-id="{{ product.selected_or_first_available_variant.id }}"><span>Add to Cart</span></button>
+      {% else %}
+        <button class="btn btn--dark btn--block" type="button" disabled><span>Sold Out</span></button>
+      {% endif %}
+    </div>
+  </div>
+</article>

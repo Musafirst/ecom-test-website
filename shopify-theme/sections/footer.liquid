@@ -1,124 +1,58 @@
 {% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
 {% assign public_shop_url = public_storefront_url | append: '/shop' %}
+{% assign support_email = settings.support_email | default: 'contact@jammtrade.com' %}
 
-<footer class="site-footer" role="contentinfo">
-  <div class="container">
-    <div class="footer-shell">
-      <div class="beam beam--xl beam--d1" aria-hidden="true"></div>
-      <div class="footer-inner">
-
-        <div class="footer-brand">
-          <a href="{{ public_shop_url }}" aria-label="{{ shop.name }}">
-            {% if section.settings.logo != blank %}
-              <img
-                src="{{ section.settings.logo | image_url: width: 600 }}"
-                alt="{{ shop.name }}"
-                class="footer-logo"
-                width="360"
-                height="240"
-                loading="lazy"
-              >
-            {% else %}
-              <img
-                src="{{ 'jamm-trade-exact-transparent.webp' | asset_url }}"
-                alt="{{ shop.name }}"
-                class="footer-logo"
-                width="360"
-                height="240"
-                loading="lazy"
-              >
-            {% endif %}
-          </a>
-          <p class="footer-tagline">
-            {{ 'footer.tagline' | t }}
-          </p>
-          <div class="footer-contact">
-            <p class="footer-contact__business">Jamm Trade LLC</p>
-            <p class="footer-contact__address">Darby, Pennsylvania</p>
-            <a href="mailto:{{ settings.support_email | default: 'contact@jammtrade.com' }}" class="footer-contact__link">{{ settings.support_email | default: 'contact@jammtrade.com' }}</a>
-          </div>
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <img class="brand__mark" src="{{ 'logo-badge.png' | asset_url }}" alt="Jamm Trade lotus emblem" width="46" height="46">
+          <span class="brand__type">
+            <span class="brand__name">JAMM TRADE</span>
+            <span class="brand__tag">From Essentials to Enterprise</span>
+          </span>
         </div>
-
-        <nav class="footer-link-group footer-link-group--desktop" aria-label="{{ 'navigation.shop' | t }}">
-          <p class="footer-link-group__title">{{ 'navigation.shop' | t }}</p>
-          <a href="{{ public_shop_url }}" class="footer-nav__link">{{ 'navigation.shop' | t }}</a>
-          <a href="{{ public_shop_url }}/about" class="footer-nav__link">{{ 'navigation.about' | t }}</a>
-          <a href="{{ public_shop_url }}/contact" class="footer-nav__link">{{ 'navigation.contact' | t }}</a>
-        </nav>
-
-        <nav class="footer-link-group footer-link-group--desktop" aria-label="{{ 'navigation.services' | t }}">
-          <p class="footer-link-group__title">{{ 'navigation.services' | t }}</p>
-          <a href="{{ public_storefront_url }}/jamm-cargo" class="footer-nav__link">Jamm Cargo</a>
-          <a href="{{ public_storefront_url }}/jamm-fleet" class="footer-nav__link">Jamm Fleet</a>
-        </nav>
-
-        <nav class="footer-link-group footer-link-group--desktop" aria-label="{{ 'footer.policies' | t }}">
-          <p class="footer-link-group__title">{{ 'footer.policies' | t }}</p>
-          <a href="{{ public_shop_url }}/shipping-policy" class="footer-nav__link">{{ 'footer.shipping_policy' | t }}</a>
-          <a href="{{ public_shop_url }}/refund-policy" class="footer-nav__link">{{ 'footer.refund_policy' | t }}</a>
-          <a href="{{ public_shop_url }}/privacy-policy" class="footer-nav__link">{{ 'footer.privacy_policy' | t }}</a>
-          <a href="{{ public_shop_url }}/terms-of-service" class="footer-nav__link">{{ 'footer.terms' | t }}</a>
-        </nav>
-
-        <details class="footer-accordion footer-accordion--mobile">
-          <summary class="footer-accordion__summary">
-            <span class="footer-link-group__title">{{ 'navigation.shop' | t }}</span>
-            <svg class="footer-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </summary>
-          <div class="footer-link-group__links">
-            <a href="{{ public_shop_url }}" class="footer-nav__link">{{ 'navigation.shop' | t }}</a>
-            <a href="{{ public_shop_url }}/about" class="footer-nav__link">{{ 'navigation.about' | t }}</a>
-            <a href="{{ public_shop_url }}/contact" class="footer-nav__link">{{ 'navigation.contact' | t }}</a>
-          </div>
-        </details>
-
-        <details class="footer-accordion footer-accordion--mobile">
-          <summary class="footer-accordion__summary">
-            <span class="footer-link-group__title">{{ 'navigation.services' | t }}</span>
-            <svg class="footer-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </summary>
-          <div class="footer-link-group__links">
-            <a href="{{ public_storefront_url }}/jamm-cargo" class="footer-nav__link">Jamm Cargo</a>
-            <a href="{{ public_storefront_url }}/jamm-fleet" class="footer-nav__link">Jamm Fleet</a>
-          </div>
-        </details>
-
-        <details class="footer-accordion footer-accordion--mobile">
-          <summary class="footer-accordion__summary">
-            <span class="footer-link-group__title">{{ 'footer.policies' | t }}</span>
-            <svg class="footer-accordion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </summary>
-          <div class="footer-link-group__links">
-            <a href="{{ public_shop_url }}/shipping-policy" class="footer-nav__link">{{ 'footer.shipping_policy' | t }}</a>
-            <a href="{{ public_shop_url }}/refund-policy" class="footer-nav__link">{{ 'footer.refund_policy' | t }}</a>
-            <a href="{{ public_shop_url }}/privacy-policy" class="footer-nav__link">{{ 'footer.privacy_policy' | t }}</a>
-            <a href="{{ public_shop_url }}/terms-of-service" class="footer-nav__link">{{ 'footer.terms' | t }}</a>
-          </div>
-        </details>
+        <p class="footer__desc">Rare fragrances and curated essentials for those who know the difference.</p>
+        <div class="footer__contact">
+          <strong>Jamm Trade LLC</strong>
+          <span>Darby, Pennsylvania</span>
+          <span>{{ support_email }}</span>
+        </div>
       </div>
 
-      <div class="footer-disclaimer">
-        <p>
-          {{ 'footer.disclaimer' | t }}
-        </p>
+      <div class="footer__cols">
+        <div class="fcol">
+          <button class="fcol__head" type="button">Shop <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="fcol__list"><div>
+            <a href="{{ public_shop_url }}/category/perfumes">Fragrance</a><a href="{{ public_shop_url }}/collection/oud">Oud</a><a href="{{ public_shop_url }}/collection/amber">Amber</a><a href="{{ public_shop_url }}/collection/clothing">Clothing</a><a href="{{ public_shop_url }}/category/electronics">Electronics</a>
+          </div></div>
+        </div>
+        <div class="fcol">
+          <button class="fcol__head" type="button">Services <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="fcol__list"><div>
+            <a href="{{ public_storefront_url }}/jamm-fleet">Jamm Fleet</a><a href="{{ public_storefront_url }}/jamm-cargo">Jamm Cargo</a><a href="{{ public_shop_url }}/guides">Fragrance Guides</a><a href="{{ public_shop_url }}/contact">Contact Support</a>
+          </div></div>
+        </div>
+        <div class="fcol">
+          <button class="fcol__head" type="button">Policies <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="fcol__list"><div>
+            <a href="{{ public_shop_url }}/shipping-returns">Shipping &amp; Returns</a><a href="{{ public_shop_url }}/privacy-policy">Privacy Policy</a><a href="{{ public_shop_url }}/terms-of-service">Terms of Service</a><a href="{{ public_shop_url }}/refund-policy">Refund Policy</a>
+          </div></div>
+        </div>
       </div>
+    </div>
 
-      <div class="footer-bottom">
-        <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} Jamm Trade LLC. {{ 'footer.rights' | t }}</p>
+    <div class="footer__legal">
+      <p class="footer__disclaimer">Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.</p>
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 Jamm Trade LLC. All rights reserved.</span>
+        <select class="lang-select" aria-label="Language"><option>English</option><option>العربية</option><option>Français</option><option>Español</option></select>
       </div>
     </div>
   </div>
 </footer>
 
 {% schema %}
-{
-  "name": "Footer",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    }
-  ]
-}
+{ "name": "Footer", "settings": [] }
 {% endschema %}

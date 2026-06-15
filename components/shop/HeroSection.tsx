@@ -1,335 +1,206 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import type { MouseEvent as ReactMouseEvent } from 'react'
-import Image from 'next/image'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { AnimatePresence, motion, useReducedMotion, useSpring, type PanInfo } from 'framer-motion'
-import { heroSlides } from '@/lib/heroSlides'
-import { BorderBeam } from '@/components/ui/border-beam'
-import { useLocale } from '@/components/i18n/LocaleProvider'
 
-const swipeConfidenceThreshold = 80
+const HOLD = 6000
+const HOLD_ECO = 9000
 
-const ecosystemHotspots = [
-  {
-    label: 'Shop Apparel',
-    href: '/shop/collection/clothing',
-    className: 'left-[73%] top-[31%] h-[43%] w-[20%] md:left-[72%] md:top-[27%] md:h-[46%] md:w-[22%]',
-  },
-  {
-    label: 'Shop Fragrances',
-    href: '/shop/category/perfumes',
-    className: 'left-[25%] top-[52%] h-[31%] w-[19%] md:left-[24%] md:top-[49%] md:h-[34%] md:w-[20%]',
-  },
-  {
-    label: 'Shop Electronics',
-    href: '/shop/category/electronics',
-    className: 'left-[54%] top-[55%] h-[24%] w-[18%] md:left-[53%] md:top-[53%] md:h-[26%] md:w-[18%]',
-  },
-  {
-    label: 'Rent with Jamm Fleet',
-    href: '/jamm-fleet',
-    className: 'left-[5%] top-[28%] h-[29%] w-[39%] md:left-[5%] md:top-[27%] md:h-[31%] md:w-[38%]',
-  },
-  {
-    label: 'Ship with Jamm Cargo',
-    href: '/jamm-cargo',
-    className: 'left-[47%] top-[22%] h-[28%] w-[31%] md:left-[48%] md:top-[20%] md:h-[31%] md:w-[29%]',
-  },
+const slides = ['clothing', 'fragrance', 'audio', 'house', 'eco'] as const
+
+const hotspots = [
+  { href: '/jamm-fleet', style: { left: '23.5%', top: '43%' }, label: 'Jamm Fleet', aria: 'Jamm Fleet' },
+  { href: '/jamm-cargo', style: { left: '58%', top: '33%' }, label: 'Jamm Cargo', aria: 'Jamm Cargo' },
+  { href: '/shop/category/perfumes', style: { left: '30%', top: '71%' }, label: 'Fragrance', aria: 'Fragrance collection' },
+  { href: '/shop/category/electronics', style: { left: '64%', top: '72%' }, label: 'Electronics', aria: 'Electronics collection' },
+  { href: '/shop/collection/clothing', style: { left: '86%', top: '46%' }, label: 'Apparel', aria: 'Apparel collection' },
 ]
 
 export function HeroSection() {
-  const { t } = useLocale()
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isMobileHero, setIsMobileHero] = useState(false)
-  const [holdEcosystemPreview, setHoldEcosystemPreview] = useState(false)
-  const [autoSlideResetKey, setAutoSlideResetKey] = useState(0)
-  const [videoAutoplayBlocked, setVideoAutoplayBlocked] = useState(false)
-  const activeVideoRef = useRef<HTMLVideoElement | null>(null)
-  const springX = useSpring(0, { stiffness: 80, damping: 20 })
-  const springY = useSpring(0, { stiffness: 80, damping: 20 })
-  const prefersReducedMotion = useReducedMotion()
-  const activeSlide = heroSlides[activeIndex]
-  const activeTitle = t(`hero.${activeSlide.i18nKey}.title`)
-  const isEcosystemSlide = activeSlide.id === 'ecosystem'
+  const [index, setIndex] = useState(0)
+  const [openHotspot, setOpenHotspot] = useState<number | null>(null)
+  const timerRef = useRef<number | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  const resetAutoSlideTimer = () => {
-    setAutoSlideResetKey((current) => current + 1)
-  }
-
-  const showPreviousSlide = () => {
-    setActiveIndex((current) => (current - 1 + heroSlides.length) % heroSlides.length)
-  }
-
-  const showNextSlide = () => {
-    setActiveIndex((current) => (current + 1) % heroSlides.length)
-  }
-
-  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeDistance = info.offset.x
-    const swipeVelocity = info.velocity.x
-
-    if (swipeDistance < -swipeConfidenceThreshold || swipeVelocity < -500) {
-      showNextSlide()
-      resetAutoSlideTimer()
-      return
-    }
-
-    if (swipeDistance > swipeConfidenceThreshold || swipeVelocity > 500) {
-      showPreviousSlide()
-      resetAutoSlideTimer()
-    }
-  }
-
-  const handleMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (isMobileHero || prefersReducedMotion) return
-
-    const bounds = event.currentTarget.getBoundingClientRect()
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5
-
-    springX.set(x * 18)
-    springY.set(y * 12)
-  }
-
-  const handleMouseLeave = () => {
-    springX.set(0)
-    springY.set(0)
-  }
-
-  useEffect(() => {
-    if (window.location.search.includes('hero=ecosystem')) {
-      const ecosystemIndex = heroSlides.findIndex((slide) => slide.id === 'ecosystem')
-      if (ecosystemIndex >= 0) setActiveIndex(ecosystemIndex)
-      setHoldEcosystemPreview(true)
-    }
+  const schedule = useCallback((ms: number) => {
+    if (timerRef.current) window.clearTimeout(timerRef.current)
+    timerRef.current = window.setTimeout(() => setIndex((i) => (i + 1) % slides.length), ms)
   }, [])
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 1023px)')
-    const syncHeroMode = () => setIsMobileHero(mediaQuery.matches)
-
-    syncHeroMode()
-    mediaQuery.addEventListener('change', syncHeroMode)
-
-    return () => mediaQuery.removeEventListener('change', syncHeroMode)
-  }, [])
-
-  useEffect(() => {
-    if (holdEcosystemPreview) return
-    if (prefersReducedMotion) return
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % heroSlides.length)
-    }, 6000)
-
-    return () => window.clearInterval(timer)
-  }, [autoSlideResetKey, holdEcosystemPreview, prefersReducedMotion])
-
-  useEffect(() => {
-    setVideoAutoplayBlocked(false)
-
-    if (!activeSlide.video) return
-
-    const video = activeVideoRef.current
-    if (!video) return
-
-    video.defaultMuted = true
-    video.muted = true
-    video.playsInline = true
-
-    const attemptPlayback = () => {
-      const playPromise = video.play()
-
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setVideoAutoplayBlocked(false))
-          .catch(() => setVideoAutoplayBlocked(true))
-      }
-    }
-
-    const retryAfterInteraction = () => {
-      attemptPlayback()
-      window.removeEventListener('pointerdown', retryAfterInteraction)
-      window.removeEventListener('touchstart', retryAfterInteraction)
-      window.removeEventListener('click', retryAfterInteraction)
-    }
-
-    const frame = window.requestAnimationFrame(attemptPlayback)
-    video.addEventListener('loadeddata', attemptPlayback)
-    video.addEventListener('canplay', attemptPlayback)
-    window.addEventListener('pointerdown', retryAfterInteraction, { once: true, passive: true })
-    window.addEventListener('touchstart', retryAfterInteraction, { once: true, passive: true })
-    window.addEventListener('click', retryAfterInteraction, { once: true })
-
+    schedule(slides[index] === 'eco' ? HOLD_ECO : HOLD)
     return () => {
-      window.cancelAnimationFrame(frame)
-      video.removeEventListener('loadeddata', attemptPlayback)
-      video.removeEventListener('canplay', attemptPlayback)
-      window.removeEventListener('pointerdown', retryAfterInteraction)
-      window.removeEventListener('touchstart', retryAfterInteraction)
-      window.removeEventListener('click', retryAfterInteraction)
+      if (timerRef.current) window.clearTimeout(timerRef.current)
     }
-  }, [activeSlide.video, activeIndex])
+  }, [index, schedule])
+
+  const go = (n: number) => setIndex((n + slides.length) % slides.length)
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'ArrowRight') setIndex((i) => (i + 1) % slides.length)
+      else if (e.key === 'ArrowLeft') setIndex((i) => (i - 1 + slides.length) % slides.length)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    const kick = () => {
+      v.muted = true
+      v.play().catch(() => {})
+    }
+    kick()
+    v.addEventListener('canplay', kick, { once: true })
+    const onVis = () => {
+      if (!document.hidden) kick()
+    }
+    document.addEventListener('visibilitychange', onVis)
+    return () => document.removeEventListener('visibilitychange', onVis)
+  }, [])
+
+  const touch = useRef({ x: 0, y: 0 })
+  const onTouchStart = (e: React.TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+  }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touch.current.x
+    const dy = e.changedTouches[0].clientY - touch.current.y
+    if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1))
+  }
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!(e.target as HTMLElement).closest('.hotspot')) setOpenHotspot(null)
+    }
+    document.addEventListener('click', onDocClick)
+    return () => document.removeEventListener('click', onDocClick)
+  }, [])
+
+  const handleHotspot = (e: React.MouseEvent, i: number) => {
+    if (window.matchMedia('(hover: none)').matches && openHotspot !== i) {
+      e.preventDefault()
+      setOpenHotspot(i)
+      if (timerRef.current) window.clearTimeout(timerRef.current)
+    }
+  }
 
   return (
-    <section className="overflow-x-hidden bg-transparent px-3 pb-10 pt-1 sm:px-4 sm:pb-14 lg:pb-20">
-      <motion.div
-        className={`relative mx-auto max-w-[1560px] cursor-grab touch-pan-y overflow-hidden rounded-[20px] border border-jamm-gold/35 bg-[#101112] shadow-[0_24px_70px_rgba(12,11,9,0.12)] active:cursor-grabbing sm:rounded-[24px] lg:h-auto lg:max-h-[820px] lg:min-h-[620px] lg:rounded-[28px] ${
-          isEcosystemSlide ? 'aspect-[8/5] min-h-0 max-h-none lg:aspect-auto' : 'h-[440px] min-h-0 sm:h-[500px] lg:h-auto lg:min-h-[620px]'
-        }`}
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-        drag={prefersReducedMotion ? false : 'x'}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.08}
-        onDragEnd={handleDragEnd}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        <BorderBeam size={520} duration={13} borderWidth={3} colorFrom="#C4973A" colorTo="#F8E7A6" />
-        <div className={`absolute overflow-hidden bg-[#101112] ${
-          isEcosystemSlide ? 'inset-0' : 'inset-x-0 top-0 bottom-[172px] sm:bottom-[180px] lg:inset-0'
-        }`}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSlide.id}
-              className="absolute inset-0 lg:-inset-5"
-              style={isMobileHero ? undefined : { x: springX, y: springY }}
-              initial={isMobileHero ? { opacity: 0, y: 12 } : { opacity: 0, scale: 1.04 }}
-              animate={isMobileHero ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }}
-              exit={isMobileHero ? { opacity: 0, y: -8 } : { opacity: 0, scale: 1.01 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              whileHover={isMobileHero ? undefined : { scale: 1.025 }}
-            >
-              {activeSlide.video ? (
-                <>
-                  <Image
-                    src={activeSlide.poster ?? activeSlide.image}
-                    alt=""
-                    fill
-                    sizes="100vw"
-                    quality={82}
-                    className="bg-[#101112] object-cover object-center"
-                    aria-hidden="true"
-                  />
-                  <video
-                    ref={activeVideoRef}
-                    className={`hero-video h-full w-full bg-[#101112] object-cover object-center transition-opacity duration-300 ${
-                      videoAutoplayBlocked ? 'opacity-0' : 'opacity-100'
-                    }`}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    poster={activeSlide.poster ?? activeSlide.image}
-                    aria-label={activeTitle}
-                    controls={false}
-                    disablePictureInPicture
-                    onPlaying={() => setVideoAutoplayBlocked(false)}
-                    onError={() => setVideoAutoplayBlocked(true)}
-                  >
-                    <source src={activeSlide.video} type="video/mp4" />
-                  </video>
-                </>
-              ) : (
-                <Image
-                  src={activeSlide.image}
-                  alt={activeTitle}
-                  fill
-                  sizes="100vw"
-                  quality={82}
-                  priority={activeIndex === 0}
-                  className={`${isEcosystemSlide ? 'object-contain lg:object-cover' : 'object-cover'} bg-[#101112] object-center`}
-                  style={{ objectPosition: activeSlide.imagePosition ?? 'center center' }}
+    <section className="hero-wrap" id="ecosystem">
+      <div className="container">
+        <div className="hero">
+          <div
+            className="hero__stage"
+            onMouseEnter={() => timerRef.current && window.clearTimeout(timerRef.current)}
+            onMouseLeave={() => schedule(slides[index] === 'eco' ? HOLD_ECO : HOLD)}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            <div className="hero__media">
+              <div className="hero__media-inner">
+                <video
+                  ref={videoRef}
+                  className="hero__video"
+                  src="/videos/jamm-trade-cinematic-hero.mp4"
+                  poster="/images/jamm-trade-ecosystem-poster-1600.jpg"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
                 />
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.42)_45%,rgba(0,0,0,0.08)_100%)] lg:bg-[linear-gradient(70deg,rgba(0,0,0,0.68)_0%,rgba(0,0,0,0.34)_42%,rgba(0,0,0,0.08)_100%)]" />
-        {isEcosystemSlide && (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_48%,rgba(196,151,58,0.18),transparent_30%),radial-gradient(circle_at_34%_70%,rgba(248,231,166,0.12),transparent_28%)]" />
-        )}
+              </div>
+            </div>
 
-        {isEcosystemSlide && (
-          <div className="absolute inset-0 z-10">
-            {ecosystemHotspots.map((hotspot) => (
-              <Link
-                key={hotspot.href}
-                href={hotspot.href}
-                aria-label={hotspot.label}
-                className={`group absolute ${hotspot.className} rounded-[18px] outline-none transition duration-300 hover:bg-jamm-gold/10 focus-visible:bg-jamm-gold/14 focus-visible:ring-2 focus-visible:ring-jamm-gold/80`}
-                onClick={resetAutoSlideTimer}
-              >
-                <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-jamm-gold/45 bg-jamm-dark/20 opacity-0 shadow-[0_0_22px_rgba(196,151,58,0.32)] backdrop-blur-sm transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100" />
-                <span className="pointer-events-none absolute left-1/2 top-[calc(50%+18px)] -translate-x-1/2 whitespace-nowrap rounded-full border border-jamm-gold/35 bg-jamm-dark/72 px-3 py-1.5 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-jamm-cream opacity-0 shadow-[0_16px_36px_rgba(0,0,0,0.34)] backdrop-blur-md transition duration-300 group-hover:translate-y-1 group-hover:opacity-100 group-focus-visible:translate-y-1 group-focus-visible:opacity-100">
-                  {hotspot.label}
-                </span>
-              </Link>
-            ))}
+            <article className={`slide slide--clothing${index === 0 ? ' is-active' : ''}`}>
+              <div className="slide__bg"><div className="slide__glow" /></div>
+              <div className="slide__frame" />
+              <div className="slide__content">
+                <p className="slide__eyebrow">Clothing</p>
+                <h2 className="slide__title">Wear the <em>mark.</em></h2>
+                <p className="slide__sub">Hoodies, tees and everyday essentials carrying the Jamm Trade lotus — quiet, considered, unmistakable.</p>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/collection/clothing">Shop Clothing</Link></div>
+              </div>
+            </article>
+
+            <article className={`slide slide--fragrance${index === 1 ? ' is-active' : ''}`}>
+              <div className="slide__bg"><div className="slide__glow" /></div>
+              <div className="slide__frame" />
+              <div className="slide__content">
+                <p className="slide__eyebrow">Signature Scents</p>
+                <h2 className="slide__title">Scents that <em>linger.</em></h2>
+                <p className="slide__sub">Rare Arabic oud, warm amber and clean daily signatures — curated for those who know the difference.</p>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/category/perfumes">Shop Fragrance</Link></div>
+              </div>
+            </article>
+
+            <article className={`slide slide--audio${index === 2 ? ' is-active' : ''}`}>
+              <div className="slide__bg"><div className="slide__glow" /></div>
+              <div className="slide__frame" />
+              <div className="slide__content">
+                <p className="slide__eyebrow">Electronics</p>
+                <h2 className="slide__title">Sound, <em>refined.</em></h2>
+                <p className="slide__sub">Premium audio and everyday technology, chosen with the same eye for quality and focus.</p>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/category/electronics">Shop Electronics</Link></div>
+              </div>
+            </article>
+
+            <article className={`slide slide--house${index === 3 ? ' is-active' : ''}`}>
+              <div className="slide__bg"><div className="slide__glow" /></div>
+              <div className="slide__frame" />
+              <div className="slide__content">
+                <p className="slide__eyebrow">The House of Jamm</p>
+                <h2 className="slide__title">From essentials<br />to <em>enterprise.</em></h2>
+                <p className="slide__sub">One trusted name across every category we touch — fragrance, apparel, electronics and the fleet that moves them.</p>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop">Explore the House</Link></div>
+              </div>
+            </article>
+
+            <article className={`slide slide--eco${index === 4 ? ' is-active' : ''}`}>
+              <div className="eco-stage">
+                {hotspots.map((h, i) => (
+                  <Link
+                    key={h.href}
+                    className={`hotspot${openHotspot === i ? ' is-open' : ''}`}
+                    href={h.href}
+                    style={h.style}
+                    aria-label={h.aria}
+                    onClick={(e) => handleHotspot(e, i)}
+                  >
+                    <span className="hotspot__pulse" />
+                    <span className="hotspot__ring" />
+                    <span className="hotspot__label"><b>{h.label}&nbsp;→</b></span>
+                  </Link>
+                ))}
+              </div>
+              <div className="eco-caption">
+                <p className="slide__eyebrow">The Jamm Ecosystem</p>
+                <h2 className="eco-caption__title">One house. Every essential.</h2>
+                <p className="eco-caption__hint"><span className="pulse-dot" /> Tap a point to explore</p>
+              </div>
+            </article>
+
+            <button className="hero__arrow hero__arrow--prev" aria-label="Previous slide" onClick={() => go(index - 1)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 5l-7 7 7 7" /></svg>
+            </button>
+            <button className="hero__arrow hero__arrow--next" aria-label="Next slide" onClick={() => go(index + 1)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 5l7 7-7 7" /></svg>
+            </button>
+            <div className="hero__dots">
+              {slides.map((s, i) => (
+                <button
+                  key={s}
+                  className={`dot${index === i ? ' is-active' : ''}`}
+                  aria-label={`Slide ${i + 1}`}
+                  onClick={() => go(i)}
+                />
+              ))}
+            </div>
           </div>
-        )}
-
-        <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-5 md:p-6 lg:flex-row lg:items-end lg:justify-between lg:gap-6 lg:p-8">
-          {!isEcosystemSlide && (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeSlide.id}
-                className="relative w-full max-w-[440px] overflow-hidden rounded-[12px] border border-white/14 bg-black/42 p-4 text-jamm-cream shadow-sm backdrop-blur-md sm:w-[88%] lg:block lg:w-full lg:max-w-[430px] lg:rounded-[14px] lg:bg-black/30 lg:p-8 lg:shadow-2xl"
-                initial={{ opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -14 }}
-                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <p className="mb-3 hidden font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-jamm-gold sm:mb-4 sm:text-[11px] lg:block">
-                  {t(`hero.${activeSlide.i18nKey}.category`)}
-                </p>
-                <h1 className="mb-3 font-sans text-[24px] font-semibold leading-tight text-jamm-cream sm:text-[28px] lg:mb-4 lg:text-[42px]">
-                  {activeTitle}
-                </h1>
-                <p className="mb-5 hidden font-sans text-sm leading-relaxed text-jamm-cream/86 sm:text-[15px] md:text-base lg:mb-7 lg:block">
-                  {t(`hero.${activeSlide.i18nKey}.subtitle`)}
-                </p>
-                <Link
-                  href={activeSlide.ctaHref}
-                  className="inline-flex min-h-10 items-center rounded-md bg-jamm-gold px-4 font-sans text-[10px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream lg:min-h-11 lg:text-[11px]"
-                  onClick={resetAutoSlideTimer}
-                >
-                  {t(`hero.${activeSlide.i18nKey}.cta`)}
-                </Link>
-                <BorderBeam size={240} duration={9} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" />
-              </motion.div>
-            </AnimatePresence>
-          )}
-
-          <div className="flex min-w-[120px] items-center justify-center gap-0.5 py-1 lg:justify-end lg:pb-3">
-            {heroSlides.map((slide, index) => (
-              <button
-                key={slide.id}
-                type="button"
-                aria-label={`Show ${t(`hero.${slide.i18nKey}.title`)}`}
-                aria-current={index === activeIndex ? true : undefined}
-                onClick={() => {
-                  setActiveIndex(index)
-                  resetAutoSlideTimer()
-                }}
-                className="flex min-h-[44px] min-w-[44px] items-center justify-center"
-              >
-                <span className={`block h-3 rounded-full transition-all duration-300 lg:h-2.5 ${
-                  index === activeIndex ? 'w-8 bg-jamm-gold lg:w-7' : 'w-3 bg-white/55 lg:w-2.5 lg:bg-white/45'
-                }`} />
-              </button>
-            ))}
-          </div>
-          <span className="sr-only" aria-live="polite" aria-atomic="true">
-            {activeTitle}
-          </span>
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }

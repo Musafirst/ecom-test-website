@@ -1,155 +1,88 @@
 'use client'
 
-import Image from 'next/image'
+import { useState } from 'react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { BorderBeam } from '@/components/ui/border-beam'
-import { businessInfo } from '@/lib/businessInfo'
-import { site } from '@/lib/site'
-import { LanguageSelector, useLocale } from '@/components/i18n/LocaleProvider'
+import { LanguageSelector } from '@/components/i18n/LocaleProvider'
 
-const serviceLinks = [
-  { label: 'Jamm Cargo', href: '/jamm-cargo' },
-  { label: 'Jamm Fleet', href: '/jamm-fleet' },
+const columns = [
+  {
+    title: 'Shop',
+    links: [
+      { label: 'Fragrance', href: '/shop/category/perfumes' },
+      { label: 'Oud', href: '/shop/collection/oud' },
+      { label: 'Amber', href: '/shop/collection/amber' },
+      { label: 'Clothing', href: '/shop/collection/clothing' },
+      { label: 'Electronics', href: '/shop/category/electronics' },
+    ],
+  },
+  {
+    title: 'Services',
+    links: [
+      { label: 'Jamm Fleet', href: '/jamm-fleet' },
+      { label: 'Jamm Cargo', href: '/jamm-cargo' },
+      { label: 'Fragrance Guides', href: '/shop/guides' },
+      { label: 'Contact Support', href: '/shop/contact' },
+    ],
+  },
+  {
+    title: 'Policies',
+    links: [
+      { label: 'Shipping & Returns', href: '/shop/shipping-returns' },
+      { label: 'Privacy Policy', href: '/shop/privacy-policy' },
+      { label: 'Terms of Service', href: '/shop/terms-of-service' },
+      { label: 'Refund Policy', href: '/shop/refund-policy' },
+    ],
+  },
 ]
 
-const footerLocation = 'Darby, Pennsylvania'
-
 export function Footer() {
-  const { t } = useLocale()
-  const [activeBusinessInfo, setActiveBusinessInfo] = useState(businessInfo)
-  const localizedShopLinks = [
-    { label: t('footer.shop'), href: '/shop' },
-    { label: t('nav.guides'), href: '/shop/guides' },
-    { label: t('footer.about'), href: '/shop/about' },
-    { label: t('nav.contact'), href: '/shop/contact' },
-  ]
-  const localizedLegalLinks = [
-    { label: t('footer.shipping'), href: '/shop/shipping-policy' },
-    { label: t('footer.refund'), href: '/shop/refund-policy' },
-    { label: t('footer.privacy'), href: '/shop/privacy-policy' },
-    { label: t('footer.terms'), href: '/shop/terms-of-service' },
-  ]
-
-  useEffect(() => {
-    let isMounted = true
-
-    fetch('/api/shopify/business-info')
-      .then((response) => response.ok ? response.json() : null)
-      .then((data: typeof businessInfo | null) => {
-        if (!isMounted || !data) return
-        setActiveBusinessInfo(data)
-      })
-      .catch(() => undefined)
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  const [open, setOpen] = useState<string | null>(null)
 
   return (
-    <footer className="bg-transparent px-3 pb-4 sm:px-4">
-      <div className="relative mx-auto max-w-[1560px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_50px_rgba(12,11,9,0.07)] sm:rounded-[22px]">
-        <BorderBeam size={480} duration={14} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={2} />
-
-        <div className="grid grid-cols-1 gap-0 px-5 py-8 sm:px-8 md:grid-cols-[260px_1fr_1fr_1fr] md:items-start md:gap-8 md:py-12 lg:py-14">
-          {/* Brand */}
-          <div className="flex flex-col">
-            <Link href="/shop" className="inline-flex flex-shrink-0 items-center">
-              <Image
-                src="/brand_assets/logos/jamm-trade-exact-transparent.webp"
-                alt="Jamm Trade"
-                width={1536}
-                height={1024}
-                className="h-[88px] w-auto flex-shrink-0 object-contain sm:h-[102px] md:h-[118px]"
-              />
-            </Link>
-            <p className="mt-2 max-w-[200px] font-sans text-xs leading-relaxed text-jamm-dark/48">
-              {t('footer.tagline')}
-            </p>
-            <div className="mt-4 space-y-1 font-sans text-xs leading-relaxed text-jamm-dark/52">
-              <p className="font-semibold text-jamm-dark/62">{activeBusinessInfo.name}</p>
-              <p>{footerLocation}</p>
-              <a href={`mailto:${activeBusinessInfo.supportEmail}`} className="transition-colors hover:text-jamm-gold">
-                {activeBusinessInfo.supportEmail}
-              </a>
+    <footer className="footer">
+      <div className="container footer__inner">
+        <div className="footer__top">
+          <div className="footer__brand">
+            <div className="footer__logo">
+              <img className="brand__mark" src="/design/logo-badge.png" alt="Jamm Trade lotus emblem" width={46} height={46} />
+              <span className="brand__type">
+                <span className="brand__name">JAMM TRADE</span>
+                <span className="brand__tag">From Essentials to Enterprise</span>
+              </span>
+            </div>
+            <p className="footer__desc">Rare fragrances and curated essentials for those who know the difference.</p>
+            <div className="footer__contact">
+              <strong>Jamm Trade LLC</strong>
+              <span>Darby, Pennsylvania</span>
+              <span>contact@jammtrade.com</span>
             </div>
           </div>
 
-          {/* Shop links — desktop original */}
-          <nav aria-label="Shop navigation" className="hidden flex-col gap-2 md:flex md:pt-1">
-            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">{t('footer.shop')}</p>
-            {localizedShopLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">{link.label}</Link>
+          <div className="footer__cols">
+            {columns.map((col) => (
+              <div className={`fcol${open === col.title ? ' is-open' : ''}`} key={col.title}>
+                <button className="fcol__head" onClick={() => setOpen((cur) => (cur === col.title ? null : col.title))}>
+                  {col.title}
+                  <svg className="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+                </button>
+                <div className="fcol__list">
+                  <div>
+                    {col.links.map((link) => (
+                      <Link key={link.label} href={link.href}>{link.label}</Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             ))}
-          </nav>
-          {/* Shop links — mobile accordion */}
-          <details className="footer-accordion group border-t border-jamm-gold/15 md:hidden">
-            <summary className="flex cursor-pointer select-none list-none items-center justify-between py-3 [&::-webkit-details-marker]:hidden">
-              <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">{t('footer.shop')}</span>
-              <svg className="h-3.5 w-3.5 flex-shrink-0 text-jamm-dark/35 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </summary>
-            <div className="flex flex-col gap-2 pb-3 pt-1">
-              {localizedShopLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">{link.label}</Link>
-              ))}
-            </div>
-          </details>
-
-          {/* Services links — desktop original */}
-          <nav aria-label="Services navigation" className="hidden flex-col gap-2 md:flex md:pt-1">
-            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">{t('footer.services')}</p>
-            {serviceLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">{link.label}</Link>
-            ))}
-          </nav>
-          {/* Services links — mobile accordion */}
-          <details className="footer-accordion group border-t border-jamm-gold/15 md:hidden">
-            <summary className="flex cursor-pointer select-none list-none items-center justify-between py-3 [&::-webkit-details-marker]:hidden">
-              <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">{t('footer.services')}</span>
-              <svg className="h-3.5 w-3.5 flex-shrink-0 text-jamm-dark/35 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </summary>
-            <div className="flex flex-col gap-2 pb-3 pt-1">
-              {serviceLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">{link.label}</Link>
-              ))}
-            </div>
-          </details>
-
-          {/* Legal links — desktop original */}
-          <nav aria-label="Legal navigation" className="hidden flex-col gap-2 md:flex md:pt-1">
-            <p className="mb-1 font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">{t('footer.policies')}</p>
-            {localizedLegalLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">{link.label}</Link>
-            ))}
-          </nav>
-          {/* Legal links — mobile accordion */}
-          <details className="footer-accordion group border-t border-jamm-gold/15 md:hidden">
-            <summary className="flex cursor-pointer select-none list-none items-center justify-between py-3 [&::-webkit-details-marker]:hidden">
-              <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-jamm-dark/45">{t('footer.policies')}</span>
-              <svg className="h-3.5 w-3.5 flex-shrink-0 text-jamm-dark/35 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </summary>
-            <div className="flex flex-col gap-2 pb-3 pt-1">
-              {localizedLegalLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="font-sans text-sm font-medium text-jamm-dark/55 transition-colors duration-200 hover:text-jamm-gold">{link.label}</Link>
-              ))}
-            </div>
-          </details>
+          </div>
         </div>
 
-        {/* Retailer disclaimer */}
-        <div className="border-t border-jamm-gold/15 px-5 py-4 sm:px-8">
-          <p className="max-w-3xl font-sans text-[11px] leading-relaxed text-jamm-dark/42">
-            {t('footer.disclaimer')}
-          </p>
-        </div>
-
-        {/* Bottom bar */}
-        <div className="flex items-center justify-between border-t border-jamm-gold/18 px-5 py-4 sm:px-8">
-          <p className="font-sans text-xs text-jamm-dark/38">
-            &copy; {new Date().getFullYear()} {site.name} LLC. {t('footer.rights')}
-          </p>
-          <LanguageSelector />
+        <div className="footer__legal">
+          <p className="footer__disclaimer">Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.</p>
+          <div className="footer__bottom">
+            <span className="footer__copy">© 2026 Jamm Trade LLC. All rights reserved.</span>
+            <LanguageSelector />
+          </div>
         </div>
       </div>
     </footer>

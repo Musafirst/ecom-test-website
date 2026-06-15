@@ -1,110 +1,48 @@
 {% assign public_storefront_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' %}
 {% assign public_shop_url = public_storefront_url | append: '/shop' %}
 
-<section class="trending-guides-section">
+<section class="section" id="guides" style="padding-top:0">
   <div class="container">
-    <div class="section-header">
-      <div class="section-header__row">
-        <div>
-          <p class="section-eyebrow">Fragrance Guides</p>
-          <h2 class="section-title">Trending Fragrance Guides</h2>
-        </div>
-        <a href="{{ public_shop_url }}/guides" class="section-header__link">
-          View all guides
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
+    <div class="section-head">
+      <div class="head-left reveal">
+        <p class="eyebrow">Fragrance Guides</p>
+        <h2 class="section-title">Trending Fragrance Guides</h2>
       </div>
+      <a class="link-arrow reveal" href="{{ public_shop_url }}/guides">
+        View all guides
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <div class="rule"></div>
     </div>
-    <div class="section-rule"></div>
 
-    <div class="guide-card-grid">
-      {% for block in section.blocks %}
-        <article class="guide-card" {{ block.shopify_attributes }}>
-          <div class="guide-card__body">
-            <p class="guide-card__meta">{{ block.settings.read_time }}</p>
-            <h3 class="guide-card__title">
-              <a href="{{ block.settings.url }}">{{ block.settings.title }}</a>
-            </h3>
-            <p class="guide-card__excerpt">{{ block.settings.excerpt }}</p>
-            <a href="{{ block.settings.url }}" class="guide-card__button">Read Guide</a>
-          </div>
-        </article>
-      {% endfor %}
+    <div class="guides-grid">
+      <article class="guide reveal">
+        <div class="guide__meta"><span class="tag">Buying Guide</span><span class="read">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>7 min read</span></div>
+        <h3 class="guide__title"><a href="{{ public_shop_url }}/guides/top-arabic-fragrances-for-men-2026">Top Arabic Fragrances for Men in 2026</a></h3>
+        <p class="guide__excerpt">The best Arabic fragrances for men in 2026, including Lattafa Khamrah, Rasasi Hawas, Afnan 9PM, Amber Oud Gold Edition, and Lattafa Asad.</p>
+        <a class="btn btn--dark" href="{{ public_shop_url }}/guides/top-arabic-fragrances-for-men-2026">Read Guide</a>
+      </article>
+
+      <article class="guide reveal">
+        <div class="guide__meta"><span class="tag">Review</span><span class="read">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 min read</span></div>
+        <h3 class="guide__title"><a href="{{ public_shop_url }}/guides/lattafa-khamrah-review">Lattafa Khamrah Review</a></h3>
+        <p class="guide__excerpt">A 2026 Lattafa Khamrah review covering notes, performance, best occasions, pros and cons, and whether it is worth buying.</p>
+        <a class="btn btn--dark" href="{{ public_shop_url }}/guides/lattafa-khamrah-review">Read Guide</a>
+      </article>
+
+      <article class="guide reveal">
+        <div class="guide__meta"><span class="tag">Review</span><span class="read">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>6 min read</span></div>
+        <h3 class="guide__title"><a href="{{ public_shop_url }}/guides/rasasi-hawas-review">Rasasi Hawas Review</a></h3>
+        <p class="guide__excerpt">A 2026 Rasasi Hawas review covering its fresh aquatic scent, performance, comparisons, best seasons, pros and cons, and overall value.</p>
+        <a class="btn btn--dark" href="{{ public_shop_url }}/guides/rasasi-hawas-review">Read Guide</a>
+      </article>
     </div>
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "Trending guides",
-  "max_blocks": 3,
-  "blocks": [
-    {
-      "type": "guide",
-      "name": "Guide card",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Top Arabic Fragrances for Men in 2026"
-        },
-        {
-          "type": "textarea",
-          "id": "excerpt",
-          "label": "Excerpt",
-          "default": "A practical guide to standout Arabic fragrances, scent profiles, and what to wear for each occasion."
-        },
-        {
-          "type": "text",
-          "id": "read_time",
-          "label": "Read time",
-          "default": "7 min read"
-        },
-        {
-          "type": "text",
-          "id": "url",
-          "label": "Guide URL",
-          "default": "https://www.jammtrade.com/shop/guides/top-arabic-fragrances-for-men-2026"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Trending guides",
-      "blocks": [
-        {
-          "type": "guide",
-          "settings": {
-            "title": "Top Arabic Fragrances for Men in 2026",
-            "excerpt": "The best Arabic fragrances for men in 2026, including Lattafa Khamrah, Rasasi Hawas, Afnan 9PM, Amber Oud Gold Edition, and Lattafa Asad.",
-            "read_time": "7 min read",
-            "url": "https://www.jammtrade.com/shop/guides/top-arabic-fragrances-for-men-2026"
-          }
-        },
-        {
-          "type": "guide",
-          "settings": {
-            "title": "Lattafa Khamrah Review",
-            "excerpt": "A 2026 Lattafa Khamrah review covering notes, performance, best occasions, pros and cons, and whether it is worth buying.",
-            "read_time": "5 min read",
-            "url": "https://www.jammtrade.com/shop/guides/lattafa-khamrah-review"
-          }
-        },
-        {
-          "type": "guide",
-          "settings": {
-            "title": "Rasasi Hawas Review",
-            "excerpt": "A 2026 Rasasi Hawas review covering its fresh aquatic scent, performance, comparisons, best seasons, pros and cons, and overall value.",
-            "read_time": "6 min read",
-            "url": "https://www.jammtrade.com/shop/guides/rasasi-hawas-review"
-          }
-        }
-      ]
-    }
-  ]
-}
+{ "name": "Trending Guides", "settings": [] }
 {% endschema %}

@@ -1,62 +1,32 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 
-<section class="shortcuts-section">
+<section class="quicklinks">
   <div class="container">
-    <div class="shortcuts-grid">
-      {% for block in section.blocks %}
-        {% if block.type == 'shortcut' %}
-        {% assign shortcut_url = block.settings.url %}
-        {% if shortcut_url == blank %}
-          {% assign shortcut_handle = block.settings.label | handleize %}
-          {% if shortcut_handle == 'perfumes' or shortcut_handle == 'electronics' %}
-            {% assign shortcut_url = public_shop_url | append: '/category/' | append: shortcut_handle %}
-          {% else %}
-            {% assign shortcut_url = public_shop_url | append: '/collection/' | append: shortcut_handle %}
-          {% endif %}
-        {% endif %}
-        <a href="{{ shortcut_url }}" class="shortcut-card" {{ block.shopify_attributes }}>
-          <span class="shortcut-card__detail">{{ block.settings.detail }}</span>
-          <span class="shortcut-card__label">
-            <span class="shortcut-card__label-text">{{ block.settings.label }}</span>
-            <span class="shortcut-card__arrow" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </span>
-        </a>
-        {% endif %}
-      {% endfor %}
+    <div class="quicklinks__scroll">
+      <a class="qcard" href="{{ public_shop_url }}/category/perfumes">
+        <span class="qcard__eyebrow">Oud &middot; Amber &middot; Daily</span>
+        <span class="qcard__row"><span class="qcard__name">Perfumes</span>
+          <svg class="qcard__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="qcard" href="{{ public_shop_url }}/collection/oud">
+        <span class="qcard__eyebrow">Resinous &middot; Deep</span>
+        <span class="qcard__row"><span class="qcard__name">Oud</span>
+          <svg class="qcard__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="qcard" href="{{ public_shop_url }}/category/electronics">
+        <span class="qcard__eyebrow">Audio &middot; Tech</span>
+        <span class="qcard__row"><span class="qcard__name">Electronics</span>
+          <svg class="qcard__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="qcard" href="{{ public_shop_url }}/collection/clothing">
+        <span class="qcard__eyebrow">Wear the mark</span>
+        <span class="qcard__row"><span class="qcard__name">Clothing</span>
+          <svg class="qcard__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "Shop Shortcuts",
-  "settings": [],
-  "blocks": [
-    {
-      "type": "shortcut",
-      "name": "Shortcut",
-      "settings": [
-        { "type": "text", "id": "detail", "label": "Detail / eyebrow" },
-        { "type": "text", "id": "label", "label": "Label" },
-        { "type": "url", "id": "url", "label": "Link URL" }
-      ]
-    }
-  ],
-  "max_blocks": 8,
-  "presets": [
-    {
-      "name": "Shop Shortcuts",
-      "blocks": [
-        { "type": "shortcut", "settings": { "detail": "Featured picks", "label": "Perfumes" } },
-        { "type": "shortcut", "settings": { "detail": "5 fragrances", "label": "Oud" } },
-        { "type": "shortcut", "settings": { "detail": "8 fragrances", "label": "Amber" } },
-        { "type": "shortcut", "settings": { "detail": "Daily", "label": "Daily" } },
-        { "type": "shortcut", "settings": { "detail": "Electronics", "label": "Electronics" } },
-        { "type": "shortcut", "settings": { "detail": "Apparel", "label": "Clothing", "url": "https://www.jammtrade.com/shop/collection/clothing" } }
-      ]
-    }
-  ]
-}
+{ "name": "Shop Shortcuts", "settings": [] }
 {% endschema %}

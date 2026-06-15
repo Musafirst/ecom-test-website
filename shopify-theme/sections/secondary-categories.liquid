@@ -1,86 +1,46 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 
-<section class="secondary-categories-section">
+<section class="section" id="beyond" style="padding-top:0">
   <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Also available</p>
-      <div class="section-header__row">
+    <div class="section-head">
+      <div class="head-left reveal">
+        <p class="eyebrow">Also Available</p>
         <h2 class="section-title">Beyond fragrance</h2>
-        <p class="section-subtitle">A small selection of essentials that fits the same curated standard.</p>
+        <p class="section-sub">A small selection of essentials that fits the same curated standard.</p>
       </div>
+      <div class="rule"></div>
     </div>
-    <div class="section-rule"></div>
-    <div class="category-grid">
-      {% for block in section.blocks %}
-        {% if block.type == 'category_card' %}
-        {% assign category_url = block.settings.url %}
-        {% if category_url == blank %}
-          {% assign category_handle = block.settings.name | handleize %}
-          {% if category_handle == 'perfumes' or category_handle == 'electronics' %}
-            {% assign category_url = public_shop_url | append: '/category/' | append: category_handle %}
-          {% else %}
-            {% assign category_url = public_shop_url | append: '/collection/' | append: category_handle %}
-          {% endif %}
-        {% endif %}
-        <a href="{{ category_url }}" class="category-card" {{ block.shopify_attributes }}>
-          <div class="category-card__inner">
-            <div class="beam beam--lg{% if forloop.index0 == 1 %} beam--d1{% elsif forloop.index0 == 2 %} beam--d2{% elsif forloop.index0 >= 3 %} beam--d3{% endif %}" aria-hidden="true"></div>
-            {% if block.settings.image != blank %}
-              <img src="{{ block.settings.image | image_url: width: 1000 }}" alt="{{ block.settings.name | escape }}" class="category-card__img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
-            {% elsif block.settings.asset_image != blank %}
-              {% assign asset_image_width = 1200 %}
-              {% assign asset_image_height = 1050 %}
-              {% if block.settings.asset_image == 'jamm-hoodie.png' %}
-                {% assign asset_image_width = 1024 %}
-                {% assign asset_image_height = 1536 %}
-              {% endif %}
-              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.name | escape }}" class="category-card__img" width="{{ asset_image_width }}" height="{{ asset_image_height }}" loading="lazy">
-            {% else %}
-              <div class="category-card__img category-card__img--placeholder"></div>
-            {% endif %}
-            <div class="category-card__overlay"></div>
-            <div class="category-card__badge">{{ block.settings.name }}</div>
-            <div class="category-card__body">
-              <p class="category-card__eyebrow">{{ block.settings.eyebrow }}</p>
-              <h3 class="category-card__name">{{ block.settings.name }}</h3>
-              <p class="category-card__copy">{{ block.settings.copy }}</p>
-              <span class="category-card__cta">Shop {{ block.settings.name }}</span>
-            </div>
+
+    <div class="beyond">
+      <article class="collection reveal">
+        <div class="collection__inner">
+          <div class="collection__img"><img src="https://cdn.shopify.com/s/files/1/0795/9379/9907/files/unisex-heavyweight-hooded-sweatshirt-black-front-6a18dc6bbde52.jpg?v=1780014207" alt="Jamm Trade Heritage Hoodie" width="1200" height="1400" loading="lazy"></div>
+          <span class="collection__tab">Clothing</span>
+          <div class="collection__content">
+            <span class="collection__count">Wear the mark.</span>
+            <h3 class="collection__name">Clothing</h3>
+            <p class="collection__desc">Hoodies, tees, and essentials with the Jamm Trade lotus mark.</p>
+            <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/clothing">Shop Clothing</a>
           </div>
-        </a>
-        {% endif %}
-      {% endfor %}
+        </div>
+      </article>
+
+      <article class="collection reveal">
+        <div class="collection__inner">
+          <div class="collection__img"><img src="https://cdn.shopify.com/s/files/1/0795/9379/9907/files/6c64ba8bb8e9c9b48f05aa6bc781d8f4a4aaeaf837568040ae191a5112c5343a.jpg?v=1779056822" alt="Premium audio and electronics" width="1200" height="1400" loading="lazy"></div>
+          <span class="collection__tab">Electronics</span>
+          <div class="collection__content">
+            <span class="collection__count">Precision essentials.</span>
+            <h3 class="collection__name">Electronics</h3>
+            <p class="collection__desc">Premium audio and everyday electronics selected for quality and focus.</p>
+            <a class="btn btn--ghost" href="{{ public_shop_url }}/category/electronics">Shop Electronics</a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "Secondary Categories",
-  "settings": [],
-  "blocks": [
-    {
-      "type": "category_card",
-      "name": "Category Card",
-      "settings": [
-        { "type": "text", "id": "name", "label": "Category name", "default": "Clothing" },
-        { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Wear the mark." },
-        { "type": "textarea", "id": "copy", "label": "Description", "default": "Hoodies, tees, and essentials with the Jamm Trade lotus mark." },
-        { "type": "url", "id": "url", "label": "Link URL" },
-        { "type": "image_picker", "id": "image", "label": "Card image" },
-        { "type": "text", "id": "asset_image", "label": "Fallback theme asset filename" }
-      ]
-    }
-  ],
-  "max_blocks": 4,
-  "presets": [
-    {
-      "name": "Secondary Categories",
-      "blocks": [
-        { "type": "category_card", "settings": { "asset_image": "jamm-hoodie.png", "name": "Clothing", "eyebrow": "Wear the mark.", "copy": "Hoodies, tees, and essentials with the Jamm Trade lotus mark." } },
-        { "type": "category_card", "settings": { "asset_image": "sony-wh-1000xm5.webp", "name": "Electronics", "eyebrow": "Precision essentials.", "copy": "Premium audio and everyday electronics selected for quality and focus." } }
-      ]
-    }
-  ]
-}
+{ "name": "Secondary Categories", "settings": [] }
 {% endschema %}

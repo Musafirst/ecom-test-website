@@ -1,61 +1,32 @@
-<section class="trust-bar-section">
+<section class="section" style="padding-top:0">
   <div class="container">
-    <div class="trust-bar">
-      <div class="beam beam--xl beam--d2" aria-hidden="true"></div>
-      {% for block in section.blocks %}
-        {% if block.type == 'trust_item' %}
-        <div class="trust-item" {{ block.shopify_attributes }}>
-          <div class="trust-item__icon">
-            {% case block.settings.icon %}
-              {% when 'star' %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4l-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z" stroke-linejoin="round"/></svg>
-              {% when 'globe' %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a15.3 15.3 0 010 18M12 3a15.3 15.3 0 000 18" stroke-linecap="round"/></svg>
-              {% when 'check' %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
-              {% when 'lock' %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke-linecap="round"/></svg>
-              {% else %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10"/></svg>
-            {% endcase %}
-          </div>
-          <div class="trust-item__text">
-            <h4 class="trust-item__label">{{ block.settings.label }}</h4>
-            <p class="trust-item__detail">{{ block.settings.detail }}</p>
-          </div>
+    <div class="trust reveal">
+      <div class="trust__grid">
+        <div class="trust__item">
+          <span class="trust__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <span class="trust__name">Authentic Products</span>
+          <span class="trust__desc">Every item sourced and verified.</span>
         </div>
-        {% endif %}
-      {% endfor %}
+        <div class="trust__item">
+          <span class="trust__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg></span>
+          <span class="trust__name">Reliable Shipping</span>
+          <span class="trust__desc">Clear delivery options at checkout.</span>
+        </div>
+        <div class="trust__item">
+          <span class="trust__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l2.4 5 5.6.7-4 4 1 5.6L12 20l-5 2.3 1-5.6-4-4 5.6-.7z"/></svg></span>
+          <span class="trust__name">Premium Quality</span>
+          <span class="trust__desc">Curated with intention.</span>
+        </div>
+        <div class="trust__item">
+          <span class="trust__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+          <span class="trust__name">Secure Checkout</span>
+          <span class="trust__desc">Your data, protected.</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "Trust Bar",
-  "settings": [],
-  "blocks": [
-    {
-      "type": "trust_item",
-      "name": "Trust Item",
-      "settings": [
-        { "type": "select", "id": "icon", "label": "Icon", "options": [{ "value": "star", "label": "Star" }, { "value": "globe", "label": "Globe" }, { "value": "check", "label": "Check" }, { "value": "lock", "label": "Lock" }], "default": "check" },
-        { "type": "text", "id": "label", "label": "Label", "default": "Authentic Products" },
-        { "type": "text", "id": "detail", "label": "Detail", "default": "Every item sourced and verified." }
-      ]
-    }
-  ],
-  "max_blocks": 4,
-  "presets": [
-    {
-      "name": "Trust Bar",
-      "blocks": [
-        { "type": "trust_item", "settings": { "icon": "star", "label": "Authentic Products", "detail": "Every item sourced and verified." } },
-        { "type": "trust_item", "settings": { "icon": "globe", "label": "Reliable Shipping", "detail": "Clear delivery options at checkout." } },
-        { "type": "trust_item", "settings": { "icon": "check", "label": "Premium Quality", "detail": "Curated with intention." } },
-        { "type": "trust_item", "settings": { "icon": "lock", "label": "Secure Checkout", "detail": "Your data, protected." } }
-      ]
-    }
-  ]
-}
+{ "name": "Trust Bar", "settings": [] }
 {% endschema %}

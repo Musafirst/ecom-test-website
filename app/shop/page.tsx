@@ -6,6 +6,7 @@ import { CollectionGrid } from '@/components/shop/CollectionGrid'
 import { SecondaryCategories } from '@/components/shop/SecondaryCategories'
 import { TrendingGuides } from '@/components/shop/TrendingGuides'
 import { TrustBar } from '@/components/shop/TrustBar'
+import { RevealOnScroll } from '@/components/shop/RevealOnScroll'
 import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts } from '@/lib/products'
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default async function ShopPage() {
 
   return (
     <>
+      <RevealOnScroll />
       <HeroSection />
       <ShopShortcuts
         collectionCounts={{

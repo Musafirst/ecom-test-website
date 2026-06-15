@@ -4,32 +4,25 @@
   {% assign featured_products = collections.all.products %}
 {% endif %}
 
-<section class="featured-products-section" id="featured-products">
+<section class="section" id="fragrance">
   <div class="container">
-    <div class="section-header">
-      <div class="section-header__row">
-        <p class="section-eyebrow">{{ 'shop.curated_selection' | t }}</p>
-        <h2 class="section-title">{{ 'shop.featured_products' | t }}</h2>
+    <div class="section-head">
+      <div class="head-left reveal">
+        <p class="eyebrow">Fragrance Collection</p>
+        <h2 class="section-title">Featured Products</h2>
       </div>
-      <a href="{{ public_shop_url }}" class="section-header__link">
-        {{ 'shop.view_all_products' | t }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a class="link-arrow reveal" href="{{ public_shop_url }}/category/perfumes">
+        View all products
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
+      <div class="rule"></div>
     </div>
-    <div class="section-rule"></div>
 
-    {% comment %}
-      Render products with Liquid so the homepage does not depend on a
-      browser-exposed token or a Storefront API version.
-    {% endcomment %}
-    <div class="product-grid product-grid--4 product-grid--featured">
+    <div class="products-grid">
       {% for product in featured_products limit: section.settings.products_count %}
         {% render 'product-card', product: product %}
       {% else %}
-        <div class="featured-empty">
-          <p class="featured-empty__title">{{ 'shop.products_unavailable' | t }}</p>
-          <p class="featured-empty__text">{{ 'shop.check_back' | t }}</p>
-        </div>
+        <p class="section-sub">Products are temporarily unavailable. Please check back soon.</p>
       {% endfor %}
     </div>
   </div>

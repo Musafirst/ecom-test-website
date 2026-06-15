@@ -1,10 +1,17 @@
 {% if section.settings.show_announcement %}
-<div class="announcement-bar" aria-label="Announcement">
-  <div class="announcement-marquee">
-    <span class="announcement-track" aria-hidden="false">
-      {{ section.settings.text }}
-      {{ section.settings.text }}
-    </span>
+{% assign items = section.settings.text | split: '·' %}
+<div class="announce">
+  <div class="announce__track">
+    {% for pass in (1..2) %}
+      <div class="announce__group"{% if pass == 2 %} aria-hidden="true"{% endif %}>
+        {% for item in items %}
+          {% assign trimmed = item | strip %}
+          {% if trimmed != blank %}
+            <span class="announce__item">{{ trimmed }}<span class="dot"></span></span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
   </div>
 </div>
 {% endif %}
@@ -22,8 +29,8 @@
     {
       "type": "text",
       "id": "text",
-      "label": "Announcement text",
-      "default": "Curated products · Secure Shopify checkout · Clear shipping options at checkout · Customer support when you need it ·"
+      "label": "Announcement text (· separated)",
+      "default": "Secure Shopify checkout · Clear shipping options at checkout · Customer support when you need it · Curated products"
     }
   ]
 }

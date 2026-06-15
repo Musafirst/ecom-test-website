@@ -1,15 +1,16 @@
 import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import './globals.css'
+import './jamm-design.css'
 import { TabNav } from '@/components/layout/TabNav'
 import { Footer } from '@/components/layout/Footer'
-import BackgroundComponents from '@/components/ui/background-components'
 import { LocaleProvider } from '@/components/i18n/LocaleProvider'
 import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['300', '400', '600'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-cormorant',
   display: 'swap',
 })
@@ -106,11 +107,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         <LocaleProvider>
-          <BackgroundComponents>
-            <TabNav />
-            <main>{children}</main>
-            <Footer />
-          </BackgroundComponents>
+          <TabNav />
+          <main>{children}</main>
+          <Footer />
         </LocaleProvider>
       </body>
     </html>

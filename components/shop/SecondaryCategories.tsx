@@ -1,116 +1,55 @@
-'use client'
-
 import Link from 'next/link'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { BorderBeam } from '@/components/ui/border-beam'
-import { useLocale } from '@/components/i18n/LocaleProvider'
 import type { JammProduct } from '@/types/product'
 
 interface SecondaryCategoriesProps {
   electronicsProducts: JammProduct[]
 }
 
+const clothingImage = 'https://cdn.shopify.com/s/files/1/0795/9379/9907/files/unisex-heavyweight-hooded-sweatshirt-black-front-6a18dc6bbde52.jpg?v=1780014207'
+const electronicsFallbackImage = 'https://cdn.shopify.com/s/files/1/0795/9379/9907/files/6c64ba8bb8e9c9b48f05aa6bc781d8f4a4aaeaf837568040ae191a5112c5343a.jpg?v=1779056822'
+
 export function SecondaryCategories({ electronicsProducts }: SecondaryCategoriesProps) {
-  const { t } = useLocale()
-  const featuredElectronicsProduct =
-    electronicsProducts.find((product) => product.handle === 'sony-wh-1000xm5') ?? electronicsProducts[0]
-  const categories = [
-    {
-      id: 'clothing',
-      name: t('shortcut.clothing'),
-      copy: t('secondary.clothing.copy'),
-      sub: t('secondary.clothing.sub'),
-      href: '/shop/collection/clothing',
-      image: '/product-images/jamm-hoodie.png',
-      imageClassName: 'object-contain object-center p-4 sm:p-6',
-    },
-    {
-      id: 'electronics',
-      name: t('shortcut.electronics'),
-      copy: t('secondary.electronics.copy'),
-      sub: t('secondary.electronics.sub'),
-      href: '/shop/category/electronics',
-      image: featuredElectronicsProduct?.image ?? '/product-images/placeholders/audio.webp',
-      imageClassName: 'object-contain object-center p-6 sm:p-8',
-    },
-  ]
+  const electronicsImage = electronicsProducts[0]?.image ?? electronicsFallbackImage
 
   return (
-    <section className="bg-transparent px-3 py-10 sm:px-4 lg:py-16">
-      <div className="mx-auto max-w-[1560px]">
-        <motion.div
-          className="mb-5 sm:mb-7"
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">{t('secondary.kicker')}</p>
-          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-            <h2 className="font-sans text-2xl font-semibold text-jamm-dark sm:text-4xl">
-              {t('secondary.title')}
-            </h2>
-            <p className="max-w-md font-sans text-sm leading-relaxed text-jamm-muted">
-              {t('secondary.copy')}
-            </p>
+    <section className="section" id="beyond" style={{ paddingTop: 0 }}>
+      <div className="container">
+        <div className="section-head">
+          <div className="head-left reveal">
+            <p className="eyebrow">Also Available</p>
+            <h2 className="section-title">Beyond fragrance</h2>
+            <p className="section-sub">A small selection of essentials that fits the same curated standard.</p>
           </div>
-          <div className="mt-5 h-px bg-gradient-to-r from-jamm-gold/40 via-jamm-gold/15 to-transparent" />
-        </motion.div>
+          <div className="rule" />
+        </div>
 
-        <motion.div
-          className="grid grid-cols-1 gap-4 lg:grid-cols-2"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
-        >
-          {categories.map((cat, index) => (
-            <motion.div
-              key={cat.id}
-              id={cat.id}
-              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Link href={cat.href} className="group block">
-                <div className="relative min-h-[260px] overflow-hidden rounded-[18px] border border-jamm-gold/35 bg-[#EDE8DC] shadow-[0_18px_45px_rgba(12,11,9,0.08)] transition duration-300 group-hover:border-jamm-gold/70 group-hover:shadow-[0_24px_70px_rgba(12,11,9,0.14)] sm:min-h-[320px] sm:rounded-[20px] lg:min-h-[460px]">
-                  <BorderBeam size={420} duration={13} borderWidth={2.5} colorFrom="#C4973A" colorTo="#F8E7A6" delay={index * 3} />
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    quality={78}
-                    className={`${cat.imageClassName} transition-transform duration-700 group-hover:scale-[1.025]`}
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 z-10 bg-[linear-gradient(to_top,rgba(0,0,0,0.72)_0%,rgba(0,0,0,0.42)_45%,rgba(0,0,0,0.08)_100%)]" />
-                  <div className="absolute left-0 top-0 z-20 rounded-br-[16px] bg-jamm-gold px-4 py-2 font-sans text-xs font-semibold text-jamm-dark sm:px-5 sm:text-sm">
-                    {cat.name}
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-7 lg:p-8">
-                    <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
-                      {cat.copy}
-                    </p>
-                    <h3 className="mb-2 font-sans text-2xl font-semibold text-jamm-cream [text-shadow:0_2px_18px_rgba(0,0,0,0.45)] sm:text-3xl">
-                      {cat.name}
-                    </h3>
-                    <p className="mb-5 max-w-sm font-sans text-sm font-semibold leading-relaxed text-jamm-cream [text-shadow:0_2px_14px_rgba(0,0,0,0.72)]">
-                      {cat.sub}
-                    </p>
-                    <span className="inline-flex rounded-full border border-jamm-gold/60 bg-jamm-dark/26 px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-cream backdrop-blur-sm transition-colors duration-200 group-hover:bg-jamm-cream group-hover:text-jamm-dark">
-                      {t('secondary.shop')} {cat.name}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="beyond">
+          <article className="collection reveal">
+            <div className="collection__inner">
+              <div className="collection__img"><img src={clothingImage} alt="Jamm Trade Heritage Hoodie" loading="lazy" /></div>
+              <span className="collection__tab">Clothing</span>
+              <div className="collection__content">
+                <span className="collection__count">Wear the mark.</span>
+                <h3 className="collection__name">Clothing</h3>
+                <p className="collection__desc">Hoodies, tees, and essentials with the Jamm Trade lotus mark.</p>
+                <Link className="btn btn--ghost" href="/shop/collection/clothing">Shop Clothing</Link>
+              </div>
+            </div>
+          </article>
+
+          <article className="collection reveal">
+            <div className="collection__inner">
+              <div className="collection__img"><img src={electronicsImage} alt="Premium audio and electronics" loading="lazy" /></div>
+              <span className="collection__tab">Electronics</span>
+              <div className="collection__content">
+                <span className="collection__count">Precision essentials.</span>
+                <h3 className="collection__name">Electronics</h3>
+                <p className="collection__desc">Premium audio and everyday electronics selected for quality and focus.</p>
+                <Link className="btn btn--ghost" href="/shop/category/electronics">Shop Electronics</Link>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
   )

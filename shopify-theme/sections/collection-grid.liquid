@@ -1,80 +1,62 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 
-<section class="collection-grid-section" id="collections">
+<section class="section" id="collections" style="padding-top:0">
   <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Collections</p>
-      <div class="section-header__row">
+    <div class="section-head">
+      <div class="head-left reveal">
+        <p class="eyebrow">Collections</p>
         <h2 class="section-title">Shop by scent family</h2>
-        <p class="section-subtitle">Choose by mood first, then explore the products inside each edit.</p>
+        <p class="section-sub">Choose by mood first, then explore the products inside each edit.</p>
       </div>
+      <div class="rule"></div>
     </div>
-    <div class="section-rule"></div>
-    <div class="collection-grid">
-      {% for block in section.blocks %}
-        {% if block.type == 'collection_card' %}
-        {% assign card_url = block.settings.url_override %}
-        {% assign card_handle = block.settings.collection.handle | default: block.settings.name | handleize | replace: '-collection', '' %}
-        {% if card_url == blank %}{% assign card_url = public_shop_url | append: '/collection/' | append: card_handle %}{% endif %}
-        <a href="{{ card_url }}" class="collection-card" {{ block.shopify_attributes }}>
-          <div class="collection-card__inner">
-            <div class="beam beam--lg{% if forloop.index0 == 1 %} beam--d1{% elsif forloop.index0 == 2 %} beam--d2{% elsif forloop.index0 >= 3 %} beam--d3{% endif %}" aria-hidden="true"></div>
-            {% if block.settings.image != blank %}
-              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
-            {% elsif block.settings.collection.image != blank %}
-              <img src="{{ block.settings.collection.image | image_url: width: 800 }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" width="{{ block.settings.collection.image.width }}" height="{{ block.settings.collection.image.height }}" loading="lazy">
-            {% elsif block.settings.asset_image != blank %}
-              <img src="{{ block.settings.asset_image | asset_url }}" alt="{{ block.settings.name | escape }}" class="collection-card__img" width="1122" height="1402" loading="lazy">
-            {% else %}
-              <div class="collection-card__img collection-card__img--placeholder"></div>
-            {% endif %}
-            <div class="collection-card__overlay"></div>
-            <div class="collection-card__badge">{{ block.settings.name }}</div>
-            <div class="collection-card__body">
-              <p class="collection-card__count">
-                {% if block.settings.collection != blank %}{{ block.settings.collection.products_count }} fragrances{% else %}{{ block.settings.count_override }}{% endif %}
-              </p>
-              <h3 class="collection-card__name">{{ block.settings.name }}</h3>
-              <p class="collection-card__copy">{{ block.settings.copy }}</p>
-              <span class="collection-card__cta">Explore</span>
-            </div>
+
+    <div class="collections">
+      <article class="collection reveal">
+        <div class="collection__inner">
+          <div class="collection__media-fallback" style="background:radial-gradient(110% 90% at 70% 8%,#3a2b1c,#1c150d 58%,#0c0907)"></div>
+          <img src="{{ 'logo-gold.png' | asset_url }}" alt="" class="slide__lotus" width="420" height="420" style="opacity:.08; right:-8%; bottom:-10%; width:70%">
+          <span class="collection__tab">Oud</span>
+          <div class="collection__content">
+            <span class="collection__count">{{ collections.oud.products_count | default: 6 }} Fragrances</span>
+            <h3 class="collection__name">Oud</h3>
+            <p class="collection__desc">Resinous, dark, and long lasting.</p>
+            <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/oud">Explore</a>
           </div>
-        </a>
-        {% endif %}
-      {% endfor %}
+        </div>
+      </article>
+
+      <article class="collection reveal">
+        <div class="collection__inner">
+          <div class="collection__media-fallback" style="background:radial-gradient(110% 90% at 70% 8%,#4a3a1e,#241a0d 58%,#0d0a06)"></div>
+          <img src="{{ 'logo-gold.png' | asset_url }}" alt="" class="slide__lotus" width="420" height="420" style="opacity:.08; right:-8%; bottom:-10%; width:70%">
+          <span class="collection__tab">Amber</span>
+          <div class="collection__content">
+            <span class="collection__count">{{ collections.amber.products_count | default: 6 }} Fragrances</span>
+            <h3 class="collection__name">Amber</h3>
+            <p class="collection__desc">Warm vanilla, soft spice, skin-close depth.</p>
+            <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/amber">Explore</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="collection reveal">
+        <div class="collection__inner">
+          <div class="collection__media-fallback" style="background:radial-gradient(110% 90% at 70% 8%,#2f3230,#181917 58%,#0a0b0a)"></div>
+          <img src="{{ 'logo-gold.png' | asset_url }}" alt="" class="slide__lotus" width="420" height="420" style="opacity:.07; right:-8%; bottom:-10%; width:70%">
+          <span class="collection__tab">Daily</span>
+          <div class="collection__content">
+            <span class="collection__count">{{ collections.daily.products_count | default: 4 }} Fragrances</span>
+            <h3 class="collection__name">Daily</h3>
+            <p class="collection__desc">Clean signatures for repeat wear.</p>
+            <a class="btn btn--ghost" href="{{ public_shop_url }}/collection/daily">Explore</a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
 {% schema %}
-{
-  "name": "Collection Grid",
-  "settings": [],
-  "blocks": [
-    {
-      "type": "collection_card",
-      "name": "Collection Card",
-      "settings": [
-        { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "url", "id": "url_override", "label": "URL override (use when handle has suffix)" },
-        { "type": "text", "id": "name", "label": "Collection name", "default": "Oud" },
-        { "type": "text", "id": "copy", "label": "Description", "default": "Resinous, dark, and long lasting." },
-        { "type": "text", "id": "count_override", "label": "Count label (if no collection)", "default": "5 fragrances" },
-        { "type": "image_picker", "id": "image", "label": "Card image" },
-        { "type": "text", "id": "asset_image", "label": "Fallback theme asset filename" }
-      ]
-    }
-  ],
-  "max_blocks": 6,
-  "presets": [
-    {
-      "name": "Collection Grid",
-      "blocks": [
-        { "type": "collection_card", "settings": { "asset_image": "featured-oud.png", "name": "Oud", "copy": "Resinous, dark, and long lasting.", "count_override": "5 fragrances" } },
-        { "type": "collection_card", "settings": { "asset_image": "featured-amber.png", "name": "Amber", "copy": "Warm vanilla, soft spice, skin-close depth.", "count_override": "8 fragrances" } },
-        { "type": "collection_card", "settings": { "asset_image": "featured-daily.png", "name": "Daily", "copy": "Clean signatures for repeat wear.", "count_override": "Daily fragrances" } }
-      ]
-    }
-  ]
-}
+{ "name": "Collection Grid", "settings": [] }
 {% endschema %}
