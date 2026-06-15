@@ -774,3 +774,23 @@ button{ font-family:inherit; cursor:pointer; }
    wrapper instead so the header stays fixed across the page. */
 #shopify-section-header{ position:sticky; top:0; z-index:40; }
 .shopify-section .header{ position:static; }
+
+/* ============================================================
+   MOBILE HEADER POLISH — keep the bar to one clean line
+   ============================================================ */
+@media (max-width: 640px){
+  .header__inner{ gap:12px; padding-block:9px; }
+  .brand{ gap:9px; min-width:0; }
+  .brand__mark{ width:37px; height:37px; }
+  .brand__type{ min-width:0; }
+  .brand__name{ font-size:1.08rem; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .brand__tag{ display:none; }
+  .header__actions{ gap:0; flex-shrink:0; }
+  .icon-btn{ width:42px; height:42px; }
+  .icon-btn svg{ width:19px; height:19px; }
+  .cart-count{ top:2px; right:2px; }
+}
+@media (max-width: 360px){
+  .brand__name{ font-size:1rem; }
+  .brand__mark{ width:34px; height:34px; }
+}

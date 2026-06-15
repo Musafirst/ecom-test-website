@@ -786,3 +786,23 @@ button{ font-family:inherit; cursor:pointer; }
 .mobile-drawer__nav a:hover{ color:var(--gold-deep); }
 .mobile-drawer__foot{ margin-top:auto; padding:20px var(--pad); border-top:1px solid var(--line-soft); }
 @media (min-width:900px){ .mobile-drawer{ display:none; } }
+
+/* ============================================================
+   MOBILE HEADER POLISH — keep the bar to one clean line
+   ============================================================ */
+@media (max-width: 640px){
+  .header__inner{ gap:12px; padding-block:9px; }
+  .brand{ gap:9px; min-width:0; }
+  .brand__mark{ width:37px; height:37px; }
+  .brand__type{ min-width:0; }
+  .brand__name{ font-size:1.08rem; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .brand__tag{ display:none; }            /* tagline is decoration on a phone; badge + wordmark carry the brand */
+  .header__actions{ gap:0; flex-shrink:0; }
+  .icon-btn{ width:42px; height:42px; }
+  .icon-btn svg{ width:19px; height:19px; }
+  .cart-count{ top:2px; right:2px; }
+}
+@media (max-width: 360px){
+  .brand__name{ font-size:1rem; }
+  .brand__mark{ width:34px; height:34px; }
+}
