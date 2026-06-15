@@ -767,3 +767,10 @@ button{ font-family:inherit; cursor:pointer; }
 .mobile-drawer__nav a{ padding:16px 8px; border-bottom:1px solid var(--line-soft); font-family:var(--font-display); font-weight:600; font-size:1.5rem; color:var(--text); }
 .mobile-drawer__nav a:hover{ color:var(--gold-deep); }
 @media (min-width:900px){ .mobile-drawer{ display:none !important; } }
+
+/* ---------- Shopify: make the section wrapper sticky ----------
+   Shopify wraps each section in .shopify-section (header-height),
+   which would un-stick a sticky .header immediately. Stick the
+   wrapper instead so the header stays fixed across the page. */
+#shopify-section-header{ position:sticky; top:0; z-index:40; }
+.shopify-section .header{ position:static; }
