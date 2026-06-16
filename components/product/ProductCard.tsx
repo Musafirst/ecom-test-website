@@ -31,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <article className="product reveal">
+    <article className="product">
       <Link href={`/shop/product/${product.handle}`} className="product__media product__media--photo">
         <img className="product__photo" src={product.image} alt={product.imageAlt} loading="lazy" />
       </Link>

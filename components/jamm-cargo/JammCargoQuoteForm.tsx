@@ -19,13 +19,13 @@ interface FormData {
 }
 
 const inputClass =
-  'h-11 w-full rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'h-11 w-full rounded-md border border-jamm-gold/35 bg-[#FBF8F2] px-3.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/62 outline-none transition-colors focus:border-jamm-gold/70 focus:bg-[#FBF8F2] focus:ring-2 focus:ring-jamm-gold/15'
 
 const textareaClass =
-  'w-full resize-none rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 py-2.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'w-full resize-none rounded-md border border-jamm-gold/35 bg-[#FBF8F2] px-3.5 py-2.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/62 outline-none transition-colors focus:border-jamm-gold/70 focus:bg-[#FBF8F2] focus:ring-2 focus:ring-jamm-gold/15'
 
 const labelClass =
-  'block font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark/60 mb-1.5'
+  'block font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark/88 mb-1.5'
 
 export function JammCargoQuoteForm() {
   const [form, setForm] = useState<FormData>({
@@ -82,18 +82,18 @@ export function JammCargoQuoteForm() {
 
   if (formState === 'success') {
     return (
-      <div className="rounded-lg border border-jamm-gold/30 bg-[#FAF7F2]/92 p-8 text-center shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-12">
+      <div className="rounded-lg border border-jamm-gold/30 bg-[#FBF8F2] p-8 text-center shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-12">
         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-jamm-gold/40 bg-jamm-gold/10">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-7 w-7 text-jamm-gold" aria-hidden>
             <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <h3 className="font-serif text-2xl font-light text-jamm-dark sm:text-3xl">Quote Request Received</h3>
-        <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-dark/60">
+        <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-dark/85">
           Thank you, <strong>{form.full_name.split(' ')[0]}</strong>. We have received your shipping quote request. Our team will review the details and contact you at{' '}
           <strong className="text-jamm-dark">{form.email}</strong> with a quote.
         </p>
-        <p className="mx-auto mt-3 max-w-md font-sans text-xs leading-relaxed text-jamm-dark/45">
+        <p className="mx-auto mt-3 max-w-md font-sans text-xs leading-relaxed text-jamm-dark/85">
           If you accept the quote, we will coordinate with our available shipping partners to arrange your shipment.
         </p>
       </div>
@@ -264,7 +264,7 @@ export function JammCargoQuoteForm() {
             required
             className="mt-0.5 h-5 w-5 flex-shrink-0 cursor-pointer accent-jamm-gold"
           />
-          <span className="font-sans text-xs leading-relaxed text-jamm-dark/60">
+          <span className="font-sans text-xs leading-relaxed text-jamm-dark/85">
             By submitting this form, you agree to be contacted by Jamm Trade regarding your shipping quote request. Your information will not be shared with third parties outside of the shipping process. View our{' '}
             <a href="/shop/privacy-policy" className="text-jamm-gold underline-offset-2 hover:underline">
               Privacy Policy

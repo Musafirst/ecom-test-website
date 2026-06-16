@@ -32,7 +32,7 @@ export function SecondaryCategories({ electronicsProducts }: SecondaryCategories
                 <span className="collection__count">Wear the mark.</span>
                 <h3 className="collection__name">Clothing</h3>
                 <p className="collection__desc">Hoodies, tees, and essentials with the Jamm Trade lotus mark.</p>
-                <Link className="btn btn--ghost" href="/shop/collection/clothing">Shop Clothing</Link>
+                <Link className="btn btn--ghost" href="/shop/category/clothing">Shop Clothing</Link>
               </div>
             </div>
           </article>

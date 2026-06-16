@@ -22,13 +22,13 @@ interface FormData {
 }
 
 const inputClass =
-  'h-11 w-full rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'h-11 w-full rounded-md border border-jamm-gold/35 bg-[#FBF8F2] px-3.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/62 outline-none transition-colors focus:border-jamm-gold/70 focus:bg-[#FBF8F2] focus:ring-2 focus:ring-jamm-gold/15'
 
 const textareaClass =
-  'w-full resize-none rounded-md border border-jamm-gold/25 bg-white/80 px-3.5 py-2.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/35 outline-none transition-colors focus:border-jamm-gold/60 focus:bg-white focus:ring-2 focus:ring-jamm-gold/10'
+  'w-full resize-none rounded-md border border-jamm-gold/35 bg-[#FBF8F2] px-3.5 py-2.5 font-sans text-base md:text-sm text-jamm-dark placeholder-jamm-dark/62 outline-none transition-colors focus:border-jamm-gold/70 focus:bg-[#FBF8F2] focus:ring-2 focus:ring-jamm-gold/15'
 
 const labelClass =
-  'block font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark/60 mb-1.5'
+  'block font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark/88 mb-1.5'
 
 export function JammFleetApplicationForm() {
   const [form, setForm] = useState<FormData>({
@@ -97,18 +97,18 @@ export function JammFleetApplicationForm() {
 
   if (formState === 'success') {
     return (
-      <div className="rounded-lg border border-jamm-gold/30 bg-[#FAF7F2]/92 p-8 text-center shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-12">
+      <div className="rounded-lg border border-jamm-gold/30 bg-[#FBF8F2] p-8 text-center shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-12">
         <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-jamm-gold/40 bg-jamm-gold/10">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-7 w-7 text-jamm-gold" aria-hidden>
             <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <h3 className="font-serif text-2xl font-light text-jamm-dark sm:text-3xl">Inquiry Received</h3>
-        <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-dark/60">
+        <p className="mx-auto mt-3 max-w-md font-sans text-sm leading-relaxed text-jamm-dark/85">
           Thank you, <strong>{form.full_name.split(' ')[0]}</strong>. We have received your vehicle rental inquiry. Our team will review your information and contact you at{' '}
           <strong className="text-jamm-dark">{form.email}</strong> to discuss availability, pricing, requirements, and next steps.
         </p>
-        <p className="mx-auto mt-3 max-w-md font-sans text-xs leading-relaxed text-jamm-dark/45">
+        <p className="mx-auto mt-3 max-w-md font-sans text-xs leading-relaxed text-jamm-dark/85">
           Vehicle availability is limited and assigned on a first-come, first-confirmed basis.
         </p>
       </div>
@@ -232,7 +232,7 @@ export function JammFleetApplicationForm() {
         <p className={`${labelClass} mb-3`}>Platform of Interest</p>
         <div className="grid grid-cols-1 gap-2 min-[390px]:grid-cols-2 sm:grid-cols-3">
           {PLATFORMS.map((platform) => (
-            <label key={platform} className="flex min-w-0 cursor-pointer items-center gap-2.5 rounded-md border border-jamm-gold/20 bg-white/60 px-3 py-2.5 transition-colors hover:border-jamm-gold/50">
+            <label key={platform} className="flex min-w-0 cursor-pointer items-center gap-2.5 rounded-md border border-jamm-gold/20 bg-white px-3 py-2.5 transition-colors hover:border-jamm-gold/50">
               <input
                 type="checkbox"
                 name="platform_interest"
@@ -316,7 +316,7 @@ export function JammFleetApplicationForm() {
             required
             className="mt-0.5 h-5 w-5 flex-shrink-0 cursor-pointer accent-jamm-gold"
           />
-          <span className="font-sans text-xs leading-relaxed text-jamm-dark/60">
+          <span className="font-sans text-xs leading-relaxed text-jamm-dark/85">
             By submitting this form, you agree to be contacted by Jamm Trade regarding your vehicle rental inquiry. Your information will not be shared with third parties outside of the rental process. View our{' '}
             <a href="/shop/privacy-policy" className="text-jamm-gold underline-offset-2 hover:underline">
               Privacy Policy

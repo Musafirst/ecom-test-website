@@ -32,6 +32,9 @@ export function RevealOnScroll() {
     return () => {
       io.disconnect()
       window.clearTimeout(safety)
+      // Clear the hidden state so it can never linger on a later page that has
+      // no observer running.
+      document.body.classList.remove('reveal-on')
     }
   }, [])
 

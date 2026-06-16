@@ -15,7 +15,7 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
     { name: 'Perfumes', eyebrow: 'Oud · Amber · Daily', href: '/shop/category/perfumes' },
     { name: 'Oud', eyebrow: collectionCounts.oud, href: '/shop/collection/oud' },
     { name: 'Electronics', eyebrow: 'Audio · Tech', href: '/shop/category/electronics' },
-    { name: 'Clothing', eyebrow: 'Wear the mark', href: '/shop/collection/clothing' },
+    { name: 'Clothing', eyebrow: 'Wear the mark', href: '/shop/category/clothing' },
   ]
 
   return (

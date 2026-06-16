@@ -147,7 +147,7 @@ export default function AboutPage() {
               {
                 category: 'Apparel',
                 description: 'Jamm Trade branded clothing, hoodies, tees, and essentials carrying the Jamm Trade lotus mark.',
-                href: '/shop/collection/clothing',
+                href: '/shop/category/clothing',
               },
             ].map(({ category, description, href }) => (
               <Link

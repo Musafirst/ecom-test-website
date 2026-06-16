@@ -25,7 +25,12 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
 
         <div className="collections">
           {collections.map((c) => (
-            <article className="collection reveal" key={c.key}>
+            <Link
+              className="collection reveal"
+              href={`/shop/collection/${c.key}`}
+              key={c.key}
+              aria-label={`Explore ${c.name} collection`}
+            >
               <div className="collection__inner">
                 <div className="collection__media-fallback" style={{ background: c.bg }} />
                 <img src="/design/logo-gold.png" alt="" className="slide__lotus" style={{ opacity: c.lotusOpacity, right: '-8%', bottom: '-10%', width: '70%' }} />
@@ -37,10 +42,10 @@ export function CollectionGrid({ counts }: CollectionGridProps) {
                   <span className="collection__count">{counts[c.key]}</span>
                   <h3 className="collection__name">{c.name}</h3>
                   <p className="collection__desc">{c.desc}</p>
-                  <Link className="btn btn--ghost" href={`/shop/collection/${c.key}`}>Explore</Link>
+                  <span className="btn btn--ghost">Explore</span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

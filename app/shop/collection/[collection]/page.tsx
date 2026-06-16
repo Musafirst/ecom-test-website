@@ -17,7 +17,8 @@ function isCollectionKey(value: string): value is CollectionKey {
   return value in collectionDetails || isSupportedCollectionHandle(value)
 }
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export function generateStaticParams() {
   return Object.keys(collectionDetails).map((collection) => ({ collection }))
@@ -57,9 +58,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   const emptyMessage = 'Products are temporarily unavailable.'
 
   return (
-    <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">
-      <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">
-        <div className="mb-8 max-w-3xl rounded-lg border border-jamm-gold/15 bg-white/28 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mb-12 sm:p-0 sm:shadow-none sm:border-0 sm:bg-transparent">
+    <section className="bg-transparent px-3 py-5 text-jamm-dark sm:px-4 sm:py-7 lg:py-10">
+      <div className="mx-auto max-w-[1320px] py-3 sm:py-5 lg:py-7">
+        <div className="mb-7 max-w-3xl rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/94 p-5 shadow-[0_18px_48px_rgba(12,11,9,0.07)] sm:mb-9 sm:p-7">
           <SectionLabel>
             {collectionParam === 'smartwatches' || collectionParam === 'audio'
               ? 'Electronics'
@@ -70,10 +71,10 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
           <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
             {collection.name}
           </h1>
-          <p className="mt-4 font-sans text-base leading-relaxed text-jamm-muted sm:mt-5 sm:text-lg">
+          <p className="mt-4 font-sans text-base leading-relaxed text-jamm-dark/82 sm:mt-5 sm:text-lg">
             {collection.intro}
           </p>
-          <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-muted/80">
+          <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-dark/68">
             {collection.note}
           </p>
         </div>

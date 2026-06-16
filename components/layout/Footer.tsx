@@ -11,7 +11,7 @@ const columns = [
       { label: 'Fragrance', href: '/shop/category/perfumes' },
       { label: 'Oud', href: '/shop/collection/oud' },
       { label: 'Amber', href: '/shop/collection/amber' },
-      { label: 'Clothing', href: '/shop/collection/clothing' },
+      { label: 'Clothing', href: '/shop/category/clothing' },
       { label: 'Electronics', href: '/shop/category/electronics' },
     ],
   },

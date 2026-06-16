@@ -114,8 +114,8 @@ export type ShopifyCollection = {
 
 const collectionHandles = ['oud', 'amber', 'daily', 'electronics', 'audio', 'smartwatches', 'clothing'] as const
 const collectionHandleSet = new Set<string>(collectionHandles)
+const scentCollectionHandleSet = new Set<string>(['oud', 'amber', 'daily'])
 const loggedShopifyErrors = new Set<string>()
-const allowDemoFallback = process.env.NODE_ENV !== 'production'
 const storefrontApiVersion = '2026-04'
 
 function logShopifyErrorOnce(key: string, message: string, details?: unknown) {
@@ -148,46 +148,79 @@ export function isShopifyConfigured() {
   return Boolean(getStorefrontUrl() && process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN)
 }
 
+function allowDemoFallback() {
+  return process.env.NODE_ENV !== 'production' && !isShopifyConfigured()
+}
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 // Server-side Storefront API fetch helper. It returns null instead of throwing
-// so development callers can fall back to local demo data during setup or API outages.
+// so development callers can fall back to local demo data during setup or API
+// outages. Transient failures (network errors, 429, 5xx) are retried with a
+// short backoff so a single hiccup does not leave a collection page empty and
+// force a manual refresh.
 export async function shopifyFetch<T>(query: string, variables: Record<string, unknown> = {}): Promise<T | null> {
   const url = getStorefrontUrl()
   const token = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
   if (!url || !token) return null
 
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': token,
-      },
-      body: JSON.stringify({ query, variables }),
-      // Vercel/Next cache: refresh live product data every five minutes.
-      next: { revalidate: 300 },
-    })
+  const maxAttempts = 3
 
-    if (!response.ok) {
-      logShopifyErrorOnce(
-        `http-${response.status}`,
-        `Shopify Storefront API failed: ${response.status} ${response.statusText}. Check SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN.`,
-      )
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': token,
+        },
+        body: JSON.stringify({ query, variables }),
+        cache: 'no-store',
+      })
+
+      // Retry transient server-side and rate-limit responses.
+      if (response.status === 429 || response.status >= 500) {
+        if (attempt < maxAttempts) {
+          await wait(250 * attempt)
+          continue
+        }
+        logShopifyErrorOnce(
+          `http-${response.status}`,
+          `Shopify Storefront API failed: ${response.status} ${response.statusText} after ${maxAttempts} attempts.`,
+        )
+        return null
+      }
+
+      if (!response.ok) {
+        // Auth/4xx errors are not transient; do not retry.
+        logShopifyErrorOnce(
+          `http-${response.status}`,
+          `Shopify Storefront API failed: ${response.status} ${response.statusText}. Check SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN.`,
+        )
+        return null
+      }
+
+      const json = await response.json()
+
+      if (json.errors) {
+        logShopifyErrorOnce('graphql-errors', 'Shopify Storefront API errors:', json.errors)
+        return null
+      }
+
+      return json.data as T
+    } catch (error) {
+      // Network/abort errors are usually transient.
+      if (attempt < maxAttempts) {
+        await wait(250 * attempt)
+        continue
+      }
+      logShopifyErrorOnce('request-failed', 'Shopify Storefront API request failed:', error)
       return null
     }
-
-    const json = await response.json()
-
-    if (json.errors) {
-      logShopifyErrorOnce('graphql-errors', 'Shopify Storefront API errors:', json.errors)
-      return null
-    }
-
-    return json.data as T
-  } catch (error) {
-    logShopifyErrorOnce('request-failed', 'Shopify Storefront API request failed:', error)
-    return null
   }
+
+  return null
 }
 
 function normalizeHandle(value: string) {
@@ -198,6 +231,17 @@ function normalizeShopifyAssetUrl(url?: string | null) {
   if (!url) return undefined
   if (url.startsWith('//')) return `https:${url}`
   return url
+}
+
+function collectionCandidateMatches(value: string, handle: string) {
+  return (
+    value === handle ||
+    value === `${handle}-collection` ||
+    value === `${handle}-fragrances` ||
+    value === `${handle}-fragrance` ||
+    value === `jamm-${handle}` ||
+    value === `jamm-trade-${handle}`
+  )
 }
 
 function stripHtml(value?: string) {
@@ -219,13 +263,39 @@ function getProductCollection(product: ShopifyProduct): ProductCollection | unde
   const handles = product.collections.edges.map(({ node }) => normalizeHandle(node.handle))
   const titles = product.collections.edges.map(({ node }) => normalizeHandle(node.title))
   const tags = product.tags.map(normalizeHandle)
-  const candidates = [...handles, ...titles, ...tags, normalizeHandle(product.productType)]
+  const collectionCandidates = [...handles, ...titles]
 
-  // Shopify collection handles often have a suffix (e.g. "oud-collection" for our "oud" key).
-  // Match if a candidate equals the key or starts/ends with it as a hyphen-separated segment.
-  return collectionHandles.find((handle) =>
-    candidates.some((c) => c === handle || c.startsWith(`${handle}-`) || c.endsWith(`-${handle}`)),
+  const collectionMatch = collectionHandles.find((handle) =>
+    collectionCandidates.some((candidate) => collectionCandidateMatches(candidate, handle)),
   )
+
+  if (collectionMatch) return collectionMatch
+
+  // Tags/product types are fallback metadata only when intentionally exact.
+  // Product titles are excluded so "Amber Oud" does not become Oud.
+  const fieldCandidates = [...tags, normalizeHandle(product.productType)]
+  return collectionHandles.find((handle) =>
+    fieldCandidates.some((candidate) => collectionCandidateMatches(candidate, handle)),
+  )
+}
+
+function productBelongsToCollection(product: JammProduct, handle: string) {
+  if (handle === 'audio') return product.subcategory === 'headphones-audio'
+  if (handle === 'smartwatches') return product.subcategory === 'smartwatches'
+  if (handle === 'electronics') return product.category === 'electronics'
+  if (handle === 'clothing') {
+    const h = normalizeHandle(product.handle)
+    return (
+      product.category === 'clothing' ||
+      product.collection === 'clothing' ||
+      h.includes('hoodie') ||
+      h.includes('apparel') ||
+      h.includes('tee') ||
+      h.includes('shirt')
+    )
+  }
+
+  return product.collection === handle
 }
 
 function getCategory(product: ShopifyProduct, collection?: ProductCollection): ProductCategory {
@@ -411,7 +481,7 @@ export const getShopifyProducts = cache(async (first = 60): Promise<JammProduct[
   const data = await shopifyFetch<{ products: { edges: Edge<ShopifyProduct>[] } }>(productsQuery, { first })
   const products = data?.products.edges.map(({ node }) => mapShopifyProduct(node)) ?? []
 
-  return products.length > 0 ? products : allowDemoFallback ? fallbackProducts : []
+  return products.length > 0 ? products : allowDemoFallback() ? fallbackProducts : []
 })
 
 export const getShopifyProductByHandle = cache(async (handle: string): Promise<JammProduct | undefined> => {
@@ -424,7 +494,7 @@ export const getShopifyProductByHandle = cache(async (handle: string): Promise<J
   return product
     ?? listedProduct
     ?? await getPublicShopifyProductByHandle(handle)
-    ?? (allowDemoFallback ? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle) : undefined)
+    ?? (allowDemoFallback() ? fallbackProducts.find((fallbackProduct) => fallbackProduct.handle === handle) : undefined)
 })
 
 export const getShopifyCollections = cache(async (): Promise<ShopifyCollection[]> => {
@@ -436,49 +506,69 @@ export const getShopifyCollections = cache(async (): Promise<ShopifyCollection[]
 export const getShopifyCollectionProducts = cache(async (handle: string, first = 60): Promise<JammProduct[]> => {
   const normalizedHandle = normalizeHandle(handle)
 
-  // Try multiple Shopify collection handle variants.
+  // Shopify collection handles in this store use the "-collection" suffix
+  // (e.g. "oud-collection"). Accept the bare handle and a couple of known
+  // aliases too, but prefer the suffixed form.
   const candidateHandles = [
-    normalizedHandle,
     `${normalizedHandle}-collection`,
+    normalizedHandle,
     ...(normalizedHandle === 'clothing' ? ['apparel', 'jamm-clothing'] : []),
   ]
 
-  let data: { collection: ShopifyCollection | null } | null = null
+  let collection: ShopifyCollection | null = null
+  let anyFetchSucceeded = false
   for (const h of candidateHandles) {
-    data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, { handle: h, first })
-    if (data?.collection) break
+    const data = await shopifyFetch<{ collection: ShopifyCollection | null }>(collectionByHandleQuery, { handle: h, first })
+    // data === null means the request itself failed (transient). data with a
+    // null collection means Shopify answered and the handle does not exist.
+    if (data !== null) anyFetchSucceeded = true
+    if (data?.collection) {
+      collection = data.collection
+      break
+    }
   }
 
-  const products = data?.collection?.products?.edges.map(({ node }) => mapShopifyProduct(node)) ?? []
+  // Shopify collection membership is the single source of truth. When the
+  // collection exists, return exactly the products Shopify assigned to it — no
+  // title/tag re-classification and no merging. Products that legitimately
+  // belong to several collections (e.g. an oud that is also a daily wear) must
+  // appear on every collection they are assigned to. An empty collection yields
+  // an empty list so the page can render its empty state, never demo products.
+  if (collection) {
+    return collection.products?.edges.map(({ node }) => mapShopifyProduct(node)) ?? []
+  }
 
-  if (products.length > 0) return products
+  // The collection was not found in Shopify.
+  // Scent families must be modeled as real Shopify collections; never fabricate
+  // their contents from the wider catalog.
+  if (scentCollectionHandleSet.has(normalizedHandle)) {
+    return allowDemoFallback() ? fallbackByCollection(normalizedHandle) : []
+  }
 
+  // If every attempt errored (transient outage), do not derive/fabricate — show
+  // an empty state; the retry in shopifyFetch and a refresh recover the real
+  // collection rather than displaying wrong, catalog-derived products.
+  if (!anyFetchSucceeded) {
+    return allowDemoFallback() ? fallbackByCollection(normalizedHandle) : []
+  }
+
+  // Category-style groupings (clothing/electronics/audio/smartwatches) are not
+  // guaranteed to exist as a Shopify collection in every store. Derive them from
+  // the catalog by category as a last resort, still without using product titles
+  // to move products between scent families.
   const allProducts = await getShopifyProducts(first)
-  const filteredProducts = allProducts.filter((product) => {
-    if (normalizedHandle === 'audio') return product.subcategory === 'headphones-audio'
-    if (normalizedHandle === 'smartwatches') return product.subcategory === 'smartwatches'
-    if (normalizedHandle === 'electronics') return product.category === 'electronics'
-    if (normalizedHandle === 'clothing') {
-      const h = normalizeHandle(product.handle)
-      return (
-        product.category === 'clothing' ||
-        product.collection === 'clothing' ||
-        h.includes('hoodie') || h.includes('apparel') || h.includes('tee') || h.includes('shirt')
-      )
-    }
-    return product.collection === normalizedHandle
-  })
+  const derived = allProducts.filter((product) => productBelongsToCollection(product, normalizedHandle))
+  if (derived.length > 0) return derived
 
-  if (data?.collection) return filteredProducts
-
-  // For clothing, also try fetching known product handles directly as a guaranteed fallback.
-  if (normalizedHandle === 'clothing' && filteredProducts.length === 0) {
+  // Clothing has no Shopify collection in this store yet; pull known apparel
+  // handles directly so the page is not empty until a collection is created.
+  if (normalizedHandle === 'clothing') {
     const knownHandles = ['jamm-trade-heritage-hoodie']
-    const direct = (await Promise.all(knownHandles.map(h => getShopifyProductByHandle(h)))).filter(Boolean) as JammProduct[]
+    const direct = (await Promise.all(knownHandles.map((h) => getShopifyProductByHandle(h)))).filter(Boolean) as JammProduct[]
     if (direct.length > 0) return direct
   }
 
-  return filteredProducts.length > 0 ? filteredProducts : allowDemoFallback ? fallbackByCollection(normalizedHandle) : []
+  return allowDemoFallback() ? fallbackByCollection(normalizedHandle) : []
 })
 
 export const getCollectionCounts = cache(async () => {

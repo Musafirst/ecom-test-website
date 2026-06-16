@@ -55,17 +55,17 @@ export default function JammCargoPage() {
 
         {/* Hero */}
         <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
-          <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-10">
+          <div className="rounded-lg border border-jamm-gold/25 bg-[#FBF8F2] p-6 shadow-[0_18px_50px_rgba(12,11,9,0.08)] sm:p-10">
             <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
               Jamm Cargo
             </p>
             <h1 className="font-serif text-4xl font-light leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
               Ship from the US to Africa, Europe & Asia
             </h1>
-            <p className="mt-4 font-sans text-sm leading-relaxed text-jamm-dark/68 sm:text-base">
+            <p className="mt-4 font-sans text-sm leading-relaxed text-jamm-dark/82 sm:text-base">
               Jamm Cargo is a quote-based shipping service. We work with trusted shipping partners to help you move products from the United States to destinations across Africa, Europe, and Asia.
             </p>
-            <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-dark/60">
+            <p className="mt-3 font-sans text-sm leading-relaxed text-jamm-dark/85">
               Submit your details below. We will review your request and contact you with a quote. If you accept, we proceed with our available partners.
             </p>
             <div className="mt-6 flex gap-3">
@@ -85,19 +85,19 @@ export default function JammCargoPage() {
           </div>
 
           {/* How it works */}
-          <div className="rounded-lg border border-jamm-gold/20 bg-[#EDE8DC] p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-10">
+          <div className="rounded-lg border border-jamm-gold/25 bg-[#EDE8DC] p-6 shadow-[0_18px_50px_rgba(12,11,9,0.08)] sm:p-10">
             <p className="mb-5 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
               How it works
             </p>
             <ol className="space-y-5">
               {steps.map((step) => (
                 <li key={step.number} className="flex gap-4">
-                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-jamm-gold/40 bg-white/55 font-sans text-[13px] font-semibold text-jamm-gold">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-jamm-gold/40 bg-white font-sans text-[13px] font-semibold text-jamm-gold">
                     {step.number}
                   </div>
                   <div>
                     <h3 className="font-sans text-sm font-semibold text-jamm-dark">{step.title}</h3>
-                    <p className="mt-1 font-sans text-xs leading-relaxed text-jamm-dark/60">{step.body}</p>
+                    <p className="mt-1 font-sans text-xs leading-relaxed text-jamm-dark/85">{step.body}</p>
                   </div>
                 </li>
               ))}
@@ -106,7 +106,7 @@ export default function JammCargoPage() {
         </div>
 
         {/* Service destinations */}
-        <div className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-8">
+        <div className="rounded-lg border border-jamm-gold/25 bg-[#FBF8F2] p-6 shadow-[0_18px_50px_rgba(12,11,9,0.08)] sm:p-8">
           <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
             Destinations
           </p>
@@ -116,35 +116,35 @@ export default function JammCargoPage() {
           <div className="grid gap-4 sm:grid-cols-3">
             {destinations.map(({ region, examples, icon }) => (
               <div key={region} className="rounded-md border border-jamm-gold/15 bg-[#EDE8DC] p-5">
-                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-md border border-jamm-gold/25 bg-white/35">
+                <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-md border border-jamm-gold/25 bg-white">
                   {icon}
                 </div>
                 <h3 className="font-sans text-sm font-semibold text-jamm-dark">{region}</h3>
-                <p className="mt-1.5 font-sans text-xs leading-relaxed text-jamm-dark/60">{examples}</p>
+                <p className="mt-1.5 font-sans text-xs leading-relaxed text-jamm-dark/85">{examples}</p>
               </div>
             ))}
           </div>
-          <p className="mt-4 font-sans text-xs text-jamm-dark/45">
+          <p className="mt-4 font-sans text-xs text-jamm-dark/85">
             Don&apos;t see your country listed? Submit a request anyway and we will let you know if we can accommodate your shipment.
           </p>
         </div>
 
         {/* Quote form */}
-        <div id="quote-form" className="rounded-lg border border-jamm-gold/20 bg-[#FAF7F2]/92 p-6 shadow-[0_18px_50px_rgba(12,11,9,0.06)] sm:p-10">
+        <div id="quote-form" className="rounded-lg border border-jamm-gold/25 bg-[#FBF8F2] p-6 shadow-[0_18px_50px_rgba(12,11,9,0.08)] sm:p-10">
           <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-jamm-gold">
             Quote Request
           </p>
           <h2 className="mb-2 font-serif text-2xl font-light text-jamm-dark sm:text-3xl">
             Request a shipping quote
           </h2>
-          <p className="mb-7 font-sans text-sm leading-relaxed text-jamm-dark/60">
+          <p className="mb-7 font-sans text-sm leading-relaxed text-jamm-dark/88">
             Fields marked <span className="text-jamm-gold">*</span> are required. After submitting, our team will review your request and contact you with a quote. If you accept, we coordinate the shipment with our available partners.
           </p>
           <JammCargoQuoteForm />
         </div>
 
         {/* Disclaimer */}
-        <p className="px-1 font-sans text-xs leading-relaxed text-jamm-dark/40">
+        <p className="px-1 font-sans text-xs leading-relaxed text-jamm-dark/85">
           Jamm Cargo is a quote-request and coordination service operated by Jamm Trade LLC. Pricing, availability, and transit times depend on the specific shipment and partners available at the time of request. Jamm Trade is not responsible for customs delays, duties, or import restrictions at the destination country. All quotes are subject to confirmation.
         </p>
 

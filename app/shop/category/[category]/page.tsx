@@ -15,6 +15,9 @@ interface CategoryPageProps {
 
 type CategoryKey = keyof typeof categoryDetails
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 function isCategoryKey(value: string): value is CategoryKey {
   return value in categoryDetails
 }

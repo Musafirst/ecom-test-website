@@ -1,4 +1,4 @@
-{% assign public_clothing_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop/collection/clothing' %}
+{% assign public_clothing_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop/category/clothing' %}
 
 <script>
   window.location.replace({{ public_clothing_url | json }});
@@ -12,7 +12,7 @@
     </header>
 
     <div class="page-content">
-      <p>Browse Jamm Trade clothing in the clothing collection.</p>
+      <p>Browse Jamm Trade clothing in the clothing category.</p>
       <p><a href="{{ public_clothing_url }}">Shop Clothing</a></p>
     </div>
   </div>

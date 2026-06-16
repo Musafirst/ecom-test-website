@@ -57,16 +57,17 @@ body{
   text-rendering:optimizeLegibility;
   overflow-x:clip;
 }
-/* page-wide flower-of-life texture */
+/* page-wide flower-of-life texture — sits behind all content so it never
+   muddies text (only the page background is textured) */
 body::before{
   content:"";
   position:fixed; inset:0;
   background-image:url("/design/lattice.png");
   background-size:30px auto;
-  opacity:.28;
+  opacity:.24;
   mix-blend-mode:multiply;
   pointer-events:none;
-  z-index:0;
+  z-index:-1;
 }
 img{ max-width:100%; display:block; }
 a{ color:inherit; text-decoration:none; }
@@ -848,6 +849,9 @@ button{ font-family:inherit; cursor:pointer; }
 }
 
 .collection .slide__lotus{ z-index:1; pointer-events:none; }
+.collection__media-fallback,
+.collection__img,
+.collection__img--scent{ pointer-events:none; }
 .collection__img--scent{ z-index:2; opacity:.46; mix-blend-mode:screen; }
 .collection__img--scent img{ object-fit:cover; object-position:center; }
 .collection__img--scent::after{

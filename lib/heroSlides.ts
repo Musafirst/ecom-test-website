@@ -65,7 +65,7 @@ export const heroSlides: HeroSlide[] = [
     video: '/videos/jamm-trade-cinematic-hero.mp4',
     poster: '/images/jamm-trade-ecosystem-poster-1600.jpg',
     ctaLabel: 'Shop Clothing',
-    ctaHref: '/shop/collection/clothing',
+    ctaHref: '/shop/category/clothing',
   },
   {
     id: 'ecosystem',

@@ -13,6 +13,8 @@ out/
 skills-lock.json
 *.log
 *.zip
+playwright-report/
+test-results/
 design-port/
 
 .vercel

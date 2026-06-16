@@ -13,7 +13,7 @@ const hotspots = [
   { href: '/jamm-cargo', style: { left: '58%', top: '33%' }, label: 'Jamm Cargo', aria: 'Jamm Cargo' },
   { href: '/shop/category/perfumes', style: { left: '30%', top: '71%' }, label: 'Fragrance', aria: 'Fragrance collection' },
   { href: '/shop/category/electronics', style: { left: '64%', top: '72%' }, label: 'Electronics', aria: 'Electronics collection' },
-  { href: '/shop/collection/clothing', style: { left: '86%', top: '46%' }, label: 'Apparel', aria: 'Apparel collection' },
+  { href: '/shop/category/clothing', style: { left: '86%', top: '46%' }, label: 'Apparel', aria: 'Apparel collection' },
 ]
 
 export function HeroSection() {
@@ -121,7 +121,7 @@ export function HeroSection() {
                 <p className="slide__eyebrow">Clothing</p>
                 <h2 className="slide__title">Wear the <em>mark.</em></h2>
                 <p className="slide__sub">Hoodies, tees and everyday essentials carrying the Jamm Trade lotus — quiet, considered, unmistakable.</p>
-                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/collection/clothing">Shop Clothing</Link></div>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/category/clothing">Shop Clothing</Link></div>
               </div>
             </article>
 

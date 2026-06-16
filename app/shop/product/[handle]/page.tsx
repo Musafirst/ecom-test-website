@@ -42,7 +42,7 @@ function getProductBackLink(product: JammProduct) {
 
   if (product.category === 'clothing') {
     return {
-      href: '/shop/collection/clothing',
+      href: '/shop/category/clothing',
       label: 'Clothing collection',
     }
   }
