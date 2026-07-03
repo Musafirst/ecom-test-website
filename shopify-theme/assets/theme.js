@@ -66,7 +66,7 @@
     if (!stage) return;
     var slides = Array.from(document.querySelectorAll('.slide'));
     var dots = Array.from(document.querySelectorAll('.hero__dots .dot'));
-    var heroVideo = document.querySelector('.hero__video');
+    var videos = Array.from(document.querySelectorAll('.hero__video'));
     var index = 0;
     var timer = null;
     var HOLD = 6000;
@@ -77,6 +77,13 @@
       index = (n + slides.length) % slides.length;
       slides.forEach(function (s, i) { s.classList.toggle('is-active', i === index); });
       dots.forEach(function (d, i) { d.classList.toggle('is-active', i === index); });
+      videos.forEach(function (video, i) {
+        var active = i === index && !slides[index].classList.contains('slide--eco');
+        video.classList.toggle('is-active', active);
+        video.muted = true;
+        if (active) video.play().catch(function () {});
+        else video.pause();
+      });
       schedule(slides[index].classList.contains('slide--eco') ? HOLD_ECO : HOLD);
     }
     function next() { show(index + 1); }
@@ -108,12 +115,7 @@
 
     if (slides.length) show(0);
 
-    if (heroVideo) {
-      var kick = function () { heroVideo.muted = true; if (heroVideo.play) heroVideo.play().catch(function () {}); };
-      kick();
-      heroVideo.addEventListener('canplay', kick, { once: true });
-      document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
-    }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) show(index); });
 
     var hotspots = Array.from(document.querySelectorAll('.hotspot'));
     hotspots.forEach(function (h) {

@@ -34,6 +34,24 @@ test.describe('Jamm Trade storefront smoke checks', () => {
     )
   })
 
+  test('hero starts with house slide and keeps videos matched to slide order', async ({ page }) => {
+    await page.goto('/shop')
+
+    await expect(page.locator('.slide--house')).toHaveClass(/is-active/)
+    await expect(page.locator('.hero__video--house')).toHaveClass(/is-active/)
+    await expect(page.getByRole('heading', { name: /from essentials/i })).toBeVisible()
+
+    await page.locator('.hero__dots .dot').nth(3).click()
+    await expect(page.locator('.slide--clothing')).toHaveClass(/is-active/)
+    await expect(page.locator('.hero__video--clothing')).toHaveClass(/is-active/)
+    await expect(page.getByRole('heading', { name: /wear the mark/i })).toBeVisible()
+
+    await page.locator('.hero__dots .dot').nth(4).click()
+    await expect(page.locator('.slide--eco')).toHaveClass(/is-active/)
+    await expect(page.locator('.hero__video.is-active')).toHaveCount(0)
+    await expect(page.getByText(/tap a point to explore/i)).toBeVisible()
+  })
+
   test('scent collection pages reflect Shopify membership (incl. shared products), no refresh needed', async ({ page }) => {
     // OUD: contains its oud-only and the oud+daily shared product; never amber-only ones.
     await page.goto('/shop/collection/oud')

@@ -6,7 +6,30 @@ import Link from 'next/link'
 const HOLD = 6000
 const HOLD_ECO = 9000
 
-const slides = ['clothing', 'fragrance', 'audio', 'house', 'eco'] as const
+const slides = ['house', 'fragrance', 'audio', 'clothing', 'eco'] as const
+
+const heroVideos = [
+  {
+    id: 'clothing',
+    src: '/videos/jamm-trade-clothing-hero.mp4',
+    poster: '/images/hero-clothing.webp',
+  },
+  {
+    id: 'fragrance',
+    src: '/videos/jamm-trade-fragrance-hero.mp4',
+    poster: '/images/hero-perfumes.webp',
+  },
+  {
+    id: 'audio',
+    src: '/videos/jamm-trade-electronics-hero.mp4',
+    poster: '/images/hero-electronics.webp',
+  },
+  {
+    id: 'house',
+    src: '/videos/jamm-trade-cinematic-hero.mp4',
+    poster: '/images/jamm-trade-ecosystem-poster-1600.jpg',
+  },
+] as const
 
 const hotspots = [
   { href: '/jamm-fleet', style: { left: '23.5%', top: '43%' }, label: 'Jamm Fleet', aria: 'Jamm Fleet' },
@@ -20,7 +43,6 @@ export function HeroSection() {
   const [index, setIndex] = useState(0)
   const [openHotspot, setOpenHotspot] = useState<number | null>(null)
   const timerRef = useRef<number | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   const schedule = useCallback((ms: number) => {
     if (timerRef.current) window.clearTimeout(timerRef.current)
@@ -46,20 +68,23 @@ export function HeroSection() {
   }, [])
 
   useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
     const kick = () => {
-      v.muted = true
-      v.play().catch(() => {})
+      document.querySelectorAll<HTMLVideoElement>('.hero__video').forEach((video) => {
+        video.muted = true
+        if (video.classList.contains('is-active')) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      })
     }
     kick()
-    v.addEventListener('canplay', kick, { once: true })
     const onVis = () => {
       if (!document.hidden) kick()
     }
     document.addEventListener('visibilitychange', onVis)
     return () => document.removeEventListener('visibilitychange', onVis)
-  }, [])
+  }, [index])
 
   const touch = useRef({ x: 0, y: 0 })
   const onTouchStart = (e: React.TouchEvent) => {
@@ -100,21 +125,23 @@ export function HeroSection() {
           >
             <div className="hero__media">
               <div className="hero__media-inner">
-                <video
-                  ref={videoRef}
-                  className="hero__video"
-                  src="/videos/jamm-trade-cinematic-hero.mp4"
-                  poster="/images/jamm-trade-ecosystem-poster-1600.jpg"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                />
+                {heroVideos.map((video) => (
+                  <video
+                    key={video.id}
+                    className={`hero__video hero__video--${video.id}${slides[index] === video.id ? ' is-active' : ''}`}
+                    src={video.src}
+                    poster={video.poster}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                ))}
               </div>
             </div>
 
-            <article className={`slide slide--clothing${index === 0 ? ' is-active' : ''}`}>
+            <article className={`slide slide--clothing${index === 3 ? ' is-active' : ''}`}>
               <div className="slide__bg"><div className="slide__glow" /></div>
               <div className="slide__frame" />
               <div className="slide__content">
@@ -147,7 +174,7 @@ export function HeroSection() {
               </div>
             </article>
 
-            <article className={`slide slide--house${index === 3 ? ' is-active' : ''}`}>
+            <article className={`slide slide--house${index === 0 ? ' is-active' : ''}`}>
               <div className="slide__bg"><div className="slide__glow" /></div>
               <div className="slide__frame" />
               <div className="slide__content">

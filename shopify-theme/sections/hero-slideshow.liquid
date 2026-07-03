@@ -7,18 +7,21 @@
       <div class="hero__stage">
         <div class="hero__media">
           <div class="hero__media-inner">
-            <video class="hero__video" src="{{ 'jamm-trade-cinematic-hero.mp4' | asset_url }}" poster="{{ 'jamm-trade-ecosystem-poster-1600.jpg' | asset_url }}" autoplay muted loop playsinline preload="auto"></video>
+            <video class="hero__video hero__video--house is-active" src="{{ 'jamm-trade-cinematic-hero.mp4' | asset_url }}" poster="{{ 'jamm-trade-ecosystem-poster-1600.jpg' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
+            <video class="hero__video hero__video--fragrance" src="{{ 'jamm-trade-fragrance-hero.mp4' | asset_url }}" poster="{{ 'hero-perfumes.webp' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
+            <video class="hero__video hero__video--audio" src="{{ 'jamm-trade-electronics-hero.mp4' | asset_url }}" poster="{{ 'hero-electronics.webp' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
+            <video class="hero__video hero__video--clothing" src="{{ 'jamm-trade-clothing-hero.mp4' | asset_url }}" poster="{{ 'hero-clothing.webp' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
           </div>
         </div>
 
-        <article class="slide slide--clothing is-active">
+        <article class="slide slide--house is-active">
           <div class="slide__bg"><div class="slide__glow"></div></div>
           <div class="slide__frame"></div>
           <div class="slide__content">
-            <p class="slide__eyebrow">Clothing</p>
-            <h2 class="slide__title">Wear the <em>mark.</em></h2>
-            <p class="slide__sub">Hoodies, tees and everyday essentials carrying the Jamm Trade lotus — quiet, considered, unmistakable.</p>
-            <div class="slide__cta"><a class="btn btn--gold" href="{{ public_shop_url }}/category/clothing">Shop Clothing</a></div>
+            <p class="slide__eyebrow">The House of Jamm</p>
+            <h2 class="slide__title">From essentials<br>to <em>enterprise.</em></h2>
+            <p class="slide__sub">One trusted name across every category we touch - fragrance, apparel, electronics and the fleet that moves them.</p>
+            <div class="slide__cta"><a class="btn btn--gold" href="{{ public_shop_url }}">Explore the House</a></div>
           </div>
         </article>
 
@@ -28,7 +31,7 @@
           <div class="slide__content">
             <p class="slide__eyebrow">Signature Scents</p>
             <h2 class="slide__title">Scents that <em>linger.</em></h2>
-            <p class="slide__sub">Rare Arabic oud, warm amber and clean daily signatures — curated for those who know the difference.</p>
+            <p class="slide__sub">Rare Arabic oud, warm amber and clean daily signatures - curated for those who know the difference.</p>
             <div class="slide__cta"><a class="btn btn--gold" href="{{ public_shop_url }}/category/perfumes">Shop Fragrance</a></div>
           </div>
         </article>
@@ -44,19 +47,19 @@
           </div>
         </article>
 
-        <article class="slide slide--house">
+        <article class="slide slide--clothing">
           <div class="slide__bg"><div class="slide__glow"></div></div>
           <div class="slide__frame"></div>
           <div class="slide__content">
-            <p class="slide__eyebrow">The House of Jamm</p>
-            <h2 class="slide__title">From essentials<br>to <em>enterprise.</em></h2>
-            <p class="slide__sub">One trusted name across every category we touch — fragrance, apparel, electronics and the fleet that moves them.</p>
-            <div class="slide__cta"><a class="btn btn--gold" href="{{ public_shop_url }}">Explore the House</a></div>
+            <p class="slide__eyebrow">Clothing</p>
+            <h2 class="slide__title">Wear the <em>mark.</em></h2>
+            <p class="slide__sub">Hoodies, tees and everyday essentials carrying the Jamm Trade lotus - quiet, considered, unmistakable.</p>
+            <div class="slide__cta"><a class="btn btn--gold" href="{{ public_shop_url }}/category/clothing">Shop Clothing</a></div>
           </div>
         </article>
 
         <article class="slide slide--eco">
-          <div class="eco-stage">
+          <div class="eco-stage" style="background-image: url({{ 'jamm-trade-ecosystem-poster-1600.jpg' | asset_url }});">
             <a class="hotspot" href="{{ public_storefront_url }}/jamm-fleet" style="left:23.5%; top:43%" aria-label="Jamm Fleet">
               <span class="hotspot__pulse"></span><span class="hotspot__ring"></span><span class="hotspot__label"><b>Jamm Fleet&nbsp;&rarr;</b></span>
             </a>
