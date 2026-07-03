@@ -428,6 +428,7 @@ button{ font-family:inherit; cursor:pointer; }
   animation:hotpulse 2.8s ease-out infinite;
 }
 @keyframes hotpulse{ 0%{transform:scale(1);opacity:.8;} 70%{transform:scale(2.5);opacity:0;} 100%{opacity:0;} }
+@keyframes hotpulseMobile{ 0%{transform:scale(1);opacity:.22;} 72%{transform:scale(1.45);opacity:0;} 100%{opacity:0;} }
 .hotspot__label{
   position:absolute; left:50%; bottom:calc(100% + 12px);
   transform:translateX(-50%) translateY(6px);
@@ -847,6 +848,30 @@ button{ font-family:inherit; cursor:pointer; }
   .slide__cta .btn{ min-height:42px; padding:.9em 1.05em; font-size:.68rem; }
   .eco-caption{ bottom:44px; }
   .hero__dots{ bottom:18px; }
+  .hotspot{ width:20px; height:20px; }
+  .hotspot::before{ inset:-16px; }
+  .hotspot__ring{
+    width:13px;
+    height:13px;
+    border-color:rgba(231,205,142,.46);
+    background:radial-gradient(circle, rgba(231,205,142,.12), rgba(231,205,142,.02) 70%);
+    backdrop-filter:none;
+  }
+  .hotspot__ring::after{
+    width:3px;
+    height:3px;
+    box-shadow:0 0 3px rgba(231,205,142,.42);
+  }
+  .hotspot__pulse{
+    border-color:rgba(231,205,142,.18);
+    animation:hotpulseMobile 4s ease-out infinite;
+  }
+  .hotspot:hover .hotspot__ring,
+  .hotspot.is-open .hotspot__ring{
+    transform:scale(1.2);
+    border-color:rgba(231,205,142,.72);
+    background:radial-gradient(circle, rgba(231,205,142,.24), rgba(231,205,142,.05) 70%);
+  }
 
   .products-grid{ gap:12px; }
   .product{ border-radius:13px; }
