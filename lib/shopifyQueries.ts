@@ -39,7 +39,7 @@ const productFields = /* GraphQL */ `
         currencyCode
       }
     }
-    variants(first: 20) {
+    variants(first: 50) {
       edges {
         node {
           id

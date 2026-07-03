@@ -12,11 +12,13 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const [added, setAdded] = useState(false)
   const [adding, setAdding] = useState(false)
-  const canAddToCart = Boolean(product.variantId && product.availableForSale !== false)
+  const hasMultipleVariants = (product.variants?.length ?? 0) > 1
+  const priceVaries = typeof product.priceMax === 'number' && product.priceMax > product.price
+  const canQuickAdd = Boolean(product.variantId && product.availableForSale !== false && !hasMultipleVariants)
   const cat = product.brand ? `${product.categoryLabel} · ${product.brand}` : product.categoryLabel
 
   const handleAdd = async () => {
-    if (!canAddToCart || adding) return
+    if (!canQuickAdd || adding) return
     setAdding(true)
     try {
       await addShopifyItem(product.variantId!, 1)
@@ -40,23 +42,29 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3 className="product__name">
           <Link href={`/shop/product/${product.handle}`}>{product.title}</Link>
         </h3>
-        <span className="product__price">${product.price.toFixed(2)}</span>
+        <span className="product__price">
+          {priceVaries ? 'From ' : ''}${product.price.toFixed(2)}
+        </span>
         <div className="product__cart">
-          {product.variantId ? (
+          {product.availableForSale === false ? (
+            <button className="btn btn--dark btn--block" type="button" disabled>
+              <span>Sold Out</span>
+            </button>
+          ) : hasMultipleVariants || !product.variantId ? (
+            /* Products with options must be configured on the product page so
+               the price shown always matches the variant added to the cart. */
+            <Link className="btn btn--dark btn--block" href={`/shop/product/${product.handle}`}>
+              <span>Choose Options</span>
+            </Link>
+          ) : (
             <button
               className="btn btn--dark btn--block"
               type="button"
               onClick={handleAdd}
-              disabled={!canAddToCart || adding}
+              disabled={adding}
             >
-              <span>
-                {product.availableForSale === false ? 'Sold Out' : added ? 'Added ✓' : adding ? 'Adding…' : 'Add to Cart'}
-              </span>
+              <span>{added ? 'Added ✓' : adding ? 'Adding…' : 'Add to Cart'}</span>
             </button>
-          ) : (
-            <Link className="btn btn--dark btn--block" href={`/shop/product/${product.handle}`}>
-              <span>View Product</span>
-            </Link>
           )}
         </div>
       </div>

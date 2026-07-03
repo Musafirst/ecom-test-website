@@ -51,6 +51,8 @@ type ShopifyProduct = {
       compareAtPrice: ShopifyMoney | null
       sku?: string | null
       barcode?: string | null
+      selectedOptions?: { name: string; value: string }[]
+      image?: ShopifyImage | null
     }>[]
   }
   collections: {
@@ -359,17 +361,53 @@ function mapShopifyProduct(product: ShopifyProduct): JammProduct {
   const subcategory = getSubcategory(product, category, collection)
   const featuredImage = product.featuredImage ?? product.images.edges[0]?.node
   const galleryImages = product.images.edges.map(({ node }) => node.url)
-  const price = toPrice(selectedVariant?.price) ?? toPrice(product.priceRange.minVariantPrice) ?? 0
+
+  // Displayed price is the minimum variant price so the storefront always
+  // matches the Shopify theme (Liquid's product.price) and the Google feed.
+  const variantPrices = product.variants.edges
+    .map(({ node }) => toPrice(node.price))
+    .filter((value): value is number => typeof value === 'number')
+  const price = toPrice(product.priceRange.minVariantPrice)
+    ?? (variantPrices.length > 0 ? Math.min(...variantPrices) : 0)
+  const priceMax = variantPrices.length > 0 ? Math.max(...variantPrices) : price
   const compareAtPrice =
     toPrice(selectedVariant?.compareAtPrice) ?? toPrice(product.compareAtPriceRange.minVariantPrice)
+
+  // Real purchase options (e.g. Color/Size), derived from variant data so the
+  // UI never presents tags as product attributes.
+  const variants = product.variants.edges.map(({ node }) => ({
+    id: node.id,
+    title: node.title,
+    availableForSale: node.availableForSale,
+    price: toPrice(node.price) ?? price,
+    compareAtPrice: toPrice(node.compareAtPrice) ?? undefined,
+    selectedOptions: node.selectedOptions ?? [],
+    image: node.image?.url,
+  }))
+  const optionNames: string[] = []
+  for (const variant of variants) {
+    for (const option of variant.selectedOptions) {
+      if (!optionNames.includes(option.name)) optionNames.push(option.name)
+    }
+  }
+  const options = optionNames
+    .map((name) => ({
+      name,
+      values: [...new Set(variants.flatMap((v) => v.selectedOptions.filter((o) => o.name === name).map((o) => o.value)))],
+    }))
+    .filter((option) => !(option.name === 'Title' && option.values.length === 1))
+  const colorOption = options.find((option) => normalizeHandle(option.name) === 'color')
 
   return {
     id: product.id,
     handle: product.handle,
     title: product.title,
     price,
+    priceMax,
     compareAtPrice: compareAtPrice && compareAtPrice > price ? compareAtPrice : undefined,
     currencyCode: selectedVariant?.price.currencyCode ?? product.priceRange.minVariantPrice.currencyCode,
+    options: options.length > 0 ? options : undefined,
+    variants: variants.length > 0 ? variants : undefined,
     variantId: selectedVariant?.id,
     sku: selectedVariant?.sku || undefined,
     gtin: selectedVariant?.barcode || undefined,
@@ -385,6 +423,7 @@ function mapShopifyProduct(product: ShopifyProduct): JammProduct {
     image: featuredImage?.url ?? '/product-images/placeholders/perfume.webp',
     imageAlt: sanitizeAltText(featuredImage?.altText ?? null, product.title),
     galleryImages: galleryImages.length > 0 ? galleryImages : featuredImage ? [featuredImage.url] : undefined,
+    details: colorOption ? colorOption.values : undefined,
   }
 }
 

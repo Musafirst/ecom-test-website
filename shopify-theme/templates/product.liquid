@@ -77,12 +77,13 @@
 
         <h1 class="product-purchase__title">{{ product.title }}</h1>
 
+        {% assign current_variant = product.selected_or_first_available_variant %}
         <div class="product-purchase__price">
-          {% if product.compare_at_price > product.price %}
-            <span class="price--compare">{{ product.compare_at_price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <span class="price--compare">{{ current_variant.compare_at_price | money }}</span>
           {% endif %}
-          <span class="price--current">{{ product.price | money }}</span>
-          {% if product.compare_at_price > product.price %}
+          <span class="price--current" data-product-price>{{ current_variant.price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
             <span class="price--badge">{{ 'products.product.sale' | t }}</span>
           {% endif %}
         </div>
@@ -111,6 +112,34 @@
         {% form 'product', product, id: 'ProductForm' %}
           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           <input type="hidden" name="return_to" value="">
+
+          {% if product.variants.size > 1 %}
+            {% comment %}
+              Variant data consumed by theme.js so selecting options updates the
+              form's variant id, availability, and the displayed price. Without
+              this block the cart always received the first variant.
+            {% endcomment %}
+            <script type="application/json" id="ProductVariantsData">
+              [{% for variant in product.variants %}{"id":{{ variant.id }},"available":{{ variant.available }},"price":{{ variant.price | money | json }},"options":{{ variant.options | json }},"option_names":{{ product.options | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+            </script>
+            <script>
+              // Keep the displayed price in sync with the selected variant.
+              document.addEventListener('click', function (e) {
+                if (!e.target.closest('.variant-btn')) return;
+                setTimeout(function () {
+                  var dataEl = document.getElementById('ProductVariantsData');
+                  var idInput = document.querySelector('#ProductForm [name="id"]');
+                  var priceEl = document.querySelector('[data-product-price]');
+                  if (!dataEl || !idInput || !priceEl) return;
+                  try {
+                    var variants = JSON.parse(dataEl.textContent);
+                    var match = variants.find(function (v) { return String(v.id) === String(idInput.value); });
+                    if (match && match.price) priceEl.textContent = match.price;
+                  } catch (err) { /* noop */ }
+                }, 0);
+              });
+            </script>
+          {% endif %}
 
           {% if product.variants.size > 1 %}
             <div class="product-variants">

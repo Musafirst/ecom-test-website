@@ -47,31 +47,12 @@ export async function getAllProducts() {
   return getShopifyProducts()
 }
 
-// Homepage product grid: one product per category first, then fill to 4.
-// This ensures the grid reflects the full store, not just fragrances.
+// Homepage product grid: first four products sorted by title, matching the
+// Shopify theme's featured section exactly so both storefronts stay identical.
 export async function getFeaturedProducts() {
   const products = await getShopifyProducts()
-  if (products.length === 0) return []
 
-  const seen = new Set<string>()
-  const picks: typeof products = []
-
-  for (const p of products) {
-    if (!seen.has(p.category)) {
-      seen.add(p.category)
-      picks.push(p)
-      if (picks.length === 4) return picks
-    }
-  }
-
-  for (const p of products) {
-    if (!picks.includes(p)) {
-      picks.push(p)
-      if (picks.length === 4) return picks
-    }
-  }
-
-  return picks
+  return [...products].sort((a, b) => a.title.localeCompare(b.title)).slice(0, 4)
 }
 
 // Perfume category: all fragrance products across oud, amber, and daily.

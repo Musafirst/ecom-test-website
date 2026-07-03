@@ -44,6 +44,14 @@
     </div>
 
     <div class="footer__legal">
+      {% comment %} Accepted payment methods, mirroring Shopify checkout's configuration. {% endcomment %}
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; padding-bottom:4px;">
+        <span style="font-family:var(--font-sans); font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--on-dark-mut);">We accept</span>
+        {% assign payment_methods = 'Visa,Mastercard,American Express,Discover,Diners Club,Shop Pay,Apple Pay,Google Pay' | split: ',' %}
+        {% for method in payment_methods %}
+          <span style="border:1px solid rgba(232,208,154,.25); border-radius:4px; padding:4px 8px; font-family:var(--font-sans); font-size:10px; font-weight:500; color:rgba(239,233,220,.8);">{{ method }}</span>
+        {% endfor %}
+      </div>
       <p class="footer__disclaimer">Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.</p>
       <div class="footer__bottom">
         <span class="footer__copy">&copy; 2026 Jamm Trade LLC. All rights reserved.</span>

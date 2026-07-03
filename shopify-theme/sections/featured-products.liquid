@@ -18,8 +18,10 @@
       <div class="rule"></div>
     </div>
 
+    {% comment %} Sorted by title so this grid always matches the Next.js storefront exactly. {% endcomment %}
+    {% assign featured_sorted = featured_products | sort: 'title' %}
     <div class="products-grid">
-      {% for product in featured_products limit: section.settings.products_count %}
+      {% for product in featured_sorted limit: section.settings.products_count %}
         {% render 'product-card', product: product %}
       {% else %}
         <p class="section-sub">Products are temporarily unavailable. Please check back soon.</p>

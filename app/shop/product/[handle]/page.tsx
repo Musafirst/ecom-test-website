@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import { ProductBadge } from '@/components/product/ProductBadge'
 import { ProductDetailGallery } from '@/components/product/ProductDetailGallery'
 import { ProductPurchasePanel } from '@/components/product/ProductPurchasePanel'
-import { PriceDisplay } from '@/components/product/PriceDisplay'
 import { getAllProducts, getProductByHandle } from '@/lib/products'
 import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
 import type { JammProduct } from '@/types/product'
@@ -155,21 +154,39 @@ export default async function ProductPage({ params }: ProductPageProps) {
         ...(product.gtin ? { gtin: product.gtin } : {}),
         ...(product.mpn ? { mpn: product.mpn } : {}),
         category: product.categoryLabel,
-        offers: {
-          '@type': 'Offer',
-          url: productUrl,
-          priceCurrency: product.currencyCode ?? 'USD',
-          price: product.price.toFixed(2),
-          availability: product.availableForSale === false
-            ? 'https://schema.org/OutOfStock'
-            : 'https://schema.org/InStock',
-          itemCondition: 'https://schema.org/NewCondition',
-          seller: {
-            '@type': 'Organization',
-            name: site.name,
-            url: siteUrl,
-          },
-        },
+        offers: typeof product.priceMax === 'number' && product.priceMax > product.price
+          ? {
+              '@type': 'AggregateOffer',
+              url: productUrl,
+              priceCurrency: product.currencyCode ?? 'USD',
+              lowPrice: product.price.toFixed(2),
+              highPrice: product.priceMax.toFixed(2),
+              offerCount: product.variants?.length ?? undefined,
+              availability: product.availableForSale === false
+                ? 'https://schema.org/OutOfStock'
+                : 'https://schema.org/InStock',
+              itemCondition: 'https://schema.org/NewCondition',
+              seller: {
+                '@type': 'Organization',
+                name: site.name,
+                url: siteUrl,
+              },
+            }
+          : {
+              '@type': 'Offer',
+              url: productUrl,
+              priceCurrency: product.currencyCode ?? 'USD',
+              price: product.price.toFixed(2),
+              availability: product.availableForSale === false
+                ? 'https://schema.org/OutOfStock'
+                : 'https://schema.org/InStock',
+              itemCondition: 'https://schema.org/NewCondition',
+              seller: {
+                '@type': 'Organization',
+                name: site.name,
+                url: siteUrl,
+              },
+            },
       },
       {
         '@type': 'BreadcrumbList',
@@ -258,35 +275,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </h1>
 
 
-            <div className="mt-4 rounded-md border border-jamm-gold/20 bg-white/55 px-3 py-2.5 sm:mt-7 sm:px-4 sm:py-3">
-              <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} onLight />
-            </div>
-
-            <p className="mt-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-muted sm:mt-3 sm:text-xs sm:tracking-[0.16em]">
-              {product.availableForSale === false
-                ? 'Out of stock'
-                : typeof product.quantityAvailable === 'number'
-                  ? product.quantityAvailable > 0
-                    ? `${product.quantityAvailable} available`
-                    : 'In stock'
-                  : 'In stock'}
-            </p>
-
-            <div className="mt-4 border-t border-jamm-gold/15 pt-4 sm:mt-8 sm:pt-6">
-              <p className="mb-2.5 font-sans text-sm font-semibold text-jamm-dark sm:mb-3">
-                {product.category === 'perfume' ? 'Notes' : product.category === 'electronics' ? 'Finish' : 'Colors'}
-              </p>
-              <div className="flex flex-wrap gap-2.5 sm:gap-3">
-                {details.slice(0, 4).map((detail) => (
-                  <span
-                    key={detail}
-                    className="max-w-full [overflow-wrap:anywhere] rounded-md border border-jamm-gold/20 bg-white/70 px-3 py-2 font-sans text-xs font-medium capitalize leading-snug text-jamm-muted"
-                  >
-                    {detail}
-                  </span>
-                ))}
+            {/* Products with real purchase options select them in the panel;
+                descriptive chips only render for single-variant products so
+                tags are never presented as configurable attributes. */}
+            {(product.variants?.length ?? 0) <= 1 && details.length > 0 && (
+              <div className="mt-4 border-t border-jamm-gold/15 pt-4 sm:mt-8 sm:pt-6">
+                <p className="mb-2.5 font-sans text-sm font-semibold text-jamm-dark sm:mb-3">
+                  {product.category === 'perfume' ? 'Notes' : product.category === 'electronics' ? 'Finish' : 'Details'}
+                </p>
+                <div className="flex flex-wrap gap-2.5 sm:gap-3">
+                  {details.slice(0, 4).map((detail) => (
+                    <span
+                      key={detail}
+                      className="max-w-full [overflow-wrap:anywhere] rounded-md border border-jamm-gold/20 bg-white/70 px-3 py-2 font-sans text-xs font-medium capitalize leading-snug text-jamm-muted"
+                    >
+                      {detail}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <ProductPurchasePanel product={product} compact={isClothing} />
 

@@ -78,6 +78,18 @@ export function Footer() {
         </div>
 
         <div className="footer__legal">
+          {/* Accepted payment methods, mirroring Shopify checkout's configuration. */}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 pb-1">
+            <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-[#b6ac96]">We accept</span>
+            {['Visa', 'Mastercard', 'American Express', 'Discover', 'Diners Club', 'Shop Pay', 'Apple Pay', 'Google Pay'].map((method) => (
+              <span
+                key={method}
+                className="rounded border border-[#e8d09a]/25 px-2 py-1 font-sans text-[10px] font-medium text-[#efe9dc]/80"
+              >
+                {method}
+              </span>
+            ))}
+          </div>
           <p className="footer__disclaimer">Jamm Trade LLC is an independent retailer. We are not officially affiliated with or endorsed by the brands displayed on this site unless explicitly stated. All brand names and trademarks belong to their respective owners.</p>
           <div className="footer__bottom">
             <span className="footer__copy">© 2026 Jamm Trade LLC. All rights reserved.</span>
