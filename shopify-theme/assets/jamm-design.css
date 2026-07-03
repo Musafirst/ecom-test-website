@@ -812,15 +812,34 @@ button{ font-family:inherit; cursor:pointer; }
   .brand__mark{ width:34px; height:34px; }
 }
 
-/* Mobile hero spacing: keep CTA buttons clear of carousel dots. */
+/* Mobile hero and product spacing. */
 @media (max-width: 640px){
   .hero__media{ place-items:start center; }
   .hero__media-inner{ margin-top:24px; max-height:none; }
   .slide__sub{ display:none; }
-  .slide__content{ padding:22px 22px 74px; }
+  .slide__content{ padding:22px 22px 56px; }
   .slide__title{ font-size:clamp(2.15rem, 12vw, 3.05rem); }
-  .slide__cta{ margin-top:.9em; }
+  .slide__cta{ margin-top:.82em; }
   .slide__cta .btn{ min-height:42px; padding:.9em 1.05em; font-size:.68rem; }
-  .eco-caption{ bottom:56px; }
+  .eco-caption{ bottom:44px; }
   .hero__dots{ bottom:18px; }
+
+  .products-grid{ gap:12px; }
+  .product{ border-radius:13px; }
+  .product__media{ aspect-ratio:1 / .82; }
+  .product__photo{ object-fit:contain; padding:8px; background:#fbfaf6; }
+  .product__body{ padding:10px 10px 11px; gap:5px; }
+  .product__cat{ display:none; }
+  .product__name{
+    min-height:0;
+    margin:0;
+    font-size:.82rem;
+    line-height:1.2;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .product__price{ margin:.1em 0 .35em; font-size:.92rem; }
+  .product__cart .btn{ min-height:38px; padding:.8em .7em; font-size:.62rem; letter-spacing:.13em; }
 }

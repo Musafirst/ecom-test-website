@@ -841,11 +841,11 @@ button{ font-family:inherit; cursor:pointer; }
   .hero__media{ place-items:start center; }
   .hero__media-inner{ margin-top:24px; max-height:none; }
   .slide__sub{ display:none; }
-  .slide__content{ padding:22px 22px 74px; }
+  .slide__content{ padding:22px 22px 56px; }
   .slide__title{ font-size:clamp(2.15rem, 12vw, 3.05rem); }
-  .slide__cta{ margin-top:.9em; }
+  .slide__cta{ margin-top:.82em; }
   .slide__cta .btn{ min-height:42px; padding:.9em 1.05em; font-size:.68rem; }
-  .eco-caption{ bottom:56px; }
+  .eco-caption{ bottom:44px; }
   .hero__dots{ bottom:18px; }
 
   .products-grid{ gap:12px; }
