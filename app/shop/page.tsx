@@ -12,6 +12,9 @@ import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts } fro
 export const metadata: Metadata = {
   title: 'Luxury Fragrances, Electronics & Essentials',
   description: 'Rare fragrances, clothing, and electronics. Curated for those who know the difference.',
+  alternates: {
+    canonical: '/shop',
+  },
 }
 
 export default async function ShopPage() {

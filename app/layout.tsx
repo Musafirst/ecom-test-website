@@ -84,8 +84,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           '@type': 'ContactPoint',
           contactType: 'customer support',
           email: site.supportEmail,
+          telephone: site.supportPhoneE164,
           availableLanguage: 'en',
         },
+        telephone: site.supportPhoneE164,
       },
       {
         '@type': 'WebSite',

@@ -4,6 +4,9 @@ export const site = {
   apexUrl: 'https://jammtrade.com',
   wwwUrl: 'https://www.jammtrade.com',
   supportEmail: 'contact@jammtrade.com',
+  supportPhone: '(484) 521-6277',
+  supportPhoneHref: 'tel:+14845216277',
+  supportPhoneE164: '+1-484-521-6277',
   publicLocation: 'Darby, Pennsylvania',
   description: 'Rare fragrances. Curated for those who know the difference.',
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { site } from '@/lib/site'
 import { getShopifyBusinessInfo } from '@/lib/shopifyBusinessInfo'
 
 export const metadata: Metadata = {
@@ -39,6 +40,12 @@ export default async function ContactPage() {
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Email</h2>
               <Link href={`mailto:${businessInfo.supportEmail}`} className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
                 {businessInfo.supportEmail}
+              </Link>
+            </div>
+            <div>
+              <h2 className="font-sans text-base font-semibold text-jamm-dark">Phone</h2>
+              <Link href={site.supportPhoneHref} className="mt-2 inline-flex text-jamm-gold hover:text-jamm-gold-muted">
+                {site.supportPhone}
               </Link>
             </div>
             <div>

@@ -55,6 +55,7 @@ export function Footer() {
               <strong>Jamm Trade LLC</strong>
               <span>Darby, Pennsylvania</span>
               <span>contact@jammtrade.com</span>
+              <span><a href="tel:+14845216277" className="transition-colors hover:text-[#e8d09a]">(484) 521-6277</a></span>
             </div>
           </div>
 
