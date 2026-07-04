@@ -10,7 +10,15 @@
   {%- if template.name == 'product' -%}
     <link rel="canonical" href="https://www.jammtrade.com/shop/product/{{ product.handle }}">
   {%- elsif template.name == 'collection' -%}
-    <link rel="canonical" href="https://www.jammtrade.com/shop/collection/{{ collection.handle }}">
+    {%- comment -%} Shopify handles carry a -collection suffix; the canonical site's routes do not. {%- endcomment -%}
+    {%- assign canonical_collection_handle = collection.handle | remove: '-collection' -%}
+    {%- if canonical_collection_handle == 'frontpage' -%}
+      <link rel="canonical" href="https://www.jammtrade.com/shop">
+    {%- elsif canonical_collection_handle == 'perfumes' or canonical_collection_handle == 'electronics' or canonical_collection_handle == 'clothing' -%}
+      <link rel="canonical" href="https://www.jammtrade.com/shop/category/{{ canonical_collection_handle }}">
+    {%- else -%}
+      <link rel="canonical" href="https://www.jammtrade.com/shop/collection/{{ canonical_collection_handle }}">
+    {%- endif -%}
   {%- else -%}
     <link rel="canonical" href="https://www.jammtrade.com/shop">
   {%- endif -%}

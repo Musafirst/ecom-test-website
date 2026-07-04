@@ -230,10 +230,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
       ? ['wireless audio', 'daily use', 'portable design', 'premium sound']
       : []
   const details = product.details ?? (scentDetails.length > 0 ? scentDetails : electronicsDetails.length > 0 ? electronicsDetails : product.tags.map((tag) => tag.replace(/-/g, ' ')))
-  const included = product.included ?? [
-    product.category === 'perfume' ? 'Full-size bottle' : 'Product unit',
-    product.category === 'perfume' ? 'Retail packaging' : 'Retail packaging',
-  ]
+  // Products with purchase options pick colors/sizes in the buy panel, so the
+  // Features list falls back to tags instead of repeating variant values.
+  const hasPurchaseOptions = (product.variants?.length ?? 0) > 1
+  const featureItems = hasPurchaseOptions
+    ? product.tags.map((tag) => tag.replace(/-/g, ' '))
+    : details
+  const included = product.included
 
   return (
     <section className="relative overflow-hidden bg-transparent px-3 py-4 text-jamm-dark sm:px-4 sm:py-6 lg:py-12">
@@ -327,32 +330,36 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
-            <div>
-              <h3 className="mb-3 font-sans text-sm font-semibold text-jamm-dark">What's Included?</h3>
-              <ul className="space-y-2.5 font-sans text-sm text-jamm-dark/70">
-                {included.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-jamm-gold" aria-hidden>
-                      <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span className="capitalize">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="mb-3 font-sans text-sm font-semibold text-jamm-dark">Features</h3>
-              <ul className="space-y-2.5 font-sans text-sm text-jamm-dark/70">
-                {details.slice(0, 5).map((detail) => (
-                  <li key={detail} className="flex items-start gap-2">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-jamm-gold" aria-hidden>
-                      <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span className="capitalize">{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {included && included.length > 0 && (
+              <div>
+                <h3 className="mb-3 font-sans text-sm font-semibold text-jamm-dark">What's Included?</h3>
+                <ul className="space-y-2.5 font-sans text-sm text-jamm-dark/70">
+                  {included.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-jamm-gold" aria-hidden>
+                        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="capitalize">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {featureItems.length > 0 && (
+              <div>
+                <h3 className="mb-3 font-sans text-sm font-semibold text-jamm-dark">Features</h3>
+                <ul className="space-y-2.5 font-sans text-sm text-jamm-dark/70">
+                  {featureItems.slice(0, 5).map((detail) => (
+                    <li key={detail} className="flex items-start gap-2">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-jamm-gold" aria-hidden>
+                        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="capitalize">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

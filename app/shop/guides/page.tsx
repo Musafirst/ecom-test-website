@@ -20,7 +20,7 @@ export default function GuidesPage() {
           <p className="mb-3 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-jamm-gold">
             Fragrance Guides
           </p>
-          <h1 className="max-w-3xl font-sans text-4xl font-semibold leading-tight text-jamm-dark sm:text-5xl">
+          <h1 className="max-w-3xl font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl">
             Reviews and buying guides for curated fragrances.
           </h1>
           <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-jamm-dark/58">

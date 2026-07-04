@@ -14,7 +14,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
       <div className="container">
         <div className="section-head">
           <div className="head-left reveal">
-            <p className="eyebrow">Fragrance Collection</p>
+            <p className="eyebrow">Curated Selection</p>
             <h2 className="section-title">Featured Products</h2>
           </div>
           <Link className="link-arrow reveal" href="/shop/category/perfumes">

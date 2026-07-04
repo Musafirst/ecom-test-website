@@ -68,7 +68,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 ? 'Perfumes'
                 : 'Collection'}
           </SectionLabel>
-          <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+          <h1 className="mt-3 font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
             {collection.name}
           </h1>
           <p className="mt-4 font-sans text-base leading-relaxed text-jamm-dark/82 sm:mt-5 sm:text-lg">

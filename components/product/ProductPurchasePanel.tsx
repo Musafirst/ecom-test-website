@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PriceDisplay } from '@/components/product/PriceDisplay'
 import { addShopifyItem, checkoutUrlStorageKey, isSafeCheckoutUrl, mergeCartItem, readCart, writeCart } from '@/lib/cart'
 import type { JammProduct, JammProductVariant } from '@/types/product'
 
@@ -79,8 +78,15 @@ export function ProductPurchasePanel({ product, compact = false }: ProductPurcha
 
   return (
     <div>
-      <div className="mt-4 rounded-md border border-jamm-gold/20 bg-white px-3 py-2.5 sm:mt-7 sm:px-4 sm:py-3">
-        <PriceDisplay price={displayPrice} compareAtPrice={displayCompareAt} onLight />
+      <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 sm:mt-7">
+        <span className="font-serif text-3xl font-medium text-jamm-dark sm:text-4xl">
+          ${displayPrice.toFixed(2)}
+        </span>
+        {displayCompareAt && displayCompareAt > displayPrice && (
+          <span className="font-sans text-base text-jamm-dark/35 line-through">
+            ${displayCompareAt.toFixed(2)}
+          </span>
+        )}
       </div>
 
       <p className="mt-2 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-jamm-muted sm:mt-3 sm:text-xs sm:tracking-[0.16em]">

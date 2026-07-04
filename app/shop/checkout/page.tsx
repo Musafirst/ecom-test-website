@@ -22,7 +22,7 @@ export default async function CheckoutPage() {
         <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <SectionLabel>Checkout</SectionLabel>
-            <h1 className="mt-3 font-sans text-3xl font-medium tracking-[-0.03em] text-jamm-dark sm:text-5xl lg:text-7xl">
+            <h1 className="mt-3 font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               Your Cart
             </h1>
             <p className="mt-5 max-w-2xl font-sans text-lg leading-relaxed text-jamm-muted">

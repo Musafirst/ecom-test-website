@@ -104,11 +104,13 @@
 
     {% else %}
       <div class="cart-empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" class="cart-empty__icon" aria-hidden="true">
-          <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="9" cy="20" r="1"/>
-          <circle cx="17" cy="20" r="1"/>
-        </svg>
+        <div style="display:flex; align-items:center; justify-content:center; width:64px; height:64px; margin:0 auto 20px; border-radius:9999px; border:1px solid rgba(196,151,58,.3); background:rgba(255,255,255,.5);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="cart-empty__icon" style="width:28px; height:28px; margin:0; color:#c4973a;" aria-hidden="true">
+            <path d="M6 7h13l-1.2 8.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.7L5 4H3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="20" r="1"/>
+            <circle cx="17" cy="20" r="1"/>
+          </svg>
+        </div>
         <h2 class="cart-empty__title">{{ 'cart.general.empty' | t }}</h2>
         <p class="cart-empty__sub">{{ 'cart.general.empty_sub' | t }}</p>
         <a href="{{ public_shop_url }}" class="btn btn--primary">{{ 'cart.general.browse_products' | t }}</a>

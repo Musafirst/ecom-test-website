@@ -99,7 +99,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">
           <div className="mb-8 max-w-3xl rounded-lg border border-jamm-gold/15 bg-white/28 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mb-12 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
             <SectionLabel>Category</SectionLabel>
-            <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               {category.name}
             </h1>
             <p className="mt-4 font-sans text-base leading-relaxed text-jamm-muted sm:mt-5 sm:text-lg">
@@ -213,7 +213,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">
           <div className="mb-8 max-w-3xl rounded-lg border border-jamm-gold/15 bg-white/28 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mb-12 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
             <SectionLabel>Category</SectionLabel>
-            <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               {category.name}
             </h1>
             <p className="mt-4 font-sans text-base leading-relaxed text-jamm-muted sm:mt-5 sm:text-lg">
@@ -297,7 +297,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="mx-auto max-w-[1560px] py-6 sm:py-10 lg:py-16">
           <div className="mb-8 max-w-3xl rounded-lg border border-jamm-gold/15 bg-white/28 p-5 shadow-[0_16px_40px_rgba(12,11,9,0.04)] sm:mb-12 sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
             <SectionLabel>Category</SectionLabel>
-            <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
               {category.name}
             </h1>
             <p className="mt-4 font-sans text-base leading-relaxed text-jamm-muted sm:mt-5 sm:text-lg">
@@ -345,7 +345,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div className="mx-auto grid max-w-[1560px] grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
         <div className="flex flex-col justify-center">
           <SectionLabel>Category</SectionLabel>
-          <h1 className="mt-3 font-sans text-3xl font-semibold leading-tight text-jamm-dark sm:text-5xl lg:text-6xl">
+          <h1 className="mt-3 font-serif text-4xl font-light leading-[1.08] text-jamm-dark sm:text-5xl lg:text-6xl">
             {category.name}
           </h1>
           <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-jamm-dark/60 sm:text-lg">

@@ -15,25 +15,25 @@ export const collectionDetails = {
   electronics: {
     name: 'Electronics',
     intro: 'Premium audio, smartwatches, and everyday electronics selected for quality and focus.',
-    note: 'Live Shopify collection products are shown when available.',
+    note: 'Premium audio and wearable tech chosen for everyday quality.',
     count: `${fallbackProducts.filter((product) => product.category === 'electronics').length} products`,
   },
   audio: {
     name: 'Audio',
     intro: 'Headphones and earbuds selected for everyday listening, travel, and focus.',
-    note: 'Audio products are powered by Shopify when the collection is available.',
+    note: 'Headphones and earbuds selected for listening, travel, and focus.',
     count: `${fallbackProducts.filter((product) => product.subcategory === 'headphones-audio').length} products`,
   },
   smartwatches: {
     name: 'Smartwatches',
     intro: 'Wearable tech for daily tracking, notifications, and refined utility.',
-    note: 'Smartwatch products are powered by Shopify when the collection is available.',
+    note: 'Wearable tech for daily tracking, notifications, and refined utility.',
     count: `${fallbackProducts.filter((product) => product.subcategory === 'smartwatches').length} products`,
   },
   clothing: {
     name: 'Clothing',
     intro: 'Jamm Trade apparel with the lotus mark across everyday essentials.',
-    note: 'Clothing products are powered by Shopify when the collection is available.',
+    note: 'Apparel carrying the Jamm Trade lotus mark, made for everyday wear.',
     count: '0 products',
   },
 } as const

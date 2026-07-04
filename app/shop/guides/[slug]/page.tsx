@@ -227,7 +227,7 @@ export default async function GuideArticlePage({ params }: GuidePageProps) {
                   ) : (
                     <Link
                       key={product.label}
-                      href="/shop#perfumes"
+                      href="/shop#fragrance"
                       className="rounded-md border border-jamm-gold/20 bg-white/40 px-4 py-3 font-sans text-sm font-medium text-jamm-dark/68 transition-colors hover:border-jamm-gold/45 hover:text-jamm-gold"
                     >
                       {product.label}
@@ -235,7 +235,7 @@ export default async function GuideArticlePage({ params }: GuidePageProps) {
                   )
                 ))}
                 {!article.relatedProducts?.length && (
-                  <Link href="/shop#perfumes" className="font-sans text-sm font-medium text-jamm-gold">
+                  <Link href="/shop#fragrance" className="font-sans text-sm font-medium text-jamm-gold">
                     Browse fragrances
                   </Link>
                 )}
@@ -254,7 +254,7 @@ export default async function GuideArticlePage({ params }: GuidePageProps) {
             <h2 className="mt-2 font-sans text-2xl font-semibold">Shop Trending Fragrances</h2>
           </div>
           <Link
-            href="/shop#perfumes"
+            href="/shop#fragrance"
             className="inline-flex min-h-11 w-fit items-center rounded-md bg-jamm-gold px-5 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-jamm-dark transition-colors duration-200 hover:bg-jamm-cream"
           >
             Explore Fragrances

@@ -4,13 +4,13 @@ export const collectionDetails = {
   oud: {
     name: 'Oud',
     intro: 'Deep, resinous fragrances built around oud, woods, smoke, and amber.',
-    note: 'Live Shopify oud selections shown with a local fallback.',
+    note: 'Resinous, long-lasting compositions selected for depth and presence.',
     count: `${perfumeProducts.filter((product) => product.collection === 'oud').length} fragrances`,
   },
   amber: {
     name: 'Amber',
     intro: 'Warm amber blends with sweet spice, musk, vanilla, and polished projection.',
-    note: 'Amber-led fragrance picks from the live Shopify catalog.',
+    note: 'Warm, skin-close blends chosen for smooth drydowns and lasting sillage.',
     count: `${perfumeProducts.filter((product) => product.collection === 'amber').length} fragrances`,
   },
   daily: {

@@ -83,15 +83,15 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
             <circle cx="17" cy="20" r="1" />
           </svg>
         </div>
-        <p className="mb-2 font-sans text-xl font-semibold text-jamm-dark">Your cart is empty</p>
+        <p className="mb-2 font-serif text-2xl font-light text-jamm-dark">Your cart is empty</p>
         <p className="mb-8 max-w-xs font-sans text-sm leading-relaxed text-jamm-muted">
-          Discover our curated fragrances and premium electronics. Something is waiting for you.
+          Add something from the shop to get started.
         </p>
         <Link
           href="/shop"
           className="inline-flex items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-jamm-gold hover:text-jamm-dark"
         >
-          Continue Shopping
+          Browse Products
         </Link>
       </div>
     )
