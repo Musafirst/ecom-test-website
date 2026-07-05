@@ -21,12 +21,12 @@ const columns = [
       { label: 'Jamm Fleet', href: '/jamm-fleet' },
       { label: 'Jamm Cargo', href: '/jamm-cargo' },
       { label: 'Fragrance Guides', href: '/shop/guides' },
-      { label: 'Contact Support', href: '/shop/contact' },
     ],
   },
   {
-    title: 'Policies',
+    title: 'Support',
     links: [
+      { label: 'Contact Support', href: '/shop/contact' },
       { label: 'Shipping & Returns', href: '/shop/shipping-returns' },
       { label: 'Privacy Policy', href: '/shop/privacy-policy' },
       { label: 'Terms of Service', href: '/shop/terms-of-service' },
