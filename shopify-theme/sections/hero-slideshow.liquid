@@ -60,12 +60,7 @@
 
         <article class="slide slide--eco">
           <div class="eco-stage" style="background-image: url({{ 'jamm-trade-ecosystem-poster-1600.jpg' | asset_url }});">
-            <a class="hotspot" href="{{ public_storefront_url }}/jamm-fleet" style="left:23.5%; top:43%" aria-label="Jamm Fleet">
-              <span class="hotspot__pulse"></span><span class="hotspot__ring"></span><span class="hotspot__label"><b>Jamm Fleet&nbsp;&rarr;</b></span>
-            </a>
-            <a class="hotspot" href="{{ public_storefront_url }}/jamm-cargo" style="left:58%; top:33%" aria-label="Jamm Cargo">
-              <span class="hotspot__pulse"></span><span class="hotspot__ring"></span><span class="hotspot__label"><b>Jamm Cargo&nbsp;&rarr;</b></span>
-            </a>
+            {% comment %} Store categories only; the Fleet vehicle and Cargo container remain scenery in the image, not navigation. {% endcomment %}
             <a class="hotspot" href="{{ public_shop_url }}/category/perfumes" style="left:30%; top:71%" aria-label="Fragrance collection">
               <span class="hotspot__pulse"></span><span class="hotspot__ring"></span><span class="hotspot__label"><b>Fragrance&nbsp;&rarr;</b></span>
             </a>
@@ -77,8 +72,8 @@
             </a>
           </div>
           <div class="eco-caption">
-            <p class="slide__eyebrow">The Jamm Ecosystem</p>
-            <h2 class="eco-caption__title">One house. Every essential.</h2>
+            <p class="slide__eyebrow">The House of Jamm Trade</p>
+            <h2 class="eco-caption__title">Every essential, curated.</h2>
             <p class="eco-caption__hint"><span class="pulse-dot"></span> Tap a point to explore</p>
           </div>
         </article>

@@ -31,9 +31,9 @@ const heroVideos = [
   },
 ] as const
 
+// Store categories only; the Fleet vehicle and Cargo container remain scenery
+// in the cinematic video, not navigation.
 const hotspots = [
-  { href: '/jamm-fleet', style: { left: '23.5%', top: '43%' }, label: 'Jamm Fleet', aria: 'Jamm Fleet' },
-  { href: '/jamm-cargo', style: { left: '58%', top: '33%' }, label: 'Jamm Cargo', aria: 'Jamm Cargo' },
   { href: '/shop/category/perfumes', style: { left: '30%', top: '71%' }, label: 'Fragrance', aria: 'Fragrance collection' },
   { href: '/shop/category/electronics', style: { left: '64%', top: '72%' }, label: 'Electronics', aria: 'Electronics collection' },
   { href: '/shop/category/clothing', style: { left: '86%', top: '46%' }, label: 'Apparel', aria: 'Apparel collection' },
@@ -203,8 +203,8 @@ export function HeroSection() {
                 ))}
               </div>
               <div className="eco-caption">
-                <p className="slide__eyebrow">The Jamm Ecosystem</p>
-                <h2 className="eco-caption__title">One house. Every essential.</h2>
+                <p className="slide__eyebrow">The House of Jamm Trade</p>
+                <h2 className="eco-caption__title">Every essential, curated.</h2>
                 <p className="eco-caption__hint"><span className="pulse-dot" /> Tap a point to explore</p>
               </div>
             </article>

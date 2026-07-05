@@ -17,7 +17,7 @@ const navLinks = [
   { label: 'Collections', href: '/shop#collections' },
   { label: 'Electronics', href: '/shop/category/electronics' },
   { label: 'Guides', href: '/shop/guides' },
-  { label: 'Ecosystem', href: '/shop#ecosystem' },
+  { label: 'About', href: '/shop/about' },
 ]
 
 export function TabNav() {
@@ -121,8 +121,6 @@ export function TabNav() {
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</Link>
             ))}
-            <Link href="/jamm-fleet" onClick={() => setMenuOpen(false)}>Jamm Fleet</Link>
-            <Link href="/jamm-cargo" onClick={() => setMenuOpen(false)}>Jamm Cargo</Link>
           </nav>
           <div className="mobile-drawer__foot">
             <LanguageSelector />
