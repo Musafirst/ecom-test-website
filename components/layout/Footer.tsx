@@ -24,7 +24,7 @@ const columns = [
     ],
   },
   {
-    title: 'Support',
+    title: 'Policies & Support',
     links: [
       { label: 'Contact Support', href: '/shop/contact' },
       { label: 'Shipping & Returns', href: '/shop/shipping-returns' },
