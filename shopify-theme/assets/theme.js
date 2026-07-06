@@ -117,20 +117,8 @@
 
     document.addEventListener('visibilitychange', function () { if (!document.hidden) show(index); });
 
-    var hotspots = Array.from(document.querySelectorAll('.hotspot'));
-    hotspots.forEach(function (h) {
-      h.addEventListener('click', function (e) {
-        if (window.matchMedia('(hover: none)').matches && !h.classList.contains('is-open')) {
-          e.preventDefault();
-          hotspots.forEach(function (o) { if (o !== h) o.classList.remove('is-open'); });
-          h.classList.add('is-open');
-          clearTimeout(timer);
-        }
-      });
-    });
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.hotspot')) hotspots.forEach(function (h) { h.classList.remove('is-open'); });
-    });
+    // Touch devices show hotspot labels persistently (CSS @media hover:none),
+    // so a single tap navigates directly — no tap-to-reveal step.
   })();
 
   /* ---- Footer accordion (mobile) -------------------------- */

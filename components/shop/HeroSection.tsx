@@ -41,7 +41,6 @@ const hotspots = [
 
 export function HeroSection() {
   const [index, setIndex] = useState(0)
-  const [openHotspot, setOpenHotspot] = useState<number | null>(null)
   const timerRef = useRef<number | null>(null)
 
   const schedule = useCallback((ms: number) => {
@@ -96,22 +95,8 @@ export function HeroSection() {
     if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1))
   }
 
-  useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      if (!(e.target as HTMLElement).closest('.hotspot')) setOpenHotspot(null)
-    }
-    document.addEventListener('click', onDocClick)
-    return () => document.removeEventListener('click', onDocClick)
-  }, [])
-
-  const handleHotspot = (e: React.MouseEvent, i: number) => {
-    if (window.matchMedia('(hover: none)').matches && openHotspot !== i) {
-      e.preventDefault()
-      setOpenHotspot(i)
-      if (timerRef.current) window.clearTimeout(timerRef.current)
-    }
-  }
-
+  // Touch devices show hotspot labels persistently (CSS @media hover:none),
+  // so a single tap navigates directly — no tap-to-reveal step.
   return (
     <section className="hero-wrap" id="ecosystem">
       <div className="container">
@@ -181,20 +166,19 @@ export function HeroSection() {
                 <p className="slide__eyebrow">The House of Jamm</p>
                 <h2 className="slide__title">From essentials<br />to <em>enterprise.</em></h2>
                 <p className="slide__sub">One trusted name across every category we touch — fragrance, apparel, electronics and the fleet that moves them.</p>
-                <div className="slide__cta"><Link className="btn btn--gold" href="/shop">Explore the House</Link></div>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/about">Explore the House</Link></div>
               </div>
             </article>
 
             <article className={`slide slide--eco${index === 4 ? ' is-active' : ''}`}>
               <div className="eco-stage">
-                {hotspots.map((h, i) => (
+                {hotspots.map((h) => (
                   <Link
                     key={h.href}
-                    className={`hotspot${openHotspot === i ? ' is-open' : ''}`}
+                    className="hotspot"
                     href={h.href}
                     style={h.style}
                     aria-label={h.aria}
-                    onClick={(e) => handleHotspot(e, i)}
                   >
                     <span className="hotspot__pulse" />
                     <span className="hotspot__ring" />
