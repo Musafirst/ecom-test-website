@@ -166,7 +166,7 @@ export function HeroSection() {
                 <p className="slide__eyebrow">The House of Jamm</p>
                 <h2 className="slide__title">From essentials<br />to <em>enterprise.</em></h2>
                 <p className="slide__sub">One trusted name across every category we touch — fragrance, apparel, electronics and the fleet that moves them.</p>
-                <div className="slide__cta"><Link className="btn btn--gold" href="/shop/about">Explore the House</Link></div>
+                <div className="slide__cta"><Link className="btn btn--gold" href="/shop#fragrance">Explore the House</Link></div>
               </div>
             </article>
 

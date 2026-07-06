@@ -921,20 +921,3 @@ button{ font-family:inherit; cursor:pointer; }
 @media (min-width:900px){
   .slide__content{ padding-inline:clamp(84px, 7vw, 110px); }
 }
-
-/* ============================================================
-   TOUCH DEVICES — hotspot labels always visible, single tap
-   navigates (no tap-to-reveal step)
-   ============================================================ */
-@media (hover: none){
-  .hotspot__label{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-    pointer-events:none;
-  }
-  .hotspot__label::after{ display:none; }
-  /* right-edge hotspot: keep its label inside the frame */
-  .hotspot:last-child .hotspot__label{
-    left:auto; right:-10px; transform:translateY(0);
-  }
-}
