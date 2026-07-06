@@ -117,8 +117,22 @@
 
     document.addEventListener('visibilitychange', function () { if (!document.hidden) show(index); });
 
-    // Touch devices show hotspot labels persistently (CSS @media hover:none),
-    // so a single tap navigates directly — no tap-to-reveal step.
+    // Touch flow: first tap reveals the point's name, second tap (ring or
+    // revealed label — CSS re-enables its pointer events when open) navigates.
+    var hotspots = Array.from(document.querySelectorAll('.hotspot'));
+    hotspots.forEach(function (h) {
+      h.addEventListener('click', function (e) {
+        if (window.matchMedia('(hover: none)').matches && !h.classList.contains('is-open')) {
+          e.preventDefault();
+          hotspots.forEach(function (o) { if (o !== h) o.classList.remove('is-open'); });
+          h.classList.add('is-open');
+          clearTimeout(timer); // hold the slide while exploring
+        }
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.hotspot')) hotspots.forEach(function (h) { h.classList.remove('is-open'); });
+    });
   })();
 
   /* ---- Footer accordion (mobile) -------------------------- */

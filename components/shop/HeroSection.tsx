@@ -41,6 +41,7 @@ const hotspots = [
 
 export function HeroSection() {
   const [index, setIndex] = useState(0)
+  const [openHotspot, setOpenHotspot] = useState<number | null>(null)
   const timerRef = useRef<number | null>(null)
 
   const schedule = useCallback((ms: number) => {
@@ -95,8 +96,26 @@ export function HeroSection() {
     if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1))
   }
 
-  // Touch devices show hotspot labels persistently (CSS @media hover:none),
-  // so a single tap navigates directly — no tap-to-reveal step.
+  // Touch flow: first tap reveals the point's name, second tap (on the ring
+  // OR the revealed label — CSS re-enables its pointer events when open)
+  // navigates. Tapping elsewhere closes the open label.
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!(e.target as HTMLElement).closest('.hotspot')) setOpenHotspot(null)
+    }
+    document.addEventListener('click', onDocClick)
+    return () => document.removeEventListener('click', onDocClick)
+  }, [])
+
+  const handleHotspot = (e: React.MouseEvent, i: number) => {
+    if (window.matchMedia('(hover: none)').matches && openHotspot !== i) {
+      e.preventDefault()
+      setOpenHotspot(i)
+      // hold the slide while the visitor explores
+      if (timerRef.current) window.clearTimeout(timerRef.current)
+    }
+  }
+
   return (
     <section className="hero-wrap" id="ecosystem">
       <div className="container">
@@ -172,13 +191,14 @@ export function HeroSection() {
 
             <article className={`slide slide--eco${index === 4 ? ' is-active' : ''}`}>
               <div className="eco-stage">
-                {hotspots.map((h) => (
+                {hotspots.map((h, i) => (
                   <Link
                     key={h.href}
-                    className="hotspot"
+                    className={`hotspot${openHotspot === i ? ' is-open' : ''}`}
                     href={h.href}
                     style={h.style}
                     aria-label={h.aria}
+                    onClick={(e) => handleHotspot(e, i)}
                   >
                     <span className="hotspot__pulse" />
                     <span className="hotspot__ring" />

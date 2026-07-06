@@ -879,3 +879,8 @@ button{ font-family:inherit; cursor:pointer; }
 @media (min-width:900px){
   .slide__content{ padding-inline:clamp(84px, 7vw, 110px); }
 }
+
+/* Two-tap hotspots on touch: once the name is revealed, the label itself
+   becomes tappable so the second tap navigates (it previously fell through
+   and closed the label instead). */
+.hotspot.is-open .hotspot__label{ pointer-events:auto; }
