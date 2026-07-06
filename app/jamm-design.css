@@ -926,3 +926,7 @@ button{ font-family:inherit; cursor:pointer; }
    becomes tappable so the second tap navigates (it previously fell through
    and closed the label instead). */
 .hotspot.is-open .hotspot__label{ pointer-events:auto; }
+
+/* While a hotspot name is revealed (touch), fade the caption out of its way */
+.eco-caption{ transition:opacity .3s ease; }
+.eco-caption.is-muted{ opacity:0; }

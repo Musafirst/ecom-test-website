@@ -75,6 +75,9 @@
     function schedule(ms) { clearTimeout(timer); timer = setTimeout(function () { show(index + 1); }, ms); }
     function show(n) {
       index = (n + slides.length) % slides.length;
+      document.querySelectorAll('.hotspot.is-open').forEach(function (h) { h.classList.remove('is-open'); });
+      var mutedCaption = document.querySelector('.eco-caption.is-muted');
+      if (mutedCaption) mutedCaption.classList.remove('is-muted');
       slides.forEach(function (s, i) { s.classList.toggle('is-active', i === index); });
       dots.forEach(function (d, i) { d.classList.toggle('is-active', i === index); });
       videos.forEach(function (video, i) {
@@ -119,19 +122,25 @@
 
     // Touch flow: first tap reveals the point's name, second tap (ring or
     // revealed label — CSS re-enables its pointer events when open) navigates.
+    // The caption fades while a name is revealed so they never overlap.
     var hotspots = Array.from(document.querySelectorAll('.hotspot'));
+    var ecoCaption = document.querySelector('.eco-caption');
     hotspots.forEach(function (h) {
       h.addEventListener('click', function (e) {
         if (window.matchMedia('(hover: none)').matches && !h.classList.contains('is-open')) {
           e.preventDefault();
           hotspots.forEach(function (o) { if (o !== h) o.classList.remove('is-open'); });
           h.classList.add('is-open');
+          if (ecoCaption) ecoCaption.classList.add('is-muted');
           clearTimeout(timer); // hold the slide while exploring
         }
       });
     });
     document.addEventListener('click', function (e) {
-      if (!e.target.closest('.hotspot')) hotspots.forEach(function (h) { h.classList.remove('is-open'); });
+      if (!e.target.closest('.hotspot')) {
+        hotspots.forEach(function (h) { h.classList.remove('is-open'); });
+        if (ecoCaption) ecoCaption.classList.remove('is-muted');
+      }
     });
   })();
 

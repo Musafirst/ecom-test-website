@@ -56,7 +56,10 @@ export function HeroSection() {
     }
   }, [index, schedule])
 
-  const go = (n: number) => setIndex((n + slides.length) % slides.length)
+  const go = (n: number) => {
+    setOpenHotspot(null)
+    setIndex((n + slides.length) % slides.length)
+  }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -206,7 +209,7 @@ export function HeroSection() {
                   </Link>
                 ))}
               </div>
-              <div className="eco-caption">
+              <div className={`eco-caption${openHotspot !== null ? ' is-muted' : ''}`}>
                 <p className="slide__eyebrow">The House of Jamm Trade</p>
                 <h2 className="eco-caption__title">Every essential, curated.</h2>
                 <p className="eco-caption__hint"><span className="pulse-dot" /> Tap a point to explore</p>
