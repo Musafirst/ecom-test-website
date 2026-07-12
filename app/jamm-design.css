@@ -538,7 +538,8 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .product__media--photo{ background:#fff; }
 .product__media--photo::after{ content:none; }
-.product__photo{ width:100%; height:100%; object-fit:cover; object-position:center; }
+.product__photo{ width:100%; height:100%; object-fit:cover; object-position:center; transition:transform 1s cubic-bezier(.22,1,.36,1); }
+.product:hover .product__photo{ transform:scale(1.05); }
 .product__silhouette{ width:64%; height:64%; opacity:.5; color:var(--muted-2); }
 .product__view{
   position:absolute; inset:auto 16px 16px; z-index:3;
@@ -580,7 +581,8 @@ button{ font-family:inherit; cursor:pointer; }
   padding:clamp(22px,3.4vw,30px);
 }
 .collection__img{ position:absolute; inset:0; z-index:0; }
-.collection__img img{ width:100%; height:100%; object-fit:cover; opacity:.62; }
+.collection__img img{ width:100%; height:100%; object-fit:cover; opacity:.62; transition:transform 1.1s cubic-bezier(.22,1,.36,1); }
+.collection:hover .collection__img img{ transform:scale(1.045); }
 .collection__img::after{
   content:""; position:absolute; inset:0;
   background:linear-gradient(180deg,rgba(10,8,5,.25),rgba(10,8,5,.55) 55%,rgba(8,6,4,.92));
@@ -724,9 +726,22 @@ button{ font-family:inherit; cursor:pointer; }
    REVEAL ANIMATION
    ============================================================ */
 @media (prefers-reduced-motion: no-preference){
-  body.reveal-on .reveal{ opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
-  body.reveal-on .reveal.is-in{ opacity:1; transform:none; }
+  body.reveal-on .reveal{ opacity:0; }
+  body.reveal-on .reveal.is-in{ opacity:1; animation:reveal-in .7s cubic-bezier(.22,1,.36,1) backwards; }
+  /* Grid children cascade in one beat apart. Keyframes (not transitions)
+     drive the entrance so card hover lifts keep their own timing. */
+  body.reveal-on .products-grid .reveal.is-in:nth-child(2),
+  body.reveal-on .collections .reveal.is-in:nth-child(2),
+  body.reveal-on .beyond .reveal.is-in:nth-child(2),
+  body.reveal-on .guides-grid .reveal.is-in:nth-child(2){ animation-delay:.07s; }
+  body.reveal-on .products-grid .reveal.is-in:nth-child(3),
+  body.reveal-on .collections .reveal.is-in:nth-child(3),
+  body.reveal-on .guides-grid .reveal.is-in:nth-child(3){ animation-delay:.14s; }
+  body.reveal-on .products-grid .reveal.is-in:nth-child(4),
+  body.reveal-on .guides-grid .reveal.is-in:nth-child(4){ animation-delay:.21s; }
+  body.reveal-on .products-grid .reveal.is-in:nth-child(n+5){ animation-delay:.28s; }
 }
+@keyframes reveal-in{ from{ opacity:0; transform:translateY(22px); } }
 
 /* ============================================================
    RESPONSIVE — tablet / desktop

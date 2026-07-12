@@ -6,7 +6,7 @@
 {% assign public_shop_url = settings.public_storefront_url | default: 'https://www.jammtrade.com' | append: '/shop' %}
 {% assign card_label = product.collections.first.title | default: product.vendor %}
 
-<article class="product">
+<article class="product reveal">
   <a class="product__media product__media--photo" href="{{ public_shop_url }}/product/{{ product.handle }}">
     {% if product.featured_image != blank %}
       <img class="product__photo" src="{{ product.featured_image | image_url: width: 800 }}"
