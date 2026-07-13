@@ -37,4 +37,9 @@ export const categoryDetails = {
     intro: 'Headphones, audio accessories, and smartwatches selected for quality and everyday use.',
     detail: 'A curated secondary category featuring trusted audio and wearable brands.',
   },
+  health: {
+    name: 'Health & Wellness',
+    intro: 'Supplements and wellness essentials selected with the same care as everything we carry.',
+    detail: 'Trusted health brands, clearly described and shipped with secure checkout.',
+  },
 } as const

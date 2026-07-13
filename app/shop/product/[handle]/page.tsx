@@ -53,6 +53,13 @@ function getProductBackLink(product: JammProduct) {
     }
   }
 
+  if (product.category === 'health') {
+    return {
+      href: '/shop/category/health',
+      label: 'Health & Wellness',
+    }
+  }
+
   return {
     href: '/shop/category/electronics',
     label: 'Electronics',

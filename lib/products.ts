@@ -75,6 +75,13 @@ export async function getElectronicsProducts() {
     : fallbackProducts.filter((product) => product.category === 'electronics')
 }
 
+// Health & wellness category: supplements and similar products. No demo
+// fallback — this category only exists for live Shopify products.
+export async function getHealthProducts() {
+  const products = await getShopifyProducts()
+  return products.filter((product) => product.category === 'health')
+}
+
 // Collection copy remains local/manual; product contents are Shopify-first.
 export async function getCollectionProducts(collection: string) {
   return getShopifyCollectionProducts(collection)

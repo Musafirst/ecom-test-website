@@ -303,6 +303,12 @@ function productBelongsToCollection(product: JammProduct, handle: string) {
 function getCategory(product: ShopifyProduct, collection?: ProductCollection): ProductCategory {
   const values = [product.productType, product.vendor, ...product.tags, collection ?? '', product.handle, product.title].map(normalizeHandle)
 
+  // Health is checked first: supplements often carry stray tags copied from
+  // other categories, and product type "health" is the explicit signal.
+  if (values.some((value) => value.includes('health') || value.includes('supplement') || value.includes('vitamin') || value.includes('wellness'))) {
+    return 'health'
+  }
+
   if (values.some((value) => value.includes('electronics') || value.includes('audio') || value.includes('watch'))) {
     return 'electronics'
   }
@@ -317,6 +323,7 @@ function getCategory(product: ShopifyProduct, collection?: ProductCollection): P
 function getSubcategory(product: ShopifyProduct, category: ProductCategory, collection?: ProductCollection): ProductSubcategory | undefined {
   const values = [product.productType, ...product.tags, collection ?? ''].map(normalizeHandle)
 
+  if (category === 'health') return 'supplements'
   if (values.some((value) => value.includes('smartwatch') || value.includes('watch'))) return 'smartwatches'
   if (values.some((value) => value.includes('audio') || value.includes('headphone') || value.includes('earbud'))) return 'headphones-audio'
   if (category === 'perfume') return 'fragrance'
@@ -333,6 +340,7 @@ function getCategoryLabel(category: ProductCategory, collection?: ProductCollect
   if (collection === 'smartwatches' || subcategory === 'smartwatches') return 'Smartwatches'
   if (category === 'electronics') return 'Electronics'
   if (category === 'clothing') return 'Clothing'
+  if (category === 'health') return 'Health & Wellness'
 
   return 'Fragrance'
 }
@@ -433,21 +441,27 @@ function mapPublicShopifyProduct(product: PublicShopifyProduct): JammProduct {
   const tags = product.tags ?? []
   const values = [type, product.vendor ?? '', ...tags, product.handle, product.title].map(normalizeHandle)
   const category: ProductCategory = values.some((value) =>
-    value.includes('clothing') || value.includes('apparel') || value.includes('hoodie') || value.includes('tee') || value.includes('shirt')
+    value.includes('health') || value.includes('supplement') || value.includes('vitamin') || value.includes('wellness')
   )
-    ? 'clothing'
-    : values.some((value) => value.includes('electronics') || value.includes('audio') || value.includes('watch'))
-      ? 'electronics'
-      : 'perfume'
+    ? 'health'
+    : values.some((value) =>
+        value.includes('clothing') || value.includes('apparel') || value.includes('hoodie') || value.includes('tee') || value.includes('shirt')
+      )
+      ? 'clothing'
+      : values.some((value) => value.includes('electronics') || value.includes('audio') || value.includes('watch'))
+        ? 'electronics'
+        : 'perfume'
   const collection: ProductCollection | undefined = category === 'clothing' ? 'clothing' : undefined
   const subcategory: ProductSubcategory | undefined =
-    category === 'clothing'
-      ? 'apparel'
-      : category === 'electronics' && values.some((value) => value.includes('watch'))
-        ? 'smartwatches'
-        : category === 'electronics'
-          ? 'headphones-audio'
-          : 'fragrance'
+    category === 'health'
+      ? 'supplements'
+      : category === 'clothing'
+        ? 'apparel'
+        : category === 'electronics' && values.some((value) => value.includes('watch'))
+          ? 'smartwatches'
+          : category === 'electronics'
+            ? 'headphones-audio'
+            : 'fragrance'
   const galleryImages = (product.images ?? [])
     .map(normalizeShopifyAssetUrl)
     .filter((url): url is string => Boolean(url))

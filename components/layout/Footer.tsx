@@ -13,6 +13,7 @@ const columns = [
       { label: 'Amber', href: '/shop/collection/amber' },
       { label: 'Clothing', href: '/shop/category/clothing' },
       { label: 'Electronics', href: '/shop/category/electronics' },
+      { label: 'Health & Wellness', href: '/shop/category/health' },
     ],
   },
   {
