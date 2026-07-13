@@ -505,6 +505,26 @@ button{ font-family:inherit; cursor:pointer; }
 .qcard__arrow{ color:var(--muted-2); transition:transform .3s, color .3s; }
 .qcard:hover .qcard__arrow{ transform:translate(3px,-3px); color:var(--gold-deep); }
 
+/* All-categories toggle: every category (incl. quieter ones like Health)
+   stays reachable from the homepage without adding more sections to it. */
+.allcats{ margin-top:14px; }
+.allcats__toggle{
+  display:inline-flex; align-items:center; gap:8px;
+  background:transparent; border:1px solid var(--line); border-radius:999px;
+  padding:10px 18px; font-family:inherit; font-size:.68rem; letter-spacing:.18em;
+  text-transform:uppercase; font-weight:600; color:var(--text); cursor:pointer;
+  transition:border-color .3s, color .3s;
+}
+.allcats__toggle:hover{ border-color:rgba(193,154,69,.55); color:var(--gold-deep); }
+.allcats__chev{ transition:transform .3s; }
+.allcats__toggle[aria-expanded="true"] .allcats__chev{ transform:rotate(180deg); }
+.allcats__grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
+.allcats__grid .qcard{ width:auto; padding:16px 16px 18px; gap:10px; }
+.allcats__grid .qcard__name{ font-size:1.2rem; }
+@media (prefers-reduced-motion: no-preference){
+  .allcats__grid{ animation:reveal-in .45s cubic-bezier(.22,1,.36,1); }
+}
+
 /* ============================================================
    FEATURED PRODUCTS
    ============================================================ */
@@ -769,6 +789,7 @@ button{ font-family:inherit; cursor:pointer; }
 
   .quicklinks__scroll{ display:grid; grid-template-columns:repeat(4,1fr); overflow:visible; }
   .qcard{ width:auto; }
+  .allcats__grid{ grid-template-columns:repeat(4,1fr); }
 
   .products-grid{ grid-template-columns:repeat(4,1fr); }
   .product__name{ font-size:.98rem; min-height:2.6em; }

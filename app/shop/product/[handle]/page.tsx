@@ -236,11 +236,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
     : product.category === 'electronics'
       ? ['wireless audio', 'daily use', 'portable design', 'premium sound']
       : []
-  const details = product.details ?? (scentDetails.length > 0 ? scentDetails : electronicsDetails.length > 0 ? electronicsDetails : product.tags.map((tag) => tag.replace(/-/g, ' ')))
+  const healthDetails = product.category === 'health'
+    ? ['supplement', 'health and wellness', 'product details', 'secure checkout']
+    : []
+  const details = product.details ?? (
+    scentDetails.length > 0
+      ? scentDetails
+      : electronicsDetails.length > 0
+        ? electronicsDetails
+        : healthDetails.length > 0
+          ? healthDetails
+          : product.tags.map((tag) => tag.replace(/-/g, ' '))
+  )
   // Products with purchase options pick colors/sizes in the buy panel, so the
   // Features list falls back to tags instead of repeating variant values.
   const hasPurchaseOptions = (product.variants?.length ?? 0) > 1
-  const featureItems = hasPurchaseOptions
+  const featureItems = product.category === 'health'
+    ? details
+    : hasPurchaseOptions
     ? product.tags.map((tag) => tag.replace(/-/g, ' '))
     : details
   const included = product.included

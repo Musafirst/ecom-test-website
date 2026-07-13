@@ -24,6 +24,40 @@
           <svg class="qcard__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
       </a>
     </div>
+
+    {% comment %}
+      Every category (incl. quieter ones like Health & Wellness) stays
+      reachable from the homepage without adding more sections to it.
+    {% endcomment %}
+    <div class="allcats">
+      <button type="button" class="allcats__toggle" aria-expanded="false" aria-controls="AllCategoriesPanel" data-allcats-toggle>
+        All Categories
+        <svg class="allcats__chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="allcats__grid" id="AllCategoriesPanel" hidden>
+        {% assign all_categories = 'Perfumes|Oud · Amber · Daily|/category/perfumes,Oud|Resinous · Deep|/collection/oud,Amber|Warm · Sweet|/collection/amber,Daily|Clean · Versatile|/collection/daily,Electronics|Audio · Tech|/category/electronics,Clothing|Wear the mark|/category/clothing,Health & Wellness|Supplements|/category/health' | split: ',' %}
+        {% for entry in all_categories %}
+          {% assign parts = entry | split: '|' %}
+          <a class="qcard" href="{{ public_shop_url }}{{ parts[2] }}">
+            <span class="qcard__eyebrow">{{ parts[1] }}</span>
+            <span class="qcard__row"><span class="qcard__name">{{ parts[0] }}</span>
+              <svg class="qcard__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <script>
+      (function () {
+        var toggle = document.querySelector('[data-allcats-toggle]');
+        var panel = document.getElementById('AllCategoriesPanel');
+        if (!toggle || !panel) return;
+        toggle.addEventListener('click', function () {
+          var open = panel.hasAttribute('hidden');
+          if (open) panel.removeAttribute('hidden'); else panel.setAttribute('hidden', '');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      })();
+    </script>
   </div>
 </section>
 

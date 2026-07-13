@@ -17,7 +17,6 @@ const navLinks = [
   { label: 'Collections', href: '/shop#collections' },
   { label: 'Electronics', href: '/shop/category/electronics' },
   { label: 'Clothing', href: '/shop/category/clothing' },
-  { label: 'Health', href: '/shop/category/health' },
   { label: 'Guides', href: '/shop/guides' },
   { label: 'About', href: '/shop/about' },
 ]
