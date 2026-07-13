@@ -132,17 +132,21 @@ export function HeroSection() {
           >
             <div className="hero__media">
               <div className="hero__media-inner">
+                {/* Only the first slide's video may autoload; the rest hold at
+                    metadata until their slide activates (kick() calls play()).
+                    Autoloading all four (~21MB) starved first taps on product
+                    links of bandwidth during initial load. */}
                 {heroVideos.map((video) => (
                   <video
                     key={video.id}
                     className={`hero__video hero__video--${video.id}${slides[index] === video.id ? ' is-active' : ''}`}
                     src={video.src}
                     poster={video.poster}
-                    autoPlay
+                    autoPlay={video.id === slides[0]}
                     muted
                     loop
                     playsInline
-                    preload="metadata"
+                    preload={video.id === slides[0] ? 'auto' : 'metadata'}
                   />
                 ))}
               </div>

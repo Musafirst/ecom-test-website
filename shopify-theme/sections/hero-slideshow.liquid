@@ -7,10 +7,16 @@
       <div class="hero__stage">
         <div class="hero__media">
           <div class="hero__media-inner">
-            <video class="hero__video hero__video--house is-active" src="{{ 'jamm-trade-cinematic-hero.mp4' | asset_url }}" poster="{{ 'jamm-trade-ecosystem-poster-1600.jpg' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
-            <video class="hero__video hero__video--fragrance" src="{{ 'jamm-trade-fragrance-hero.mp4' | asset_url }}" poster="{{ 'hero-perfumes.webp' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
-            <video class="hero__video hero__video--audio" src="{{ 'jamm-trade-electronics-hero.mp4' | asset_url }}" poster="{{ 'hero-electronics.webp' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
-            <video class="hero__video hero__video--clothing" src="{{ 'jamm-trade-clothing-hero.mp4' | asset_url }}" poster="{{ 'hero-clothing.webp' | asset_url }}" autoplay muted loop playsinline preload="metadata"></video>
+            {% comment %}
+              Only the active first slide autoloads its video; the rest hold at
+              metadata until theme.js activates their slide and calls play().
+              Autoloading all four (~21MB) starved first taps on product links
+              of bandwidth during initial load.
+            {% endcomment %}
+            <video class="hero__video hero__video--house is-active" src="{{ 'jamm-trade-cinematic-hero.mp4' | asset_url }}" poster="{{ 'jamm-trade-ecosystem-poster-1600.jpg' | asset_url }}" autoplay muted loop playsinline preload="auto"></video>
+            <video class="hero__video hero__video--fragrance" src="{{ 'jamm-trade-fragrance-hero.mp4' | asset_url }}" poster="{{ 'hero-perfumes.webp' | asset_url }}" muted loop playsinline preload="metadata"></video>
+            <video class="hero__video hero__video--audio" src="{{ 'jamm-trade-electronics-hero.mp4' | asset_url }}" poster="{{ 'hero-electronics.webp' | asset_url }}" muted loop playsinline preload="metadata"></video>
+            <video class="hero__video hero__video--clothing" src="{{ 'jamm-trade-clothing-hero.mp4' | asset_url }}" poster="{{ 'hero-clothing.webp' | asset_url }}" muted loop playsinline preload="metadata"></video>
           </div>
         </div>
 
