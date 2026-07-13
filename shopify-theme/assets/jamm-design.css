@@ -519,6 +519,7 @@ button{ font-family:inherit; cursor:pointer; }
 .allcats__chev{ transition:transform .3s; }
 .allcats__toggle[aria-expanded="true"] .allcats__chev{ transform:rotate(180deg); }
 .allcats__grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
+.allcats__grid[hidden]{ display:none; }
 .allcats__grid .qcard{ width:auto; padding:16px 16px 18px; gap:10px; }
 .allcats__grid .qcard__name{ font-size:1.2rem; }
 @media (prefers-reduced-motion: no-preference){
