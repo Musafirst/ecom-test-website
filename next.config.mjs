@@ -1,7 +1,13 @@
 const isProduction = process.env.NODE_ENV === 'production'
+// Google Analytics 4 via @next/third-parties loads the gtag script from
+// googletagmanager.com and sends measurement hits to the google-analytics /
+// analytics.google.com endpoints. Both must be allow-listed or the browser CSP
+// silently blocks the tag and no data is collected.
 const scriptSrc = isProduction
-  ? "'self' 'unsafe-inline' https://apis.google.com"
-  : "'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com"
+  ? "'self' 'unsafe-inline' https://apis.google.com https://www.googletagmanager.com"
+  : "'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.googletagmanager.com"
+const connectSrc =
+  "'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -30,7 +36,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
-              "connect-src 'self'",
+              `connect-src ${connectSrc}`,
               "frame-src 'none'",
               "frame-ancestors 'none'",
               "form-action 'self' https://*.myshopify.com",
