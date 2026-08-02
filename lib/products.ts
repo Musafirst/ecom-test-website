@@ -34,7 +34,7 @@ export const collectionDetails = {
     name: 'Clothing',
     intro: 'Jamm Trade apparel with the lotus mark across everyday essentials.',
     note: 'Apparel carrying the Jamm Trade lotus mark, made for everyday wear.',
-    count: '0 products',
+    count: `${fallbackProducts.filter((product) => product.category === 'clothing').length} products`,
   },
 } as const
 

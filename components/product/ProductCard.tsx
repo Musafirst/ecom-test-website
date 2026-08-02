@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { analyticsItemFromProduct, trackAddToCart } from '@/lib/analytics'
 import { addShopifyItem, mergeCartItem, readCart, writeCart } from '@/lib/cart'
 import type { JammProduct } from '@/types/product'
 
@@ -23,6 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
     try {
       await addShopifyItem(product.variantId!, 1)
       writeCart(mergeCartItem(readCart(), product, 1))
+      trackAddToCart(analyticsItemFromProduct(product, 1))
       setAdded(true)
       window.setTimeout(() => setAdded(false), 1600)
     } catch {
