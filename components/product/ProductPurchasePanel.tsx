@@ -1,7 +1,8 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { analyticsItemFromProduct, trackAddToCart, trackBeginCheckout, trackViewContent } from '@/lib/analytics'
 import { addShopifyItem, checkoutUrlStorageKey, isSafeCheckoutUrl, mergeCartItem, readCart, writeCart } from '@/lib/cart'
 import type { JammProduct, JammProductVariant } from '@/types/product'
 
@@ -42,6 +43,13 @@ export function ProductPurchasePanel({ product, compact = false }: ProductPurcha
     : product.availableForSale !== false
   const cartVariantId = selectedVariant?.id ?? product.variantId
 
+  // The purchase panel renders exactly once per product detail view, so this
+  // is the product-page ViewContent / view_item signal.
+  useEffect(() => {
+    trackViewContent(analyticsItemFromProduct(product))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.handle])
+
   async function addToCart() {
     if (adding || !available || !cartVariantId) return false
 
@@ -50,6 +58,7 @@ export function ProductPurchasePanel({ product, compact = false }: ProductPurcha
     try {
       await addShopifyItem(cartVariantId, qty)
       writeCart(mergeCartItem(readCart(), { ...product, variantId: cartVariantId }, qty))
+      trackAddToCart(analyticsItemFromProduct(product, qty, displayPrice))
       setAdded(true)
       setTimeout(() => setAdded(false), 3000)
       return true
@@ -67,6 +76,8 @@ export function ProductPurchasePanel({ product, compact = false }: ProductPurcha
 
     const didAdd = await addToCart()
     if (!didAdd) return
+
+    trackBeginCheckout([analyticsItemFromProduct(product, qty, displayPrice)])
 
     const checkoutUrl = window.localStorage.getItem(checkoutUrlStorageKey)
     if (isSafeCheckoutUrl(checkoutUrl)) {

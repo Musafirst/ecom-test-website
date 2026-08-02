@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { TikTokPixel } from '@/components/analytics/TikTokPixel'
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import './globals.css'
 import './jamm-design.css'
@@ -117,6 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         ) : null}
+        <TikTokPixel />
       </body>
     </html>
   )

@@ -3,11 +3,14 @@ const isProduction = process.env.NODE_ENV === 'production'
 // googletagmanager.com and sends measurement hits to the google-analytics /
 // analytics.google.com endpoints. Both must be allow-listed or the browser CSP
 // silently blocks the tag and no data is collected.
+// The TikTok pixel loads events.js from analytics.tiktok.com and sends
+// measurement hits there and to the *.tiktokw.us analytics endpoints for US
+// traffic — same CSP rule: miss a host and events drop silently.
 const scriptSrc = isProduction
-  ? "'self' 'unsafe-inline' https://apis.google.com https://www.googletagmanager.com"
-  : "'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.googletagmanager.com"
+  ? "'self' 'unsafe-inline' https://apis.google.com https://www.googletagmanager.com https://analytics.tiktok.com"
+  : "'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.googletagmanager.com https://analytics.tiktok.com"
 const connectSrc =
-  "'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com"
+  "'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://analytics.tiktok.com https://*.tiktokw.us"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

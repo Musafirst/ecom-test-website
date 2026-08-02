@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ProductPhoto } from '@/components/ui/ProductPhoto'
+import { analyticsItemFromProduct, trackBeginCheckout } from '@/lib/analytics'
 import { checkoutUrlStorageKey, type CartItem, readCart, syncShopifyCart, writeCart } from '@/lib/cart'
 import type { JammProduct } from '@/types/product'
 
@@ -185,6 +186,11 @@ export function CheckoutCart({ products }: CheckoutCartProps) {
         {shopifyCheckoutUrl ? (
           <a
             href={shopifyCheckoutUrl}
+            onClick={() =>
+              trackBeginCheckout(
+                lineItems.map(({ product, quantity }) => analyticsItemFromProduct(product, quantity)),
+              )
+            }
             className={`mt-5 inline-flex w-full items-center justify-center rounded-full bg-jamm-dark px-8 py-4 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-[0_12px_28px_rgba(12,11,9,0.18)] transition-[background-color,color] duration-200 hover:bg-jamm-gold hover:text-jamm-dark ${syncing ? 'pointer-events-none opacity-70' : ''}`}
           >
             {syncing ? 'Syncing Cart' : 'Proceed to Checkout'}
