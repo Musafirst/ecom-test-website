@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { LanguageSelector } from '@/components/i18n/LocaleProvider'
+import { businessAddress, businessAddressLines } from '@/lib/site'
 
 const columns = [
   {
@@ -52,9 +53,13 @@ export function Footer() {
               </span>
             </div>
             <p className="footer__desc">Rare fragrances and curated essentials for those who know the difference.</p>
+            {/* Full postal address is kept in the footer so the business identity
+                is verifiable from every page, not just /shop/contact. */}
             <div className="footer__contact">
-              <strong>Jamm Trade LLC</strong>
-              <span>Darby, Pennsylvania</span>
+              <strong>{businessAddress.legalName}</strong>
+              {businessAddressLines.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
               <span>contact@jammtrade.com</span>
               <span><a href="tel:+14845216277" className="transition-colors hover:text-[#e8d09a]">(484) 521-6277</a></span>
             </div>

@@ -50,7 +50,7 @@ export default async function ContactPage() {
             </div>
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Support Hours</h2>
-              <p className="mt-2">Monday through Friday, 10:00 AM to 6:00 PM Eastern Time.</p>
+              <p className="mt-2">{site.supportHours}</p>
             </div>
             <div>
               <h2 className="font-sans text-base font-semibold text-jamm-dark">Order Help</h2>

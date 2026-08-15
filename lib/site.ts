@@ -7,9 +7,29 @@ export const site = {
   supportPhone: '(484) 521-6277',
   supportPhoneHref: 'tel:+14845216277',
   supportPhoneE164: '+1-484-521-6277',
+  supportHours: 'Monday–Friday, 10:00 AM–6:00 PM ET',
   publicLocation: 'Darby, Pennsylvania',
   description: 'Rare fragrances. Curated for those who know the difference.',
 }
+
+// Single source of truth for the public business address. Must stay identical to
+// the Shopify shop address and to every legal policy, because Google's
+// Misrepresentation review compares the business identity across all surfaces.
+export const businessAddress = {
+  legalName: 'Jamm Trade LLC',
+  street: '100 Branford Rd',
+  city: 'Darby',
+  region: 'PA',
+  postalCode: '19023',
+  country: 'United States',
+  countryCode: 'US',
+}
+
+export const businessAddressLines = [
+  businessAddress.street,
+  `${businessAddress.city}, ${businessAddress.region} ${businessAddress.postalCode}`,
+  businessAddress.country,
+]
 
 export function normalizeOrigin(value?: string) {
   if (!value) return null

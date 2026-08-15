@@ -7,7 +7,7 @@ import './jamm-design.css'
 import { TabNav } from '@/components/layout/TabNav'
 import { Footer } from '@/components/layout/Footer'
 import { LocaleProvider } from '@/components/i18n/LocaleProvider'
-import { absoluteSiteUrl, site, siteUrl } from '@/lib/site'
+import { absoluteSiteUrl, businessAddress, site, siteUrl } from '@/lib/site'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -78,10 +78,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         '@type': 'Organization',
         '@id': `${siteUrl}/#organization`,
         name: site.name,
-        legalName: 'Jamm Trade LLC',
+        legalName: businessAddress.legalName,
         url: siteUrl,
         logo: absoluteSiteUrl('/brand_assets/icons/jammtrade-favicon-512.png'),
         email: site.supportEmail,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: businessAddress.street,
+          addressLocality: businessAddress.city,
+          addressRegion: businessAddress.region,
+          postalCode: businessAddress.postalCode,
+          addressCountry: businessAddress.countryCode,
+        },
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
