@@ -26,7 +26,7 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 
-const STORE  = process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com'
+const STORE  = process.env.SHOPIFY_STORE_DOMAIN || '6mx10k-xu.myshopify.com'
 const TOKEN  = process.env.SHOPIFY_ADMIN_TOKEN
 const ZIP_FILE = process.env.SHOPIFY_THEME_ZIP
 const SHOULD_PUBLISH = process.env.PUBLISH_SHOPIFY_THEME === 'true'
