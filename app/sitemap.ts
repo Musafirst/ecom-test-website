@@ -28,10 +28,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/shop/terms-of-service',
   ]
 
-  // The health category noindexes itself while unstocked, and submitting a
-  // noindexed URL is a Search Console error, so it is listed only when stocked.
+  // The intermittently stocked categories noindex themselves while empty, and
+  // submitting a noindexed URL is a Search Console error, so each is listed
+  // only while it holds products.
   if (products.some((product) => product.category === 'health')) {
     staticRoutes.push('/shop/category/health')
+  }
+
+  if (products.some((product) => product.category === 'skincare')) {
+    staticRoutes.push('/shop/category/skincare')
   }
 
   return [

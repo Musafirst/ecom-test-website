@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ProductCard } from '@/components/product/ProductCard'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { categoryDetails, getCollectionProducts, getElectronicsProducts, getHealthProducts, getPerfumeProducts } from '@/lib/products'
+import { categoryDetails, getCollectionProducts, getElectronicsProducts, getHealthProducts, getPerfumeProducts, getSkincareProducts } from '@/lib/products'
 
 interface CategoryPageProps {
   params: Promise<{
@@ -37,9 +37,12 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   const category = categoryDetails[categoryParam]
 
   // An empty category page is a thin result that advertises products we cannot
-  // sell, so it stays out of the index until it is stocked again. Links are
-  // still followed so the rest of the shop keeps its internal link equity.
-  const isEmptyHealth = categoryParam === 'health' && (await getHealthProducts()).length === 0
+  // sell, so the intermittently stocked categories stay out of the index until
+  // they are stocked again. Links are still followed so the rest of the shop
+  // keeps its internal link equity.
+  const isEmpty =
+    (categoryParam === 'health' && (await getHealthProducts()).length === 0) ||
+    (categoryParam === 'skincare' && (await getSkincareProducts()).length === 0)
 
   return {
     title: category.name,
@@ -47,7 +50,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     alternates: {
       canonical: `/shop/category/${categoryParam}`,
     },
-    ...(isEmptyHealth ? { robots: { index: false, follow: true } } : {}),
+    ...(isEmpty ? { robots: { index: false, follow: true } } : {}),
   }
 }
 
@@ -340,8 +343,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     )
   }
 
-  // categoryParam === 'health' — the only remaining key.
-  const products = await getHealthProducts()
+  // The remaining keys are the intermittently stocked categories, which share
+  // one plain grid layout because neither has sub-collections.
+  const products = categoryParam === 'skincare' ? await getSkincareProducts() : await getHealthProducts()
 
   return (
     <section className="min-h-[calc(100vh-120px)] bg-transparent px-3 py-6 text-jamm-dark sm:px-4 lg:py-8">

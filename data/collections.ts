@@ -42,4 +42,9 @@ export const categoryDetails = {
     intro: 'Supplements and wellness essentials selected with the same care as everything we carry.',
     detail: 'Trusted health brands, clearly described and shipped with secure checkout.',
   },
+  skincare: {
+    name: 'Skincare',
+    intro: 'Moisturizers and facial care from established skincare brands.',
+    detail: 'Sold as sealed retail units, clearly described and shipped with secure checkout.',
+  },
 } as const

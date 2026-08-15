@@ -300,6 +300,21 @@ function productBelongsToCollection(product: JammProduct, handle: string) {
   return product.collection === handle
 }
 
+// Shared between both product mappers so the Storefront and public-JSON paths
+// classify a product identically.
+const SKINCARE_SIGNALS = [
+  'skincare',
+  'skin-care',
+  'moisturizer',
+  'moisturiser',
+  'face-cream',
+  'facial',
+  'serum',
+  'cleanser',
+  'lotion',
+  'sunscreen',
+]
+
 function getCategory(product: ShopifyProduct, collection?: ProductCollection): ProductCategory {
   const values = [product.productType, product.vendor, ...product.tags, collection ?? '', product.handle, product.title].map(normalizeHandle)
 
@@ -317,6 +332,13 @@ function getCategory(product: ShopifyProduct, collection?: ProductCollection): P
     return 'clothing'
   }
 
+  // Skincare is matched before the perfume fallback. Without it, a moisturizer
+  // would be sold and marked up as a fragrance, which is a product-data
+  // mismatch of exactly the kind Google's Misrepresentation review looks for.
+  if (values.some((value) => SKINCARE_SIGNALS.some((signal) => value.includes(signal)))) {
+    return 'skincare'
+  }
+
   return 'perfume'
 }
 
@@ -324,6 +346,7 @@ function getSubcategory(product: ShopifyProduct, category: ProductCategory, coll
   const values = [product.productType, ...product.tags, collection ?? ''].map(normalizeHandle)
 
   if (category === 'health') return 'supplements'
+  if (category === 'skincare') return 'facial-care'
   if (values.some((value) => value.includes('smartwatch') || value.includes('watch'))) return 'smartwatches'
   if (values.some((value) => value.includes('audio') || value.includes('headphone') || value.includes('earbud'))) return 'headphones-audio'
   if (category === 'perfume') return 'fragrance'
@@ -341,6 +364,7 @@ function getCategoryLabel(category: ProductCategory, collection?: ProductCollect
   if (category === 'electronics') return 'Electronics'
   if (category === 'clothing') return 'Clothing'
   if (category === 'health') return 'Health & Wellness'
+  if (category === 'skincare') return 'Skincare'
 
   return 'Fragrance'
 }
@@ -450,18 +474,22 @@ function mapPublicShopifyProduct(product: PublicShopifyProduct): JammProduct {
       ? 'clothing'
       : values.some((value) => value.includes('electronics') || value.includes('audio') || value.includes('watch'))
         ? 'electronics'
-        : 'perfume'
+        : values.some((value) => SKINCARE_SIGNALS.some((signal) => value.includes(signal)))
+          ? 'skincare'
+          : 'perfume'
   const collection: ProductCollection | undefined = category === 'clothing' ? 'clothing' : undefined
   const subcategory: ProductSubcategory | undefined =
     category === 'health'
       ? 'supplements'
-      : category === 'clothing'
-        ? 'apparel'
-        : category === 'electronics' && values.some((value) => value.includes('watch'))
-          ? 'smartwatches'
-          : category === 'electronics'
-            ? 'headphones-audio'
-            : 'fragrance'
+      : category === 'skincare'
+        ? 'facial-care'
+        : category === 'clothing'
+          ? 'apparel'
+          : category === 'electronics' && values.some((value) => value.includes('watch'))
+            ? 'smartwatches'
+            : category === 'electronics'
+              ? 'headphones-audio'
+              : 'fragrance'
   const galleryImages = (product.images ?? [])
     .map(normalizeShopifyAssetUrl)
     .filter((url): url is string => Boolean(url))
@@ -472,6 +500,7 @@ function mapPublicShopifyProduct(product: PublicShopifyProduct): JammProduct {
   const colorOptions = product.options?.find((option) => normalizeHandle(option.name) === 'color')?.values
   const price = ((selectedVariant?.price ?? product.price ?? 0) / 100)
   const compareAtPrice = selectedVariant?.compare_at_price ?? product.compare_at_price
+  const healthDetails = ['supplement', 'health and wellness', 'product details', 'secure checkout']
 
   return {
     id: `gid://shopify/Product/${product.id}`,
@@ -495,7 +524,7 @@ function mapPublicShopifyProduct(product: PublicShopifyProduct): JammProduct {
     image: featuredImage ?? '/product-images/placeholders/perfume.webp',
     imageAlt: sanitizeAltText(selectedVariant?.featured_image?.alt ?? product.media?.[0]?.alt ?? null, product.title),
     galleryImages: galleryImages.length > 0 ? galleryImages : featuredImage ? [featuredImage] : undefined,
-    details: colorOptions ?? tags.map((tag) => tag.replace(/-/g, ' ')),
+    details: category === 'health' ? healthDetails : colorOptions ?? tags.map((tag) => tag.replace(/-/g, ' ')),
   }
 }
 

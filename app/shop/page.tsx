@@ -7,7 +7,7 @@ import { SecondaryCategories } from '@/components/shop/SecondaryCategories'
 import { TrendingGuides } from '@/components/shop/TrendingGuides'
 import { TrustBar } from '@/components/shop/TrustBar'
 import { RevealOnScroll } from '@/components/shop/RevealOnScroll'
-import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts, getHealthProducts } from '@/lib/products'
+import { getCollectionDetails, getElectronicsProducts, getFeaturedProducts, getHealthProducts, getSkincareProducts } from '@/lib/products'
 
 export const metadata: Metadata = {
   title: 'Luxury Fragrances, Electronics & Essentials',
@@ -18,11 +18,12 @@ export const metadata: Metadata = {
 }
 
 export default async function ShopPage() {
-  const [featuredProducts, collectionDetails, electronicsProducts, healthProducts] = await Promise.all([
+  const [featuredProducts, collectionDetails, electronicsProducts, healthProducts, skincareProducts] = await Promise.all([
     getFeaturedProducts(),
     getCollectionDetails(),
     getElectronicsProducts(),
     getHealthProducts(),
+    getSkincareProducts(),
   ])
 
   return (
@@ -36,6 +37,7 @@ export default async function ShopPage() {
           daily: collectionDetails.daily.count,
         }}
         hasHealthProducts={healthProducts.length > 0}
+        hasSkincareProducts={skincareProducts.length > 0}
       />
       <FeaturedProducts products={featuredProducts} />
       <CollectionGrid

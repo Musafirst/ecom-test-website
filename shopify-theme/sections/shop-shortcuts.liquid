@@ -37,10 +37,13 @@
       <div class="allcats__grid" id="AllCategoriesPanel" hidden>
         {% assign category_list = 'Perfumes|Oud · Amber · Daily|/category/perfumes,Oud|Resinous · Deep|/collection/oud,Amber|Warm · Sweet|/collection/amber,Daily|Clean · Versatile|/collection/daily,Electronics|Audio · Tech|/category/electronics,Clothing|Wear the mark|/category/clothing' %}
         {% comment %}
-          Health & Wellness is stocked intermittently. Listing a category that
-          leads to an empty page reads as an unavailable product, so it appears
-          only while the collection actually holds products.
+          Skincare and Health & Wellness are stocked intermittently. Listing a
+          category that leads to an empty page reads as an unavailable product,
+          so each appears only while its collection holds products.
         {% endcomment %}
+        {% if collections['skincare-collection'].products_count > 0 %}
+          {% assign category_list = category_list | append: ',Skincare|Facial care|/category/skincare' %}
+        {% endif %}
         {% if collections['health-collection'].products_count > 0 %}
           {% assign category_list = category_list | append: ',Health & Wellness|Supplements|/category/health' %}
         {% endif %}

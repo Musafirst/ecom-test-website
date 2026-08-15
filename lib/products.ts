@@ -82,6 +82,13 @@ export async function getHealthProducts() {
   return products.filter((product) => product.category === 'health')
 }
 
+// Skincare category: moisturizers and facial care. Like health, it is stocked
+// intermittently and has no demo fallback.
+export async function getSkincareProducts() {
+  const products = await getShopifyProducts()
+  return products.filter((product) => product.category === 'skincare')
+}
+
 // Collection copy remains local/manual; product contents are Shopify-first.
 export async function getCollectionProducts(collection: string) {
   return getShopifyCollectionProducts(collection)

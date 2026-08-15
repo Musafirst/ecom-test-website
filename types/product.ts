@@ -1,6 +1,6 @@
 export type ProductCollection = 'oud' | 'amber' | 'daily' | 'electronics' | 'audio' | 'smartwatches' | 'clothing'
-export type ProductCategory = 'perfume' | 'electronics' | 'clothing' | 'health'
-export type ProductSubcategory = 'fragrance' | 'headphones-audio' | 'smartwatches' | 'apparel' | 'supplements'
+export type ProductCategory = 'perfume' | 'electronics' | 'clothing' | 'health' | 'skincare'
+export type ProductSubcategory = 'fragrance' | 'headphones-audio' | 'smartwatches' | 'apparel' | 'supplements' | 'facial-care'
 export type ProductBadgeType = 'new' | 'bestseller'
 
 export interface JammProductOption {
