@@ -17,7 +17,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/shop/collection/amber',
     '/shop/collection/daily',
     '/shop/category/electronics',
-    '/shop/category/health',
     '/shop/collection/audio',
     '/shop/collection/smartwatches',
     '/shop/contact',
@@ -28,6 +27,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/shop/privacy-policy',
     '/shop/terms-of-service',
   ]
+
+  // The health category noindexes itself while unstocked, and submitting a
+  // noindexed URL is a Search Console error, so it is listed only when stocked.
+  if (products.some((product) => product.category === 'health')) {
+    staticRoutes.push('/shop/category/health')
+  }
 
   return [
     ...staticRoutes.map((route) => ({

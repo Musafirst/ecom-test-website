@@ -41,7 +41,7 @@ function loadEnvLocal() {
 
 loadEnvLocal()
 
-const DOMAIN = (process.env.SHOPIFY_STORE_DOMAIN || 'jamm-trade.myshopify.com')
+const DOMAIN = (process.env.SHOPIFY_STORE_DOMAIN || '6mx10k-xu.myshopify.com')
   .replace(/^https?:\/\//, '')
   .replace(/\/$/, '')
 const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN

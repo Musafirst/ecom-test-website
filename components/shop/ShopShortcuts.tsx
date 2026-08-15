@@ -5,6 +5,10 @@ import Link from 'next/link'
 
 interface ShopShortcutsProps {
   collectionCounts: { oud: string; amber: string; daily: string }
+  // Health & Wellness is stocked intermittently. Advertising a category that
+  // leads to an empty page reads as an unavailable product to Google's review,
+  // so the entry only appears while the category actually holds products.
+  hasHealthProducts: boolean
 }
 
 const arrow = (
@@ -13,7 +17,7 @@ const arrow = (
   </svg>
 )
 
-export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
+export function ShopShortcuts({ collectionCounts, hasHealthProducts }: ShopShortcutsProps) {
   const [allOpen, setAllOpen] = useState(false)
 
   const cards = [
@@ -32,7 +36,9 @@ export function ShopShortcuts({ collectionCounts }: ShopShortcutsProps) {
     { name: 'Daily', eyebrow: collectionCounts.daily, href: '/shop/collection/daily' },
     { name: 'Electronics', eyebrow: 'Audio · Tech', href: '/shop/category/electronics' },
     { name: 'Clothing', eyebrow: 'Wear the mark', href: '/shop/category/clothing' },
-    { name: 'Health & Wellness', eyebrow: 'Supplements', href: '/shop/category/health' },
+    ...(hasHealthProducts
+      ? [{ name: 'Health & Wellness', eyebrow: 'Supplements', href: '/shop/category/health' }]
+      : []),
   ]
 
   return (

@@ -14,7 +14,10 @@ const columns = [
       { label: 'Amber', href: '/shop/collection/amber' },
       { label: 'Clothing', href: '/shop/category/clothing' },
       { label: 'Electronics', href: '/shop/category/electronics' },
-      { label: 'Health & Wellness', href: '/shop/category/health' },
+      // Health & Wellness is unstocked. The footer renders on every route and
+      // does no data fetching, so this link is restored by hand when the
+      // category holds products again; /shop/category/health self-noindexes
+      // while empty, and the homepage shortcut restores itself automatically.
     ],
   },
   {

@@ -36,12 +36,18 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
   const category = categoryDetails[categoryParam]
 
+  // An empty category page is a thin result that advertises products we cannot
+  // sell, so it stays out of the index until it is stocked again. Links are
+  // still followed so the rest of the shop keeps its internal link equity.
+  const isEmptyHealth = categoryParam === 'health' && (await getHealthProducts()).length === 0
+
   return {
     title: category.name,
     description: category.intro,
     alternates: {
       canonical: `/shop/category/${categoryParam}`,
     },
+    ...(isEmptyHealth ? { robots: { index: false, follow: true } } : {}),
   }
 }
 
