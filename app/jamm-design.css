@@ -889,6 +889,10 @@ button{ font-family:inherit; cursor:pointer; }
   .slide__title{ font-size:clamp(2.15rem, 12vw, 3.05rem); }
   .slide__cta{ margin-top:.82em; }
   .slide__cta .btn{ min-height:42px; padding:.9em 1.05em; font-size:.68rem; }
+  /* The stage is portrait here but the ecosystem art is landscape 3:2. Forcing
+     16/9 left it a thin strip floating in black; its own ratio fills the width,
+     and since cover no longer crops, the hotspots land on their products. */
+  .eco-stage{ aspect-ratio:1600/1073; }
   .eco-caption{ bottom:44px; }
   .hero__dots{ bottom:18px; }
   .hotspot{ width:20px; height:20px; }
